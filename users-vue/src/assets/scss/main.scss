@@ -1,0 +1,376 @@
+//Customize Vue Material Theme
+@import "~vue-material/dist/theme/engine";
+@include md-register-theme("default", (
+  primary: #00A161,
+));
+@import "~vue-material/dist/theme/all";
+
+$loaderColor: #00A161;
+
+@import "mixin";
+
+$screen-1280: 1280px;
+$screen-1024: 1024px;
+$screen-768: 768px;
+$screen-600: 600px;
+$screen-480: 480px;
+$screen-320: 320px;
+
+$primary-color: #00A161;
+
+body {
+  background: #F4F5F7;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;;
+}
+.dropdown-item {
+  color: #000 !important;
+  &:active {
+    color: $primary-color !important;
+    background-color: #F4F5F7;
+  }
+  &:focus {
+    color: $primary-color !important;
+    background-color: #F4F5F7;
+    outline: 0;
+  }
+  &:hover {
+    text-decoration: none !important;
+    color: $primary-color !important;
+  }
+}
+
+.navbar {
+  background: #fff;
+  padding: 5px 50px;
+  border-bottom: 1px solid #EFEFEF;
+  @include box-shadow(0px, 3px, 6px, rgba(0,0,0,0.03));
+
+  @media screen and (max-width: $screen-768) {
+    padding: 3px 20px;
+  }
+}
+
+.md-card {
+  margin: 0 auto;
+}
+
+.md-helper-text {
+  font-size: 11px !important;
+}
+
+.md-list-item-container {
+  font-size: 14px;
+}
+.md-list-item-content {
+  min-height: 32px;
+}
+.md-list-item-text {
+  line-height: 14px !important;
+}
+.md-menu-content {
+  z-index: 1000 !important;
+}
+.main-wrapper {
+  background: #fff;
+  min-height: calc(100vh - 67px);
+
+  .left-div {
+    width: 55%;
+    float: left;
+    img {
+      width: 100%;
+    }
+  }
+  .right-div {
+    float: right;
+    width: 45%;
+  }
+  .left-div, .right-div {
+    position: relative;
+    min-height: calc(100vh - 67px);
+    @media screen and (max-width: $screen-768) {
+      width: 100%;
+      min-height: unset;
+    }
+  }
+  .signup-flex {
+    height: auto;
+    position: absolute;
+    top: 50%;
+    @include transform(translate(0, -50%));
+
+    &.md-card {
+      padding: 2rem 2rem;
+      margin-right: 80px;
+      margin-top: -40px;
+    }
+
+    .password-helper {
+      width: 350px;
+    }
+
+    @media screen and (max-width: $screen-1280) {
+      .password-helper {
+        width: 100%;
+      }
+      .confirm-password {
+        margin-top: 1.25rem;
+      }
+    }
+
+    @media screen and (max-width: $screen-768) {
+      position: static;
+      top: unset;
+      @include transform(translate(0, 0));
+      &.md-card {
+        padding: 1rem 0.5rem;
+        margin-right: 0;
+        margin-top: 0;
+        @include box-shadow-none;
+      }
+      .md-card-header {
+        display: none;
+      }
+      &.signup-flex-img {
+        margin-top: 5vh;
+      }
+      .mobile-btn-100 {
+         width: 100%;
+       }
+      .md-card-actions {
+        p {
+          margin: 0 auto;
+        }
+      }
+    }
+    @media screen and (max-width: $screen-600) {
+      &.signup-flex-img {
+        margin-top: 10vh;
+      }
+    }
+  }
+}
+
+.personal-card {
+  margin-top: 2rem;
+  .md-card {
+    padding: 2rem 2rem;
+  }
+  @media screen and (max-width: $screen-768) {
+    .md-card-actions {
+      padding-bottom: 32px;
+    }
+    .mobile-btn-100 {
+      width: 100%;
+    }
+  }
+  @media screen and (max-width: $screen-600) {
+    margin-top: 0;
+    .md-card {
+      padding: 1rem 1rem;
+      @include box-shadow-none;
+      height: calc(100vh - 63px);
+    }
+    .md-card-header {
+      padding: 0 16px;
+    }
+  }
+  @media screen and (max-width: $screen-320) {
+    .timezone-picker {
+      .md-input {
+        font-size: 12px !important;
+      }
+    }
+  }
+}
+
+.user-profile-card {
+  padding-bottom: 1rem;
+  .md-card{
+    margin-top: 2rem;
+  }
+  .md-card-header {
+    padding: 2rem 5rem 1rem 2rem;
+    max-width: 600px;
+  }
+  .md-card-content {
+    padding-left: 2rem;
+    padding-right: 2.5rem;
+  }
+  .profile-info-item {
+    span {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      font-size: 1rem !important;
+      line-height: 1.25em !important;
+    }
+  }
+  .profile-mobile-title {
+    display: none;
+  }
+
+  @media screen and (max-width: $screen-600) {
+    .profile-mobile-title {
+      background: white;
+      padding: 1rem;
+      display: block;
+      h4 {
+        font-size: 1.25rem;
+      }
+      h6 {
+        font-size: 0.75rem;
+        opacity: 0.5;
+      }
+    }
+    .md-card{
+      margin-top: 1rem;
+    }
+    .md-card-header {
+      display: none;
+    }
+    .md-card-content {
+      padding: 0;
+    }
+    .profile-info-item {
+      span {
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
+      }
+      .mobile-title {
+        opacity: 0.54;
+        font-size: 0.8rem !important;
+      }
+      .mobile-description {
+        font-size: 1rem;
+      }
+    }
+  }
+}
+
+.verification-card {
+  margin-top: 4rem;
+  h4 {
+    font-size: 1.5rem;
+  }
+  .md-card {
+    padding: 2rem 1.75rem;
+  }
+  .md-card-content {
+    padding-bottom: 0;
+  }
+  .sub-footer {
+    padding-top: 3rem;
+  }
+  @media screen and (max-width: $screen-600) {
+    h4 {
+      font-size: 1.25rem;
+    }
+    .md-card {
+      padding: 1.5rem 1.25rem;
+    }
+    .sub-footer {
+      padding-top: 1.5rem;
+    }
+  }
+  @media screen and (max-width: $screen-320) {
+    margin-top: 2rem;
+    h4 {
+      font-size: 1rem;
+    }
+    h6 {
+      font-size: 0.75rem;
+    }
+    .md-card {
+      padding: 1rem 0.5rem;
+    }
+    .sub-footer {
+      padding-top: 1rem;
+    }
+  }
+}
+
+svg {
+  color: $primary-color;
+}
+
+.timezone-picker, .state-picker {
+  .md-input {
+    font-size: 14px !important;
+  }
+}
+
+.dashboard {
+  padding-top: 17vh;
+  text-align: center;
+}
+
+.dashboard-card {
+  width: 18vw;
+  height: 18vw;
+  position: relative;
+  padding: 3vw 0vw 1vw;
+  margin: 20px;
+  text-align: center;
+  display: inline-block;
+  background: white;
+  border: 1px solid white;
+  img {
+    width: 8vw;
+  }
+  &:hover {
+    border: 1px solid $primary-color;
+    svg {
+      visibility: visible;
+    }
+  }
+  svg {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    visibility: hidden;
+  }
+  p {
+    margin-top: 2.5vw;
+  }
+  @media screen and (max-width: $screen-768) {
+    width: 28vw;
+    height: 28vw;
+    margin: 5px;
+    img {
+      width: 12vw;
+    }
+    p {
+      font-size: 11px;
+    }
+  }
+}
+
+.overloading-spinner-text {
+  z-index: 1000;
+  position: absolute;
+  text-align: center;
+  height: 2rem;
+  width: 20rem;
+  top: calc(50vh + 4rem);
+  left: calc(50vw - 10rem);
+}
+
+.second-btn-link {
+  margin-top: -0.5rem !important;
+}
+
+.error-page-container {
+  padding: 7rem 1rem;
+}
+
+.modal-header {
+  border: none;
+}
+.modal-footer {
+  border: none;
+  justify-content: start;
+  .btn-cancel {
+    color: black;
+    text-decoration: none;
+  }
+}

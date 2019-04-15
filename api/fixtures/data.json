@@ -1,0 +1,368 @@
+[
+    {
+        "model": "info.TicketCategory",
+        "pk": 1,
+        "fields": {
+            "name": "Installation",
+            "slug": "installation"
+        }
+    },
+    {
+        "model": "info.TicketCategory",
+        "pk": 2,
+        "fields": {
+            "name": "Outages",
+            "slug": "outages"
+        }
+    },
+    {
+        "model": "info.TicketCategory",
+        "pk": 3,
+        "fields": {
+            "name": "Authentication",
+            "slug": "authentication"
+        }
+    },
+    {
+        "model": "info.TicketCategory",
+        "pk": 4,
+        "fields": {
+            "name": "Authorization",
+            "slug": "authorization"
+        }
+    },
+    {
+        "model": "info.TicketCategory",
+        "pk": 5,
+        "fields": {
+            "name": "Single Sign-On",
+            "slug": "sso"
+        }
+    },
+    {
+        "model": "info.TicketCategory",
+        "pk": 6,
+        "fields": {
+            "name": "Logout",
+            "slug": "logout"
+        }
+    },
+    {
+        "model": "info.TicketCategory",
+        "pk": 7,
+        "fields": {
+            "name": "Access Management",
+            "slug": "access-management"
+        }
+    },
+    {
+        "model": "info.TicketCategory",
+        "pk": 8,
+        "fields": {
+            "name": "Identity Management",
+            "slug": "identity-management"
+        }
+    },
+    {
+        "model": "info.TicketCategory",
+        "pk": 9,
+        "fields": {
+            "name": "Upgrade",
+            "slug": "upgrade"
+        }
+    },
+    {
+        "model": "info.TicketCategory",
+        "pk": 10,
+        "fields": {
+            "name": "Maintenance",
+            "slug": "maintenance"
+        }
+    },
+    {
+        "model": "info.TicketCategory",
+        "pk": 11,
+        "fields": {
+            "name": "Customization",
+            "slug": "customization"
+        }
+    },
+    {
+        "model": "info.TicketCategory",
+        "pk": 12,
+        "fields": {
+            "name": "Feature Request",
+            "slug": "feature-request"
+        }
+    },
+    {
+        "model": "info.TicketCategory",
+        "pk": 13,
+        "fields": {
+            "name": "Other",
+            "slug": "other"
+        }
+    },
+    {
+        "model": "info.GluuProduct",
+        "pk": 1,
+        "fields": {
+            "name": "Gluu Server",
+            "version": ["3.1.4", "3.1.3", "3.1.2", "3.1.1", "3.1.0", "3.0.2", "3.0.1", "2.4.4", "2.4.3", "2.4.2", "Other"],
+            "os": ["Ubuntu", "CentOS", "RHEL", "Debian", "Other"]
+        }
+    },
+    {
+        "model": "info.GluuProduct",
+        "pk": 2,
+        "fields": {
+            "name": "OXD",
+            "version": ["3.1.4", "3.1.3", "3.1.2", "3.0.2", "3.0.1"],
+            "os": ["Ubuntu", "CentOS", "RHEL", "Debian"]
+        }
+    },
+    {
+        "model": "info.GluuProduct",
+        "pk": 3,
+        "fields": {
+            "name": "Super Gluu",
+            "version": ["3.1.4", "3.1.3", "3.1.1"],
+            "os": ["Android", "iOS", "Both"]
+        }
+    },
+    {
+        "model": "info.GluuProduct",
+        "pk": 4,
+        "fields": {
+            "name": "Cluster Manager",
+            "version": ["3.1.4", "3.1.3", "Alpha"],
+            "os": ["Ubuntu", "CentOS", "RHEL", "Debian"]
+        }
+    },
+    {
+        "model": "info.GluuProduct",
+        "pk": 5,
+        "fields": {
+            "name": "Cred Manager",
+            "version": ["3.1.4", "3.1.3", "3.1.2"],
+            "os": ["Ubuntu", "CentOS", "RHEL", "Debian"]
+        }
+    },
+    {
+        "model": "info.TicketIssueType",
+        "pk": 1,
+        "fields": {
+            "name": "Production Outage",
+            "slug": "production-outage",
+            "priority": "high"
+        }
+    },
+    {
+        "model": "info.TicketIssueType",
+        "pk": 2,
+        "fields": {
+            "name": "Production Impaired",
+            "slug": "production-impaired",
+            "priority": "high"
+        }
+    },
+    {
+        "model": "info.TicketIssueType",
+        "pk": 3,
+        "fields": {
+            "name": "Pre-Production Issue",
+            "slug": "pre-preoduction-issue"
+        }
+    },
+    {
+        "model": "info.TicketIssueType",
+        "pk": 4,
+        "fields": {
+            "name": "Minor Issue",
+            "slug": "minor-issue"
+        }
+    },
+    {
+        "model": "info.TicketIssueType",
+        "pk": 5,
+        "fields": {
+            "name": "New Development Issue",
+            "slug": "new-development-issue"
+        }
+    },
+    {
+        "model": "info.Permission",
+        "pk": 1,
+        "fields": {
+            "app_name": "billing",
+            "model_name": "Billing",
+            "actions": ["retrieve", "list"],
+            "description": "View billing information"
+        }
+    },
+    {
+        "model": "info.Permission",
+        "pk": 2,
+        "fields": {
+            "app_name": "billing",
+            "model_name": "Billing",
+            "actions": ["update"],
+            "description": "Change billing information"
+        }
+    },
+    {
+        "model": "info.Permission",
+        "pk": 3,
+        "fields": {
+            "app_name": "tickets",
+            "model_name": "Ticket",
+            "actions": ["assign"],
+            "description": "Assign tickets"
+        }
+    },
+    {
+        "model": "info.Permission",
+        "pk": 4,
+        "fields": {
+            "app_name": "tickets",
+            "model_name": "Ticket",
+            "actions": ["retrieve", "list"],
+            "description": "View tickets"
+        }
+    },
+    {
+        "model": "info.Permission",
+        "pk": 5,
+        "fields": {
+            "app_name": "tickets",
+            "model_name": "Ticket",
+            "actions": ["create", "update", "destroy"],
+            "description": "Create tickets"
+        }
+    },
+    {
+        "model": "info.Permission",
+        "pk": 6,
+        "fields": {
+            "app_name": "tickets",
+            "model_name": "Answer",
+            "actions": ["create", "update", "destroy"], 
+            "description": "Respond to tickets"
+        }
+    },
+    {
+        "model": "info.Permission",
+        "pk": 7,
+        "fields": {
+            "app_name": "profiles",
+            "model_name": "Company",
+            "actions": ["change_role"],
+            "description": "Change member roles"
+        }
+    },
+    {
+        "model": "info.Permission",
+        "pk": 8,
+        "fields": {
+            "app_name": "profiles",
+            "model_name": "Company",
+            "actions": ["invite", "remove_member", "revoke_invite"],
+            "description": "Add and remove members"
+        }
+    },
+    {
+        "model": "info.Permission",
+        "pk": 9,
+        "fields": {
+            "app_name": "profiles",
+            "model_name": "Company",
+            "actions": ["update"],
+            "description": "Update Company Profile"
+        }
+    },
+    {
+        "model": "info.UserRole",
+        "pk": 1,
+        "fields": {
+            "name": "staff",
+            "is_company_associated": false,
+            "permissions": [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        }
+    },
+    {
+        "model": "info.UserRole",
+        "pk": 2,
+        "fields": {
+            "name": "admin",
+            "is_company_associated": true,
+            "permissions": [1, 2, 4, 5, 6, 7, 8, 9]
+        }
+    },
+    {
+        "model": "info.UserRole",
+        "pk": 3,
+        "fields": {
+            "name": "named",
+            "is_company_associated": true,
+            "permissions": [4, 5, 6]
+        }
+    },
+    {
+        "model": "info.UserRole",
+        "pk": 4,
+        "fields": {
+            "name": "user",
+            "is_company_associated": true,
+            "permissions": [4]
+        }
+    },
+    {
+        "model": "info.UserRole",
+        "pk": 5,
+        "fields": {
+            "name": "community",
+            "is_company_associated": false,
+            "permissions": []
+        }
+    },
+    {
+        "model": "info.TicketStatus",
+        "pk": 1,
+        "fields": {
+            "name": "New",
+            "slug": "new"
+        }
+    },
+    {
+        "model": "info.TicketStatus",
+        "pk": 2,
+        "fields": {
+            "name": "Assigned",
+            "slug": "assigned"
+        }
+    },
+    {
+        "model": "info.TicketStatus",
+        "pk": 3,
+        "fields": {
+            "name": "In Progress",
+            "slug": "inprogress"
+        }
+    },
+    {
+        "model": "info.TicketStatus",
+        "pk": 4,
+        "fields": {
+            "name": "Pending",
+            "slug": "pending"
+        }
+    },
+    {
+        "model": "info.TicketStatus",
+        "pk": 5,
+        "fields": {
+            "name": "Close",
+            "slug": "close"
+        }
+    }
+]

@@ -1,0 +1,12 @@
+.vscode/
+/data/
+postgres-password.env
+api.env
+api-test.env
+devops/keys/
+devops/backups/
+secrets/
+/.env
+.idea
+
+.DS_Store

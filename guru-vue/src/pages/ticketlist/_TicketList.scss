@@ -1,0 +1,234 @@
+@import "@/assets/scss/global.scss";
+
+#tickets-page-container {
+  background-color: $background-color;
+}
+
+#search-bar-container {
+  @extend %input-select;
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+  background-color: white;
+
+  input,
+  input:focus{
+    margin-left: 16px;
+    width: 80%;
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    @include box-shadow-none();
+  }
+
+  span {
+    background-color: $base-color;
+    padding: 0.5em 0.8em;
+    border-radius: 0 3px 3px 0;
+    cursor: pointer;
+  }
+}
+
+#order-by-select-container {
+  label{
+    margin-bottom: 0;
+    margin-right: 0.5em;
+    @include gluu-text(14px,$font-color-base,$font-family-lato-Medium);
+  }
+  .select-tags-gluu {
+    border: 1px solid #DADDDE;
+    width: 50%;
+    .multiselect__select:before{
+      display: initial;
+      z-index: 8;
+      top: 3px;
+    }
+    .multiselect__select{
+
+      /* height: 100%; */
+      right: -0.2em;
+      text-align: center;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+}
+
+//Sidebar Component//
+#sidebar-container {
+  .card-gluu {
+    background-color: #FFFFFF;
+    @include box-shadow (0, 2px, 4px, rgba(236,239,242,1));
+    @include border-radius(3px);
+    border: none;
+  }
+
+  .card-gluu > div {
+    padding: 0;
+  }
+
+  .select-tags-gluu{
+    border: 1px solid #EEF1F2;
+    border-radius: 3px;
+  }
+  
+  .select-tags-gluu.multiselect--active{
+    border: 1px solid #00B372;
+    border-radius: 3px;
+    caret-color: #00B372;
+  }
+  
+  .multiselect__single{
+    margin-bottom: 0;
+  }
+  
+  .multiselect__select{
+    padding: 9px 14px;
+  }
+  
+  .multiselect__select:before{
+    display: none;
+  }
+  
+  .single-select .multiselect__select:before{
+    display: initial;
+  }
+  
+  .multiselect__tags{
+    border: none;
+    padding: 9px 14px;
+    border-radius: 3px;
+  }
+  
+  .multiselect__placeholder{
+    margin-bottom: 0;
+    padding-top: 0;
+    color: #6A7570;
+  }
+  
+   .multiselect__input{
+    max-width: 100%;
+    @include gluu-text(15px, $font-color-base, $font-family-lato-Medium)
+  }
+
+  .card-title-gluu{
+    background-color: white;
+    padding: 1.25rem;
+    @include gluu-text(20px, $font-color-base, $font-family-lato-semi-bold);
+  }
+  
+  .card-labels-gluu{
+    @include gluu-text(16px, $font-color-base, $font-family-lato-Medium);
+  }
+  .multiselect__tags-wrap {
+    display: none;
+    padding: 0;
+    margin: 0;
+    height: 0;
+    border: none;
+  }
+  .multiselect__input {
+    margin: 0;
+  }
+
+  .date-time-picker {
+    .field-input {
+      padding-top: 0;
+    }
+    .field-label {
+      display: none;
+    }
+    .datepicker-button {
+      svg {
+        stroke: none;
+      }
+    }
+  }
+}
+
+#tickets-footer{
+  margin-top: 3em;
+
+  #pagination-container{
+
+    label{
+      margin-bottom: 0;
+      margin-right: 0.5em;
+      @include gluu-text(14px,$font-color-base,$font-family-lato-Medium);
+    }
+
+    .select-tags-gluu {
+      border: 1px solid #DADDDE;
+     width: 4em;
+
+      .multiselect__select{
+        width: 40px;
+        /* height: 100%; */
+        right: -0.2em;
+        text-align: center;
+        z-index: 1;
+        display: flex;
+        justify-content: center;
+      }
+
+      .multiselect__tags{
+        span{
+          padding: 0;
+          margin: 0;
+        }
+      }
+
+      .multiselect__select:before{
+        display: initial;
+        z-index: 8;
+        top: 3px;
+      }
+    }
+
+    .pagination-container-second-span{
+      @include gluu-text(15px,#787E7B, $font-family-lato-Medium);
+      margin-left: 0.5em;
+    }
+  }
+
+  #pagination-container-2{
+    .ellipsis-container{
+      align-self: flex-end !important;
+      span{
+        color:#B8C1BD;
+        font-size: 15px;
+        font-family: "LatoWebMedium";
+      }
+    }
+    .pagination-container-2-buttons{
+      display: flex;
+      justify-content: center;
+      margin:0 0.25em;
+      height: 36px;
+      border-radius: 3px;
+      border: 1px solid #daddde;
+      background-color: #ffffff;
+      position: relative;
+      align-items: center;
+      line-height: 1.25;
+      width: 100%;
+      cursor: pointer;
+      a{
+        color: #181F1C;
+        font-size: 15px;
+        font-family: "LatoWebMedium";
+        text-decoration: none;
+        text-align: center;
+      }
+    }
+    #pagination-container-2-nextbtn{
+      width: 100%;
+      @include gluu-btn($normal-btn-bg-color, $normal-btn-color, $normal-btn-hover-color, $normal-btn-disabled-bg-color, $normal-btn-disabled-color);
+      padding: 5px 12px;
+      text-align: center;
+      cursor: pointer;
+    }
+  }
+}

@@ -1,0 +1,501 @@
+//Colors
+$white: #FFFFFF;
+$main-color: #00B372;
+$base-color:#00B372;
+$secondary-color: #FFC23D;
+$support-color:  #02B6F9;
+
+$main-text-color: #181F1C;
+$font-color-base: #181F1C;
+$secondary-text-color: #787E7B;
+$text-placeholder-color: #89918D;
+$icon-color: #878e94;
+$svg-color: #bec1c3;
+
+// Button Color
+$normal-btn-bg-color: $main-color;
+$normal-btn-color: $white;
+$normal-btn-disabled-bg-color: #F4F4F4;
+$normal-btn-disabled-color: #B1B8B5;
+$normal-btn-hover-color: $white;
+
+$outline-btn-bg-color: $white;
+$outline-btn-color: #787E7B;
+$outline-btn-disabled-bg-color: $white;
+$outline-btn-disabled-color: #BBC0BD;
+$outline-btn-hover-color: $base-color;
+$outline-btn-border-color: #E6EBE9;
+
+$error-color: #FE4242;
+$success-color: #1DCE18;
+$alert-color: #0FD80C;
+
+$background-color: #F3F5F7;
+
+
+//Fonts
+$font-family-base: "LatoWeb";
+$font-family-lato-bold: "LatoWebBold";
+$font-family-lato-Medium: "LatoWebMedium";
+$font-family-lato-semi-bold: "LatoWebSemibold";
+
+
+// Mixins
+
+@mixin box-shadow($top, $left, $blur, $color, $inset: false) {
+  @if $inset {
+    -webkit-box-shadow:inset $top $left $blur $color;
+    -moz-box-shadow:inset $top $left $blur $color;
+    box-shadow:inset $top $left $blur $color;
+  } @else {
+    -webkit-box-shadow: $top $left $blur $color;
+    -moz-box-shadow: $top $left $blur $color;
+    box-shadow: $top $left $blur $color;
+  }
+}
+
+@mixin box-shadow-none {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+@mixin border-radius($radius: 0.5em) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  border-radius: $radius;
+}
+
+@mixin transition($second: 0.5s) {
+  -webkit-transition: $second;
+  transition: $second;
+}
+
+@mixin gluu-btn($bg-color, $color, $hover-color, $disabled-bg-color, $disabled-color) {
+  background-color: $bg-color;
+  color: $color;
+  font-family: $font-family-base;
+  font-size: 16px;
+  padding: 10px 12px;
+  box-shadow: none;
+
+  @include border-radius(3px);
+  
+  &:hover, &.hover {
+    background-color: darken($bg-color, 5%);
+    color: $hover-color;
+    transition: all 0.3s ease;
+  }
+
+  &:active, &.active {
+    background-color:darken($bg-color, 8%) !important;
+    color: $hover-color !important;
+  }
+
+  &:disabled, &.disabled {
+    background-color: $disabled-bg-color;
+    color: $disabled-color;
+  }
+}
+
+%gluu-normal-no-hover-btn {
+  background-color: $base-color;
+  color: white;
+  font-family: $font-family-lato-Medium;
+  font-size: 14px;
+  border: none;
+  padding: 10px 12px;
+
+  @include border-radius(3px);
+}
+
+%gluu-outline-no-hover-btn {
+  background-color: #f1f5f9;
+  color: #434947;
+  font-family: $font-family-lato-Medium;
+  font-size: 14px;
+  border: 1px solid #E0E5E5;
+  padding: 10px 12px;
+
+  @include border-radius(3px);
+  @include box-shadow(0px, 1px, 2px, rgba(241,244,246,1));
+}
+
+%gluu-icon-btn {
+  background-color: white;
+  border: 1px solid #EAEFF0;
+
+  @include border-radius(3px);
+  svg {
+    color: $base-color
+  }
+}
+
+@mixin gluu-text($text-size, $text-color: $main-text-color, $text-font: $font-family-base, $hover: false){
+  color: $text-color;
+  font-size: $text-size;
+  font-family: $text-font;
+
+  @if ($hover)
+  {
+    &:hover {
+      color: $base-color;
+    }
+  }
+}
+
+@mixin gluu-badge($bg-color, $fg-color) {
+  @include border-radius(2px);
+  padding: 3px 10px;
+  border: none;
+  font-size: 13px;
+  font-family: "LatoWebMedium";
+  color: $fg-color;
+  background-color: $bg-color;
+}
+
+@mixin gluu-tag($bg-color: $base-color, $fg-color: white) {
+  background-color: $bg-color;
+  color: $fg-color;
+  .multiselect__tag-icon {
+    box-shadow: none;
+    outline: none;
+    &.focus, &:focus, &.hover, &:hover {
+      background: transparent;
+    }
+
+    &:after {
+      color: $fg-color;
+      font-size: 19px;
+    }
+  }
+}
+
+%input-select {
+  color: $font-color-base;
+  border: 1px solid #EEF1F2;
+  border-radius: 3px;
+  padding: 9px 14px;
+  @include box-shadow-none();
+}
+
+.dark-14-regular{
+  color: #181F1C;
+  font-family: "LatoWeb";
+  font-size: 14px;
+}
+.dark-14-semi{
+  color: #181F1C;
+  font-family: "LatoWebSemibold";
+  font-size: 14px;
+}
+.dark-14-medium{
+  color: #181F1C;
+  font-family: "LatoWebMedium";
+  font-size: 14px;
+}
+.dark-16-regular{
+  color: #181F1C;
+  font-family: "LatoWeb";
+  font-size: 16px;
+}
+.dark-16-semi{
+  color: #181F1C;
+  font-family: "LatoWebSemibold";
+  font-size: 16px;
+}
+.dark-16-medium{
+  color: #181F1C;
+  font-family: "LatoWebMedium";
+  font-size: 16px;
+}
+.dark-18-regular{
+  color: #181F1C;
+  font-family: "LatoWeb";
+  font-size: 18px;
+}
+.dark-18-semi{
+  color: #181F1C;
+  font-family: "LatoWebSemibold";
+  font-size: 18px;
+}
+.dark-18-medium{
+  color: #181F1C;
+  font-family: "LatoWebMedium";
+  font-size: 18px;
+}
+.dark-20-regular{
+  color: #181F1C;
+  font-family: "LatoWeb";
+  font-size: 20px;
+}
+.dark-20-semi{
+  color: #181F1C;
+  font-family: "LatoWebSemibold";
+  font-size: 20px;
+}
+.dark-20-medium{
+  color: #181F1C;
+  font-family: "LatoWebMedium";
+  font-size: 20px;
+}
+.dark-22-regular{
+  color: #181F1C;
+  font-family: "LatoWeb";
+  font-size: 22px;
+}
+.dark-22-semi{
+  color: #181F1C;
+  font-family: "LatoWebSemibold";
+  font-size: 22px;
+}
+.dark-22-medium{
+  color: #181F1C;
+  font-family: "LatoWebMedium";
+  font-size: 22px;
+}
+.dark-24-regular{
+  color: #181F1C;
+  font-family: "LatoWeb";
+  font-size: 24px;
+}
+.dark-24-semi{
+  color: #181F1C;
+  font-family: "LatoWebSemibold";
+  font-size: 24px;
+}
+.dark-24-medium{
+  color: #181F1C;
+  font-family: "LatoWebMedium";
+  font-size: 24px;
+}
+
+.dark-30-regular{
+  color: #181F1C;
+  font-family: "LatoWeb";
+  font-size: 30px;
+}
+.dark-30-semi{
+  color: #181F1C;
+  font-family: "LatoWebSemibold";
+  font-size: 30px;
+}
+.dark-30-medium{
+  color: #181F1C;
+  font-family: "LatoWebMedium";
+  font-size: 30px;
+}
+
+.dark-36-regular{
+  color: #181F1C;
+  font-family: "LatoWeb";
+  font-size: 36px;
+}
+.dark-36-semi{
+  color: #181F1C;
+  font-family: "LatoWebSemibold";
+  font-size: 36px;
+}
+.dark-36-medium{
+  color: #181F1C;
+  font-family: "LatoWebMedium";
+  font-size: 36px;
+}
+
+.semi-dark-12-regular{
+  color: #434947;
+  font-family: "LatoWeb";
+  font-size: 12px;
+}
+.semi-dark-12-semi{
+  color: #434947;
+  font-family: "LatoWebSemibold";
+  font-size: 12px;
+}
+.semi-dark-12-medium{
+  color: #434947;
+  font-family: "LatoWebMedium";
+  font-size: 12px;
+}
+.semi-dark-14-regular{
+  color: #434947;
+  font-family: "LatoWeb";
+  font-size: 14px;
+}
+.semi-dark-14-semi{
+  color: #434947;
+  font-family: "LatoWebSemibold";
+  font-size: 14px;
+}
+.semi-dark-14-medium{
+  color: #434947;
+  font-family: "LatoWebMedium";
+  font-size: 14px;
+}
+.semi-dark-15-regular{
+  color: #434947;
+  font-family: "LatoWeb";
+  font-size: 15px;
+}
+.semi-dark-15-semi{
+  color: #434947;
+  font-family: "LatoWebSemibold";
+  font-size: 15px;
+}
+.semi-dark-15-medium{
+  color: #434947;
+  font-family: "LatoWebMedium";
+  font-size: 15px;
+}
+.semi-dark-16-regular{
+  color: #434947;
+  font-family: "LatoWeb";
+  font-size: 16px;
+}
+.semi-dark-16-semi{
+  color: #434947;
+  font-family: "LatoWebSemibold";
+  font-size: 16px;
+}
+.semi-dark-16-medium{
+  color: #434947;
+  font-family: "LatoWebMedium";
+  font-size: 16px;
+}
+.semi-dark-18-regular{
+  color: #434947;
+  font-family: "LatoWeb";
+  font-size: 18px;
+}
+.semi-dark-18-semi{
+  color: #434947;
+  font-family: "LatoWebSemibold";
+  font-size: 18px;
+}
+.semi-dark-18-medium{
+  color: #434947;
+  font-family: "LatoWebMedium";
+  font-size: 18px;
+}
+
+.light-12-regular{
+  color: #777D7B;
+  font-family: "LatoWeb";
+  font-size: 12px;
+}
+.light-12-semi{
+  color: #777D7B;
+  font-family: "LatoWebSemibold";
+  font-size: 12px;
+}
+.light-12-medium{
+  color: #777D7B;
+  font-family: "LatoWebMedium";
+  font-size: 12px;
+}
+.light-14-regular{
+  color: #777D7B;
+  font-family: "LatoWeb";
+  font-size: 14px;
+}
+.light-14-semi{
+  color: #777D7B;
+  font-family: "LatoWebSemibold";
+  font-size: 14px;
+}
+.light-14-medium{
+  color: #777D7B;
+  font-family: "LatoWebMedium";
+  font-size: 14px;
+}
+.light-15-regular{
+  color: #777D7B;
+  font-family: "LatoWeb";
+  font-size: 15px;
+}
+.light-15-semi{
+  color: #777D7B;
+  font-family: "LatoWebSemibold";
+  font-size: 15px;
+}
+.light-15-medium{
+  color: #777D7B;
+  font-family: "LatoWebMedium";
+  font-size: 15px;
+}
+.light-16-regular{
+  color: #777D7B;
+  font-family: "LatoWeb";
+  font-size: 16px;
+}
+.light-16-semi{
+  color: #777D7B;
+  font-family: "LatoWebSemibold";
+  font-size: 16px;
+}
+.light-16-medium{
+  color: #777D7B;
+  font-family: "LatoWebMedium";
+  font-size: 16px;
+}
+
+.base-12-regular{
+  color: #00B372;
+  font-family: "LatoWeb";
+  font-size: 12px;
+}
+.base-12-semi{
+  color: #00B372;
+  font-family: "LatoWebSemibold";
+  font-size: 12px;
+}
+.base-12-medium{
+  color: #00B372;
+  font-family: "LatoWebMedium";
+  font-size: 12px;
+}
+.base-14-regular{
+  color: #00B372;
+  font-family: "LatoWeb";
+  font-size: 14px;
+}
+.base-14-semi{
+  color: #00B372;
+  font-family: "LatoWebSemibold";
+  font-size: 14px;
+}
+.base-14-medium{
+  color: #00B372;
+  font-family: "LatoWebMedium";
+  font-size: 14px;
+}
+.base-15-regular{
+  color: #00B372;
+  font-family: "LatoWeb";
+  font-size: 15px;
+}
+.base-15-semi{
+  color: #00B372;
+  font-family: "LatoWebSemibold";
+  font-size: 15px;
+}
+.base-15-medium{
+  color: #00B372;
+  font-family: "LatoWebMedium";
+  font-size: 15px;
+}
+.base-16-regular{
+  color: #00B372;
+  font-family: "LatoWeb";
+  font-size: 16px;
+}
+.base-16-semi{
+  color: #00B372;
+  font-family: "LatoWebSemibold";
+  font-size: 16px;
+}
+.base-16-medium{
+  color: About Gluu;
+  font-family: "LatoWebMedium";
+  font-size: 16px;
+}

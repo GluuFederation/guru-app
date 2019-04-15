@@ -1,0 +1,71 @@
+@import "@/assets/scss/global.scss";
+
+.badge-status {
+  &.new {
+    @include gluu-badge(rgba(31, 191, 221, 0.15), #1FBFDD);
+  }
+  &.in-progress {
+    @include gluu-badge(rgba(65, 204, 34, 0.15), #41CC22);
+  }
+  &.assigned {
+    @include gluu-badge(rgba(0,0,0,0.15), #4A4A4A);
+  }
+  &.pending{
+    @include gluu-badge(rgba(255, 188, 22, 0.15), #FFBC16);
+  }
+  &.close{
+    @include gluu-badge(rgba(255, 89, 28, 0.15), #FF591C);
+  }
+}
+
+
+.badge-issue-type {
+  &.production-outage {
+    @include gluu-badge(rgba(0,0,0,0.15), #4A4A4A);
+  }
+  &.production-impaired {
+    @include gluu-badge(rgba(120, 110, 255, 0.15), #786EFF);
+  }
+  &.pre-production {
+    
+    @include gluu-badge(rgba(183, 54, 255, 0.15), #B736FF);
+  }
+  &.minor{
+    @include gluu-badge(rgba(65, 204, 34, 0.15), #41CC22);
+  }
+  &.new-development{
+    @include gluu-badge(rgba(255, 89, 28, 0.15), #FF591C);
+  }
+}
+
+.badge-category {
+  @include gluu-badge(rgba(0,0,0,0.15), #4A4A4A);
+}
+
+.lightblue{
+  @include gluu-badge(rgba(31, 191, 221, 0.15), #1FBFDD);
+}
+
+.purple{
+  @include gluu-badge(rgba(183, 54, 255, 0.15), #B736FF);
+}
+
+.grey{
+  @include gluu-badge(rgba(0,0,0,0.15), #4A4A4A);
+}
+
+.blue{
+  @include gluu-badge(rgba(120, 110, 255, 0.15), #786EFF);
+}
+
+.green{
+  @include gluu-badge(rgba(65, 204, 34, 0.15), #41CC22);
+}
+
+.yellow{
+  @include gluu-badge(rgba(255, 188, 22, 0.15), #FFBC16);
+}
+
+.red{
+  @include gluu-badge(rgba(255, 89, 28, 0.15), #FF591C);
+}

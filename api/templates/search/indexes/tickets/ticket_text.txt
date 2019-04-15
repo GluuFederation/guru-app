@@ -1,0 +1,5 @@
+{{ object.title }}
+{{ object.body }}
+{% for answer in object.answers.all %}
+	{{ answer.body }}
+{% endfor %}

@@ -1,0 +1,75 @@
+@import "@/assets/scss/global.scss";
+.preview-card {
+  .card-gluu {
+    @include box-shadow(0, 15px, 30px, rgba(215,220,225,1));
+
+    .card-body {
+      display: flex;
+      padding: 0;
+
+      .card-left-side-gluu {
+        padding: 17px 30px;
+        border-right: 1px solid #EFF2F4;
+
+        img {
+          width: 54px;
+        }
+
+        .card-left-side-info-name-gluu {
+          @include gluu-text(13px, $font-color-base, $font-family-lato-semi-bold);
+        }
+
+        .card-left-side-info-company-gluu {
+          @include gluu-text(12px, #787E7B, $font-family-base);
+        }
+
+        .card-left-side-info-type-gluu{
+          @include gluu-text(12px, $font-color-base, $font-family-base);
+        }
+      }
+
+      .card-right-side-gluu {
+        padding: 27px 20px;
+        flex: 1;
+
+        .card-right-side-badge-container {
+          span{
+            margin: 0 0.25em;
+          }
+        }
+
+        .card-right-side-issue-title-gluu {
+          margin-top: 17px;
+          margin-bottom: 12px;
+          a {
+            @include gluu-text(18px, $main-text-color, $font-family-lato-Medium, true);
+          }
+        }
+
+        .card-right-side-issue-details-gluu {
+
+          .card-right-side-issue-details-number-gluu{
+            @include gluu-text(14px, $base-color, $font-family-lato-Medium);
+          }
+
+          .card-right-side-issue-details-time-gluu,
+          .card-right-side-issue-details-date-gluu{
+            @include gluu-text(12px, $font-color-base, $font-family-base);
+          }
+        }
+
+        .card-right-right-side-gluu{
+          label{
+            display: flex;
+            margin-bottom: 16px;
+            @include gluu-text(14px, $font-family-base, $font-color-base);
+
+            img{
+              margin: 0 0.5em;
+            }
+          }
+        }
+      }
+    }
+  }
+}

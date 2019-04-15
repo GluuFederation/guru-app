@@ -1,0 +1,92 @@
+[
+    {
+        "model": "info.Permission",
+        "pk": 1,
+        "fields": {
+            "app_name": "billing",
+            "model_name": "Billing",
+            "actions": ["retrieve", "list"],
+            "description": "View billing information"
+        }
+    },
+    {
+        "model": "info.Permission",
+        "pk": 2,
+        "fields": {
+            "app_name": "billing",
+            "model_name": "Billing",
+            "actions": ["update"],
+            "description": "Change billing information"
+        }
+    },
+    {
+        "model": "info.Permission",
+        "pk": 3,
+        "fields": {
+            "app_name": "tickets",
+            "model_name": "Ticket",
+            "actions": ["assign"],
+            "description": "Assign tickets"
+        }
+    },
+    {
+        "model": "info.Permission",
+        "pk": 4,
+        "fields": {
+            "app_name": "tickets",
+            "model_name": "Ticket",
+            "actions": ["retrieve", "list"],
+            "description": "View tickets"
+        }
+    },
+    {
+        "model": "info.Permission",
+        "pk": 5,
+        "fields": {
+            "app_name": "tickets",
+            "model_name": "Ticket",
+            "actions": ["create", "update", "destroy"],
+            "description": "Create tickets"
+        }
+    },
+    {
+        "model": "info.Permission",
+        "pk": 6,
+        "fields": {
+            "app_name": "tickets",
+            "model_name": "Answer",
+            "actions": ["create", "update", "destroy"], 
+            "description": "Respond to tickets"
+        }
+    },
+    {
+        "model": "info.Permission",
+        "pk": 7,
+        "fields": {
+            "app_name": "profiles",
+            "model_name": "Company",
+            "actions": ["change_role"],
+            "description": "Change member roles"
+        }
+    },
+    {
+        "model": "info.Permission",
+        "pk": 8,
+        "fields": {
+            "app_name": "profiles",
+            "model_name": "Company",
+            "actions": ["invite", "remove_member", "revoke_invite"],
+            "description": "Add and remove members"
+        }
+    },
+    {
+        "model": "info.Permission",
+        "pk": 9,
+        "fields": {
+            "app_name": "profiles",
+            "model_name": "Company",
+            "actions": ["update"],
+            "description": "Update Company Profile"
+        }
+    }
+]

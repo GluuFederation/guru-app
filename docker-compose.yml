@@ -1,0 +1,87 @@
+version: "3.2"
+
+services:
+  db:
+    image: postgres:alpine
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD_FILE=/run/secrets/postgres-password
+      - POSTGRES_USER_FILE=/run/secrets/postgres-user
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    secrets:
+      - postgres-password
+      - postgres-user
+  rabbitmq:
+    image: rabbitmq:alpine
+    restart: always
+  guru-vue:
+    image: guru-vue
+    command: /bin/sh -c 'npm run serve'
+    volumes:
+      - ./guru-vue/src:/app/src
+      - ./guru-vue/package.json:/app/package.json
+      - ./guru-vue/public:/app/public
+    ports:
+      - "8080:8080"
+  users-vue:
+    image: guru-vue
+    command: /bin/sh -c 'npm run serve'
+    volumes:
+      - ./users-vue/src:/app/src
+      - ./users-vue/package.json:/app/package.json
+      - ./users-vue/public:/app/public
+    ports:
+      - "8081:8080"
+  api:
+    image: guru-api
+    restart: always
+    command: /bin/sh -c 'python manage.py runserver 0.0.0.0:8000'
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data/api-media:/app/media
+      - ./api:/app
+    environment:
+      - DEPLOYMENT_ENVIRONMENT=docker
+    secrets:
+      - api-secrets
+    depends_on: 
+      - db
+      - rabbitmq
+  celery-high:
+    image: guru-api
+    restart: always
+    command: /bin/sh -c 'celery worker -A guru -n worker.high -Q high -l DEBUG'
+    environment:
+      - DEPLOYMENT_ENVIRONMENT=docker
+    volumes:
+      - ./api:/app
+    secrets:
+      - api-secrets
+    depends_on: 
+      - db
+      - rabbitmq
+  celery-beat:
+    image: guru-api
+    restart: always
+    command: /bin/sh -c 'celery -A guru beat -l INFO'
+    environment:
+      - DEPLOYMENT_ENVIRONMENT=docker
+    volumes:
+      - ./api:/app
+    secrets:
+      - api-secrets
+    depends_on: 
+      - db
+      - rabbitmq
+
+secrets:
+  api-secrets:
+    file: ./secrets/api.env
+  postgres-password:
+    file: ./secrets/postgres-password.env
+  postgres-user:
+    file: ./secrets/postgres-user.env

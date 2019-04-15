@@ -1,0 +1,8 @@
+db.sqlite3
+.vscode/
+__pycache__/
+*.pyc
+.env
+celerybeat-schedule
+whoosh_index/
+media/

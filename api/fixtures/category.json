@@ -1,0 +1,106 @@
+[
+    {
+        "model": "info.TicketCategory",
+        "pk": 1,
+        "fields": {
+            "name": "Installation",
+            "slug": "installation"
+        }
+    },
+    {
+        "model": "info.TicketCategory",
+        "pk": 2,
+        "fields": {
+            "name": "Outages",
+            "slug": "outages"
+        }
+    },
+    {
+        "model": "info.TicketCategory",
+        "pk": 3,
+        "fields": {
+            "name": "Authentication",
+            "slug": "authentication"
+        }
+    },
+    {
+        "model": "info.TicketCategory",
+        "pk": 4,
+        "fields": {
+            "name": "Authorization",
+            "slug": "authorization"
+        }
+    },
+    {
+        "model": "info.TicketCategory",
+        "pk": 5,
+        "fields": {
+            "name": "Single Sign-On",
+            "slug": "sso"
+        }
+    },
+    {
+        "model": "info.TicketCategory",
+        "pk": 6,
+        "fields": {
+            "name": "Logout",
+            "slug": "logout"
+        }
+    },
+    {
+        "model": "info.TicketCategory",
+        "pk": 7,
+        "fields": {
+            "name": "Access Management",
+            "slug": "access-management"
+        }
+    },
+    {
+        "model": "info.TicketCategory",
+        "pk": 8,
+        "fields": {
+            "name": "Identity Management",
+            "slug": "identity-management"
+        }
+    },
+    {
+        "model": "info.TicketCategory",
+        "pk": 9,
+        "fields": {
+            "name": "Upgrade",
+            "slug": "upgrade"
+        }
+    },
+    {
+        "model": "info.TicketCategory",
+        "pk": 10,
+        "fields": {
+            "name": "Maintenance",
+            "slug": "maintenance"
+        }
+    },
+    {
+        "model": "info.TicketCategory",
+        "pk": 11,
+        "fields": {
+            "name": "Customization",
+            "slug": "customization"
+        }
+    },
+    {
+        "model": "info.TicketCategory",
+        "pk": 12,
+        "fields": {
+            "name": "Feature Request",
+            "slug": "feature-request"
+        }
+    },
+    {
+        "model": "info.TicketCategory",
+        "pk": 13,
+        "fields": {
+            "name": "Other",
+            "slug": "other"
+        }
+    }
+]

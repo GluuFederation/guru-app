@@ -1,0 +1,47 @@
+[
+    {
+        "model": "info.UserRole",
+        "pk": 1,
+        "fields": {
+            "name": "staff",
+            "is_company_associated": false,
+            "permissions": [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        }
+    },
+    {
+        "model": "info.UserRole",
+        "pk": 2,
+        "fields": {
+            "name": "admin",
+            "is_company_associated": true,
+            "permissions": [1, 2, 4, 5, 6, 7, 8, 9]
+        }
+    },
+    {
+        "model": "info.UserRole",
+        "pk": 3,
+        "fields": {
+            "name": "named",
+            "is_company_associated": true,
+            "permissions": [4, 5, 6]
+        }
+    },
+    {
+        "model": "info.UserRole",
+        "pk": 4,
+        "fields": {
+            "name": "user",
+            "is_company_associated": true,
+            "permissions": [4]
+        }
+    },
+    {
+        "model": "info.UserRole",
+        "pk": 5,
+        "fields": {
+            "name": "community",
+            "is_company_associated": false,
+            "permissions": []
+        }
+    }
+]

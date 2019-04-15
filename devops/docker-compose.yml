@@ -1,0 +1,76 @@
+version: "3.2"
+
+services:
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+  db:
+    image: postgres:alpine
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD_FILE=/run/secrets/postgres-password
+      - POSTGRES_USER_FILE=/run/secrets/postgres-user
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    secrets:
+      - postgres-password
+      - postgres-user
+  rabbitmq:
+    image: rabbitmq:alpine
+    restart: always
+  nginx:
+    image: gluuorg/guru-nginx-dev
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+      - ./data/api-media:/app/api-media
+    command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
+  api:
+    image: gluuorg/guru-api
+    restart: always
+    command: /bin/sh -c 'python manage.py migrate --no-input && gunicorn guru.wsgi:application -c gunicorn.py.ini'
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data/api-media:/app/media
+    environment:
+      - DEPLOYMENT_ENVIRONMENT=docker
+    secrets:
+      - api-secrets
+  celery-high:
+    image: gluuorg/guru-api
+    restart: always
+    command: /bin/sh -c 'celery worker -A guru -n worker.high -Q high -l DEBUG'
+    environment:
+      - DEPLOYMENT_ENVIRONMENT=docker
+    volumes:
+      - ./backend:/app
+    secrets:
+      - api-secrets
+  celery-beat:
+    image: gluuorg/guru-api
+    restart: always
+    command: /bin/sh -c 'celery -A guru beat -l INFO'
+    environment:
+      - DEPLOYMENT_ENVIRONMENT=docker
+    volumes:
+      - ./backend:/app
+    secrets:
+      - api-secrets
+
+secrets:
+  api-secrets:
+    file: ./secrets/api.env
+  postgres-password:
+    file: ./secrets/postgres-password.env
+  postgres-user:
+    file: ./secrets/postgres-user.env
