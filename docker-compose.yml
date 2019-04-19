@@ -27,7 +27,7 @@ services:
     ports:
       - "8080:8080"
   users-vue:
-    image: guru-vue
+    image: users-vue
     command: /bin/sh -c 'npm run serve'
     volumes:
       - ./users-vue/src:/app/src
@@ -48,7 +48,7 @@ services:
       - DEPLOYMENT_ENVIRONMENT=docker
     secrets:
       - api-secrets
-    depends_on: 
+    depends_on:
       - db
       - rabbitmq
   celery-high:
@@ -61,7 +61,7 @@ services:
       - ./api:/app
     secrets:
       - api-secrets
-    depends_on: 
+    depends_on:
       - db
       - rabbitmq
   celery-beat:
@@ -74,7 +74,7 @@ services:
       - ./api:/app
     secrets:
       - api-secrets
-    depends_on: 
+    depends_on:
       - db
       - rabbitmq
 

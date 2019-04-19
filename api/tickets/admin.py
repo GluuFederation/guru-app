@@ -22,7 +22,7 @@ class TicketsHistoryInlineAdmin(admin.StackedInline):
 class AnswerInlineAdmin(admin.StackedInline):
     model = Answer
     extra = 0
-    list_display = ('created_by', 'created_at', 'is_deleted')
+    list_display = ('created_by', 'created_on', 'is_deleted')
 
     fieldsets = (
         (_('Base'), {'fields': (

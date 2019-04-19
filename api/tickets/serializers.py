@@ -60,7 +60,7 @@ class TicketSerializer(serializers.ModelSerializer):
     products = TicketProductSerializer(
         source='ticketproduct_set', many=True, required=False
     )
-    created_at = serializers.DateTimeField(
+    created_on = serializers.DateTimeField(
         format='%d %a %Y at %I:%M %p GMT', read_only=True
     )
 
@@ -70,8 +70,8 @@ class TicketSerializer(serializers.ModelSerializer):
             'id', 'slug', 'title', 'body', 'created_by', 'created_for',
             'updated_by', 'assignee', 'category', 'status', 'issue_type',
             'gluu_server', 'os', 'os_version', 'response_no', 'products',
-            'voters', 'subscribers', 'company_association', 'created_at',
-            'updated_at'
+            'voters', 'subscribers', 'company_association', 'created_on',
+            'updated_on'
         ]
         extra_kwargs = {
             'slug': {'required': False},
@@ -188,14 +188,14 @@ class TicketHistorySerializer(serializers.ModelSerializer):
 
 class AnswerSerializer(serializers.ModelSerializer):
     created_by = ShortUserSerializer(read_only=True)
-    created_at = serializers.DateTimeField(
+    created_on = serializers.DateTimeField(
         format='%d %a %Y at %I:%M %p GMT', read_only=True
     )
 
     class Meta:
         model = m.Answer
         fields = [
-            'id', 'body', 'ticket', 'created_by', 'created_at'
+            'id', 'body', 'ticket', 'created_by', 'created_on'
         ]
         extra_kwargs = {
             'ticket': {'required': False},
