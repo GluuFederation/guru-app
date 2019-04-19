@@ -17,4 +17,4 @@ if [ -z $VERSION ]; then
 else
   docker tag $IMAGE_NAME $IMAGE_NAME:$VERSION
 fi
-docker run -ti --env-file $BASEDIR/secrets/api-test.env $IMAGE_NAME:$VERSION python manage.py test
+# docker run -ti --env-file $BASEDIR/secrets/api-test.env $IMAGE_NAME:$VERSION python manage.py test

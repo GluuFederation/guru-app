@@ -14,25 +14,18 @@ services:
     secrets:
       - postgres-password
       - postgres-user
-  rabbitmq:
-    image: rabbitmq:alpine
-    restart: always
   guru-vue:
     image: guru-vue
     command: /bin/sh -c 'npm run serve'
     volumes:
-      - ./guru-vue/src:/app/src
-      - ./guru-vue/package.json:/app/package.json
-      - ./guru-vue/public:/app/public
+      - ./guru-vue/app
     ports:
       - "8080:8080"
   users-vue:
     image: users-vue
     command: /bin/sh -c 'npm run serve'
     volumes:
-      - ./users-vue/src:/app/src
-      - ./users-vue/package.json:/app/package.json
-      - ./users-vue/public:/app/public
+      - ./users-vue:/app
     ports:
       - "8081:8080"
   api:
@@ -44,39 +37,13 @@ services:
     volumes:
       - ./data/api-media:/app/media
       - ./api:/app
+      - ./api/env/:/usr/local/
     environment:
       - DEPLOYMENT_ENVIRONMENT=docker
     secrets:
       - api-secrets
     depends_on:
       - db
-      - rabbitmq
-  celery-high:
-    image: guru-api
-    restart: always
-    command: /bin/sh -c 'celery worker -A guru -n worker.high -Q high -l DEBUG'
-    environment:
-      - DEPLOYMENT_ENVIRONMENT=docker
-    volumes:
-      - ./api:/app
-    secrets:
-      - api-secrets
-    depends_on:
-      - db
-      - rabbitmq
-  celery-beat:
-    image: guru-api
-    restart: always
-    command: /bin/sh -c 'celery -A guru beat -l INFO'
-    environment:
-      - DEPLOYMENT_ENVIRONMENT=docker
-    volumes:
-      - ./api:/app
-    secrets:
-      - api-secrets
-    depends_on:
-      - db
-      - rabbitmq
 
 secrets:
   api-secrets:
