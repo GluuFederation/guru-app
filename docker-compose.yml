@@ -18,14 +18,18 @@ services:
     image: guru-vue
     command: /bin/sh -c 'npm run serve'
     volumes:
-      - ./guru-vue/app
+      - ./guru-vue/src:/app/src
+      - ./guru-vue/package.json:/app/package.json
+      - ./guru-vue/public:/app/public
     ports:
       - "8080:8080"
   users-vue:
     image: users-vue
     command: /bin/sh -c 'npm run serve'
     volumes:
-      - ./users-vue:/app
+      - ./users-vue/src:/app/src
+      - ./users-vue/package.json:/app/package.json
+      - ./users-vue/public:/app/public
     ports:
       - "8081:8080"
   api:
@@ -37,7 +41,6 @@ services:
     volumes:
       - ./data/api-media:/app/media
       - ./api:/app
-      - ./api/env/:/usr/local/
     environment:
       - DEPLOYMENT_ENVIRONMENT=docker
     secrets:

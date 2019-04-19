@@ -15,6 +15,6 @@ touch ~/.ssh/authorized_keys
 chmod 600 ~/.ssh/authorized_keys
 
 
-mkdir -p /home/${APP_USER}/app/secrets
+mkdir -p /home/${APP_USER}/app/secrets /home/${APP_USER}/logs
 touch /home/${APP_USER}/app/secrets/postgres.env
 touch /home/${APP_USER}/app/secrets/api.env

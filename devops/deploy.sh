@@ -4,6 +4,7 @@ set -e
 
 APP_USER=gluu
 DEPLOY_DIR=/home/${APP_USER}/app
+LOG_DIR=/home/${APP_USER}/logs
 
 # Make sure user is app user
 if [ "$(whoami)" != "$APP_USER" ]; then
@@ -15,6 +16,11 @@ echo "Changing directory to ${DEPLOY_DIR}"
 cd ${DEPLOY_DIR}
 echo "Currently in $(pwd)"
 echo
+
+$DATE_STRING=$(date +%F)
+echo "Saving logs for $DATE_STRING"
+docker-compose logs >> ${LOG_DIR}/${DATE_STRING}.log
+echo "Saved logs"
 
 echo "Bringing Docker Compose down"
 docker-compose down

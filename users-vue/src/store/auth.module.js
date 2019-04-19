@@ -90,7 +90,7 @@ const actions = {
   [CHECK_AUTH] (context) {
     if (JwtService.getToken()) {
       ApiService.setHeader()
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         ApiService
           .get('users/me')
           .then(({data}) => {
@@ -150,7 +150,7 @@ const actions = {
     })
   },
   [RESEND_EMAIL] (context, email) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       ApiService
         .post(`users/send-verification/`, { 'email': email })
         .then(({data}) => {
@@ -165,7 +165,7 @@ const actions = {
     })
   },
   [GET_LOGIN_URL] (context) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       ApiService
         .get(`users/get-authorization-url`)
         .then(({data}) => {
@@ -196,7 +196,7 @@ const actions = {
     })
   },
   [LOGOUT] (context) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       ApiService
         .get('users/logout')
         .then(({data}) => {
@@ -209,7 +209,7 @@ const actions = {
         })
     })
   },
-  [GET_SIGNUP_CALLBACK_URL] (context) {
+  [GET_SIGNUP_CALLBACK_URL] () {
     return ApiService.get('get-signup-callback-url')
   }
 }
@@ -226,7 +226,7 @@ const mutations = {
       JwtService.saveToken(result.token)
     }
   },
-  [PURGE_AUTH] (state, logoutUrl) {
+  [PURGE_AUTH] (state) {
     state.isAuthenticated = false
     state.user = {}
     state.errors = {}

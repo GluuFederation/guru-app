@@ -2,12 +2,18 @@
 Gluu Support app
 
 # Running locally
+- This app assumes the installation of `pipenv` and `npm`.
 - Create a `./secrets/` folder with four files: `./secrets/api.env`, `./secrets/postgres-user.env`, `./secrets/postgres-password.env` and `./secrets/api-test.env`.
 - Enter a complex password into `./secrets/postgres-password.env` and a postgres user into `./secrets/postgres-user.env`.
 - Copy the api environment variables in `./secrets/api.env` and the api test environment variables into `./secrets/api-test.env` making sure the postgres user, db name and password natch the ones in the files from the previous step.
 - Initialize the enironments:
 ```s
-$ ./init.sh
+$ cd [base directory]/api
+$ pipenv install
+$ cd [base directory]/guru-vue
+$ npm install
+$ cd [base directory]/users-vue
+$ npm install
 ```
 - Start the local environment servers:
 ```s

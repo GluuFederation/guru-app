@@ -1,0 +1,33 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+pylint-django = "*"
+djangorestframework = "*"
+djangorestframework-camel-case = "*"
+"flake8" = "*"
+pyjwt = "*"
+django-environ = "*"
+"psycopg2" = "*"
+markdown = "*"
+"beautifulsoup4" = "*"
+django-fieldsignals = "*"
+drf-nested-routers = "*"
+twilio = "*"
+django-phonenumber-field = "*"
+phonenumbers = "*"
+drf-haystack = "*"
+whoosh = "*"
+django-cors-headers = "*"
+django-countries = "*"
+django-localflavor = "*"
+pep8 = "*"
+django-q = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.7"

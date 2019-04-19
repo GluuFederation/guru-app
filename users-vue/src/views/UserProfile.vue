@@ -55,7 +55,7 @@ export default {
   name: 'UserProfile',
   components: {
     ProfileInfoItem,
-    UpdateModal
+    // UpdateModal
   },
   data () {
     return {

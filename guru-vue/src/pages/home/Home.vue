@@ -43,7 +43,6 @@ export default {
     GluuSvg
   },
   data () {
-    console.log(process.env.VUE_APP_API_URL);
     return {
       tiles: [
         { iconName: 'installation', text: 'Installation' },
