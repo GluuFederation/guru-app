@@ -10,8 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
-import environ
 import os
+import environ
 
 
 root = environ.Path(__file__) - 2
@@ -35,7 +35,7 @@ if HTTPS:
 else:
     PROTOCOL = 'http'
 SITE_ID = 1
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 
 
 # Application definition
@@ -191,6 +191,20 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 20,
 }
 
+# Q CLUSTER SETTINGS
+Q_CLUSTER = {
+    'name': 'guru',
+    'workers': 8,
+    'recycle': 500,
+    'timeout': 600,
+    'compress': True,
+    'save_limit': 250,
+    'queue_limit': 500,
+    'cpu_affinity': 1,
+    'label': 'Guru Q-Cluster',
+    'orm': 'default'
+}
+
 CORS_ORIGIN_WHITELIST = env.list('CORS_ORIGIN_WHITELIST', [])
 
 if DEBUG:
@@ -205,8 +219,7 @@ NOTIFICATIONS_RECIPIENT = env('NOTIFICATIONS_RECIPIENT')
 TWILIO_ACCOUNT_SID = env.str('TWILIO_ACCOUNT_SID', '')
 TWILIO_AUTH_TOKEN = env.str('TWILIO_AUTH_TOKEN', '')
 FRONTEND_URL = env.str('FRONTEND_URL', '')
-GLUU_USER_APP_FRONTEND = env.str('GLUU_USER_APP_FRONTEND', '')
-GLUU_USER_APP_BACKEND = env.str('GLUU_USER_APP_BACKEND', '')
+GLUU_USER_APP = env.str('GLUU_USER_APP', '')
 
 HAYSTACK_CONNECTIONS = {
     'default': {
@@ -216,4 +229,3 @@ HAYSTACK_CONNECTIONS = {
 }
 
 HEX_KEY = env.str('HEX_KEY')
-BROKER_URL = env.str('BROKER_URL')

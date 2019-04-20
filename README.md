@@ -1,7 +1,13 @@
 # Guru App
 Gluu Support app
 
-# Running locally
+## Prequisites
+ - Docker
+ - Docker Compose
+ - Python3.7
+ - Pipenv
+
+## Running locally
 - This app assumes the installation of `pipenv` and `npm`.
 - Create a `./secrets/` folder with four files: `./secrets/api.env`, `./secrets/postgres-user.env`, `./secrets/postgres-password.env` and `./secrets/api-test.env`.
 - Enter a complex password into `./secrets/postgres-password.env` and a postgres user into `./secrets/postgres-user.env`.
@@ -19,24 +25,24 @@ $ npm install
 ```s
 $ docker-compose up
 ```
-
+- Other special commands can be found in the app folders.
 
 ## Hosting on Digital Ocean
-- Create a Digital Ocean Ubuntu 18 instance.
+- Create a Digital Ocean CentOS 7 instance.
 - ssh into instance and switch to root user.
 ```s
 $ sudo su -
 ```
 - Create `pre-install.sh` file and copy and paste contents of `devops/pre-install.sh` from this repository into the created file.
 ```s
-$ nano pre-install.sh
+$ vi pre-install.sh
 ```
 - Make `pre-install.sh` executable and run it.
 ```s
 $ chmod a+x pre-install.sh
 $ ./pre-install.sh
 ```
-- Run `$ visudo` still as root and add this line at the end of the file `gluu ALL=(ALL) NOPASSWD: ALL`.
+- Run `visudo` still as root and uncomment the line that says `# %wheel ALL=(ALL) ALL`.
 ```s
 $ visudo
 ```
@@ -92,5 +98,12 @@ $ ./init-letsencrypt.sh
 ```s
 $ cd ~/app
 $ docker-compose up
+```
+- Create Citext extension
+```s
+$ cd ~/app
+$ docker-compose exec db psql -U [db_user] [db_name]
+> CREATE EXTENSION citext;
+> \q
 ```
 - Connect your browser to the url and enjoy!

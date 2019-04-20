@@ -94,6 +94,4 @@ CACHE
 db.sqlite3
 .vscode/
 .env
-celerybeat-schedule
-celerybeat.pid
 whoosh_index/

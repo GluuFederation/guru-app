@@ -12,6 +12,9 @@ curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compos
 
 chmod +x /usr/local/bin/docker-compose
 
-adduser --disabled-password --gecos "" $APP_USER
+# Install nano
+yum install -y nano
+
+adduser $APP_USER
 usermod -aG wheel $APP_USER
 usermod -aG docker $APP_USER

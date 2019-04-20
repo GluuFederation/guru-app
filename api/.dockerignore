@@ -3,6 +3,5 @@ db.sqlite3
 __pycache__/
 *.pyc
 .env
-celerybeat-schedule
 whoosh_index/
 media/

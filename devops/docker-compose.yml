@@ -20,11 +20,8 @@ services:
     secrets:
       - postgres-password
       - postgres-user
-  rabbitmq:
-    image: rabbitmq:alpine
-    restart: always
   nginx:
-    image: gluuorg/guru-nginx-dev
+    image: gluufederation/guru-nginx-dev
     restart: always
     ports:
       - "80:80"
@@ -35,35 +32,29 @@ services:
       - ./data/api-media:/app/api-media
     command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
   api:
-    image: gluuorg/guru-api
+    image: gluufederation/guru-api
     restart: always
     command: /bin/sh -c 'python manage.py migrate --no-input && gunicorn guru.wsgi:application -c gunicorn.py.ini'
     ports:
       - "5000:5000"
+    depends_on:
+      - db
     volumes:
       - ./data/api-media:/app/media
     environment:
       - DEPLOYMENT_ENVIRONMENT=docker
     secrets:
       - api-secrets
-  celery-high:
-    image: gluuorg/guru-api
+  qcluster:
+    image: gluufederation/guru-api
     restart: always
-    command: /bin/sh -c 'celery worker -A guru -n worker.high -Q high -l DEBUG'
+    command: /bin/sh -c 'python manage.py qcluster'
+    depends_on:
+      - db
+    volumes:
+      - ./data/api-media:/app/media
     environment:
       - DEPLOYMENT_ENVIRONMENT=docker
-    volumes:
-      - ./backend:/app
-    secrets:
-      - api-secrets
-  celery-beat:
-    image: gluuorg/guru-api
-    restart: always
-    command: /bin/sh -c 'celery -A guru beat -l INFO'
-    environment:
-      - DEPLOYMENT_ENVIRONMENT=docker
-    volumes:
-      - ./backend:/app
     secrets:
       - api-secrets
 

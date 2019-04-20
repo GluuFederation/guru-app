@@ -9,7 +9,7 @@ VERSION=$1
 ENVIRONMENT=$2
 SCRIPTDIR="$( cd "$(dirname "$0")" ; pwd -P )"
 BASEDIR=$(dirname "$SCRIPTDIR")
-IMAGE_NAME=gluru-nginx-$ENVIRONMENT
+IMAGE_NAME=guru-nginx-$ENVIRONMENT
 
 printf "$VERSION" > $SCRIPTDIR/VERSION
 

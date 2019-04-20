@@ -1,12 +1,10 @@
 FROM guru-vue as guru-stage
 ARG ENVIRON
-COPY .env.${ENVIRON} /app/.env
-RUN npm run build
+RUN cp /app/.env.${ENVIRON} /app/.env && npm run build
 
 FROM users-vue as users-stage
 ARG ENVIRON
-COPY .env.${ENVIRON} /app/.env
-RUN npm run build
+RUN cp /app/.env.${ENVIRON} /app/.env && npm run build
 
 FROM guru-api as backend-stage
 RUN python manage.py collectstatic --no-input

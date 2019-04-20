@@ -10,7 +10,7 @@ ENVIRONMENT=$2
 OLDER=$3
 SCRIPTDIR="$( cd "$(dirname "$0")" ; pwd -P )"
 BASEDIR=$(dirname "$SCRIPTDIR")
-IMAGE_NAME=gluru-nginx-$ENVIRONMENT
+IMAGE_NAME=guru-nginx-$ENVIRONMENT
 USERNAME=gluufederation
 
 echo "Tagging $IMAGE_NAME/$VERSION...."
@@ -25,4 +25,4 @@ if [ -z $OLDER ]; then
 fi
 docker push $USERNAME/$IMAGE_NAME:$VERSION
 
-echo "Pushed to ECR"
+echo "Pushed to Docker Hub"

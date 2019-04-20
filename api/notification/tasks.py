@@ -2,17 +2,12 @@ from datetime import timedelta
 from django.conf import settings
 from django.utils import timezone
 from twilio.rest import Client
-from guru.celery import app
 from guru.utils import send_mail, generate_ticket_link
 from notification.models import SMSContact
 # from tickets.constants import NOTIFICATION_DELAY_TIME, SLA_MATRIX
 from tickets.models import Ticket
 
 
-client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
-
-
-@app.task
 def send_notification_by_email(context):
     subject_template = context['subject_template']
     email_template = context['email_template']
@@ -29,8 +24,9 @@ def send_notification_by_email(context):
     )
 
 
-@app.task
 def send_sms():
+    client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
+
     contacts = SMSContact.actives.all()
     if not len(contacts):
         return
@@ -74,7 +70,6 @@ def send_sms():
                     ticket.save()
 
 
-@app.task
 def email_reminder():
     tickets = Ticket.actives.filter(
         status__name__in=['assigned', 'new'],

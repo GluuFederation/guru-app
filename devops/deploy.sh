@@ -17,7 +17,7 @@ cd ${DEPLOY_DIR}
 echo "Currently in $(pwd)"
 echo
 
-$DATE_STRING=$(date +%F)
+DATE_STRING=$(date +%F)
 echo "Saving logs for $DATE_STRING"
 docker-compose logs >> ${LOG_DIR}/${DATE_STRING}.log
 echo "Saved logs"

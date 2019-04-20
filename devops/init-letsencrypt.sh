@@ -2,11 +2,11 @@
 set -e
 
 
-domain="gluru-dev.gluu.org"
+domain="guru.gluu.org"
 data_path="./data/certbot"
 email="will@gluu.org" # Adding a valid address is strongly recommended
 staging=0 # Set to 1 if you're testing your setup to avoid hitting request limits
-image=gluru-nginx-certbot
+image=guru-nginx-certbot
 username=gluufederation
 volume_args="-v $(pwd)/data/certbot/conf:/etc/letsencrypt -v $(pwd)/data/certbot/www:/var/www/certbot"
 
