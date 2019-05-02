@@ -27,6 +27,7 @@ django-localflavor = "*"
 pep8 = "*"
 django-q = "*"
 gunicorn = "*"
+autopep8 = "*"
 
 [dev-packages]
 

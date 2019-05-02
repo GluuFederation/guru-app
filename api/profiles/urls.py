@@ -1,43 +1,53 @@
-from django.conf.urls import url, include
+from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from profiles.views import companies as cv
 from profiles.views import users as uv
 from profiles.views import auth as av
 
 router = DefaultRouter()
-router.register(r'company', cv.CompanyViewSet, base_name='company')
-router.register(r'users', uv.UserViewSet, base_name='user')
+router.register('companies', cv.CompanyViewSet, base_name='companies')
+router.register('users', uv.UserViewSet, base_name='users')
 
 urlpatterns = [
-    url(
-        r'^user/?$',
-        av.GetUserAuthAPIView.as_view(),
-        name='get_auth'
+    path(
+        'auth/me/',
+        av.GetAuthUserAPIView.as_view(),
+        name='get_auth_user'
     ),
-    url(
-        r'^get-authorization-url/?$',
+    path(
+        'auth/get-authorization-url/',
         av.GetLoginUrlAPIView.as_view(),
         name='get_login_url'
     ),
-    url(
-        r'^login-callback/?$',
+    path(
+        'auth/login-callback/',
         av.LoginCallbackAPIView.as_view(),
         name='login_callback'
     ),
-    url(
-        r'^get-signup-url/?$',
+    path(
+        'auth/get-signup-url/',
         av.GetSignupUrlAPIView.as_view(),
         name='get_signup_url'
     ),
-    url(
-        r'^signup/?$',
+    path(
+        'auth/signup/',
         av.SignupAPIView.as_view(),
         name='signup'
     ),
-    url(
-        r'^logout/?$',
+    path(
+        'auth/send-verification/',
+        av.SendVerificationCodeAPIView.as_view(),
+        name='send_verification'
+    ),
+    path(
+        'auth/verify-code/',
+        av.VerifyCodeAPIView.as_view(),
+        name='verify_code'
+    ),
+    path(
+        'auth/logout/',
         av.LogoutUrlAPIView.as_view(),
         name='logout'
     ),
-    url(r'^', include(router.urls)),
+    path('', include(router.urls)),
 ]

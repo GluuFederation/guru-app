@@ -1,0 +1,11 @@
+Hello {{ invitation.user.first_name }},
+
+You have been invited to Gluu by {{ invitation.host.first_name }}.
+
+Click the link below to accept the invitation:
+
+{{ invitation.invitation_link }}
+
+Thank you,
+
+The Gluu Team

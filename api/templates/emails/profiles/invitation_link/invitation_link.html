@@ -1,0 +1,12 @@
+{% extends 'emails/base_template.html' %}
+{% block content %}
+
+<div class="message_container">
+	<p>Hello {{ invitation.user.first_name }},</p>
+	<p>You have been invited to Gluu by {{ invitation.host.first_name }}.<p>
+  <p>Click the link below to accept the invitation:</p>
+	<p><a href="{{ invitation.invitation_link }}">{{ invitation.invitation_link }}</a></p>
+	<p>Thank you,<br />The Gluu Team</p>
+</div>
+
+{% endblock %}

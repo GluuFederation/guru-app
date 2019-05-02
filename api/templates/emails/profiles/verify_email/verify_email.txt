@@ -1,0 +1,11 @@
+Hello {{ name }},
+
+Thank you for signing up to Gluu.
+
+Click the link below to activate your account:
+
+{{ activation_link }}
+
+Thank you,
+
+The Gluu Team

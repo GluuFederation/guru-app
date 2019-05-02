@@ -39,7 +39,6 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./data/api-media:/app/media
       - ./api:/app
     environment:
       - DEPLOYMENT_ENVIRONMENT=docker
@@ -52,7 +51,6 @@ services:
     restart: always
     command: /bin/sh -c 'python manage.py qcluster'
     volumes:
-      - ./data/api-media:/app/media
       - ./api:/app
     environment:
       - DEPLOYMENT_ENVIRONMENT=docker

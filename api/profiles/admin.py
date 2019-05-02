@@ -34,7 +34,7 @@ class GluuUserAdmin(UserAdmin):
         ('Permissions', {'fields': ('is_staff', 'is_verified')}),
         (
             'Additional Info',
-            {'fields': ('is_active', 'date_joined', 'idp_uuid')}
+            {'fields': ('is_active', 'created_on', 'idp_uuid')}
         ),
     )
     add_fieldsets = (

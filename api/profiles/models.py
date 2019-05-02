@@ -10,8 +10,10 @@ from django_countries.fields import CountryField
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin
 )
+
 from localflavor.us.models import USStateField, USZipCodeField
 from guru.models import TimestampedModel
+from guru.utils import send_mail
 from info.models import UserRole
 from oxd import scim
 from profiles import constants as c
@@ -64,7 +66,7 @@ class UserManager(BaseUserManager):
 
         user.save(using=self._db)
         return user
-    
+
     def create_user(self, email=None, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_superuser', False)
@@ -229,7 +231,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
     @property
     def full_name(self):
         return self.first_name + ' ' + self.last_name
-    
+
     @property
     def is_admin(self):
         return self.is_staff
@@ -248,9 +250,19 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
     def companies(self):
         membership = self.membership_set.all().order_by('-is_primary')
         return list(m.company for m in membership)
-    
+
     def sync_data(self):
         scim.update_user(self)
+
+    def email_user(
+            self, subject, email_template_name, context,
+            html_email_template_name=None, from_email=None, **kwargs):
+        """
+        Sends an email to this User.
+        """
+        send_mail(
+            subject, email_template_name, context, [self.email],
+            html_email_template_name, from_email, **kwargs)
 
     def _generate_jwt_token(self):
         valid_time = datetime.now() + timedelta(days=60)

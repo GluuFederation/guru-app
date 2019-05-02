@@ -9,11 +9,10 @@ from django.conf import settings
 from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.exceptions import (
-    ValidationError
-)
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
+from django_q.tasks import AsyncTask
 
 from guru.utils import generate_hash
 from profiles import models as m
@@ -54,22 +53,22 @@ class SignupAPIView(APIView):
             user.save()
 
             activation_url = '{}/auth/activate/{}/{}'.format(
-                settings.GLUU_USER_APP_FRONTEND, user.id,
+                settings.GLUU_USER_APP, user.id,
                 user.verification_token
             )
 
-            # task = AsyncTask(
-            #     user.email_user,
-            #     'emails/accounts/verify_email_subject.txt',
-            #     'emails/accounts/verify_email.txt',
-            #     {
-            #         'activation_link': activation_url,
-            #         'user': user
-            #     },
-            #     'emails/accounts/verify_email.html'
-            # )
+            task = AsyncTask(
+                user.email_user,
+                'emails/profiles/verify_email/verify_email_subject.txt',
+                'emails/profiles/verify_email/verify_email.txt',
+                {
+                    'activation_link': activation_url,
+                    'user': user
+                },
+                'emails/profiles/verify_email/verify_email.html'
+            )
 
-            # task.run()
+            task.run()
 
             user = s.UserSerializer(user)
 
@@ -80,10 +79,10 @@ class SignupAPIView(APIView):
 
 
 class VerifyCodeAPIView(APIView):
-    permission_classes = (p.IsVisitor,)
+    permission_classes = (AllowAny,)
 
     def post(self, request, *args, **kwargs):
-        serializer = s.ConfirmPasswordResetSerializer(data=request.data)
+        serializer = s.VerifyCodeSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.validated_data['user']
             serialized_data = s.UserSerializer(user)
@@ -116,17 +115,17 @@ class SendVerificationCodeAPIView(APIView):
             user.verification_token
         )
 
-        # task = AsyncTask(
-        #     user.email_user,
-        #     'emails/accounts/verify_email_subject.txt',
-        #     'emails/accounts/verify_email.txt',
-        #     {
-        #         'activation_link': activation_url,
-        #         'user': user
-        #     },
-        #     'emails/accounts/verify_email.html'
-        # )
-        # task.run()
+        task = AsyncTask(
+            user.email_user,
+            'emails/profiles/verify_email/verify_email_subject.txt',
+            'emails/profiles/verify_email/verify_email.txt',
+            {
+                'activation_link': activation_url,
+                'user': user
+            },
+            'emails/profiles/verify_email/verify_email.html'
+        )
+        task.run()
 
         return Response(
             {
@@ -266,12 +265,28 @@ class LogoutUrlAPIView(APIView):
         )
 
 
-class GetUserAuthAPIView(APIView):
+class GetAuthUserAPIView(APIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = s.UserSerializer
 
     def get(self, request, *args, **kwargs):
         serializer = self.serializer_class(request.user)
+        return Response(
+            {'results': serializer.data},
+            status=status.HTTP_200_OK
+        )
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(
+            instance=request.user,
+            data=request.data
+        )
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        task = AsyncTask(
+            user.sync_data
+        )
+        task.run()
         return Response(
             {'results': serializer.data},
             status=status.HTTP_200_OK

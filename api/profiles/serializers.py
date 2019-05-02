@@ -51,7 +51,7 @@ class UserSerializer(serializers.ModelSerializer):
             'email', 'token', 'company', 'timezone', 'address',
             'idp_uuid'
         )
-    
+
     def update(self, instance, validated_data):
         instance.email = validated_data.get(
             'email', instance.email
@@ -260,7 +260,7 @@ class RequestEmailSerializer(serializers.Serializer):
         return data
 
 
-class ConfirmPasswordResetSerializer(serializers.Serializer):
+class VerifyCodeSerializer(serializers.Serializer):
     pin = fields.CharField()
     pk = fields.CharField()
 
@@ -272,6 +272,8 @@ class ConfirmPasswordResetSerializer(serializers.Serializer):
             )
 
             if user.verification_token != token:
+                user.verification_tries += 1
+                user.save()
                 raise serializers.ValidationError({
                     'verify': c.VERIFY_INVALID_PIN
                 })
@@ -286,7 +288,7 @@ class ConfirmPasswordResetSerializer(serializers.Serializer):
                     'verify': c.VERIFY_MAX_TRIES
                 })
 
-            user.verification_tries += 1
+            user.verification_tries = 0
             user.is_verified = True
             user.save()
             scim.activate_user(user)
