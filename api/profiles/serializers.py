@@ -42,13 +42,13 @@ class ShortCompanySerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     company = ShortCompanySerializer()
-    address = AddressSerializer()
+    # address = AddressSerializer()
 
     class Meta:
         model = m.User
         fields = (
             'id', 'first_name', 'last_name', 'other_names',
-            'email', 'token', 'company', 'timezone', 'address',
+            'email', 'token', 'company', 'timezone',  # 'address',
             'idp_uuid'
         )
 
@@ -71,25 +71,23 @@ class UserSerializer(serializers.ModelSerializer):
         instance.timezone = validated_data.get(
             'timezone', instance.timezone
         )
-        instance.is_profile_completed = validated_data.get(
-            'is_profile_completed', instance.is_profile_completed
-        )
-        address_data = validated_data.get(
-            'address', None
-        )
-        if address_data is not None:
-            if instance.address is not None:
-                address_serializer = AddressSerializer(
-                    instance=instance.address,
-                    data=address_data
-                )
-            else:
-                address_serializer = AddressSerializer(
-                    data=address_data
-                )
-            address_serializer.is_valid(raise_exception=True)
-            address = address_serializer.save()
-            instance.address = address
+        # address_data = validated_data.get(
+        #     'address', None
+        # )
+        # if address_data is not None:
+        #     if instance.address is not None:
+        #         address_serializer = AddressSerializer(
+        #             instance=instance.address,
+        #             data=address_data,
+        #             partial=True
+        #         )
+        #     else:
+        #         address_serializer = AddressSerializer(
+        #             data=address_data
+        #         )
+        #     address_serializer.is_valid(raise_exception=True)
+        #     address = address_serializer.save()
+        # instance.address = address
 
         instance.save()
         return instance

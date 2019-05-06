@@ -8,8 +8,12 @@
         <img src="@/assets/static/external.png">
       </template>
       <b-dropdown-item class="my-dropdown-item" @click="logout" v-if="isAuthenticated">Logout</b-dropdown-item>
-      <b-dropdown-item class="my-dropdown-item" href="/dashboard" v-if="isAuthenticated">Dashboard</b-dropdown-item>
-      <b-dropdown-item class="my-dropdown-item" to="/login" v-else>Login</b-dropdown-item>
+      <b-dropdown-item
+        class="my-dropdown-item"
+        :href="paths.DASHBOARD"
+        v-if="isAuthenticated"
+      >Dashboard</b-dropdown-item>
+      <b-dropdown-item class="my-dropdown-item" :to="paths.LOGIN" v-else>Login</b-dropdown-item>
     </b-dropdown>
   </b-navbar>
 </template>
@@ -17,19 +21,24 @@
 <script>
 import { mapGetters } from "vuex";
 import { LOGOUT } from "@/store/actions.type";
+import paths from "@/router/paths";
+
 export default {
   name: "GluuHeader",
   computed: {
+    paths: function() {
+      return paths;
+    },
     ...mapGetters(["isAuthenticated"])
   },
   methods: {
     logout() {
-      this.$loading.show({
+      let loader = this.$loading.show({
         container: null
       });
-      this.$store.dispatch(LOGOUT).then(results => {
-        this.$router.push(results.logoutUrl);
-      });
+      this.$store.dispatch(LOGOUT);
+      this.$router.push(paths.HOME);
+      loader.hide();
     }
   }
 };

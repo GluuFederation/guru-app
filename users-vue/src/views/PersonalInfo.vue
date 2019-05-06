@@ -13,10 +13,10 @@
             <div class="md-layout-item md-size-100">
               <country-list-component
                 v-on:selected="setCountry"
-                :customClass="{'md-invalid': $v.country.$error || isCountryError }"
+                :customClass="{'md-invalid': $v.country.$error || countryError }"
                 :requiredError="!$v.country.required"
                 :choiceError="!$v.country.countryChoiceValidator"
-                :backendError="$v.country.required && $v.country.countryChoiceValidator && isCountryError"
+                :backendError="$v.country.required && $v.country.countryChoiceValidator && countryError"
               ></country-list-component>
             </div>
           </div>
@@ -57,10 +57,10 @@
             <div class="md-layout-item md-size-50">
               <timezone-component
                 v-on:selected="setTimezone"
-                :customClass="{'md-invalid': $v.timezone.$error || isTimezoneError}"
+                :customClass="{'md-invalid': $v.timezone.$error || timezoneError}"
                 :requiredError="!$v.timezone.required"
                 :choiceError="!$v.timezone.timezoneChoiceValidator"
-                :backendError="$v.timezone.required && $v.timezone.timezoneChoiceValidator && isTimezoneError"
+                :backendError="$v.timezone.required && $v.timezone.timezoneChoiceValidator && timezoneError"
               ></timezone-component>
             </div>
           </div>
@@ -89,6 +89,7 @@ import {
   countryChoiceValidator,
   timezoneChoiceValidator
 } from "@/plugins/customvalidators";
+import paths from "@/router/paths";
 
 export default {
   name: "PersonalInfo",
@@ -105,6 +106,8 @@ export default {
     state: "",
     zipCode: "",
     timezone: "",
+    timezoneError: "",
+    countryError: "",
     sending: false
   }),
   validations() {
@@ -135,14 +138,10 @@ export default {
       this.country = value;
     },
     purgeCountryError() {
-      if (this.isCountryError) {
-        this.$store.commit(PURGE_COUNTRY_ERROR);
-      }
+      this.countryError = "";
     },
     purgeTimezoneError() {
-      if (this.isTimezoneError) {
-        this.$store.commit(PURGE_TIMEZONE_ERROR);
-      }
+      this.timezoneError = "";
     },
     validateBeforeSubmit() {
       this.$v.$touch();
@@ -171,7 +170,7 @@ export default {
                 window.location = data.results;
               });
             }
-            this.$router.push("/dashboard");
+            this.$router.push(paths.DASHBOARD);
           })
           .catch(error => {
             loader.hide();

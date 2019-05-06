@@ -213,7 +213,18 @@ else:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 
-EMAIL_FROM = env('EMAIL_FROM')
+DEFAULT_FROM_EMAIL = env.str('EMAIL_FROM')
+EMAIL_FROM = env.str('EMAIL_FROM')
+TEST_TEXT_EMAIL = env.bool('TEST_TEXT_EMAIL', False)
+LIVE_TEST_EMAIL = env.bool('LIVE_TEST_EMAIL', False)
+TEST_EMAIL_RECIPIENTS = env.list('TEST_EMAIL_RECIPIENTS')
+
+EMAIL_USE_TLS = bool(int(os.environ.get('EMAIL_USE_TLS', '1')))
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
+
 NOTIFICATIONS_RECIPIENT = env('NOTIFICATIONS_RECIPIENT')
 
 TWILIO_ACCOUNT_SID = env.str('TWILIO_ACCOUNT_SID', '')

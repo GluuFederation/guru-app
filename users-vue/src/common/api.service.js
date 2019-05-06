@@ -1,12 +1,16 @@
 import Vue from "vue";
 import axios from "axios";
 import VueAxios from "vue-axios";
-import { API_URL } from "@/common/config";
+import store from "@/store";
 
 const ApiService = {
   init() {
     Vue.use(VueAxios, axios);
-    Vue.axios.defaults.baseURL = API_URL;
+    Vue.axios.defaults.baseURL = `${process.env.VUE_APP_API_URL}/api/v1`;
+    if (store.state.auth.token)
+      Vue.axios.defaults.headers.common["Authorization"] = `Token ${
+        store.state.auth.token
+      }`;
   },
 
   query(resource, params) {

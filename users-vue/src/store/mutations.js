@@ -9,8 +9,21 @@ import {
 import actions from "./actions";
 import getters from "./getters";
 
-const state = {
-  user: null,
+const initialState = {
+  user: {
+    firstName: "",
+    lastName: "",
+    email: "",
+    address: {
+      line1: "",
+      line2: "",
+      country: "",
+      city: "",
+      state: "",
+      zipCode: ""
+    },
+    timezone: ""
+  },
   token: ""
 };
 
@@ -29,12 +42,13 @@ const mutations = {
     }`;
   },
   [PURGE_AUTH](state) {
-    state.user = null;
+    state.user = { ...initialState.user };
+    state.token = "";
   }
 };
 
 export default {
-  state,
+  state: initialState,
   actions,
   mutations,
   getters

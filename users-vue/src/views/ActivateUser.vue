@@ -3,7 +3,6 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import { ACTIVATE_USER } from "@/store/actions.type";
 
 export default {

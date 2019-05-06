@@ -35,6 +35,12 @@ router.beforeEach((to, from, next) => {
     } else {
       next(paths.LOGIN);
     }
+  } else if (to.meta.requiresUnAuth) {
+    if (store.getters.isAuthenticated) {
+      next(paths.DASHBOARD);
+    } else {
+      next();
+    }
   } else {
     next();
   }

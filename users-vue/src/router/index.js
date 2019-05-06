@@ -15,7 +15,8 @@ export default new Router({
     {
       path: paths.REGISTER,
       name: "Register",
-      component: () => import("@/views/Register")
+      component: () => import("@/views/Register"),
+      meta: { requiresUnAuth: true }
     },
     {
       path: paths.EMAIL_VERIFICATION,

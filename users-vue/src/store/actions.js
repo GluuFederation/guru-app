@@ -141,16 +141,17 @@ const actions = {
     });
   },
   [LOGOUT](context) {
-    return new Promise(resolve => {
-      ApiService.get("auth/logout")
-        .then(({ data }) => {
-          context.commit(PURGE_AUTH);
-          resolve(data.results);
-        })
-        .catch(({ response }) => {
-          console.log(response);
-        });
-    });
+    context.commit(PURGE_AUTH);
+    // return new Promise(resolve => {
+    //   ApiService.get("auth/logout")
+    //     .then(({ data }) => {
+    //       context.commit(PURGE_AUTH);
+    //       resolve(data.results);
+    //     })
+    //     .catch(({ response }) => {
+    //       console.log(response);
+    //     });
+    // });
   },
   [GET_SIGNUP_CALLBACK_URL]() {
     return ApiService.get("get-signup-callback-url");

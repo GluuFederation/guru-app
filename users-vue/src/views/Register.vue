@@ -34,7 +34,7 @@
                 </div>
               </div>
 
-              <md-field :class="{'md-invalid': $v.email.$error}">
+              <md-field :class="{'md-invalid': $v.email.$error || emailError}">
                 <label>Enter your email address</label>
                 <md-input v-model.trim="email" @input="purgeEmailError"></md-input>
                 <span class="md-helper-text">Please use a valid email. You need to verify this email</span>
@@ -42,8 +42,8 @@
                 <span class="md-error" v-if="!$v.email.email">Enter a valid email</span>
                 <span
                   class="md-error"
-                  v-if="$v.email.required && $v.email.email && $v.email.$error"
-                >{{ "Email exists" }}</span>
+                  v-if="$v.email.required && $v.email.email && emailError"
+                >{{ emailError }}</span>
               </md-field>
             </div>
             <div
@@ -102,7 +102,6 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import { REGISTER } from "@/store/actions.type";
 import { required, email, sameAs, minLength } from "vuelidate/lib/validators";
 import paths from "@/router/paths";
@@ -116,6 +115,7 @@ export default {
       email: "",
       password: "",
       repeatPassword: "",
+      emailError: "",
       buttonName: "SIGN UP",
       isMobileDevice: false,
       mobileScreen: 0,
@@ -214,6 +214,11 @@ export default {
             if (error.status === 500) {
               this.$_error("InternalServer");
             }
+            if (error.data) {
+              if (error.data.email && error.data.email.length) {
+                this.emailError = "Email already exists";
+              }
+            }
             this.mobileScreen = 1;
             this.buttonName = "NEXT";
             this.sending = false;
@@ -231,6 +236,9 @@ export default {
         this.mobileScreen = 0;
         this.buttonName = "SIGN UP";
       }
+    },
+    purgeEmailError() {
+      this.emailError = "";
     }
   },
   beforeDestroy() {

@@ -298,7 +298,8 @@ class GetAuthUserAPIView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(
             instance=request.user,
-            data=request.data
+            data=request.data,
+            partial=True
         )
         serializer.is_valid(raise_exception=True)
         user = serializer.save()

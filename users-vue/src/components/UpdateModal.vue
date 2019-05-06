@@ -22,7 +22,8 @@
         </div>
         <div v-else-if="modalType === 'email'">
           <p>
-            <span style="opacity: 0.5">Your email</span><br/>
+            <span style="opacity: 0.5">Your email</span>
+            <br>
             <span style="color: #00A161;">{{ currentUser.email }}</span>
           </p>
           <md-field :class="{'md-invalid': $v.newEmail.$error}">
@@ -36,7 +37,10 @@
             <label>Confirm email</label>
             <md-input v-model.trim="newEmailConfirm"></md-input>
             <span class="md-error" v-if="!$v.newEmailConfirm.required">Confirm email address</span>
-            <span class="md-error" v-if="$v.newEmailConfirm.required && !$v.newEmailConfirm.sameAsPassword">Those emails didn't match</span>
+            <span
+              class="md-error"
+              v-if="$v.newEmailConfirm.required && !$v.newEmailConfirm.sameAsPassword"
+            >Those emails didn't match</span>
           </md-field>
         </div>
         <div v-else-if="modalType === 'address'">
@@ -45,7 +49,7 @@
             :customClass="{'md-invalid': $v.country.$error || Object.keys(errors).includes('address') }"
             :requiredError="!$v.country.required"
             :choiceError="!$v.country.countryChoiceValidator"
-            :backendError="$v.country.required && $v.country.countryChoiceValidator && isCountryError"
+            :backendError="$v.country.required && $v.country.countryChoiceValidator && countryError"
           ></country-list-component>
           <md-field :class="{'md-invalid': $v.address1.$error}">
             <label>Address(line1)</label>
@@ -86,7 +90,7 @@
             :customClass="{'md-invalid': $v.timezone.$error || Object.keys(errors).includes('timezone')}"
             :requiredError="!$v.timezone.required"
             :choiceError="!$v.timezone.timezoneChoiceValidator"
-            :backendError="$v.timezone.required && $v.timezone.timezoneChoiceValidator && isTimezoneError"
+            :backendError="$v.timezone.required && $v.timezone.timezoneChoiceValidator && timezoneError"
           ></timezone-component>
         </div>
       </div>
@@ -98,16 +102,19 @@
   </form>
 </template>
 <script>
-import { mapGetters, mapState } from 'vuex'
-import { UPDATE_USER } from '@/store/actions.type'
-import { required, email, sameAs } from 'vuelidate/lib/validators'
-import TimezoneComponent from '@/components/TimezoneComponent'
-import StateComponent from '@/components/StateComponent'
-import CountryListComponent from '@/components/CountryListComponent'
-import { countryChoiceValidator, timezoneChoiceValidator } from '@/plugins/customvalidators'
+import { mapGetters, mapState } from "vuex";
+import { UPDATE_USER } from "@/store/actions.type";
+import { required, email, sameAs } from "vuelidate/lib/validators";
+import TimezoneComponent from "@/components/TimezoneComponent";
+import StateComponent from "@/components/StateComponent";
+import CountryListComponent from "@/components/CountryListComponent";
+import {
+  countryChoiceValidator,
+  timezoneChoiceValidator
+} from "@/plugins/customvalidators";
 
 export default {
-  name: 'UpdateModal',
+  name: "UpdateModal",
   components: {
     TimezoneComponent,
     StateComponent,
@@ -119,78 +126,77 @@ export default {
       required: true
     }
   },
-  data () {
+  data() {
     return {
-      firstName: '',
-      lastName: '',
-      country: '',
-      city: '',
-      address1: '',
-      address2: '',
-      state: '',
-      zipCode: '',
-      timezone: '',
-      newEmail: '',
-      newEmailConfirm: ''
-    }
+      firstName: "",
+      lastName: "",
+      country: "",
+      city: "",
+      address1: "",
+      address2: "",
+      state: "",
+      zipCode: "",
+      timezone: "",
+      newEmail: "",
+      newEmailConfirm: "",
+      timezoneError: "",
+      countryError: "",
+      addressError: ""
+    };
   },
-  validations () {
-    if (this.modalType === 'name') {
+  validations() {
+    if (this.modalType === "name") {
       return {
         firstName: { required },
         lastName: { required }
-      }
-    } else if (this.modalType === 'email') {
+      };
+    } else if (this.modalType === "email") {
       return {
         newEmail: { required, email },
-        newEmailConfirm: { required, sameAsEmail: sameAs('newEmail') }
-      }
-    } else if (this.modalType === 'address') {
+        newEmailConfirm: { required, sameAsEmail: sameAs("newEmail") }
+      };
+    } else if (this.modalType === "address") {
       return {
         country: { required, countryChoiceValidator },
         address1: { required },
         city: { required },
         zipCode: { required }
-      }
-    } else if (this.modalType === 'timezone') {
+      };
+    } else if (this.modalType === "timezone") {
       return {
         timezone: { required, timezoneChoiceValidator }
-      }
+      };
     }
   },
   computed: {
-    ...mapGetters([
-      'currentUser',
-      'isCountryError',
-      'isTimezoneError'
-    ]),
+    ...mapGetters(["currentUser"]),
     ...mapState({
       errors: state => state.auth.errors
     })
   },
-  mounted () {
-    this.firstName = this.$store.state.auth.user.firstName
-    this.lastName = this.$store.state.auth.user.lastName
+  mounted() {
+    this.firstName = this.$store.state.auth.user.firstName;
+    this.lastName = this.$store.state.auth.user.lastName;
     if (this.$store.state.auth.user.address) {
-      this.country = this.$store.state.auth.user.address.country
-      this.city = this.$store.state.auth.user.address.city
-      this.address1 = this.$store.state.auth.user.address.line_1
-      this.address2 = this.$store.state.auth.user.address.line_2
-      this.state = this.$store.state.auth.user.address.state
-      this.zipCode = this.$store.state.auth.user.address.zipCode
+      this.country = this.$store.state.auth.user.address.country;
+      this.city = this.$store.state.auth.user.address.city;
+      this.address1 = this.$store.state.auth.user.address.line_1;
+      this.address2 = this.$store.state.auth.user.address.line_2;
+      this.state = this.$store.state.auth.user.address.state;
+      this.zipCode = this.$store.state.auth.user.address.zipCode;
     }
   },
   methods: {
-    submit () {
-      this.$v.$touch()
+    submit() {
+      this.$v.$touch();
       if (!this.$v.$invalid) {
-        const user = {}
-        if (this.modalType === 'name') {
-          user.firstName = this.firstName
-          user.lastName = this.lastName
+        const user = {};
+        if (this.modalType === "name") {
+          user.firstName = this.firstName;
+          user.lastName = this.lastName;
         }
 
-        if (this.modalType === 'address') {
+        if (this.modalType === "address") {
           user.address = {
             line_1: this.address1,
             line_2: this.address2,
@@ -198,31 +204,32 @@ export default {
             city: this.city,
             state: this.state,
             zipCode: this.zipCode
-          }
+          };
         }
-        if (this.modalType === 'timezone') {
-          user.timezone = this.timezone
+        if (this.modalType === "timezone") {
+          user.timezone = this.timezone;
         }
-        this.$store.dispatch(UPDATE_USER, user)
+        this.$store
+          .dispatch(UPDATE_USER, user)
           .then(() => {
-            this.$emit('close')
+            this.$emit("close");
           })
-          .catch((error) => {
+          .catch(error => {
             if (error.status === 500) {
-              this.$_error('InternalServer')
+              this.$_error("InternalServer");
             }
-          })
+          });
       }
     },
-    setTimezone (value) {
-      this.timezone = value
+    setTimezone(value) {
+      this.timezone = value;
     },
-    setState (value) {
-      this.state = value
+    setState(value) {
+      this.state = value;
     },
-    setCountry (value) {
-      this.country = value
+    setCountry(value) {
+      this.country = value;
     }
   }
-}
+};
 </script>
