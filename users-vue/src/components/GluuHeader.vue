@@ -15,30 +15,25 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import { LOGOUT } from '@/store/actions.type'
+import { mapGetters } from "vuex";
+import { LOGOUT } from "@/store/actions.type";
 export default {
-  name: 'GluuHeader',
+  name: "GluuHeader",
   computed: {
-    ...mapGetters([
-      'isAuthenticated',
-      'logoutUrl'
-    ])
+    ...mapGetters(["isAuthenticated"])
   },
   methods: {
-    logout () {
+    logout() {
       this.$loading.show({
         container: null
-      })
-      this.$store.dispatch(LOGOUT)
-        .then(() => {
-          window.location.href = this.logoutUrl
-        })
+      });
+      this.$store.dispatch(LOGOUT).then(results => {
+        this.$router.push(results.logoutUrl);
+      });
     }
   }
-}
+};
 </script>
 
 <style scoped>
-
 </style>

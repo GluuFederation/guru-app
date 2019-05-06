@@ -1,7 +1,9 @@
 <template>
   <div class="personal-card">
     <form @submit.prevent="validateBeforeSubmit" class="loading-parent">
-      <md-card class="md-layout-item md-size-40 md-medium-size-55 md-small-size-80 md-xsmall-size-100">
+      <md-card
+        class="md-layout-item md-size-40 md-medium-size-55 md-small-size-80 md-xsmall-size-100"
+      >
         <md-card-header>
           <div class="md-title">Hi {{ currentUser.firstName }}, Welcome to Gluu</div>
           <div class="md-subhead">Provide a few additional details to complete account registration</div>
@@ -65,7 +67,11 @@
         </md-card-content>
 
         <md-card-actions md-alignment="left">
-          <md-button type="submit" class="md-raised md-primary mobile-btn-100" :disabled="sending">Finish</md-button>
+          <md-button
+            type="submit"
+            class="md-raised md-primary mobile-btn-100"
+            :disabled="sending"
+          >Finish</md-button>
         </md-card-actions>
       </md-card>
     </form>
@@ -73,111 +79,109 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import { UPDATE_USER, GET_SIGNUP_CALLBACK_URL } from '@/store/actions.type'
-import TimezoneComponent from '@/components/TimezoneComponent'
-import StateComponent from '@/components/StateComponent'
-import CountryListComponent from '@/components/CountryListComponent'
-import { required } from 'vuelidate/lib/validators'
-import { PURGE_COUNTRY_ERROR, PURGE_TIMEZONE_ERROR } from '@/store/mutations.type'
-import { countryChoiceValidator, timezoneChoiceValidator } from '@/plugins/customvalidators'
+import { mapGetters } from "vuex";
+import { UPDATE_USER, GET_SIGNUP_CALLBACK_URL } from "@/store/actions.type";
+import TimezoneComponent from "@/components/TimezoneComponent";
+import StateComponent from "@/components/StateComponent";
+import CountryListComponent from "@/components/CountryListComponent";
+import { required } from "vuelidate/lib/validators";
+import {
+  countryChoiceValidator,
+  timezoneChoiceValidator
+} from "@/plugins/customvalidators";
 
 export default {
-  name: 'PersonalInfo',
+  name: "PersonalInfo",
   components: {
     StateComponent,
     TimezoneComponent,
     CountryListComponent
   },
   data: () => ({
-    country: '',
-    address1: '',
-    address2: '',
-    city: '',
-    state: '',
-    zipCode: '',
-    timezone: '',
+    country: "",
+    address1: "",
+    address2: "",
+    city: "",
+    state: "",
+    zipCode: "",
+    timezone: "",
     sending: false
   }),
-  validations () {
+  validations() {
     return {
       country: { required, countryChoiceValidator },
       address1: { required },
       city: { required },
       zipCode: { required },
       timezone: { required, timezoneChoiceValidator }
-    }
+    };
   },
   computed: {
-    ...mapGetters([
-      'currentUser',
-      'isCountryError',
-      'isTimezoneError'
-    ])
+    ...mapGetters(["currentUser"])
   },
-  mounted () {
-    this.setTimezone('America/Chicago')
+  mounted() {
+    this.setTimezone("America/Chicago");
   },
   methods: {
-    setState (value) {
-      this.state = value
+    setState(value) {
+      this.state = value;
     },
-    setTimezone (value) {
-      this.purgeTimezoneError()
-      this.timezone = value
+    setTimezone(value) {
+      this.purgeTimezoneError();
+      this.timezone = value;
     },
-    setCountry (value) {
-      this.purgeCountryError()
-      this.country = value
+    setCountry(value) {
+      this.purgeCountryError();
+      this.country = value;
     },
-    purgeCountryError () {
+    purgeCountryError() {
       if (this.isCountryError) {
-        this.$store.commit(PURGE_COUNTRY_ERROR)
+        this.$store.commit(PURGE_COUNTRY_ERROR);
       }
     },
-    purgeTimezoneError () {
+    purgeTimezoneError() {
       if (this.isTimezoneError) {
-        this.$store.commit(PURGE_TIMEZONE_ERROR)
+        this.$store.commit(PURGE_TIMEZONE_ERROR);
       }
     },
-    validateBeforeSubmit () {
-      this.$v.$touch()
+    validateBeforeSubmit() {
+      this.$v.$touch();
       if (!this.$v.$invalid) {
-        this.sending = true
+        this.sending = true;
         let loader = this.$loading.show({
           container: null
-        })
-        this.$store.dispatch(UPDATE_USER, {
-          address: {
-            line_1: this.address1,
-            line_2: this.address2,
-            country: this.country,
-            city: this.city,
-            state: this.state,
-            zipCode: this.zipCode
-          },
-          timezone: this.timezone,
-          isProfileCompleted: true
-        })
+        });
+        this.$store
+          .dispatch(UPDATE_USER, {
+            address: {
+              line_1: this.address1,
+              line_2: this.address2,
+              country: this.country,
+              city: this.city,
+              state: this.state,
+              zipCode: this.zipCode
+            },
+            timezone: this.timezone,
+            isProfileCompleted: true
+          })
           .then(() => {
-            loader.hide()
-            if (this.currentUser.serviceFrom !== '') {
-              this.$store.dispatch(GET_SIGNUP_CALLBACK_URL)
-                .then(({data}) => {
-                  window.location = data.results
-                })
+            loader.hide();
+            if (this.currentUser.serviceFrom !== "") {
+              this.$store.dispatch(GET_SIGNUP_CALLBACK_URL).then(({ data }) => {
+                window.location = data.results;
+              });
             }
-            this.$router.push('/dashboard')
+            this.$router.push("/dashboard");
           })
-          .catch((error) => {
-            loader.hide()
-            this.sending = false
+          .catch(error => {
+            loader.hide();
+            this.sending = false;
             if (error.status === 500) {
-              this.$_error('InternalServer')
+              this.$_error("InternalServer");
             }
-          })
+          });
       }
     }
   }
-}
+};
 </script>

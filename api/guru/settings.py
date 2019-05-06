@@ -218,8 +218,8 @@ NOTIFICATIONS_RECIPIENT = env('NOTIFICATIONS_RECIPIENT')
 
 TWILIO_ACCOUNT_SID = env.str('TWILIO_ACCOUNT_SID', '')
 TWILIO_AUTH_TOKEN = env.str('TWILIO_AUTH_TOKEN', '')
-FRONTEND_URL = env.str('FRONTEND_URL', '')
-GLUU_USER_APP = env.str('GLUU_USER_APP', '')
+FRONTEND_URL = env.str('FRONTEND_URL', 'https://guru.gluu.org')
+GLUU_USER_APP = env.str('GLUU_USER_APP', 'https://users.gluu.org')
 
 HAYSTACK_CONNECTIONS = {
     'default': {

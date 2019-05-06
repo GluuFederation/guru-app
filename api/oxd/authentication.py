@@ -17,7 +17,7 @@ class OpenIdBackend:
         """
         user_model = get_user_model()
         user_inum = get_user_info(access_token)
-        idp_uuid = user_inum.get('inum', '')
+        idp_uuid = user_inum.get('sub', '')
         user = None
         try:
             user = user_model.objects.get(

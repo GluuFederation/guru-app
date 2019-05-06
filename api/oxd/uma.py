@@ -60,7 +60,7 @@ def obtain_rpt(ticket):
     )
 
 
-def get_authorization_url():
+def get_authorization_url(redirect_uri=None):
     """
     Generates authorization url while saving state.
 
@@ -70,6 +70,8 @@ def get_authorization_url():
     config = Configuration.load()
     nonce = u.generate_nonce(26)
     state = u.generate_nonce(26)
+    if not redirect_uri:
+        redirect_uri = config.authorization_redirect_uri
     LoginState.objects.create(
         nonce=nonce,
         state=state
@@ -78,7 +80,7 @@ def get_authorization_url():
     params = {
         'response_type': 'code',
         'client_id': config.client_id,
-        'redirect_uri': urllib.parse.quote(config.authorization_redirect_uri),
+        'redirect_uri': urllib.parse.quote(redirect_uri),
         'scope': ','.join(config.scope),
         'state': state,
         'nonce': nonce
@@ -154,12 +156,16 @@ def get_token_from_callback(query_params):
     config = Configuration.load()
     state = query_params.get('state', '')
     code = query_params.get('code', '')
+    redirect_uri = query_params.get('redirect_uri', '')
+
+    if not redirect_uri:
+        redirect_uri = config.authorization_redirect_uri
 
     if state and code and LoginState.objects.filter(state=state).exists():
         params = {
             'code': code,
             'grant_type': 'authorization_code',
-            'redirect_uri': config.authorization_redirect_uri,
+            'redirect_uri': urllib.parse.quote(redirect_uri),
             'scope': ','.join(config.scope),
         }
         headers = get_auth_headers()

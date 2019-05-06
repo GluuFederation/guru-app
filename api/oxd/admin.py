@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from oxd.models import Configuration
+from oxd.models import Configuration, LoginState
 from oxd.forms import ConfigurationForm
 
 
@@ -13,3 +13,4 @@ class ConfigurationAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Configuration, ConfigurationAdmin)
+admin.site.register(LoginState)

@@ -22,7 +22,7 @@ BILLING = 'bill'
 SERVICE_CHOICES = (
     (GURU, 'Guru'),
     (USERS, 'Account Management'),
-    (BILLING, 'billing'),
+    (BILLING, 'Billing'),
 )
 
 DEFAULT_TIMEZONE = 'America/Chicago'

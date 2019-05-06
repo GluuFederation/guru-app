@@ -24,10 +24,18 @@ from oxd import exceptions as e
 
 
 class GetLoginUrlAPIView(APIView):
-    permission_classes = (p.IsVisitor,)
+    permission_classes = (AllowAny,)
 
     def get(self, request):
-        url = api.get_authorization_url()
+        app = request.query_params.get('app', c.GURU)
+        redirect_uri = '{}/auth/login-callback'.format(
+            settings.FRONTEND_URL
+        )
+        if app == c.USERS:
+            redirect_uri = '{}/auth/login-callback'.format(
+                settings.GLUU_USER_APP
+            )
+        url = api.get_authorization_url(redirect_uri)
         return Response(
             {
                 'results': {
@@ -39,7 +47,7 @@ class GetLoginUrlAPIView(APIView):
 
 
 class SignupAPIView(APIView):
-    permission_classes = (p.IsVisitor,)
+    permission_classes = (AllowAny,)
 
     def post(self, request):
         serializer = s.SignupSerializer(data=request.data)
@@ -98,7 +106,7 @@ class VerifyCodeAPIView(APIView):
 
 
 class SendVerificationCodeAPIView(APIView):
-    permission_classes = (p.IsVisitor,)
+    permission_classes = (AllowAny,)
 
     def post(self, request, *args, **kwargs):
         serializer = s.RequestEmailSerializer(data=request.data)
@@ -136,18 +144,29 @@ class SendVerificationCodeAPIView(APIView):
 
 
 class LoginCallbackAPIView(APIView):
-    permission_classes = (p.IsVisitor, )
+    permission_classes = (AllowAny, )
 
     def get(self, request):
-        token_json = api.get_token_from_callback(request.query_params)
+        app = request.query_params.get('app', c.GURU)
+        redirect_uri = '{}/auth/login-callback'.format(
+            settings.FRONTEND_URL
+        )
+        if app == c.USERS:
+            redirect_uri = '{}/auth/login-callback'.format(
+                settings.GLUU_USER_APP
+            )
+        query_params = {
+            'code': request.query_params.get('code', ''),
+            'redirect_uri': redirect_uri,
+            'state': request.query_params.get('state', '')
+        }
+        token_json = api.get_token_from_callback(query_params)
         access_token = token_json.get('access_token')
-        id_token = token_json.get('id_token')
-        if not access_token or not id_token:
+        if not access_token:
             raise e.OxdError('Invalid token')
         user = authenticate(
-            request, access_token=access_token, id_token=id_token
+            request, access_token=access_token
         )
-
         if user is not None:
             user_serializer = s.UserSerializer(user)
             return Response(
@@ -182,7 +201,7 @@ class GetSignupUrlAPIView(APIView):
 
 
 class ConfirmSignupAPIView(APIView):
-    permission_classes = (p.IsVisitor,)
+    permission_classes = (AllowAny,)
 
     def get(self, request):
         check_signup_endpoint = '{}/api/v1/confirm-created/'.format(

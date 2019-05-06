@@ -1,64 +1,65 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from "vue";
+import Router from "vue-router";
 
-Vue.use(Router)
+import paths from "./paths";
+
+Vue.use(Router);
 
 export default new Router({
-  mode: 'history',
+  mode: "history",
   routes: [
     {
-      path: '/',
-      redirect: '/register'
+      path: paths.HOME,
+      redirect: paths.REGISTER
     },
     {
-      path: '/register',
-      name: 'Register',
-      component: () => import('@/views/Register'),
-      meta: { onlyForUnAuth: true }
+      path: paths.REGISTER,
+      name: "Register",
+      component: () => import("@/views/Register")
     },
     {
-      path: '/emailVerification',
-      name: 'EmailVerification',
-      component: () => import('@/views/EmailVerification'),
+      path: paths.EMAIL_VERIFICATION,
+      name: "EmailVerification",
+      component: () => import("@/views/EmailVerification"),
       meta: { requiresAuth: true }
     },
     {
-      path: '/completeRegistration',
-      name: 'PersonalInfo',
-      component: () => import('@/views/PersonalInfo'),
+      path: paths.COMPLETE_REGISTRATION,
+      name: "PersonalInfo",
+      component: () => import("@/views/PersonalInfo"),
       meta: { requiresAuth: true, requiresNonComplete: true }
     },
     {
-      path: '/dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/Dashboard'),
+      path: paths.DASHBOARD,
+      name: "Dashboard",
+      component: () => import("@/views/Dashboard"),
       meta: { requiresAuth: true }
     },
     {
-      path: '/user-profile',
-      name: 'UserProfile',
-      component: () => import('@/views/UserProfile'),
+      path: paths.USER_PROFILE,
+      name: "UserProfile",
+      component: () => import("@/views/UserProfile"),
       meta: { requiresAuth: true }
     },
     {
-      path: '/auth/activate/:userId/:pin',
-      name: 'ActivateUser',
-      component: () => import('@/views/ActivateUser')
+      path: paths.ACTIVATE_USER,
+      name: "ActivateUser",
+      component: () => import("@/views/ActivateUser")
     },
     {
-      path: '/login',
-      name: 'LoginRedirectView',
-      component: () => import('@/views/LoginRedirectView')
+      path: paths.LOGIN,
+      name: "LoginRedirectView",
+      component: () => import("@/views/LoginRedirectView")
     },
     {
-      path: '/login-callback',
-      name: 'LoginCallback',
-      component: () => import('@/views/LoginCallback')
+      path: paths.LOGIN_CALLBACK,
+      name: "LoginCallback",
+      component: () => import("@/views/LoginCallback")
     },
     {
-      path: '*',
-      name: 'NotFound',
-      component: () => import('@/views/Errors/NotFound')
+      path: "*",
+      name: "NotFound",
+      component: () => import("@/views/Errors/NotFound")
     }
   ]
-})
+});
