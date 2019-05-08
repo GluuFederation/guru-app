@@ -47,3 +47,6 @@ class JWTAuthentication(authentication.BaseAuthentication):
             raise exceptions.AuthenticationFailed(msg)
 
         return user, token
+
+    def authenticate_header(self, request):
+        return 'Token realm="Authorization required"'

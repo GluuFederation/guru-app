@@ -1,11 +1,6 @@
 import Vue from "vue";
 
-import {
-  SET_AUTH,
-  PURGE_AUTH,
-  SET_ERROR,
-  SET_JWT_TOKEN
-} from "./mutations.type";
+import { SET_AUTH, PURGE_AUTH, SET_JWT_TOKEN } from "./mutations.type";
 import actions from "./actions";
 import getters from "./getters";
 
@@ -28,9 +23,6 @@ const initialState = {
 };
 
 const mutations = {
-  [SET_ERROR](state, error) {
-    state.errors = error;
-  },
   [SET_JWT_TOKEN](state, token) {
     state.token = token;
   },
@@ -44,6 +36,7 @@ const mutations = {
   [PURGE_AUTH](state) {
     state.user = { ...initialState.user };
     state.token = "";
+    window.location.href = "";
   }
 };
 

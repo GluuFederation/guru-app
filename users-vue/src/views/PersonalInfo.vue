@@ -80,7 +80,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { UPDATE_USER, GET_SIGNUP_CALLBACK_URL } from "@/store/actions.type";
+import { UPDATE_USER } from "@/store/actions.type";
 import TimezoneComponent from "@/components/TimezoneComponent";
 import StateComponent from "@/components/StateComponent";
 import CountryListComponent from "@/components/CountryListComponent";
@@ -165,11 +165,6 @@ export default {
           })
           .then(() => {
             loader.hide();
-            if (this.currentUser.serviceFrom !== "") {
-              this.$store.dispatch(GET_SIGNUP_CALLBACK_URL).then(({ data }) => {
-                window.location = data.results;
-              });
-            }
             this.$router.push(paths.DASHBOARD);
           })
           .catch(error => {

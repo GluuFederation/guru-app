@@ -7,10 +7,9 @@ import {
   RESEND_EMAIL,
   GET_LOGIN_URL,
   LOGIN,
-  LOGOUT,
-  GET_SIGNUP_CALLBACK_URL
+  LOGOUT
 } from "./actions.type";
-import { SET_AUTH, PURGE_AUTH, SET_ERROR } from "./mutations.type";
+import { SET_AUTH, PURGE_AUTH } from "./mutations.type";
 
 const actions = {
   [REGISTER](context, credentials) {
@@ -21,23 +20,23 @@ const actions = {
           resolve(data);
         })
         .catch(({ response }) => {
-          if (response) {
-            context.commit(SET_ERROR, response.data);
-            reject(response);
+          console.log("here");
+          if (response && response.status && response.status === 401) {
+            context.commit(PURGE_AUTH);
           }
+          reject(response);
         });
     });
   },
   [CHECK_AUTH](context) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       ApiService.get("auth/me")
         .then(({ data }) => {
           context.commit(SET_AUTH, data.results);
           resolve(data);
         })
-        .catch(() => {
-          context.commit(PURGE_AUTH);
-          resolve();
+        .catch(({ response }) => {
+          reject(response);
         });
     });
   },
@@ -72,10 +71,7 @@ const actions = {
           resolve(data);
         })
         .catch(({ response }) => {
-          if (response) {
-            context.commit(SET_ERROR, response.data);
-            reject(response);
-          }
+          reject(response);
         });
     });
   },
@@ -88,38 +84,31 @@ const actions = {
           resolve(data);
         })
         .catch(({ response }) => {
-          if (response) {
-            context.commit(SET_ERROR, response.data);
-            reject(response);
-          }
+          reject(response);
         });
     });
   },
   [RESEND_EMAIL](context, email) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       ApiService.post(`auth/send-verification/`, { email: email })
         .then(({ data }) => {
           context.commit(SET_AUTH, data.results);
           resolve(data);
         })
         .catch(({ response }) => {
-          if (response) {
-            context.commit(SET_ERROR, response.data);
-          }
+          reject(response);
         });
     });
   },
-  [GET_LOGIN_URL](context) {
-    return new Promise(resolve => {
+  [GET_LOGIN_URL]() {
+    return new Promise((resolve, reject) => {
       const params = { app: "users" };
       ApiService.query(`auth/get-authorization-url`, { params })
         .then(({ data }) => {
           resolve(data.results);
         })
         .catch(({ response }) => {
-          if (response) {
-            context.commit(SET_ERROR, response.data);
-          }
+          reject(response);
         });
     });
   },
@@ -133,10 +122,7 @@ const actions = {
           resolve(data);
         })
         .catch(({ response }) => {
-          if (response) {
-            context.commit(SET_ERROR, response.data);
-            reject(response);
-          }
+          reject(response);
         });
     });
   },
@@ -152,9 +138,6 @@ const actions = {
     //       console.log(response);
     //     });
     // });
-  },
-  [GET_SIGNUP_CALLBACK_URL]() {
-    return ApiService.get("get-signup-callback-url");
   }
 };
 
