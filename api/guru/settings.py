@@ -57,8 +57,10 @@ INSTALLED_APPS = [
     'profiles',
     'tickets',
     'notification',
-    'info.apps.InfoConfig',
-    'oxd.apps.OxdConfig',
+    'info',
+    'billing',
+    'oxd',
+    'suitecrm'
 ]
 
 MIDDLEWARE = [
