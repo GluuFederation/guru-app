@@ -4,6 +4,6 @@ RUN mkdir /app
 WORKDIR /app
 RUN npm install -g @vue/cli
 
-COPY ./package.json yarn.lock /app/
+COPY ./package.json /app/
 RUN yarn install
 COPY . /app
