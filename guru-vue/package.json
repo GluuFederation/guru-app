@@ -19,6 +19,7 @@
     "vue-ctk-date-time-picker": "^2.0.9",
     "vue-error-page": "^1.1.7",
     "vue-filter-pluralize": "^1.0.3",
+    "vue-loading-overlay": "^3.2.0",
     "vue-markdown": "^2.2.4",
     "vue-multiselect": "^2.1.4",
     "vue-router": "^3.0.2",

@@ -33,6 +33,12 @@ class TicketCategory(models.Model):
         max_length=30
     )
 
+    image = models.ImageField(
+        upload_to='info/categories',
+        blank=True,
+        null=True
+    )
+
     def __str__(self):
         return self.name
 

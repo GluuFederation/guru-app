@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets, mixins, status
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.parsers import MultiPartParser
@@ -9,6 +9,7 @@ from drf_haystack.filters import HaystackAutocompleteFilter
 from tickets import models as m
 from tickets import serializers as s
 from tickets import permissions as p
+from guru import viewsets
 from guru.utils import get_tickets_query
 from info.models import UserRole
 
@@ -19,12 +20,7 @@ class TicketSearchView(HaystackViewSet):
     filter_backends = [HaystackAutocompleteFilter]
 
 
-class TicketViewSet(mixins.CreateModelMixin,
-                    mixins.ListModelMixin,
-                    mixins.UpdateModelMixin,
-                    mixins.RetrieveModelMixin,
-                    mixins.DestroyModelMixin,
-                    viewsets.GenericViewSet):
+class TicketViewSet(viewsets.ModelViewSet):
     lookup_field = 'slug'
     permission_classes = (p.TicketCustomPermission, )
     serializer_class = s.TicketSerializer
@@ -50,7 +46,7 @@ class TicketViewSet(mixins.CreateModelMixin,
             'created_for': serializer_data.pop('created_for', ''),
             'company_association': serializer_data.pop(
                 'company_association', ''
-                )
+            )
         }
 
         serializer = self.serializer_class(
@@ -227,12 +223,7 @@ class TicketViewSet(mixins.CreateModelMixin,
         )
 
 
-class AnswerViewSet(mixins.CreateModelMixin,
-                    mixins.ListModelMixin,
-                    mixins.UpdateModelMixin,
-                    mixins.RetrieveModelMixin,
-                    mixins.DestroyModelMixin,
-                    viewsets.GenericViewSet):
+class AnswerViewSet(viewsets.ModelViewSet):
     permission_classes = (p.AnswerCustomPermission, )
     serializer_class = s.AnswerSerializer
 

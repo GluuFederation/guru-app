@@ -28,6 +28,8 @@ pep8 = "*"
 django-q = "*"
 gunicorn = "*"
 autopep8 = "*"
+django-imagekit = "*"
+pillow = "*"
 
 [dev-packages]
 

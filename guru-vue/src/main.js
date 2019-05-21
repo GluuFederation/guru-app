@@ -3,14 +3,18 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 
+import ApiService from "@/common/api.service";
+
 // Plugins
 import "./plugins/bootstrapvue";
 import "./plugins/vueawesome";
 import "./plugins/vuemultiselect";
 import "./plugins/vuectkdatetimepicker";
 import "./plugins/vuefilterpluralize";
+import "./plugins/vueloadingoverlay";
 
 Vue.config.productionTip = false;
+ApiService.init();
 
 new Vue({
   el: "#app",

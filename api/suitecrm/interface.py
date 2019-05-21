@@ -1,4 +1,3 @@
-import base64
 from datetime import timedelta
 
 from django.utils import timezone
@@ -24,14 +23,11 @@ def get_access_token():
     )
 
     headers = {
-        'Authorization': 'Basic ' + str(
-            base64.b64encode(bytes(auth_string, 'utf-8')).decode('utf-8')
-        ),
         'Content-Type': 'application/vnd.api+json',
         'Accept': 'application/vnd.api+json'
     }
 
-    url = '{}/api/oauth/access_token'.format(host)
+    url = '{}/Api/access_token'.format(host)
 
     data = {
         'grant_type': 'client_credentials',

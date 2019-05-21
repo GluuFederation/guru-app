@@ -4,11 +4,22 @@ import Router from "vue-router";
 Vue.use(Router);
 
 export default new Router({
+  mode: "history",
   routes: [
     {
       path: "/",
       name: "Home",
       component: () => import("@/pages/home/Home")
+    },
+    {
+      path: "/auth/login",
+      name: "Login",
+      component: () => import("@/pages/auth/LoginRedirectView")
+    },
+    {
+      path: "/auth/login-callback",
+      name: "LoginCallback",
+      component: () => import("@/pages/auth/LoginCallback")
     },
     {
       path: "/ticket-list",

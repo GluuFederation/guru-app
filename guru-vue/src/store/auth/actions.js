@@ -17,7 +17,7 @@ const actions = {
   },
   [GET_LOGIN_URL]() {
     return new Promise((resolve, reject) => {
-      const params = { app: "users" };
+      const params = { app: "guru" };
       ApiService.query(`auth/get-authorization-url`, { params })
         .then(({ data }) => {
           resolve(data.results);
@@ -30,7 +30,7 @@ const actions = {
   [LOGIN](context, params) {
     return new Promise((resolve, reject) => {
       let queryParams = params;
-      queryParams.app = "users";
+      queryParams.app = "guru";
       ApiService.query(`auth/login-callback`, { params: queryParams })
         .then(({ data }) => {
           context.commit(SET_AUTH, data.results);
