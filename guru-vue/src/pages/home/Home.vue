@@ -32,13 +32,16 @@
               class="dark-22-medium mb-lg-4 text-center"
             >Select The category to find related topic</div>
             <div class="flex-row flex-wrap d-flex justify-content-center align-items-center">
-              <div class="gluu-tile flex-column" v-for="(tile, index) in tiles" :key="index">
+              <div
+                class="gluu-tile flex-column"
+                v-for="(category, index) in categories"
+                :key="index"
+                v-on:click="goToTicketCategory(category, $event)"
+              >
                 <div class="mb-lg-3">
-                  <router-link :to="{ name: 'TicketList' }">
-                    <gluu-svg :icon="tile.slug"></gluu-svg>
-                  </router-link>
+                  <gluu-svg :icon="category.slug"></gluu-svg>
                 </div>
-                <div class="dark-16-medium">{{ tile.name }}</div>
+                <div class="dark-16-medium">{{ category.name }}</div>
               </div>
             </div>
           </b-col>
@@ -49,16 +52,14 @@
 </template>
 
 <script>
-import ApiService from "@/services/api.service";
+import { mapGetters } from "vuex";
+import paths from "@/router/paths";
+import { FETCH_INFO_ALL } from "@/store/actions.type";
+import { SET_FILTER_CATEGORY } from "@/store/mutations.type";
 import GluuSvg from "@/components/includes/gluusvg/GluuSvg";
 export default {
   components: {
     GluuSvg
-  },
-  data() {
-    return {
-      tiles: []
-    };
   },
   computed: {
     heroUrl() {
@@ -66,12 +67,20 @@ export default {
     },
     searchGreenUrl() {
       return require("@/assets/images/searchGreen.svg");
-    }
+    },
+    ...mapGetters(["categories"])
   },
   mounted() {
-    ApiService.get("/info/categories").then(response => {
-      this.$data.tiles = response.data.results;
-    });
+    this.$store.dispatch(FETCH_INFO_ALL);
+  },
+  methods: {
+    goToTicketCategory(category, event) {
+      if (event) {
+        event.preventDefault();
+      }
+      this.$store.commit(SET_FILTER_CATEGORY, category);
+      this.$router.push(paths.TICKET_LIST);
+    }
   }
 };
 </script>

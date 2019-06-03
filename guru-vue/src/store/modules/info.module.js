@@ -33,25 +33,25 @@ export const state = Object.assign({}, initialState);
 
 export const getters = {
   gluuServer(state) {
-    return state.info.products.find(product => product.name === "Gluu Server");
+    return state.products.find(product => product.name === "Gluu Server");
   },
   products(state) {
-    return state.info.products;
+    return state.products;
   },
   categories(state) {
-    return state.info.categories;
+    return state.categories;
   },
   types(state) {
-    return state.info.types;
+    return state.types;
   },
   statuses(state) {
-    return state.info.statuses;
+    return state.statuses;
   },
   permissions(state) {
-    return state.info.permissions;
+    return state.permissions;
   },
   userRoles(state) {
-    return state.info.userRoles;
+    return state.userRoles;
   }
 };
 
