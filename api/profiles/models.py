@@ -138,6 +138,11 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
         blank=True,
     )
 
+    crm_id = models.TextField(
+        _('suite crm id'),
+        blank=True
+    )
+
     id_token = models.TextField(
         _('id token'),
         blank=True

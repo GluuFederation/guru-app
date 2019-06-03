@@ -3,7 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 
-import ApiService from "@/common/api.service";
+import ApiService from "@/services/api.service";
 
 // Plugins
 import "./plugins/bootstrapvue";

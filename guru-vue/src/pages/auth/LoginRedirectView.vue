@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { GET_LOGIN_URL } from "@/store/auth/actions.type";
+import { GET_LOGIN_URL } from "@/store/actions.type";
 export default {
   name: "LoginRedirectView",
   mounted() {

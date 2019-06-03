@@ -43,13 +43,16 @@ class GetAllInfoView(APIView):
             many=True
         )
 
-        return Response({
-                'products': product_serializer.data,
-                'types': type_serializer.data,
-                'categories': category_serializer.data,
-                'statuses': status_serializer.data,
-                'permissions': permission_serializer.data,
-                'user_roles': user_role_serializer.data
+        return Response(
+            {
+                'results': {
+                    'products': product_serializer.data,
+                    'types': type_serializer.data,
+                    'categories': category_serializer.data,
+                    'statuses': status_serializer.data,
+                    'permissions': permission_serializer.data,
+                    'user_roles': user_role_serializer.data
+                },
             },
             status=status.HTTP_200_OK
         )
@@ -483,7 +486,7 @@ class PermissionViewSet(mixins.CreateModelMixin, mixins.ListModelMixin,
         return Response(
             {'results': serializer.data},
             status=status.HTTP_201_CREATED
-            )
+        )
 
     def list(self, request):
         serializer_data = self.get_queryset()

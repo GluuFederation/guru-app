@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from suitecrm.models import Configuration
+
+
+admin.site.register(Configuration)

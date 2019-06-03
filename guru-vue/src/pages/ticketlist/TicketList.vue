@@ -340,7 +340,7 @@
 </template>
 
 <script>
-import ApiService from "@/common/api.service";
+import ApiService from "@/services/api.service";
 import GluuSubNavbar from "@/components/ticketlist/GluuSubNavbar";
 import GluuTicketPreview from "@/components/ticketlist/GluuTicketPreview";
 import GluuTag from "@/components/includes/tag/GluuTag";

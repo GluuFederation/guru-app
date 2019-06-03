@@ -35,5 +35,11 @@ class Account(TimestampedModel):
     )
 
     idp_uuid = models.TextField(
-        _('idp uuid')
+        _('idp uuid'),
+        blank=True
+    )
+
+    crm_id = models.TextField(
+        _('suite crm id'),
+        blank=True
     )

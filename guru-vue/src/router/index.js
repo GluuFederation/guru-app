@@ -33,8 +33,9 @@ export default new Router({
       props: true
     },
     {
-      path: "/create-ticket",
-      name: "CreateTicket"
+      path: "/createTicket",
+      name: "CreateTicket",
+      component: () => import("@/pages/ticketcreate/TicketCreate")
     },
     {
       path: "/dashboard",

@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import ApiService from "@/common/api.service";
+import ApiService from "@/services/api.service";
 import GluuSvg from "@/components/includes/gluusvg/GluuSvg";
 export default {
   components: {

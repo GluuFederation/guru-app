@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { LOGIN } from "@/store/auth/actions.type";
+import { LOGIN } from "@/store/actions.type";
 import paths from "@/router/paths";
 
 export default {

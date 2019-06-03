@@ -100,7 +100,7 @@
 <script>
 import { mapGetters } from "vuex";
 import paths from "@/router/paths";
-import { LOGOUT } from "@/store/auth/actions.type";
+import { LOGOUT } from "@/store/actions.type";
 export default {
   computed: {
     ...mapGetters(["currentUser", "isAuthenticated"]),
