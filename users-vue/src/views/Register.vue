@@ -103,6 +103,7 @@
 
 <script>
 import { REGISTER } from "@/store/actions.type";
+import { SET_FROM } from "@/store/mutations.type";
 import { required, email, sameAs, minLength } from "vuelidate/lib/validators";
 import paths from "@/router/paths";
 

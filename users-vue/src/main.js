@@ -5,6 +5,7 @@ import App from "./App";
 import router from "./router";
 import paths from "./router/paths";
 import store from "./store";
+import { SET_FROM } from "./store/mutations.type";
 
 // Plugins
 import "./plugins/bootstrapvue";
@@ -29,6 +30,13 @@ Vue.component("v-icon", Icon);
 ApiService.init();
 
 router.beforeEach((to, from, next) => {
+  const queryFrom = to.query.from;
+  const queryAction = to.query.action;
+  if (queryFrom && from.name === null) {
+    let fromObj = { app: queryFrom, action: "signup" };
+    if (queryAction) fromObj.action = queryAction;
+    store.commit(SET_FROM, fromObj);
+  }
   if (to.meta.requiresAuth) {
     if (store.getters.isAuthenticated) {
       next();

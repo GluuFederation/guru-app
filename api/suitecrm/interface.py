@@ -241,7 +241,6 @@ def get_account_by_email(email):
 
         for item in data:
             website = item.get('attributes', {}).get('website', '')
-            print(website)
             if domain in website:
                 return item.get('id')
 

@@ -530,7 +530,6 @@ export default {
   mounted() {
     ApiService.get("/tickets").then(response => {
       this.$data.tickets = response.data.results;
-      console.log(response.data.results);
     });
   }
 };

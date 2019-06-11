@@ -7,6 +7,7 @@ import hashlib
 import requests
 from django.conf import settings
 from django.contrib.auth import authenticate
+from django.db.models import Q
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -21,6 +22,9 @@ from profiles import permissions as p
 from profiles import constants as c
 from oxd import uma as api
 from oxd import exceptions as e
+from billing import models as bm
+from billing import utils as bu
+from suitecrm import interface as i
 
 
 class GetLoginUrlAPIView(APIView):
@@ -168,6 +172,19 @@ class LoginCallbackAPIView(APIView):
             request, access_token=access_token
         )
         if user is not None:
+            has_account = user.get_account()
+
+            if not has_account:
+                account_id = i.get_account_by_email(user.email)
+                if account_id:
+                    bu.set_account_from_id(user, account_id)
+                else:
+                    bm.Account.objects.create(
+                        user=user,
+                        name=user.full_name,
+                        is_auto=True
+                    )
+
             user_serializer = s.UserSerializer(user)
             return Response(
                 {
@@ -188,8 +205,8 @@ class GetSignupUrlAPIView(APIView):
     permission_classes = (p.IsVisitor,)
 
     def get(self, request):
-        url = '{}/register?from=support'\
-            .format(settings.GLUU_USER_APP_FRONTEND)
+        url = '{}/auth/register?from=guru'\
+            .format(settings.GLUU_USER_APP)
         return Response(
             {
                 'results': {

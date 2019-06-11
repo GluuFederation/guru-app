@@ -12,9 +12,19 @@ export default new Router({
       component: () => import("@/pages/home/Home")
     },
     {
+      path: "/select-plan",
+      name: "SelectPlan",
+      component: () => import("@/pages/auth/selectPlan/SelectPlan")
+    },
+    {
       path: "/auth/login",
       name: "Login",
-      component: () => import("@/pages/auth/LoginRedirectView")
+      component: () => import("@/pages/auth/LoginRedirect")
+    },
+    {
+      path: "/auth/signup",
+      name: "Signup",
+      component: () => import("@/pages/auth/SignupRedirect")
     },
     {
       path: "/auth/login-callback",

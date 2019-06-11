@@ -25,6 +25,14 @@ SERVICE_CHOICES = (
     (BILLING, 'Billing'),
 )
 
+SUPPORT = 'SUP'
+REVIEW = 'REV'
+
+MEETING_TYPE = (
+    (SUPPORT, 'Support'),
+    (REVIEW, 'Review'),
+)
+
 DEFAULT_TIMEZONE = 'America/Chicago'
 
 # Login Constants

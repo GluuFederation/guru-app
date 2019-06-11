@@ -5,11 +5,13 @@ from guru.utils import generate_hash
 from profiles import models as m
 from profiles import constants as c
 from oxd import scim
+from billing.serializers import AccountSerializer
 
 
 class AddressSerializer(serializers.ModelSerializer):
     created_on = serializers.ReadOnlyField(source='created_on_str')
     last_update = serializers.ReadOnlyField(source='last_update_str')
+    country = serializers.ReadOnlyField(source='country_name')
 
     class Meta:
         model = m.Address
@@ -43,13 +45,14 @@ class ShortCompanySerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     company = ShortCompanySerializer()
     # address = AddressSerializer()
+    account = AccountSerializer(source='get_account', read_only=True)
 
     class Meta:
         model = m.User
         fields = (
             'id', 'first_name', 'last_name', 'other_names',
             'email', 'token', 'company', 'timezone',  # 'address',
-            'idp_uuid'
+            'idp_uuid', 'account'
         )
 
     def update(self, instance, validated_data):

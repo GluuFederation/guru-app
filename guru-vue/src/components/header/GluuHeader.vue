@@ -25,6 +25,10 @@
             </b-nav-item>
 
             <b-nav-item v-if="!isAuthenticated">
+              <b-button class="gluu-normal-btn" :to="{ name: 'Signup' }">Sign Up</b-button>
+            </b-nav-item>
+
+            <b-nav-item v-if="!isAuthenticated">
               <b-button class="gluu-normal-btn" :to="{ name: 'Login' }">Login</b-button>
             </b-nav-item>
 

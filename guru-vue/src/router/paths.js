@@ -1,5 +1,6 @@
 const paths = {
   HOME: "/",
+  SELECT_PLAN: "/select-plan",
   TICKET_LIST: "/ticket-list",
   TICKET_DETAIL: "/ticket/:slug",
   CREATE_TICKET: "/create-ticket",

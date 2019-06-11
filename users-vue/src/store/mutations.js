@@ -1,6 +1,11 @@
 import Vue from "vue";
 
-import { SET_AUTH, PURGE_AUTH, SET_JWT_TOKEN } from "./mutations.type";
+import {
+  SET_AUTH,
+  PURGE_AUTH,
+  SET_JWT_TOKEN,
+  SET_FROM
+} from "./mutations.type";
 import actions from "./actions";
 import getters from "./getters";
 
@@ -19,12 +24,19 @@ const initialState = {
     },
     timezone: ""
   },
-  token: ""
+  token: "",
+  from: {
+    app: "",
+    action: ""
+  }
 };
 
 const mutations = {
   [SET_JWT_TOKEN](state, token) {
     state.token = token;
+  },
+  [SET_FROM](state, from) {
+    state.from = { ...from };
   },
   [SET_AUTH](state, result) {
     state.user = { ...result };
@@ -36,7 +48,6 @@ const mutations = {
   [PURGE_AUTH](state) {
     state.user = { ...initialState.user };
     state.token = "";
-    window.location.href = "";
   }
 };
 

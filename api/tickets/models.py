@@ -96,15 +96,15 @@ class Ticket(TimestampedModel):
     )
 
     gluu_server = models.CharField(
-        max_length=20
+        max_length=255
     )
 
     os = models.CharField(
-        max_length=20
+        max_length=255
     )
 
     os_version = models.CharField(
-        max_length=20,
+        max_length=255
     )
 
     products = models.ManyToManyField(
@@ -143,7 +143,7 @@ class Ticket(TimestampedModel):
 
     attachments = models.ManyToManyField(
         Document,
-        through='Attachments'
+        through='Attachment'
     )
 
     @property
@@ -203,7 +203,7 @@ class Answer(TimestampedModel):
 
     attachments = models.ManyToManyField(
         Document,
-        through='Attachments'
+        through='Attachment'
     )
 
     is_deleted = models.BooleanField(
@@ -276,7 +276,7 @@ class TicketHistory(CreatedOnModel):
         verbose_name_plural = 'Tickets History'
 
 
-class Attachments(models.Model):
+class Attachment(models.Model):
 
     document = models.ForeignKey(
         Document,

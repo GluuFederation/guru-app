@@ -100,9 +100,9 @@ const actions = {
         });
     });
   },
-  [GET_LOGIN_URL]() {
+  [GET_LOGIN_URL](context, app = "users") {
     return new Promise((resolve, reject) => {
-      const params = { app: "users" };
+      const params = { app };
       ApiService.query(`auth/get-authorization-url`, { params })
         .then(({ data }) => {
           resolve(data.results);
@@ -128,6 +128,7 @@ const actions = {
   },
   [LOGOUT](context) {
     context.commit(PURGE_AUTH);
+    window.location.href = "/";
     // return new Promise(resolve => {
     //   ApiService.get("auth/logout")
     //     .then(({ data }) => {

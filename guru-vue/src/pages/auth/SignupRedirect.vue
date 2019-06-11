@@ -3,26 +3,18 @@
 </template>
 
 <script>
-import { LOGIN } from "@/store/actions.type";
-import paths from "@/router/paths";
+import { GET_SIGNUP_URL } from "@/store/actions.type";
 
 export default {
-  name: "LoginCallback",
+  name: "SignupRedirect",
   mounted() {
     let loader = this.$loading.show({
       container: null
     });
     this.$store
-      .dispatch(LOGIN, this.$route.query)
+      .dispatch(GET_SIGNUP_URL)
       .then(results => {
-        loader.hide();
-        // const account = results.account;
-        // if (!account || account.isAuto) {
-        //   this.$router.push(paths.SELECT_PLAN);
-        // } else {
-        //   this.$router.push(paths.HOME);
-        // }
-        this.$router.push(paths.HOME);
+        window.location.href = results.signupUrl;
       })
       .catch(error => {
         loader.hide();

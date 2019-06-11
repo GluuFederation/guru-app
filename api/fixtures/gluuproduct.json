@@ -1,47 +1,77 @@
 [
-    {
-        "model": "info.GluuProduct",
-        "pk": 1,
-        "fields": {
-            "name": "Gluu Server",
-            "version": ["3.1.4", "3.1.3", "3.1.2", "3.1.1", "3.1.0", "3.0.2", "3.0.1", "2.4.4", "2.4.3", "2.4.2", "Other"],
-            "os": ["Ubuntu", "CentOS", "RHEL", "Debian", "Other"]
-        }
-    },
-    {
-        "model": "info.GluuProduct",
-        "pk": 2,
-        "fields": {
-            "name": "OXD",
-            "version": ["3.1.4", "3.1.3", "3.1.2", "3.0.2", "3.0.1"],
-            "os": ["Ubuntu", "CentOS", "RHEL", "Debian"]
-        }
-    },
-    {
-        "model": "info.GluuProduct",
-        "pk": 3,
-        "fields": {
-            "name": "Super Gluu",
-            "version": ["3.1.4", "3.1.3", "3.1.1"],
-            "os": ["Android", "iOS", "Both"]
-        }
-    },
-    {
-        "model": "info.GluuProduct",
-        "pk": 4,
-        "fields": {
-            "name": "Cluster Manager",
-            "version": ["3.1.4", "3.1.3", "Alpha"],
-            "os": ["Ubuntu", "CentOS", "RHEL", "Debian"]
-        }
-    },
-    {
-        "model": "info.GluuProduct",
-        "pk": 5,
-        "fields": {
-            "name": "Cred Manager",
-            "version": ["3.1.4", "3.1.3", "3.1.2"],
-            "os": ["Ubuntu", "CentOS", "RHEL", "Debian"]
-        }
+  {
+    "model": "info.GluuProduct",
+    "pk": 1,
+    "fields": {
+      "name": "Gluu Server",
+      "version": [
+        "3.1.4",
+        "3.1.3",
+        "3.1.2",
+        "3.1.1",
+        "3.1.0",
+        "3.0.2",
+        "3.0.1",
+        "2.4.4",
+        "2.4.3",
+        "2.4.2",
+        "Other"
+      ],
+      "os": ["Ubuntu", "CentOS", "RHEL", "Debian", "Other"]
     }
+  },
+  {
+    "model": "info.GluuProduct",
+    "pk": 2,
+    "fields": {
+      "name": "OXD",
+      "version": ["3.1.4", "3.1.3", "3.1.2", "3.0.2", "3.0.1"],
+      "os": ["Ubuntu", "CentOS", "RHEL", "Debian"]
+    }
+  },
+  {
+    "model": "info.GluuProduct",
+    "pk": 3,
+    "fields": {
+      "name": "Super Gluu",
+      "version": ["3.1.4", "3.1.3", "3.1.1"],
+      "os": ["Android", "iOS", "Both"]
+    }
+  },
+  {
+    "model": "info.GluuProduct",
+    "pk": 4,
+    "fields": {
+      "name": "Cluster Manager",
+      "version": ["3.1.4", "3.1.3", "Alpha"],
+      "os": ["Ubuntu", "CentOS", "RHEL", "Debian"]
+    }
+  },
+  {
+    "model": "info.GluuProduct",
+    "pk": 5,
+    "fields": {
+      "name": "Cred Manager",
+      "version": ["3.1.4", "3.1.3", "3.1.2"],
+      "os": ["Ubuntu", "CentOS", "RHEL", "Debian"]
+    }
+  },
+  {
+    "model": "info.GluuProduct",
+    "pk": 6,
+    "fields": {
+      "name": "Gluu Gateway",
+      "version": ["3.1.4", "3.1.3", "3.1.2"],
+      "os": ["Ubuntu", "CentOS", "RHEL", "Debian"]
+    }
+  },
+  {
+    "model": "info.GluuProduct",
+    "pk": 7,
+    "fields": {
+      "name": "Gluu Casa",
+      "version": ["3.1.4", "3.1.3", "3.1.2"],
+      "os": ["Ubuntu", "CentOS", "RHEL", "Debian"]
+    }
+  }
 ]

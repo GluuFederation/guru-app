@@ -10,6 +10,7 @@ from django_countries.fields import CountryField
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin
 )
+from django.core.exceptions import ObjectDoesNotExist
 
 from localflavor.us.models import USStateField, USZipCodeField
 from guru.models import TimestampedModel
@@ -49,6 +50,10 @@ class Address(TimestampedModel):
     class Meta:
         verbose_name = 'Address'
         verbose_name_plural = 'Addresses'
+
+    @property
+    def country_name(self):
+        return self.country.name
 
 
 class UserManager(BaseUserManager):
@@ -106,6 +111,12 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
         blank=True
     )
 
+    job_title = models.CharField(
+        _('job title'),
+        max_length=150,
+        blank=True
+    )
+
     email = models.EmailField(
         _('email'),
         db_index=True,
@@ -114,7 +125,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
 
     phone_number = models.CharField(
         _('phone number'),
-        max_length=30,
+        max_length=100,
         blank=True
     )
 
@@ -255,6 +266,25 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
     def companies(self):
         membership = self.membership_set.all().order_by('-is_primary')
         return list(m.company for m in membership)
+
+    def get_account(self):
+        try:
+            account = self.account
+            if account:
+                return account
+        except ObjectDoesNotExist:
+            pass
+
+        try:
+            company = self.company
+            if company:
+                account = company.account
+                if account:
+                    return account
+        except ObjectDoesNotExist:
+            pass
+
+        return None
 
     def sync_data(self):
         scim.update_user(self)

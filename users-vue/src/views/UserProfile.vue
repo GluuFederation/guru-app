@@ -4,11 +4,13 @@
       <h4>Your Personal profile</h4>
       <h6>Manage this basic information — your name, email, and phone number — to manage gluu support account</h6>
     </div>
-    <modals-container />
+    <modals-container/>
     <md-card class="md-layout-item md-size-50 md-small-size-80 md-xsmall-size-95">
       <md-card-header>
         <div class="md-title">Your Personal profile</div>
-        <div class="md-subhead mt-2">Manage this basic information — your name, email, and phone number — to manage gluu support account</div>
+        <div
+          class="md-subhead mt-2"
+        >Manage this basic information — your name, email, and phone number — to manage gluu support account</div>
       </md-card-header>
       <md-divider></md-divider>
       <md-card-content>
@@ -47,57 +49,61 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
-import ProfileInfoItem from '@/components/ProfileInfoItem'
-import UpdateModal from '@/components/UpdateModal'
+import { mapGetters } from "vuex";
+import ProfileInfoItem from "@/components/ProfileInfoItem";
+import UpdateModal from "@/components/UpdateModal";
+import { GET_LOGIN_URL } from "@/store/actions.type";
 
 export default {
-  name: 'UserProfile',
+  name: "UserProfile",
   components: {
-    ProfileInfoItem,
+    ProfileInfoItem
     // UpdateModal
   },
-  data () {
+  data() {
     return {
       isMobileDevice: false
-    }
+    };
   },
-  mounted () {
-    this.$nextTick(function () {
-      window.addEventListener('resize', this.getWindowWidth())
-    })
+  mounted() {
+    const from = this.$store.state.auth.from;
+    if (from.action === "signup")
+      this.$store.dispatch(GET_LOGIN_URL, "guru").then(response => {
+        window.location.href = response.loginUrl;
+      });
+    else if (from.action === "profile")
+      window.location.href = `${process.env.VUE_APP_GURU_URL}`;
+    this.$nextTick(function() {
+      window.addEventListener("resize", this.getWindowWidth());
+    });
   },
   computed: {
-    ...mapGetters([
-      'currentUser',
-      'address'
-    ])
+    ...mapGetters(["currentUser", "address"])
   },
   methods: {
-    updateInfo (type) {
+    updateInfo(type) {
       this.$modal.show(
         UpdateModal,
         { modalType: type },
-        { width: this.isMobileDevice ? '90%' : '30%', height: 'auto' }
-      )
+        { width: this.isMobileDevice ? "90%" : "30%", height: "auto" }
+      );
     },
-    getWindowWidth () {
+    getWindowWidth() {
       if (document.documentElement.clientWidth < 600) {
-        this.isMobileDevice = true
+        this.isMobileDevice = true;
       } else {
-        this.isMobileDevice = false
+        this.isMobileDevice = false;
       }
     }
   },
-  beforeDestroy () {
-    window.removeEventListener('resize', this.getWindowWidth())
+  beforeDestroy() {
+    window.removeEventListener("resize", this.getWindowWidth());
   }
-}
+};
 </script>
 
 <style lang="scss">
-
 .v--modal-overlay {
-  background: rgba(39,46,43,0.4);
+  background: rgba(39, 46, 43, 0.4);
 }
 </style>

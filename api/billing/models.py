@@ -34,6 +34,11 @@ class Account(TimestampedModel):
         max_length=255
     )
 
+    is_auto = models.BooleanField(
+        _('is auto'),
+        default=False
+    )
+
     idp_uuid = models.TextField(
         _('idp uuid'),
         blank=True
