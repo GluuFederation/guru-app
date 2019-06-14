@@ -62,8 +62,9 @@
                         :clear-on-select="false"
                         :preserve-search="true"
                         placeholder="Select Author"
-                        label="name"
+                        label="firstName"
                         track-by="id"
+                        @select="created_select"
                       >
                         <template slot="selection" slot-scope="{ values, search, isOpen }">
                           <span
@@ -94,7 +95,7 @@
                         :clear-on-select="false"
                         :preserve-search="true"
                         placeholder="Select Assignee"
-                        label="name"
+                        label="fullName"
                         track-by="id"
                       >
                         <template slot="selection" slot-scope="{ values, search, isOpen }">
@@ -300,34 +301,31 @@
                           :searchable="false"
                           openDirection="bottom"
                         ></multi-select>
-                        <span class="pagination-container-second-span">of 150 tickets</span>
+                        <span class="pagination-container-second-span"> of {{ tickets_count }} Tickets</span>
                       </div>
                     </b-col>
 
                     <b-col lg="5" offset-lg="2">
-                      <div id="pagination-container-2" class="d-flex align-items-center">
-                        <div class="pagination-container-2-buttons">
-                          <a href>1</a>
+                      <!-- <div id="pagination-container-2" class="d-flex align-items-center"> -->
+                        <!-- <div id="pagination-container-2-nextbtn" @click="previous">Previous</div> -->
+                        <!-- <div v-for="page in total_pages" v-if ="page < 5" :key="page" @click="tickets_data"  class="pagination-container-2-buttons">{{ page }}</div>
+                        <div class="ellipsis-container" >
+                          <span>....... </span>
                         </div>
-                        <div class="pagination-container-2-buttons">
-                          <a href>2</a>
-                        </div>
-                        <div class="pagination-container-2-buttons">
-                          <a href>3</a>
-                        </div>
-
-                        <div class="ellipsis-container">
-                          <span>.......</span>
-                        </div>
-                        <div class="pagination-container-2-buttons">
-                          <a href>14</a>
-                        </div>
-                        <div class="pagination-container-2-buttons">
-                          <a href>15</a>
-                        </div>
-                        <div id="pagination-container-2-nextbtn">Next</div>
-                      </div>
-                    </b-col>
+                        <div v-for="page in total_pages" v-if ="page >= 5" :key="page" @click="tickets_data"  class="pagination-container-2-buttons">{{ page }}</div>
+                        <div id="pagination-container-2-nextbtn" @click="next">Next</div> -->
+                        <!-- </div> -->
+                        <b-pagination
+                          v-model="currentPage"
+                          :total-rows="rows"
+                          :per-page="perPage"
+                          first-text="First"
+                          prev-text="Prev"
+                          next-text="Next"
+                          last-text="Last"
+                          @change="tickets_data"
+                        ></b-pagination>
+                    </b-col> 
                   </b-row>
                 </div>
               </div>
@@ -340,7 +338,7 @@
 </template>
 
 <script>
-import ApiService from "@/services/api.service";
+import ApiService from "@/common/api.service";
 import GluuSubNavbar from "@/components/ticketlist/GluuSubNavbar";
 import GluuTicketPreview from "@/components/ticketlist/GluuTicketPreview";
 import GluuTag from "@/components/includes/tag/GluuTag";
@@ -354,7 +352,15 @@ export default {
   data() {
     return {
       tickets: [],
+      tickets_count : 0,
+      page : 1,
+      next_page: "",
+      total_pages: 0,
+      rows:0,
+      perPage: 10,
+      currentPage: 1,
       configFilters: [],
+      ajax_url : "",
       query: "",
       company: [],
       companyOptions: [
@@ -363,17 +369,9 @@ export default {
         { id: 3, name: "IDFConnect" }
       ],
       createdBy: [],
-      createdByOptions: [
-        { id: 1, name: "William Owe" },
-        { id: 2, name: "Levan Begashvili" },
-        { id: 3, name: "IDFConnect" }
-      ],
+      createdByOptions: [],
       assignedBy: [],
-      assignedByOptions: [
-        { id: 1, name: "Gerald" },
-        { id: 2, name: "Nasir" },
-        { id: 3, name: "William" }
-      ],
+      assignedByOptions: [],
       orderBy: { name: "Most recent" },
       orderByOptions: [
         { name: "Most recent" },
@@ -382,29 +380,15 @@ export default {
         { name: "User (z-a)" }
       ],
       category: [],
-      categoryOptions: [
-        { slug: "installation", name: "Installation" },
-        { slug: "authentication", name: "Authentication" },
-        { slug: "Outage", name: "Outage" }
-      ],
+      categoryOptions: [],
       product: [],
-      productOptions: [
-        { slug: "gluu-server", name: "Gluu Server" },
-        { slug: "oxd", name: "OXD" },
-        { slug: "super-gluu", name: "Super Gluu" }
-      ],
+      productOptions: [],
       issueType: [],
-      issueTypeOptions: [
-        { slug: "production-outage", name: "Production Outage" },
-        { slug: "production-impaired", name: "Production Impaired" },
-        { slug: "pre-preoduction-issue", name: "Pre-Production Issue" }
-      ],
+      issueTypeOptions: [],
       status: [],
-      statusOptions: [
-        { slug: "new", name: "New" },
-        { slug: "assigned", name: "Assigned" },
-        { slug: "close", name: "Close" }
-      ],
+      statusOptions: [],
+      paginationOption : 10,
+      paginationOptions : [10,20,30,40],
       dateRange: null,
       customShortcuts: [
         { label: "Today", value: "day", isSelected: true },
@@ -415,8 +399,7 @@ export default {
         { label: "Last Month", value: "-month", isSelected: false },
         { label: "Last 30 days", value: 30, isSelected: false }
       ],
-      paginationOption: 10,
-      paginationOptions: [10, 15, 20, 25]
+      
     };
   },
   computed: {
@@ -431,8 +414,40 @@ export default {
         this.company.splice(indexOfTag, 1);
       }
     },
-
+    created_select(e){
+      console.log(this.ajax_url);
+      if (this.ajax_url != ""){
+          this.ajax_url = this.ajax_url+"&created_by="+e.id;
+      }else{
+        this.ajax_url = "tickets/?created_by="+e.id;
+      }
+      console.log(this.ajax_url);
+      this.$http.get(this.ajax_url).then(response => { 
+      this.$data.tickets = response.data.results;
+      this.tickets_count = response.data.count;
+      this.rows = response.data.count;
+      });
+    },
+    tickets_data(e){
+        console.log(this.ajax_url);
+        if (this.ajax_url != ""){
+          this.ajax_url = this.ajax_url+"&page="+e;
+        }else{
+          this.ajax_url = "tickets/?page="+e;
+        }
+        console.log(this.ajax_url); 
+        this.$http.get(this.ajax_url).then(response => { 
+        this.$data.tickets = response.data.results;
+      }); 
+    },
+    
     removeAuthorTag(tag) {
+      var string = '&created_by='+tag.id;
+      if (this.ajax_url.indexOf(string) != -1 ){
+        this.ajax_url = this.ajax_url.replace('&created_by='+tag.id,'');
+      }else{
+        this.ajax_url = this.ajax_url.replace('/?created_by='+tag.id,'');
+      }
       const indexOfTag = this.createdBy.indexOf(tag);
       if (indexOfTag != -1) {
         this.createdBy.splice(indexOfTag, 1);
@@ -530,6 +545,31 @@ export default {
   mounted() {
     ApiService.get("/tickets").then(response => {
       this.$data.tickets = response.data.results;
+      this.tickets_count = response.data.count;
+      this.rows = response.data.count; //Math.ceil(this.tickets_count/10);
+      // this.next_page = response.data.next;
+      // this.prev_page = response.data.previous;
+    });
+    ApiService.get("/users").then(response => {
+      this.createdByOptions = response.data.results;  
+    });
+    ApiService.get("/companies").then(response => {
+      this.companyOptions=response.data.results;  
+    });
+    ApiService.get("/users/staffs").then(response => {
+      this.assignedByOptions = response.data.results;  
+    });
+    ApiService.get("/info/categories").then(response => {
+      this.categoryOptions = response.data.results;  
+    });
+    ApiService.get("/info/issue-types").then(response => {
+      this.issueTypeOptions = response.data.results;  
+    });
+    ApiService.get("/info/products").then(response => {
+      this.productOptions = response.data.results; 
+    });
+    ApiService.get("/info/statuses").then(response => {
+      this.statusOptions = response.data.results;             
     });
   }
 };

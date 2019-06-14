@@ -39,11 +39,11 @@
                 <span class="card-right-side-issue-details-number-gluu">#{{ ticket.id }}</span>
                 <span class="card-right-side-issue-details-date-gluu">
                   <strong>Created</strong>
-                  : {{ ticket.createdAt }}
+                  : {{ ticket.createdOn }}
                 </span>
                 <span class="card-right-side-issue-details-time-gluu">
                   <strong>Last updated</strong>
-                  : {{ ticket.updatedAt }} by {{ ticket.updatedBy}}
+                  : {{ ticket.updatedOn }} by {{ ticket.updatedBy.fullName}}
                 </span>
               </div>
             </div>
@@ -57,11 +57,11 @@
               </label>
               <label>
                 <b-img :src="clapSvgUrl"/>
-                {{ ticket.votes }} {{ ticket.votes | pluralize('en', ['vote', 'votes']) }}
+                {{ ticket.voters.length }} {{ ticket.voters.length | pluralize('en', ['vote', 'votes']) }}
               </label>
               <label>
                 <b-img :src="userSvgUrl"/>
-                <span>Asim zaka</span>
+                <span> {{ ticket.assignee.fullName }}</span>
                 <b-img :src="arrowDownUrl"/>
               </label>
             </div>

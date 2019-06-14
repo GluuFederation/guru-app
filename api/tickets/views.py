@@ -63,9 +63,15 @@ class TicketViewSet(viewsets.ModelViewSet):
 
     def list(self, request):
         page = self.paginate_queryset(
-            self.get_queryset().filter(get_tickets_query(self.request.user))
+            self.get_queryset().filter(get_tickets_query(self.request.user)).order_by('id')
+            # m.Ticket.objects.all().order_by(id)
         )
-
+        if request.GET.get('created_by'):
+            page = self.paginate_queryset(
+                self.get_queryset().filter(created_by__in=request.GET.getlist('created_by')).order_by('id')
+            )
+            
+            print (self.get_queryset().filter(created_by__in=request.GET.getlist('created_by')).order_by('id').query,flush=True)
         serializer = self.serializer_class(
             page,
             many=True
