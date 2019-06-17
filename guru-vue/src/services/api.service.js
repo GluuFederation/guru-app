@@ -29,7 +29,7 @@ const ApiService = {
   },
 
   query(resource, params) {
-    return Vue.axios.get(resource, params);
+    return Vue.axios.get(resource, { params });
   },
 
   get(resource, slug = "") {

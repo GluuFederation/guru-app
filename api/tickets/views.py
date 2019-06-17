@@ -1,4 +1,7 @@
+from datetime import date
+
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -10,7 +13,7 @@ from tickets import models as m
 from tickets import serializers as s
 from tickets import permissions as p
 from guru import viewsets
-from guru.utils import get_tickets_query
+from tickets.utils import get_tickets_query
 from info.models import UserRole
 
 
@@ -62,10 +65,97 @@ class TicketViewSet(viewsets.ModelViewSet):
         )
 
     def list(self, request):
-        page = self.paginate_queryset(
-            self.get_queryset().filter(get_tickets_query(self.request.user))
+        params = request.query_params
+        queryset = self.get_queryset().filter(
+            get_tickets_query(self.request.user)
         )
 
+        companies = params.get('companies', '')
+        if companies:
+            company_list = companies.split(',')
+            queryset = queryset.filter(
+                company_association_id__in=company_list
+            )
+
+        authors = params.get('authors', '')
+        if authors:
+            author_list = authors.split(',')
+            queryset = queryset.filter(
+                created_by_id__in=author_list
+            )
+
+        assignees = params.get('assignees', '')
+        if assignees:
+            assignee_list = assignees.split(',')
+            queryset = queryset.filter(
+                assignee_id__in=assignee_list
+            )
+
+        categories = params.get('categories', '')
+        if categories:
+            category_list = categories.split(',')
+            queryset = queryset.filter(
+                category_id__in=category_list
+            )
+
+        types = params.get('types', '')
+        if types:
+            type_list = types.split(',')
+            queryset = queryset.filter(
+                issue_type_id__in=type_list
+            )
+
+        types = params.get('types', '')
+        if types:
+            type_list = types.split(',')
+            queryset = queryset.filter(
+                issue_type_id__in=type_list
+            )
+
+        statuses = params.get('statuses', '')
+        if statuses:
+            status_list = statuses.split(',')
+            queryset = queryset.filter(
+                status_id__in=status_list
+            )
+
+        products = params.get('statuses', '')
+        if products:
+            product_list = products.split(',')
+            queryset = queryset.filter(
+                products__id__in=product_list
+            )
+
+        start = params.get('start', '')
+        end = params.get('end', '')
+
+        try:
+            start_date = date.fromisoformat(start)
+            end_date = date.fromisoformat(end)
+
+            queryset = queryset.filter(
+                created_on__gte=start_date,
+                created_on__lte=end_date
+            )
+        except ValueError:
+            pass
+
+        order_by = params.get('ordering', '')
+        ordering = '-created_on'
+
+        if order_by == '-recent':
+            ordering = 'created_on'
+
+        queryset = queryset.order_by(ordering)
+
+        q = params.get('q', '')
+        if q:
+            queryset = queryset.filter(
+                Q(text__contains=q) |
+                Q(title__contains=q)
+            )
+
+        page = self.paginate_queryset(queryset)
         serializer = self.serializer_class(
             page,
             many=True
@@ -212,7 +302,7 @@ class TicketViewSet(viewsets.ModelViewSet):
             serializer = s.DocumentSerializer(data={"file": f})
             serializer.is_valid(raise_exception=True)
             document = serializer.save()
-            m.Attachments.objects.create(
+            m.Attachment.objects.create(
                 document=document,
                 ticket=obj
             )
@@ -300,7 +390,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
             serializer = s.DocumentSerializer(data={"file": f})
             serializer.is_valid(raise_exception=True)
             document = serializer.save()
-            m.Attachments.objects.create(
+            m.Attachment.objects.create(
                 document=document,
                 answer=obj
             )

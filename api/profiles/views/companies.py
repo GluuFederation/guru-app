@@ -4,7 +4,7 @@ from rest_framework.exceptions import (
 )
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from guru.utils import get_ticket_creatable_companies
+from tickets.utils import get_ticket_creatable_companies
 from profiles import models as m
 from profiles import serializers as s
 from profiles import permissions as p

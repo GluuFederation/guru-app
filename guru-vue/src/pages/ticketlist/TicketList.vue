@@ -14,7 +14,7 @@
                       <label class="card-labels-gluu">Company:</label>
                       <div>
                         <gluu-tag
-                          v-for="(item, key) in company"
+                          v-for="(item, key) in ticketFilters.companies"
                           :key="key"
                           :tag="item"
                           v-on:clear="removeCompanyTag"
@@ -22,7 +22,7 @@
                       </div>
                       <multi-select
                         class="select-tags-gluu single-select"
-                        v-model="company"
+                        v-model="ticketFilters.companies"
                         :options="companyOptions"
                         :multiple="true"
                         :show-labels="false"
@@ -43,10 +43,10 @@
                     </b-form-group>
 
                     <b-form-group>
-                      <label class="card-labels-gluu single-select">Create by:</label>
+                      <label class="card-labels-gluu single-select">Created by:</label>
                       <div>
                         <gluu-tag
-                          v-for="(item, key) in createdBy"
+                          v-for="(item, key) in ticketFilters.createdBy"
                           :key="key"
                           :tag="item"
                           v-on:clear="removeAuthorTag"
@@ -54,7 +54,7 @@
                       </div>
                       <multi-select
                         class="select-tags-gluu"
-                        v-model="createdBy"
+                        v-model="ticketFilters.createdBy"
                         :options="createdByOptions"
                         :multiple="true"
                         :show-labels="false"
@@ -78,16 +78,16 @@
                       <label class="card-labels-gluu">Assigned to:</label>
                       <div>
                         <gluu-tag
-                          v-for="(item, key) in assignedBy"
+                          v-for="(item, key) in ticketFilters.assignedTo"
                           :key="key"
                           :tag="item"
-                          v-on:clear="removeAssignedByTag"
+                          v-on:clear="removeAssignedToTag"
                         ></gluu-tag>
                       </div>
                       <multi-select
                         class="select-tags-gluu single-select"
-                        v-model="assignedBy"
-                        :options="assignedByOptions"
+                        v-model="ticketFilters.assignedTo"
+                        :options="assignedToOptions"
                         :multiple="true"
                         :show-labels="false"
                         :close-on-select="false"
@@ -108,10 +108,18 @@
 
                     <b-form-group>
                       <label class="card-labels-gluu">Category</label>
+                      <div>
+                        <gluu-tag
+                          v-for="(item, key) in ticketFilters.categories"
+                          :key="key"
+                          :tag="item"
+                          v-on:clear="removeCategoryTag"
+                        ></gluu-tag>
+                      </div>
                       <multi-select
                         class="select-tags-gluu single-select"
-                        v-model="category"
-                        :options="categoryOptions"
+                        v-model="ticketFilters.categories"
+                        :options="categories"
                         :multiple="true"
                         :show-labels="false"
                         :close-on-select="false"
@@ -136,8 +144,8 @@
                       <label class="card-labels-gluu">Product</label>
                       <multi-select
                         class="select-tags-gluu single-select"
-                        v-model="product"
-                        :options="productOptions"
+                        v-model="ticketFilters.products"
+                        :options="products"
                         :multiple="true"
                         :show-labels="false"
                         :close-on-select="false"
@@ -162,8 +170,8 @@
                       <label class="card-labels-gluu">Issue Type</label>
                       <multi-select
                         class="select-tags-gluu single-select"
-                        v-model="issueType"
-                        :options="issueTypeOptions"
+                        v-model="ticketFilters.types"
+                        :options="types"
                         :multiple="true"
                         :show-labels="false"
                         :close-on-select="false"
@@ -188,8 +196,8 @@
                       <label class="card-labels-gluu">Status</label>
                       <multi-select
                         class="select-tags-gluu single-select"
-                        v-model="status"
-                        :options="statusOptions"
+                        v-model="ticketFilters.statuses"
+                        :options="statuses"
                         :multiple="true"
                         :show-labels="false"
                         :close-on-select="false"
@@ -248,7 +256,7 @@
                         <label class="card-labels-gluu">Order by:</label>
                         <multi-select
                           class="select-tags-gluu"
-                          v-model="orderBy"
+                          v-model="ticketFilters.orderBy"
                           :options="orderByOptions"
                           label="name"
                           track-by="name"
@@ -265,11 +273,11 @@
                     <b-col cols="12">
                       <div id="tags-container" class="d-flex">
                         <div>Results Found</div>
-                        <div class="d-flex flex-wrap">
+                        <!--<div class="d-flex flex-wrap">
                           <div class="ml-lg-2" v-for="(item, key) in configFilters" :key="key">
                             <gluu-tag :tag="item" v-on:clear="removeConfigTag" type="outline"></gluu-tag>
                           </div>
-                        </div>
+                        </div>-->
                         <div class="ml-auto clear-all-btn">
                           <a v-on:click="clearAllTags">Clear all</a>
                         </div>
@@ -293,7 +301,7 @@
                         <label class="card-labels-gluu">Show:</label>
                         <multi-select
                           class="select-tags-gluu"
-                          v-model="paginationOption"
+                          v-model="ticketPagination.itemsPerPage"
                           :options="paginationOptions"
                           :show-labels="false"
                           :allowEmpty="false"
@@ -340,7 +348,39 @@
 </template>
 
 <script>
-import ApiService from "@/services/api.service";
+import { mapGetters } from "vuex";
+import {
+  FETCH_TICKETS,
+  FETCH_ASSOCIATED_COMPANIES
+} from "@/store/actions.type";
+import {
+  SET_PAGINATION_ITEMS,
+  SET_PAGINATION_PAGE,
+  ADD_FILTER_COMPANY,
+  ADD_FILTER_CREATOR,
+  ADD_FILTER_ASSIGNEE,
+  ADD_FILTER_CATEGORY,
+  ADD_FILTER_PRODUCT,
+  ADD_FILTER_TYPE,
+  ADD_FILTER_STATUS,
+  REMOVE_FILTER_COMPANY,
+  REMOVE_FILTER_CREATOR,
+  REMOVE_FILTER_ASSIGNEE,
+  REMOVE_FILTER_CATEGORY,
+  REMOVE_FILTER_PRODUCT,
+  REMOVE_FILTER_TYPE,
+  REMOVE_FILTER_STATUS,
+  CLEAR_FILTER_COMPANIES,
+  CLEAR_FILTER_CREATORS,
+  CLEAR_FILTER_ASSIGNEES,
+  CLEAR_FILTER_CATEGORIES,
+  CLEAR_FILTER_PRODUCTS,
+  CLEAR_FILTER_TYPES,
+  CLEAR_FILTER_STATUSES,
+  SET_FILTER_START_DATE,
+  SET_FILTER_END_DATE,
+  SET_SEARCH_TEXT
+} from "@/store/mutations.type";
 import GluuSubNavbar from "@/components/ticketlist/GluuSubNavbar";
 import GluuTicketPreview from "@/components/ticketlist/GluuTicketPreview";
 import GluuTag from "@/components/includes/tag/GluuTag";
@@ -353,57 +393,15 @@ export default {
   },
   data() {
     return {
-      tickets: [],
-      configFilters: [],
       query: "",
-      company: [],
-      companyOptions: [
-        { id: 1, name: "Gluu" },
-        { id: 2, name: "OpenIAM" },
-        { id: 3, name: "IDFConnect" }
-      ],
-      createdBy: [],
-      createdByOptions: [
-        { id: 1, name: "William Owe" },
-        { id: 2, name: "Levan Begashvili" },
-        { id: 3, name: "IDFConnect" }
-      ],
-      assignedBy: [],
-      assignedByOptions: [
-        { id: 1, name: "Gerald" },
-        { id: 2, name: "Nasir" },
-        { id: 3, name: "William" }
-      ],
-      orderBy: { name: "Most recent" },
+      companyOptions: [],
+      createdByOptions: [],
+      assignedToOptions: [],
       orderByOptions: [
-        { name: "Most recent" },
-        { name: "Least recent" },
-        { name: "User (a-z)" },
-        { name: "User (z-a)" }
-      ],
-      category: [],
-      categoryOptions: [
-        { slug: "installation", name: "Installation" },
-        { slug: "authentication", name: "Authentication" },
-        { slug: "Outage", name: "Outage" }
-      ],
-      product: [],
-      productOptions: [
-        { slug: "gluu-server", name: "Gluu Server" },
-        { slug: "oxd", name: "OXD" },
-        { slug: "super-gluu", name: "Super Gluu" }
-      ],
-      issueType: [],
-      issueTypeOptions: [
-        { slug: "production-outage", name: "Production Outage" },
-        { slug: "production-impaired", name: "Production Impaired" },
-        { slug: "pre-preoduction-issue", name: "Pre-Production Issue" }
-      ],
-      status: [],
-      statusOptions: [
-        { slug: "new", name: "New" },
-        { slug: "assigned", name: "Assigned" },
-        { slug: "close", name: "Close" }
+        { name: "Most recent", value: "+recent" },
+        { name: "Least recent", value: "-recent" },
+        { name: "User (a-z)", value: "a-z" },
+        { name: "User (z-a)", value: "z-a" }
       ],
       dateRange: null,
       customShortcuts: [
@@ -415,63 +413,75 @@ export default {
         { label: "Last Month", value: "-month", isSelected: false },
         { label: "Last 30 days", value: 30, isSelected: false }
       ],
-      paginationOption: 10,
       paginationOptions: [10, 15, 20, 25]
     };
   },
   computed: {
+    ...mapGetters([
+      "tickets",
+      "ticketPagination",
+      "ticketFilters",
+      "products",
+      "categories",
+      "statuses",
+      "types"
+    ]),
     searchIconUrl() {
       return require("@/assets/images/search.svg");
     }
   },
   methods: {
-    removeCompanyTag(tag) {
-      const indexOfTag = this.company.indexOf(tag);
-      if (indexOfTag != -1) {
-        this.company.splice(indexOfTag, 1);
-      }
+    removeCompanyTag(company) {
+      this.$store.commit(REMOVE_FILTER_COMPANY, company);
+      this.$store.dispatch(FETCH_TICKETS);
     },
 
-    removeAuthorTag(tag) {
-      const indexOfTag = this.createdBy.indexOf(tag);
-      if (indexOfTag != -1) {
-        this.createdBy.splice(indexOfTag, 1);
-      }
+    removeAuthorTag(author) {
+      this.$store.commit(REMOVE_FILTER_CREATOR, author);
+      this.$store.dispatch(FETCH_TICKETS);
     },
 
-    removeAssignedByTag(tag) {
-      const indexOfTag = this.assignedBy.indexOf(tag);
-      if (indexOfTag != -1) {
-        this.assignedBy.splice(indexOfTag, 1);
-      }
+    removeAssignedToTag(assignee) {
+      this.$store.commit(REMOVE_FILTER_ASSIGNEE, assignee);
+      this.$store.dispatch(FETCH_TICKETS);
     },
 
-    addCategoryTag(tag) {
-      this.addConfigTag(tag, "category");
-    },
-    removeCategoryTag(tag) {
-      this.removeConfigTag(tag, "category");
+    addCategoryTag(category) {
+      this.$store.commit(ADD_FILTER_CATEGORY, category);
+      this.$store.dispatch(FETCH_TICKETS);
     },
 
-    addProductTag(tag) {
-      this.addConfigTag(tag, "product");
-    },
-    removeProductTag(tag) {
-      this.removeConfigTag(tag, "product");
+    removeCategoryTag(category) {
+      this.$store.commit(REMOVE_FILTER_CATEGORY, category);
+      this.$store.dispatch(FETCH_TICKETS);
     },
 
-    addIssueTypeTag(tag) {
-      this.addConfigTag(tag, "issueType");
+    addProductTag(product) {
+      this.$store.commit(ADD_FILTER_PRODUCT, product);
+      this.$store.dispatch(FETCH_TICKETS);
     },
-    removeIssueTypeTag(tag) {
-      this.removeConfigTag(tag, "issueType");
+    removeProductTag(product) {
+      this.$store.commit(REMOVE_FILTER_PRODUCT, product);
+      this.$store.dispatch(FETCH_TICKETS);
     },
 
-    addStatusTag(tag) {
-      this.addConfigTag(tag, "status");
+    addIssueTypeTag(type) {
+      this.$store.commit(ADD_FILTER_TYPE, type);
+      this.$store.dispatch(FETCH_TICKETS);
     },
-    removeStatusTag(tag) {
-      this.removeConfigTag(tag, "status");
+    removeIssueTypeTag(type) {
+      this.$store.commit(REMOVE_FILTER_TYPE, type);
+      this.$store.dispatch(FETCH_TICKETS);
+    },
+
+    addStatusTag(status) {
+      this.$store.commit(ADD_FILTER_STATUS, status);
+      this.$store.dispatch(FETCH_TICKETS);
+    },
+
+    removeStatusTag(status) {
+      this.$store.commit(REMOVE_FILTER_STATUS, status);
+      this.$store.dispatch(FETCH_TICKETS);
     },
 
     addConfigTag(_tag, configFilterType) {
@@ -523,14 +533,20 @@ export default {
       }
       this.configFilters.splice(indexOfTag, 1);
     },
+
     clearAllTags() {
-      this.configFilters = [];
+      this.$store.commit(CLEAR_FILTER_COMPANIES);
+      this.$store.commit(CLEAR_FILTER_CREATORS);
+      this.$store.commit(CLEAR_FILTER_ASSIGNEES);
+      this.$store.commit(CLEAR_FILTER_CATEGORIES);
+      this.$store.commit(CLEAR_FILTER_PRODUCTS);
+      this.$store.commit(CLEAR_FILTER_STATUSES);
+      this.$store.commit(CLEAR_FILTER_TYPES);
     }
   },
   mounted() {
-    ApiService.get("/tickets").then(response => {
-      this.$data.tickets = response.data.results;
-    });
+    this.$store.dispatch(FETCH_TICKETS);
+    this.$store.dispatch(FETCH_ASSOCIATED_COMPANIES);
   }
 };
 </script>

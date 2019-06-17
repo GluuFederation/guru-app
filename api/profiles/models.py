@@ -406,7 +406,7 @@ class Membership(models.Model):
 
     def __str__(self):
         return '{} - {} at {}'.format(
-            self.role.name,
+            self.role.name if self.role else '',
             self.user,
             self.company
         )

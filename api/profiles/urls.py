@@ -3,6 +3,7 @@ from rest_framework.routers import DefaultRouter
 from profiles.views import companies as cv
 from profiles.views import users as uv
 from profiles.views import auth as av
+from profiles.views import tickets as tv
 
 router = DefaultRouter()
 router.register('companies', cv.CompanyViewSet, base_name='companies')
@@ -48,6 +49,17 @@ urlpatterns = [
         'auth/logout/',
         av.LogoutUrlAPIView.as_view(),
         name='logout'
+    ),
+    path(
+        'access-list/users/',
+        tv.UserAccessList.as_view(),
+        name='access-list-users'
+    ),
+
+    path(
+        'access-list/companies/',
+        tv.CompanyAccessList.as_view(),
+        name='access-list-companies'
     ),
     path('', include(router.urls)),
 ]
