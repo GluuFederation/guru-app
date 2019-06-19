@@ -94,7 +94,7 @@ export const actions = {
   [GET_LOGIN_URL]() {
     return new Promise((resolve, reject) => {
       const params = { app: "guru" };
-      ApiService.query(`auth/get-authorization-url`, { params })
+      ApiService.query(`auth/get-authorization-url`, { ...params })
         .then(({ data }) => {
           resolve(data.results);
         })
@@ -107,7 +107,7 @@ export const actions = {
     return new Promise((resolve, reject) => {
       let queryParams = params;
       queryParams.app = "guru";
-      ApiService.query(`auth/login-callback`, { params: queryParams })
+      ApiService.query(`auth/login-callback`, { ...queryParams })
         .then(({ data }) => {
           context.commit(SET_AUTH, data.results);
           resolve(data);
@@ -120,7 +120,7 @@ export const actions = {
   [GET_SIGNUP_URL]() {
     return new Promise((resolve, reject) => {
       const params = { app: "guru" };
-      ApiService.query(`auth/get-signup-url`, { params })
+      ApiService.query(`auth/get-signup-url`, { ...params })
         .then(({ data }) => {
           resolve(data.results);
         })
@@ -154,7 +154,7 @@ export const mutations = {
   [PURGE_AUTH](state) {
     state.token = "";
     state = { ...initialState };
-    window.location.href = "";
+    window.location.href = "/";
   }
 };
 

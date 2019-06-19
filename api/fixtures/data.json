@@ -391,8 +391,8 @@
     "model": "info.TicketStatus",
     "pk": 5,
     "fields": {
-      "name": "Close",
-      "slug": "close"
+      "name": "Closed",
+      "slug": "closed"
     }
   }
 ]

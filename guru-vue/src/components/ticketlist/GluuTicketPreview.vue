@@ -23,12 +23,9 @@
           <div class="card-right-side-gluu d-flex justify-content-between">
             <div>
               <div class="card-right-side-badge-container">
-                <gluu-badge class="badge-status" v-bind:class="ticket.status">{{ ticket.status }}</gluu-badge>
-                <gluu-badge
-                  class="badge-issue-type"
-                  v-bind:class="ticket.issueType"
-                >{{ ticket.issueType }}</gluu-badge>
-                <gluu-badge class="badge-category">{{ ticket.category }}</gluu-badge>
+                <gluu-badge class="badge-status" v-bind:class="status.slug">{{ status.name }}</gluu-badge>
+                <gluu-badge class="badge-issue-type" v-bind:class="type.slug">{{ type.name }}</gluu-badge>
+                <gluu-badge class="badge-category">{{ category.name }}</gluu-badge>
               </div>
 
               <div class="card-right-side-issue-title-gluu">
@@ -36,14 +33,14 @@
               </div>
 
               <div class="card-right-side-issue-details-gluu">
-                <span class="card-right-side-issue-details-number-gluu">#{{ ticket.id }}</span>
+                <span class="card-right-side-issue-details-number-gluu">#{{ ticket.id }}</span>&ensp;
                 <span class="card-right-side-issue-details-date-gluu">
                   <strong>Created</strong>
-                  : {{ ticket.createdAt }}
+                  : {{ createdOn }}
                 </span>
-                <span class="card-right-side-issue-details-time-gluu">
+                <span class="card-right-side-issue-details-time-gluu" v-if="ticket.updatedBy">
                   <strong>Last updated</strong>
-                  : {{ ticket.updatedAt }} by {{ ticket.updatedBy}}
+                  : {{ updatedOn }} by {{ ticket.updatedBy.fullName }}
                 </span>
               </div>
             </div>
@@ -53,15 +50,15 @@
             >
               <label>
                 <b-img :src="commentSvgUrl"/>
-                {{ ticket.responseNo }} {{ ticket.responseNo | pluralize('en', ['response', 'responses']) }}
+                {{ ticket.responseNumber }} {{ ticket.responseNumber | pluralize('en', ['response', 'responses']) }}
               </label>
               <label>
                 <b-img :src="clapSvgUrl"/>
-                {{ ticket.votes }} {{ ticket.votes | pluralize('en', ['vote', 'votes']) }}
+                {{ ticket.voters.length }} {{ ticket.voters.length | pluralize('en', ['vote', 'votes']) }}
               </label>
-              <label>
+              <label v-if="ticket.assignee">
                 <b-img :src="userSvgUrl"/>
-                <span>Asim zaka</span>
+                <span>{{ ticket.assignee.fullName }}</span>
                 <b-img :src="arrowDownUrl"/>
               </label>
             </div>
@@ -73,6 +70,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import moment from "moment";
 import GluuBadge from "@/components/includes/badge/GluuBadge";
 export default {
   name: "GluuTicketPreview",
@@ -87,6 +86,7 @@ export default {
     badges: Array
   },
   computed: {
+    ...mapGetters(["products", "categories", "statuses", "types"]),
     ticketLink() {
       return {
         name: "TicketDetail",
@@ -109,6 +109,34 @@ export default {
     },
     arrowDownUrl() {
       return require("@/assets/images/arrow_down.svg");
+    },
+    category() {
+      const category = this.categories.find(
+        cat => cat.id === this.ticket.category
+      );
+      if (category) return category;
+      return {};
+    },
+    product() {
+      const product = this.products.find(p => p.id === this.ticket.product);
+      if (product) return product;
+      return {};
+    },
+    status() {
+      const status = this.statuses.find(s => s.id === this.ticket.status);
+      if (status) return status;
+      return {};
+    },
+    type() {
+      const type = this.types.find(t => t.id === this.ticket.issueType);
+      if (type) return type;
+      return {};
+    },
+    createdOn() {
+      return moment(this.ticket.createdOn).format("LLL");
+    },
+    updatedOn() {
+      return moment(this.ticket.updatedOn).fromNow();
     }
   }
 };

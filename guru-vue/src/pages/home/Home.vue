@@ -55,7 +55,7 @@
 import { mapGetters } from "vuex";
 import paths from "@/router/paths";
 import { FETCH_INFO_ALL } from "@/store/actions.type";
-import { SET_FILTER_CATEGORY } from "@/store/mutations.type";
+import { ADD_FILTER_CATEGORY } from "@/store/mutations.type";
 import GluuSvg from "@/components/includes/gluusvg/GluuSvg";
 export default {
   components: {
@@ -78,7 +78,7 @@ export default {
       if (event) {
         event.preventDefault();
       }
-      this.$store.commit(SET_FILTER_CATEGORY, category);
+      this.$store.commit(ADD_FILTER_CATEGORY, category);
       this.$router.push(paths.TICKET_LIST);
     }
   }

@@ -12,6 +12,7 @@ import "./plugins/vuemultiselect";
 import "./plugins/vuectkdatetimepicker";
 import "./plugins/vuefilterpluralize";
 import "./plugins/vueloadingoverlay";
+import "./plugins/vuejspaginate";
 
 Vue.config.productionTip = false;
 ApiService.init();

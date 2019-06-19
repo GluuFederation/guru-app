@@ -12,7 +12,7 @@
   background-color: white;
 
   input,
-  input:focus{
+  input:focus {
     margin-left: 16px;
     width: 80%;
     border: none;
@@ -30,21 +30,20 @@
 }
 
 #order-by-select-container {
-  label{
+  label {
     margin-bottom: 0;
     margin-right: 0.5em;
-    @include gluu-text(14px,$font-color-base,$font-family-lato-Medium);
+    @include gluu-text(14px, $font-color-base, $font-family-lato-Medium);
   }
   .select-tags-gluu {
-    border: 1px solid #DADDDE;
+    border: 1px solid #daddde;
     width: 50%;
-    .multiselect__select:before{
+    .multiselect__select:before {
       display: initial;
       z-index: 8;
       top: 3px;
     }
-    .multiselect__select{
-
+    .multiselect__select {
       /* height: 100%; */
       right: -0.2em;
       text-align: center;
@@ -53,14 +52,13 @@
       justify-content: center;
     }
   }
-
 }
 
 //Sidebar Component//
 #sidebar-container {
   .card-gluu {
-    background-color: #FFFFFF;
-    @include box-shadow (0, 2px, 4px, rgba(236,239,242,1));
+    background-color: #ffffff;
+    @include box-shadow(0, 2px, 4px, rgba(236, 239, 242, 1));
     @include border-radius(3px);
     border: none;
   }
@@ -69,57 +67,57 @@
     padding: 0;
   }
 
-  .select-tags-gluu{
-    border: 1px solid #EEF1F2;
+  .select-tags-gluu {
+    border: 1px solid #eef1f2;
     border-radius: 3px;
   }
-  
-  .select-tags-gluu.multiselect--active{
-    border: 1px solid #00B372;
+
+  .select-tags-gluu.multiselect--active {
+    border: 1px solid #00b372;
     border-radius: 3px;
-    caret-color: #00B372;
+    caret-color: #00b372;
   }
-  
-  .multiselect__single{
+
+  .multiselect__single {
     margin-bottom: 0;
   }
-  
-  .multiselect__select{
+
+  .multiselect__select {
     padding: 9px 14px;
   }
-  
-  .multiselect__select:before{
+
+  .multiselect__select:before {
     display: none;
   }
-  
-  .single-select .multiselect__select:before{
+
+  .single-select .multiselect__select:before {
     display: initial;
   }
-  
-  .multiselect__tags{
+
+  .multiselect__tags {
     border: none;
     padding: 9px 14px;
     border-radius: 3px;
   }
-  
-  .multiselect__placeholder{
+
+  .multiselect__placeholder {
     margin-bottom: 0;
     padding-top: 0;
-    color: #6A7570;
-  }
-  
-   .multiselect__input{
-    max-width: 100%;
-    @include gluu-text(15px, $font-color-base, $font-family-lato-Medium)
+    color: #6a7570;
   }
 
-  .card-title-gluu{
+  .multiselect__input {
+    max-width: 100%;
+    @include gluu-text(15px, $font-color-base, $font-family-lato-Medium);
+  }
+
+  .card-title-gluu {
     background-color: white;
     padding: 1.25rem;
     @include gluu-text(20px, $font-color-base, $font-family-lato-semi-bold);
   }
-  
-  .card-labels-gluu{
+
+  .card-labels-gluu {
     @include gluu-text(16px, $font-color-base, $font-family-lato-Medium);
   }
   .multiselect__tags-wrap {
@@ -148,22 +146,21 @@
   }
 }
 
-#tickets-footer{
+#tickets-footer {
   margin-top: 3em;
 
-  #pagination-container{
-
-    label{
+  #pagination-container {
+    label {
       margin-bottom: 0;
       margin-right: 0.5em;
-      @include gluu-text(14px,$font-color-base,$font-family-lato-Medium);
+      @include gluu-text(14px, $font-color-base, $font-family-lato-Medium);
     }
 
     .select-tags-gluu {
-      border: 1px solid #DADDDE;
-     width: 4em;
+      border: 1px solid #daddde;
+      width: 4em;
 
-      .multiselect__select{
+      .multiselect__select {
         width: 40px;
         /* height: 100%; */
         right: -0.2em;
@@ -173,59 +170,88 @@
         justify-content: center;
       }
 
-      .multiselect__tags{
-        span{
+      .multiselect__tags {
+        span {
           padding: 0;
           margin: 0;
         }
       }
 
-      .multiselect__select:before{
+      .multiselect__select:before {
         display: initial;
         z-index: 8;
         top: 3px;
       }
     }
 
-    .pagination-container-second-span{
-      @include gluu-text(15px,#787E7B, $font-family-lato-Medium);
+    .pagination-container-second-span {
+      @include gluu-text(15px, #787e7b, $font-family-lato-Medium);
       margin-left: 0.5em;
     }
   }
 
-  #pagination-container-2{
-    .ellipsis-container{
+  #pagination-container-2 {
+    .ellipsis-container {
       align-self: flex-end !important;
-      span{
-        color:#B8C1BD;
+      span {
+        color: #b8c1bd;
         font-size: 15px;
         font-family: "LatoWebMedium";
       }
     }
-    .pagination-container-2-buttons{
+    ul {
       display: flex;
-      justify-content: center;
-      margin:0 0.25em;
-      height: 36px;
-      border-radius: 3px;
-      border: 1px solid #daddde;
-      background-color: #ffffff;
-      position: relative;
-      align-items: center;
-      line-height: 1.25;
-      width: 100%;
-      cursor: pointer;
-      a{
-        color: #181F1C;
-        font-size: 15px;
-        font-family: "LatoWebMedium";
-        text-decoration: none;
-        text-align: center;
+
+      li {
+        list-style: none;
+        justify-content: center;
+        margin: 0 0.25em;
+        border-radius: 3px;
+        border: 1px solid #daddde;
+        background-color: #ffffff;
+        position: relative;
+        width: 100%;
+        cursor: pointer;
+        a {
+          color: #181f1c;
+          font-size: 15px;
+          height: 36px;
+          font-family: "LatoWebMedium";
+          text-decoration: none;
+          text-align: center;
+          padding: 0 0.5em;
+          display: inline-block;
+          line-height: 2;
+
+          &:focus {
+            outline: none;
+          }
+
+          &:hover {
+            color: $normal-btn-bg-color;
+          }
+        }
+
+        &.active {
+          color: #fff;
+          background-color: $normal-btn-bg-color;
+          border-color: $normal-btn-bg-color;
+
+          a {
+            color: #fff;
+          }
+        }
       }
     }
-    #pagination-container-2-nextbtn{
+    #pagination-container-2-nextbtn {
       width: 100%;
-      @include gluu-btn($normal-btn-bg-color, $normal-btn-color, $normal-btn-hover-color, $normal-btn-disabled-bg-color, $normal-btn-disabled-color);
+      @include gluu-btn(
+        $normal-btn-bg-color,
+        $normal-btn-color,
+        $normal-btn-hover-color,
+        $normal-btn-disabled-bg-color,
+        $normal-btn-disabled-color
+      );
       padding: 5px 12px;
       text-align: center;
       cursor: pointer;

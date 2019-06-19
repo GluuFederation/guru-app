@@ -47,7 +47,7 @@ class UserAccessList(APIView):
             if last_name:
                 users = users.filter(last_name=last_name)[:20]
 
-        serializer = self.serializer_class(users)
+        serializer = self.serializer_class(users, many=True)
         return Response({
             'results': serializer.data
         }, status=status.HTTP_200_OK)
@@ -74,10 +74,10 @@ class CompanyAccessList(APIView):
         if q:
             queryset = self.get_queryset()
             companies = queryset.filter(
-                name=q
+                name__contains=q
             )
 
-        serializer = self.serializer_class(companies)
+        serializer = self.serializer_class(companies, many=True)
         return Response({
             'results': serializer.data
         }, status=status.HTTP_200_OK)

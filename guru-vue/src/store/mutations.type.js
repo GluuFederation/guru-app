@@ -29,9 +29,9 @@ export const SET_TICKET_CONTENT = "setTicketContent";
 export const SET_ANSWERS = "setAnswers";
 export const SET_HISTORY = "setHistory";
 
-export const SET_PAGINATION_COUNT = "setHistory";
-export const SET_PAGINATION_ITEMS = "setHistory";
-export const SET_PAGINATION_PAGE = "setHistory";
+export const SET_PAGINATION_COUNT = "setPaginationCount";
+export const SET_PAGINATION_ITEMS = "setPaginationItems";
+export const SET_PAGINATION_PAGE = "setPaginationPage";
 export const ADD_FILTER_COMPANY = "addFilterCompany";
 export const ADD_FILTER_CREATOR = "addFilterCreator";
 export const ADD_FILTER_ASSIGNEE = "addFilterAssignee";

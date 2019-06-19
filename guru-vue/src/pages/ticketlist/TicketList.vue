@@ -17,7 +17,8 @@
                           v-for="(item, key) in ticketFilters.companies"
                           :key="key"
                           :tag="item"
-                          v-on:clear="removeCompanyTag"
+                          :action="actions.removeFilterCompany"
+                          v-on:clear="filterAction"
                         ></gluu-tag>
                       </div>
                       <multi-select
@@ -26,12 +27,14 @@
                         :options="companyOptions"
                         :multiple="true"
                         :show-labels="false"
-                        :close-on-select="false"
+                        :close-on-select="true"
                         :clear-on-select="false"
                         :preserve-search="true"
                         placeholder="Select company"
                         label="name"
                         track-by="id"
+                        @search-change="getCompanyList"
+                        @input="filterChange"
                       >
                         <template slot="selection" slot-scope="{ values, search, isOpen }">
                           <span
@@ -49,7 +52,8 @@
                           v-for="(item, key) in ticketFilters.createdBy"
                           :key="key"
                           :tag="item"
-                          v-on:clear="removeAuthorTag"
+                          :action="actions.removeFilterCreator"
+                          v-on:clear="filterAction"
                         ></gluu-tag>
                       </div>
                       <multi-select
@@ -58,12 +62,14 @@
                         :options="createdByOptions"
                         :multiple="true"
                         :show-labels="false"
-                        :close-on-select="false"
+                        :close-on-select="true"
                         :clear-on-select="false"
                         :preserve-search="true"
                         placeholder="Select Author"
                         label="name"
                         track-by="id"
+                        @search-change="getCreatorList"
+                        @input="filterChange"
                       >
                         <template slot="selection" slot-scope="{ values, search, isOpen }">
                           <span
@@ -81,21 +87,24 @@
                           v-for="(item, key) in ticketFilters.assignedTo"
                           :key="key"
                           :tag="item"
-                          v-on:clear="removeAssignedToTag"
+                          :action="actions.removeFilterAssignee"
+                          v-on:clear="filterAction"
                         ></gluu-tag>
                       </div>
                       <multi-select
-                        class="select-tags-gluu single-select"
+                        class="select-tags-gluu"
                         v-model="ticketFilters.assignedTo"
                         :options="assignedToOptions"
                         :multiple="true"
                         :show-labels="false"
-                        :close-on-select="false"
+                        :close-on-select="true"
                         :clear-on-select="false"
                         :preserve-search="true"
                         placeholder="Select Assignee"
                         label="name"
                         track-by="id"
+                        @search-change="getAssigneeList"
+                        @input="filterChange"
                       >
                         <template slot="selection" slot-scope="{ values, search, isOpen }">
                           <span
@@ -113,23 +122,23 @@
                           v-for="(item, key) in ticketFilters.categories"
                           :key="key"
                           :tag="item"
-                          v-on:clear="removeCategoryTag"
+                          :action="actions.removeFilterCategory"
+                          v-on:clear="filterAction"
                         ></gluu-tag>
                       </div>
                       <multi-select
-                        class="select-tags-gluu single-select"
+                        class="select-tags-gluu"
                         v-model="ticketFilters.categories"
                         :options="categories"
                         :multiple="true"
                         :show-labels="false"
-                        :close-on-select="false"
+                        :close-on-select="true"
                         :clear-on-select="false"
                         :preserve-search="true"
                         placeholder="Select category"
                         label="name"
                         track-by="slug"
-                        @select="addCategoryTag"
-                        @remove="removeCategoryTag"
+                        @input="filterChange"
                       >
                         <template slot="selection" slot-scope="{ values, search, isOpen }">
                           <span
@@ -142,20 +151,28 @@
 
                     <b-form-group>
                       <label class="card-labels-gluu">Product</label>
+                      <div>
+                        <gluu-tag
+                          v-for="(item, key) in ticketFilters.products"
+                          :key="key"
+                          :tag="item"
+                          :action="actions.removeFilterProduct"
+                          v-on:clear="filterAction"
+                        ></gluu-tag>
+                      </div>
                       <multi-select
-                        class="select-tags-gluu single-select"
+                        class="select-tags-gluu"
                         v-model="ticketFilters.products"
                         :options="products"
                         :multiple="true"
                         :show-labels="false"
-                        :close-on-select="false"
+                        :close-on-select="true"
                         :clear-on-select="false"
                         :preserve-search="true"
                         placeholder="Select product"
                         label="name"
-                        track-by="slug"
-                        @select="addProductTag"
-                        @remove="removeProductTag"
+                        track-by="id"
+                        @input="filterChange"
                       >
                         <template slot="selection" slot-scope="{ values, search, isOpen }">
                           <span
@@ -168,20 +185,28 @@
 
                     <b-form-group>
                       <label class="card-labels-gluu">Issue Type</label>
+                      <div>
+                        <gluu-tag
+                          v-for="(item, key) in ticketFilters.types"
+                          :key="key"
+                          :tag="item"
+                          :action="actions.removeFilterType"
+                          v-on:clear="filterAction"
+                        ></gluu-tag>
+                      </div>
                       <multi-select
-                        class="select-tags-gluu single-select"
+                        class="select-tags-gluu"
                         v-model="ticketFilters.types"
                         :options="types"
                         :multiple="true"
                         :show-labels="false"
-                        :close-on-select="false"
+                        :close-on-select="true"
                         :clear-on-select="false"
                         :preserve-search="true"
                         placeholder="Select issue type"
                         label="name"
                         track-by="slug"
-                        @select="addIssueTypeTag"
-                        @remove="removeIssueTypeTag"
+                        @input="filterChange"
                       >
                         <template slot="selection" slot-scope="{ values, search, isOpen }">
                           <span
@@ -194,20 +219,28 @@
 
                     <b-form-group>
                       <label class="card-labels-gluu">Status</label>
+                      <div>
+                        <gluu-tag
+                          v-for="(item, key) in ticketFilters.statuses"
+                          :key="key"
+                          :tag="item"
+                          :action="actions.removeFilterStatus"
+                          v-on:clear="filterAction"
+                        ></gluu-tag>
+                      </div>
                       <multi-select
-                        class="select-tags-gluu single-select"
+                        class="select-tags-gluu"
                         v-model="ticketFilters.statuses"
                         :options="statuses"
                         :multiple="true"
                         :show-labels="false"
-                        :close-on-select="false"
+                        :close-on-select="true"
                         :clear-on-select="false"
                         :preserve-search="true"
                         placeholder="Select status"
                         label="name"
                         track-by="slug"
-                        @select="addStatusTag"
-                        @remove="removeStatusTag"
+                        @input="filterChange"
                       >
                         <template slot="selection" slot-scope="{ values, search, isOpen }">
                           <span
@@ -221,12 +254,13 @@
                     <b-form-group>
                       <label class="card-labels-gluu">Created date:</label>
                       <VueCtkDateTimePicker
-                        v-model="dateRange"
+                        v-model="ticketFilters.dateRange"
                         format="YYYY-MM-DD"
                         formatted="ll"
                         :range="true"
                         :customShortcuts="customShortcuts"
                         color="#00B372"
+                        @input="filterChange"
                       />
                     </b-form-group>
                   </b-card-body>
@@ -241,7 +275,12 @@
                   <b-row class="mb-lg-4">
                     <b-col lg="5">
                       <div id="search-bar-container" class="d-flex align-items-center">
-                        <b-form-input v-model="query" type="text" placeholder="Type the keyword"/>
+                        <b-form-input
+                          v-model="ticketFilters.searchText"
+                          type="text"
+                          placeholder="Type the keyword"
+                          @input="filterChange"
+                        />
                         <span>
                           <b-img :src="searchIconUrl"></b-img>
                         </span>
@@ -264,6 +303,7 @@
                           :allowEmpty="false"
                           :searchable="false"
                           openDirection="bottom"
+                          @input="filterChange"
                         ></multi-select>
                       </div>
                     </b-col>
@@ -273,11 +313,92 @@
                     <b-col cols="12">
                       <div id="tags-container" class="d-flex">
                         <div>Results Found</div>
-                        <!--<div class="d-flex flex-wrap">
-                          <div class="ml-lg-2" v-for="(item, key) in configFilters" :key="key">
-                            <gluu-tag :tag="item" v-on:clear="removeConfigTag" type="outline"></gluu-tag>
+                        <div class="d-flex flex-wrap">
+                          <div
+                            class="ml-lg-2"
+                            v-for="(item, key) in ticketFilters.companies"
+                            :key="key"
+                          >
+                            <gluu-tag
+                              :tag="item"
+                              :action="actions.removeFilterCompany"
+                              v-on:clear="filterAction"
+                              type="outline"
+                            ></gluu-tag>
                           </div>
-                        </div>-->
+                          <div
+                            class="ml-lg-2"
+                            v-for="(item, key) in ticketFilters.createdBy"
+                            :key="key"
+                          >
+                            <gluu-tag
+                              :tag="item"
+                              :action="actions.removeFilterCreator"
+                              v-on:clear="filterAction"
+                              type="outline"
+                            ></gluu-tag>
+                          </div>
+                          <div
+                            class="ml-lg-2"
+                            v-for="(item, key) in ticketFilters.assignedTo"
+                            :key="key"
+                          >
+                            <gluu-tag
+                              :tag="item"
+                              :action="actions.removeFilterAssignee"
+                              v-on:clear="filterAction"
+                              type="outline"
+                            ></gluu-tag>
+                          </div>
+                          <div
+                            class="ml-lg-2"
+                            v-for="(item, key) in ticketFilters.categories"
+                            :key="key"
+                          >
+                            <gluu-tag
+                              :tag="item"
+                              :action="actions.removeFilterCategory"
+                              v-on:clear="filterAction"
+                              type="outline"
+                            ></gluu-tag>
+                          </div>
+                          <div
+                            class="ml-lg-2"
+                            v-for="(item, key) in ticketFilters.statuses"
+                            :key="key"
+                          >
+                            <gluu-tag
+                              :tag="item"
+                              :action="actions.removeFilterStatus"
+                              v-on:clear="filterAction"
+                              type="outline"
+                            ></gluu-tag>
+                          </div>
+                          <div
+                            class="ml-lg-2"
+                            v-for="(item, key) in ticketFilters.types"
+                            :key="key"
+                          >
+                            <gluu-tag
+                              :tag="item"
+                              :action="actions.removeFilterType"
+                              v-on:clear="filterAction"
+                              type="outline"
+                            ></gluu-tag>
+                          </div>
+                          <div
+                            class="ml-lg-2"
+                            v-for="(item, key) in ticketFilters.products"
+                            :key="key"
+                          >
+                            <gluu-tag
+                              :tag="item"
+                              :action="actions.removeFilterProduct"
+                              v-on:clear="filterAction"
+                              type="outline"
+                            ></gluu-tag>
+                          </div>
+                        </div>
                         <div class="ml-auto clear-all-btn">
                           <a v-on:click="clearAllTags">Clear all</a>
                         </div>
@@ -308,32 +429,19 @@
                           :searchable="false"
                           openDirection="bottom"
                         ></multi-select>
-                        <span class="pagination-container-second-span">of 150 tickets</span>
+                        <span
+                          class="pagination-container-second-span"
+                        >of {{ticketPagination.totalCount}} tickets</span>
                       </div>
                     </b-col>
 
                     <b-col lg="5" offset-lg="2">
                       <div id="pagination-container-2" class="d-flex align-items-center">
-                        <div class="pagination-container-2-buttons">
-                          <a href>1</a>
-                        </div>
-                        <div class="pagination-container-2-buttons">
-                          <a href>2</a>
-                        </div>
-                        <div class="pagination-container-2-buttons">
-                          <a href>3</a>
-                        </div>
-
-                        <div class="ellipsis-container">
-                          <span>.......</span>
-                        </div>
-                        <div class="pagination-container-2-buttons">
-                          <a href>14</a>
-                        </div>
-                        <div class="pagination-container-2-buttons">
-                          <a href>15</a>
-                        </div>
-                        <div id="pagination-container-2-nextbtn">Next</div>
+                        <paginate
+                          :pageCount="pages"
+                          :clickHandler="changePage"
+                          :forcePage="ticketPagination.currentPage"
+                        ></paginate>
                       </div>
                     </b-col>
                   </b-row>
@@ -349,10 +457,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import {
-  FETCH_TICKETS,
-  FETCH_ASSOCIATED_COMPANIES
-} from "@/store/actions.type";
+import { FETCH_TICKETS } from "@/store/actions.type";
 import {
   SET_PAGINATION_ITEMS,
   SET_PAGINATION_PAGE,
@@ -393,19 +498,20 @@ export default {
   },
   data() {
     return {
-      query: "",
       companyOptions: [],
       createdByOptions: [],
-      assignedToOptions: [],
+      assignedToOptions: [
+        { id: "-1", name: "Unassigned" },
+        { id: "-2", name: "Assigned" }
+      ],
       orderByOptions: [
         { name: "Most recent", value: "+recent" },
-        { name: "Least recent", value: "-recent" },
-        { name: "User (a-z)", value: "a-z" },
-        { name: "User (z-a)", value: "z-a" }
+        { name: "Least recent", value: "-recent" }
+        // { name: "User (a-z)", value: "a-z" },
+        // { name: "User (z-a)", value: "z-a" }
       ],
-      dateRange: null,
       customShortcuts: [
-        { label: "Today", value: "day", isSelected: true },
+        { label: "Today", value: "day", isSelected: false },
         { label: "Yesterday", value: "-day", isSelected: false },
         { label: "This Week", value: "week", isSelected: false },
         { label: "Last Week", value: "-week", isSelected: false },
@@ -413,7 +519,23 @@ export default {
         { label: "Last Month", value: "-month", isSelected: false },
         { label: "Last 30 days", value: 30, isSelected: false }
       ],
-      paginationOptions: [10, 15, 20, 25]
+      paginationOptions: [10, 15, 20, 25],
+      actions: {
+        addFilterCategory: ADD_FILTER_CATEGORY,
+        addFilterProduct: ADD_FILTER_PRODUCT,
+        addFilterType: ADD_FILTER_TYPE,
+        addFilterCreator: ADD_FILTER_CREATOR,
+        addFilterAssignee: ADD_FILTER_ASSIGNEE,
+        addFilterStatus: ADD_FILTER_STATUS,
+        addFilterCompany: ADD_FILTER_COMPANY,
+        removeFilterCategory: REMOVE_FILTER_CATEGORY,
+        removeFilterProduct: REMOVE_FILTER_PRODUCT,
+        removeFilterType: REMOVE_FILTER_TYPE,
+        removeFilterCreator: REMOVE_FILTER_CREATOR,
+        removeFilterAssignee: REMOVE_FILTER_ASSIGNEE,
+        removeFilterStatus: REMOVE_FILTER_STATUS,
+        removeFilterCompany: REMOVE_FILTER_COMPANY
+      }
     };
   },
   computed: {
@@ -428,110 +550,56 @@ export default {
     ]),
     searchIconUrl() {
       return require("@/assets/images/search.svg");
+    },
+    pages() {
+      return Math.ceil(
+        this.ticketPagination.totalCount / this.ticketPagination.itemsPerPage
+      );
     }
   },
   methods: {
-    removeCompanyTag(company) {
-      this.$store.commit(REMOVE_FILTER_COMPANY, company);
+    filterAction(tag, action) {
+      this.$store.commit(action, tag);
       this.$store.dispatch(FETCH_TICKETS);
     },
 
-    removeAuthorTag(author) {
-      this.$store.commit(REMOVE_FILTER_CREATOR, author);
+    filterChange() {
       this.$store.dispatch(FETCH_TICKETS);
     },
 
-    removeAssignedToTag(assignee) {
-      this.$store.commit(REMOVE_FILTER_ASSIGNEE, assignee);
+    changePage(page) {
+      this.$store.commit(SET_PAGINATION_PAGE, page);
       this.$store.dispatch(FETCH_TICKETS);
     },
 
-    addCategoryTag(category) {
-      this.$store.commit(ADD_FILTER_CATEGORY, category);
-      this.$store.dispatch(FETCH_TICKETS);
+    getCreatorList(q) {
+      this.axios.get("access-list/users/", { params: { q } }).then(response => {
+        this.$data.createdByOptions = response.data.results.map(item => ({
+          ...item,
+          name: item.fullName
+        }));
+      });
     },
 
-    removeCategoryTag(category) {
-      this.$store.commit(REMOVE_FILTER_CATEGORY, category);
-      this.$store.dispatch(FETCH_TICKETS);
+    getAssigneeList(q) {
+      this.axios.get("access-list/users/", { params: { q } }).then(response => {
+        this.$data.assignedToOptions = [
+          { id: "-1", name: "Unassigned" },
+          { id: "-2", name: "Assigned" },
+          response.data.results.map(item => ({
+            ...item,
+            name: item.fullName
+          }))
+        ];
+      });
     },
 
-    addProductTag(product) {
-      this.$store.commit(ADD_FILTER_PRODUCT, product);
-      this.$store.dispatch(FETCH_TICKETS);
-    },
-    removeProductTag(product) {
-      this.$store.commit(REMOVE_FILTER_PRODUCT, product);
-      this.$store.dispatch(FETCH_TICKETS);
-    },
-
-    addIssueTypeTag(type) {
-      this.$store.commit(ADD_FILTER_TYPE, type);
-      this.$store.dispatch(FETCH_TICKETS);
-    },
-    removeIssueTypeTag(type) {
-      this.$store.commit(REMOVE_FILTER_TYPE, type);
-      this.$store.dispatch(FETCH_TICKETS);
-    },
-
-    addStatusTag(status) {
-      this.$store.commit(ADD_FILTER_STATUS, status);
-      this.$store.dispatch(FETCH_TICKETS);
-    },
-
-    removeStatusTag(status) {
-      this.$store.commit(REMOVE_FILTER_STATUS, status);
-      this.$store.dispatch(FETCH_TICKETS);
-    },
-
-    addConfigTag(_tag, configFilterType) {
-      const tag = {
-        configFilterType: configFilterType,
-        name: _tag.name,
-        slug: _tag.slug
-      };
-      this.configFilters.push(tag);
-    },
-
-    removeConfigTag(tag, configFilterType = null) {
-      var indexOfTag;
-      if (configFilterType === null) {
-        indexOfTag = this.configFilters.indexOf(tag);
-        switch (tag.configFilterType) {
-          case "category":
-            this.category.splice(
-              this.category.findIndex(item => item.slug === tag.slug),
-              1
-            );
-            break;
-          case "product":
-            this.product.splice(
-              this.product.findIndex(item => item.slug === tag.slug),
-              1
-            );
-            break;
-          case "issueType":
-            this.issueType.splice(
-              this.issueType.findIndex(item => item.slug === tag.slug),
-              1
-            );
-            break;
-          case "status":
-            this.status.splice(
-              this.status.findIndex(item => item.slug === tag.slug),
-              1
-            );
-            break;
-        }
-      } else {
-        indexOfTag = this.configFilters.findIndex(
-          item =>
-            item.configFilterType === configFilterType &&
-            item.name === tag.name &&
-            item.slug === tag.slug
-        );
-      }
-      this.configFilters.splice(indexOfTag, 1);
+    getCompanyList(q) {
+      this.axios
+        .get("access-list/companies/", { params: { q } })
+        .then(response => {
+          this.$data.companyOptions = response.data.results;
+        });
     },
 
     clearAllTags() {
@@ -542,11 +610,11 @@ export default {
       this.$store.commit(CLEAR_FILTER_PRODUCTS);
       this.$store.commit(CLEAR_FILTER_STATUSES);
       this.$store.commit(CLEAR_FILTER_TYPES);
+      this.$store.dispatch(FETCH_TICKETS);
     }
   },
   mounted() {
     this.$store.dispatch(FETCH_TICKETS);
-    this.$store.dispatch(FETCH_ASSOCIATED_COMPANIES);
   }
 };
 </script>

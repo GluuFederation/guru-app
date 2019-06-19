@@ -1,13 +1,18 @@
 <template>
   <span class="multiselect__tag gluu-tag" v-bind:class="type">
     <span>{{ tag.name }}</span>
-    <i aria-hidden="true" tabindex="1" class="multiselect__tag-icon" v-on:click="$emit('clear', tag)"></i>
+    <i
+      aria-hidden="true"
+      tabindex="1"
+      class="multiselect__tag-icon"
+      v-on:click="$emit('clear', tag, action)"
+    ></i>
   </span>
 </template>
 
 <script>
 export default {
-  name: 'GluuTag',
+  name: "GluuTag",
   props: {
     tag: {
       type: Object,
@@ -16,13 +21,17 @@ export default {
     type: {
       type: String,
       default: "solid"
+    },
+    action: {
+      type: String,
+      required: true
     }
   }
-}
+};
 </script>
 
 <style lang="scss">
-@import '@/assets/scss/global.scss';
+@import "@/assets/scss/global.scss";
 
 .gluu-tag.solid {
   @include gluu-tag();

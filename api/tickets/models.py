@@ -165,6 +165,10 @@ class Ticket(TimestampedModel):
             num += 1
         return unique_slug
 
+    @property
+    def response_number(self):
+        return self.answers.filter(is_deleted=False).count()
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = self._get_unique_slug()

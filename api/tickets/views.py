@@ -87,22 +87,26 @@ class TicketViewSet(viewsets.ModelViewSet):
         assignees = params.get('assignees', '')
         if assignees:
             assignee_list = assignees.split(',')
-            queryset = queryset.filter(
-                assignee_id__in=assignee_list
-            )
+            # Check for unassigned
+            if '-1' in assignee_list:
+                queryset = queryset.filter(
+                    assignee=None
+                )
+            # Check for assigned
+            elif '-2' in assignee_list:
+                queryset = queryset.exclude(
+                    assignee=None
+                )
+            else:
+                queryset = queryset.filter(
+                    assignee_id__in=assignee_list
+                )
 
         categories = params.get('categories', '')
         if categories:
             category_list = categories.split(',')
             queryset = queryset.filter(
                 category_id__in=category_list
-            )
-
-        types = params.get('types', '')
-        if types:
-            type_list = types.split(',')
-            queryset = queryset.filter(
-                issue_type_id__in=type_list
             )
 
         types = params.get('types', '')
@@ -119,7 +123,7 @@ class TicketViewSet(viewsets.ModelViewSet):
                 status_id__in=status_list
             )
 
-        products = params.get('statuses', '')
+        products = params.get('products', '')
         if products:
             product_list = products.split(',')
             queryset = queryset.filter(
@@ -151,7 +155,7 @@ class TicketViewSet(viewsets.ModelViewSet):
         q = params.get('q', '')
         if q:
             queryset = queryset.filter(
-                Q(text__contains=q) |
+                Q(body__contains=q) |
                 Q(title__contains=q)
             )
 

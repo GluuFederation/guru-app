@@ -2,70 +2,68 @@
 
 .badge-status {
   &.new {
-    @include gluu-badge(rgba(31, 191, 221, 0.15), #1FBFDD);
+    @include gluu-badge(rgba(31, 191, 221, 0.15), #1fbfdd);
   }
   &.in-progress {
-    @include gluu-badge(rgba(65, 204, 34, 0.15), #41CC22);
+    @include gluu-badge(rgba(65, 204, 34, 0.15), #41cc22);
   }
   &.assigned {
-    @include gluu-badge(rgba(0,0,0,0.15), #4A4A4A);
+    @include gluu-badge(rgba(0, 0, 0, 0.15), #4a4a4a);
   }
-  &.pending{
-    @include gluu-badge(rgba(255, 188, 22, 0.15), #FFBC16);
+  &.pending {
+    @include gluu-badge(rgba(255, 188, 22, 0.15), #ffbc16);
   }
-  &.close{
-    @include gluu-badge(rgba(255, 89, 28, 0.15), #FF591C);
+  &.closed {
+    @include gluu-badge(rgba(255, 89, 28, 0.15), #ff591c);
   }
 }
 
-
 .badge-issue-type {
   &.production-outage {
-    @include gluu-badge(rgba(0,0,0,0.15), #4A4A4A);
+    @include gluu-badge(rgba(0, 0, 0, 0.15), #4a4a4a);
   }
   &.production-impaired {
-    @include gluu-badge(rgba(120, 110, 255, 0.15), #786EFF);
+    @include gluu-badge(rgba(120, 110, 255, 0.15), #786eff);
   }
-  &.pre-production {
-    
-    @include gluu-badge(rgba(183, 54, 255, 0.15), #B736FF);
+  &.pre-production-issue {
+    @include gluu-badge(rgba(183, 54, 255, 0.15), #b736ff);
   }
-  &.minor{
-    @include gluu-badge(rgba(65, 204, 34, 0.15), #41CC22);
+  &.minor-issue {
+    @include gluu-badge(rgba(65, 204, 34, 0.15), #41cc22);
   }
-  &.new-development{
-    @include gluu-badge(rgba(255, 89, 28, 0.15), #FF591C);
+  &.new-development-issue {
+    @include gluu-badge(rgba(255, 89, 28, 0.15), #ff591c);
   }
 }
 
 .badge-category {
-  @include gluu-badge(rgba(0,0,0,0.15), #4A4A4A);
+  @include gluu-badge(rgba(0, 0, 0, 0.15), #4a4a4a);
 }
 
-.lightblue{
-  @include gluu-badge(rgba(31, 191, 221, 0.15), #1FBFDD);
+.lightblue {
+  @include gluu-badge(rgba(31, 191, 221, 0.15), #1fbfdd);
 }
 
-.purple{
-  @include gluu-badge(rgba(183, 54, 255, 0.15), #B736FF);
+.purple {
+  @include gluu-badge(rgba(183, 54, 255, 0.15), #b736ff);
 }
 
-.grey{
-  @include gluu-badge(rgba(0,0,0,0.15), #4A4A4A);
+.grey {
+  @include gluu-badge(rgba(0, 0, 0, 0.15), #4a4a4a);
 }
 
-.blue{
-  @include gluu-badge(rgba(120, 110, 255, 0.15), #786EFF);
+.blue {
+  @include gluu-badge(rgba(120, 110, 255, 0.15), #786eff);
 }
 
-.green{
-  @include gluu-badge(rgba(65, 204, 34, 0.15), #41CC22);
+.green {
+  @include gluu-badge(rgba(65, 204, 34, 0.15), #41cc22);
 }
 
-.yellow{
-  @include gluu-badge(rgba(255, 188, 22, 0.15), #FFBC16);
+.yellow {
+  @include gluu-badge(rgba(255, 188, 22, 0.15), #ffbc16);
 }
 
-.red{
-  @include gluu-badge(rgba(255, 89, 28, 0.15), #FF591C);
+.red {
+  @include gluu-badge(rgba(255, 89, 28, 0.15), #ff591c);
 }

@@ -6,6 +6,7 @@ import {
   SET_TICKETS,
   SET_PAGINATION_ITEMS,
   SET_PAGINATION_PAGE,
+  SET_PAGINATION_COUNT,
   ADD_FILTER_COMPANY,
   ADD_FILTER_CREATOR,
   ADD_FILTER_ASSIGNEE,
@@ -27,8 +28,6 @@ import {
   CLEAR_FILTER_PRODUCTS,
   CLEAR_FILTER_TYPES,
   CLEAR_FILTER_STATUSES,
-  SET_FILTER_START_DATE,
-  SET_FILTER_END_DATE,
   SET_SEARCH_TEXT
 } from "@/store/mutations.type";
 
@@ -47,8 +46,7 @@ export const initialState = {
     products: [],
     types: [],
     statuses: [],
-    startDate: "",
-    endDate: "",
+    dateRange: null,
     searchText: "",
     orderBy: { name: "Most recent", value: "+recent" }
   }
@@ -89,17 +87,21 @@ export const actions = {
       params.types = filters.types.map(type => type.id).join();
     if (filters.statuses.length)
       params.statuses = filters.statuses.map(status => status.id).join();
-    if (filters.searchText) params.searchText = filters.searchText;
-    if (filters.startDate) params.start = filters.startDate;
-    if (filters.endDate) params.end = filters.endDate;
+    if (filters.searchText) params.q = filters.searchText;
+    if (filters.dateRange) {
+      params.start = filters.dateRange.start;
+      params.end = filters.dateRange.end;
+    }
 
     params.offset = (pagination.currentPage - 1) * pagination.itemsPerPage;
     params.limit = pagination.itemsPerPage;
+    params.ordering = filters.orderBy.value;
 
     return new Promise((resolve, reject) => {
       ApiService.query("tickets", params)
         .then(({ data }) => {
           context.commit(SET_TICKETS, data.results);
+          context.commit(SET_PAGINATION_COUNT, data.count);
           resolve(data);
         })
         .catch(({ response }) => {
@@ -118,6 +120,9 @@ export const mutations = {
   },
   [SET_PAGINATION_PAGE](state, currentPage) {
     state.pagination = { ...state.pagination, currentPage };
+  },
+  [SET_PAGINATION_COUNT](state, totalCount) {
+    state.pagination = { ...state.pagination, totalCount };
   },
   [ADD_FILTER_COMPANY](state, company) {
     let companies = [...state.filters.companies];
@@ -204,31 +209,25 @@ export const mutations = {
     state.filters = { ...filters };
   },
   [CLEAR_FILTER_COMPANIES](state) {
-    state.companies = [];
+    state.filters = { ...state.filters, companies: [] };
   },
   [CLEAR_FILTER_CREATORS](state) {
-    state.createdBy = [];
+    state.filters = { ...state.filters, createdBy: [] };
   },
   [CLEAR_FILTER_ASSIGNEES](state) {
-    state.assignedTo = [];
+    state.filters = { ...state.filters, assignedTo: [] };
   },
   [CLEAR_FILTER_CATEGORIES](state) {
-    state.categories = [];
+    state.filters = { ...state.filters, categories: [] };
   },
   [CLEAR_FILTER_PRODUCTS](state) {
-    state.products = [];
+    state.filters = { ...state.filters, products: [] };
   },
   [CLEAR_FILTER_STATUSES](state) {
-    state.statuses = [];
+    state.filters = { ...state.filters, statuses: [] };
   },
   [CLEAR_FILTER_TYPES](state) {
-    state.types = [];
-  },
-  [SET_FILTER_START_DATE](state, startDate) {
-    state.filters = { ...state.filters, startDate };
-  },
-  [SET_FILTER_END_DATE](state, endDate) {
-    state.filters = { ...state.filters, endDate };
+    state.filters = { ...state.filters, types: [] };
   },
   [SET_SEARCH_TEXT](state, searchText) {
     state.filters = { ...state.filters, searchText };
