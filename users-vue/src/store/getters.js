@@ -4,7 +4,7 @@ const getters = {
   },
   address(state) {
     if (state.user && state.user.address) {
-      return state.user.address.line_1;
+      return state.user.address.line1;
     }
     return "N/A";
   },

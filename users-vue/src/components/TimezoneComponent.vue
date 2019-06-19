@@ -6,7 +6,9 @@
       v-on:md-changed="changed(timezone)"
       :md-options="timezoneList"
       :class="customClass"
-      class="timezone-picker">
+      class="timezone-picker"
+      v-bind:autocomplete="autocomplete"
+    >
       <label>Timezone</label>
       <span class="md-error" v-if="requiredError">Select your timezone</span>
       <span class="md-error" v-if="!requiredError && choiceError">Select the timezone from the list</span>
@@ -16,11 +18,11 @@
 </template>
 
 <script>
-import 'vue-awesome/icons/sort-down'
-import {timezoneList} from '@/plugins/customvalidators'
+import "vue-awesome/icons/sort-down";
+import { timezoneList } from "@/plugins/customvalidators";
 
 export default {
-  name: 'TimezoneComponent',
+  name: "TimezoneComponent",
   props: {
     customClass: {
       type: Object
@@ -35,24 +37,29 @@ export default {
       type: [Boolean, Number]
     }
   },
-  data () {
+  data() {
     return {
-      timezone: '',
+      timezone: "",
       timezoneList: []
+    };
+  },
+  computed: {
+    autocomplete() {
+      return this.globalProps.isChrome ? "disabled" : "off";
     }
   },
-  mounted () {
-    this.timezone = this.$store.state.auth.user.timezone
-    this.timezoneList = timezoneList
+  mounted() {
+    this.timezone = this.$store.state.auth.user.timezone;
+    this.timezoneList = timezoneList;
   },
   methods: {
-    changed (value) {
-      this.$emit('selected', value)
+    changed(value) {
+      this.$emit("selected", value);
     },
-    opened () {
-      this.timezone += ' '
-      this.timezone = this.timezone.substring(0, this.timezone.length - 1)
+    opened() {
+      this.timezone += " ";
+      this.timezone = this.timezone.substring(0, this.timezone.length - 1);
     }
   }
-}
+};
 </script>

@@ -14,6 +14,7 @@ import "./plugins/vuelidate";
 import "./plugins/vuejsmodal";
 import "./plugins/vueloadingoverlay";
 import "./plugins/vueerrorpage";
+import "./plugins/globals";
 
 // Vue-Awesome
 import Icon from "vue-awesome/components/Icon";

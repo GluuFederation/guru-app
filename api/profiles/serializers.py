@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from rest_framework import fields
+from django_countries.serializer_fields import CountryField
 
 from guru.utils import generate_hash
 from profiles import models as m
@@ -11,7 +12,7 @@ from billing.serializers import AccountSerializer
 class AddressSerializer(serializers.ModelSerializer):
     created_on = serializers.ReadOnlyField(source='created_on_str')
     last_update = serializers.ReadOnlyField(source='last_update_str')
-    country = serializers.ReadOnlyField(source='country_name')
+    country = CountryField()
 
     class Meta:
         model = m.Address
@@ -44,14 +45,14 @@ class ShortCompanySerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     company = ShortCompanySerializer()
-    # address = AddressSerializer()
+    address = AddressSerializer(required=False)
     account = AccountSerializer(source='get_account', read_only=True)
 
     class Meta:
         model = m.User
         fields = (
             'id', 'first_name', 'last_name', 'other_names',
-            'email', 'token', 'company', 'timezone',  # 'address',
+            'email', 'token', 'company', 'timezone',  'address',
             'idp_uuid', 'account'
         )
 
@@ -74,23 +75,24 @@ class UserSerializer(serializers.ModelSerializer):
         instance.timezone = validated_data.get(
             'timezone', instance.timezone
         )
-        # address_data = validated_data.get(
-        #     'address', None
-        # )
-        # if address_data is not None:
-        #     if instance.address is not None:
-        #         address_serializer = AddressSerializer(
-        #             instance=instance.address,
-        #             data=address_data,
-        #             partial=True
-        #         )
-        #     else:
-        #         address_serializer = AddressSerializer(
-        #             data=address_data
-        #         )
-        #     address_serializer.is_valid(raise_exception=True)
-        #     address = address_serializer.save()
-        # instance.address = address
+        address_data = validated_data.get(
+            'address', None
+        )
+
+        if address_data is not None:
+            if instance.address is not None:
+                address_serializer = AddressSerializer(
+                    instance=instance.address,
+                    data=address_data,
+                    partial=True
+                )
+            else:
+                address_serializer = AddressSerializer(
+                    data=address_data
+                )
+            address_serializer.is_valid(raise_exception=True)
+            address = address_serializer.save()
+            instance.address = address
 
         instance.save()
         return instance

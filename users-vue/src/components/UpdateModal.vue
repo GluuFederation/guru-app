@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="submit">
+  <form @submit.prevent="submit" autocomplete="off">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Change {{ modalType }}</h5>
@@ -46,7 +46,7 @@
         <div v-else-if="modalType === 'address'">
           <country-list-component
             v-on:selected="setCountry"
-            :customClass="{'md-invalid': $v.country.$error || Object.keys(errors).includes('address') }"
+            :customClass="{'md-invalid': $v.country.$error }"
             :requiredError="!$v.country.required"
             :choiceError="!$v.country.countryChoiceValidator"
             :backendError="$v.country.required && $v.country.countryChoiceValidator && countryError"
@@ -87,7 +87,7 @@
         <div v-else-if="modalType === 'timezone'">
           <timezone-component
             v-on:selected="setTimezone"
-            :customClass="{'md-invalid': $v.timezone.$error || Object.keys(errors).includes('timezone')}"
+            :customClass="{'md-invalid': $v.timezone.$error}"
             :requiredError="!$v.timezone.required"
             :choiceError="!$v.timezone.timezoneChoiceValidator"
             :backendError="$v.timezone.required && $v.timezone.timezoneChoiceValidator && timezoneError"
@@ -169,10 +169,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["currentUser"]),
-    ...mapState({
-      errors: state => state.auth.errors
-    })
+    ...mapGetters(["currentUser"])
   },
   mounted() {
     this.firstName = this.$store.state.auth.user.firstName;
@@ -180,8 +177,8 @@ export default {
     if (this.$store.state.auth.user.address) {
       this.country = this.$store.state.auth.user.address.country;
       this.city = this.$store.state.auth.user.address.city;
-      this.address1 = this.$store.state.auth.user.address.line_1;
-      this.address2 = this.$store.state.auth.user.address.line_2;
+      this.address1 = this.$store.state.auth.user.address.line1;
+      this.address2 = this.$store.state.auth.user.address.line2;
       this.state = this.$store.state.auth.user.address.state;
       this.zipCode = this.$store.state.auth.user.address.zipCode;
     }
@@ -198,8 +195,8 @@ export default {
 
         if (this.modalType === "address") {
           user.address = {
-            line_1: this.address1,
-            line_2: this.address2,
+            line1: this.address1,
+            line2: this.address2,
             country: this.country,
             city: this.city,
             state: this.state,

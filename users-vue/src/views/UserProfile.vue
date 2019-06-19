@@ -57,8 +57,8 @@ import { GET_LOGIN_URL } from "@/store/actions.type";
 export default {
   name: "UserProfile",
   components: {
-    ProfileInfoItem
-    // UpdateModal
+    ProfileInfoItem,
+    UpdateModal
   },
   data() {
     return {

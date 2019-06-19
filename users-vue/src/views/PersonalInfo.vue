@@ -153,8 +153,8 @@ export default {
         this.$store
           .dispatch(UPDATE_USER, {
             address: {
-              line_1: this.address1,
-              line_2: this.address2,
+              line1: this.address1,
+              line2: this.address2,
               country: this.country,
               city: this.city,
               state: this.state,

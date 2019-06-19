@@ -6,7 +6,9 @@
       v-on:md-changed="changed"
       :md-options="countriesNameList"
       :class="customClass"
-      class="state-picker">
+      class="state-picker"
+      :autocomplete="autocomplete"
+    >
       <label>Country</label>
       <span class="md-error" v-if="requiredError">Enter your country</span>
       <span class="md-error" v-if="!requiredError && choiceError">Select the country from the list</span>
@@ -16,10 +18,13 @@
 </template>
 
 <script>
-import {countriesNameList, countriesCodeList} from '@/plugins/customvalidators'
+import {
+  countriesNameList,
+  countriesCodeList
+} from "@/plugins/customvalidators";
 
 export default {
-  name: 'CountryListComponent',
+  name: "CountryListComponent",
   props: {
     customClass: {
       type: Object
@@ -34,45 +39,50 @@ export default {
       type: [Boolean, Number]
     }
   },
-  data () {
+  data() {
     return {
-      country: '',
+      country: "",
       countriesNameList: [],
       countriesCodeList: []
-    }
+    };
   },
-  mounted () {
-    this.countriesNameList = countriesNameList
-    this.countriesCodeList = countriesCodeList
+  mounted() {
+    this.countriesNameList = countriesNameList;
+    this.countriesCodeList = countriesCodeList;
 
     if (this.$store.state.auth.user.address) {
-      const countryCode = this.$store.state.auth.user.address.country
+      const countryCode = this.$store.state.auth.user.address.country;
       if (countryCode) {
         for (let i = 0; i < this.countriesCodeList.length; i++) {
           if (this.countriesCodeList[i] === countryCode) {
-            this.country = this.countriesNameList[i]
-            break
+            this.country = this.countriesNameList[i];
+            break;
           }
         }
       }
     }
   },
   methods: {
-    changed (value) {
+    changed(value) {
       if (value) {
         for (let i = 0; i < this.countriesNameList.length; i++) {
           if (this.countriesNameList[i] === value) {
-            value = this.countriesCodeList[i]
-            break
+            value = this.countriesCodeList[i];
+            break;
           }
         }
       }
-      this.$emit('selected', value)
+      this.$emit("selected", value);
     },
-    opened () {
-      this.country += ' '
-      this.country = this.country.substring(0, this.country.length - 1)
+    opened() {
+      this.country += " ";
+      this.country = this.country.substring(0, this.country.length - 1);
+    }
+  },
+  computed: {
+    autocomplete() {
+      return this.globalProps.isChrome ? "disabled" : "off";
     }
   }
-}
+};
 </script>

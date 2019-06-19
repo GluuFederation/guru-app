@@ -35,15 +35,17 @@ class Address(TimestampedModel):
     )
     city = models.CharField(
         _('city'),
-        max_length=100
+        max_length=255
     )
-    state = USStateField(
+    state = models.CharField(
         _('state'),
-        blank=True
+        blank=True,
+        max_length=255
     )
-    zip_code = USZipCodeField(
+    zip_code = models.CharField(
         _('zip code'),
-        blank=True
+        blank=True,
+        max_length=64
     )
     country = CountryField(_('country'))
 
