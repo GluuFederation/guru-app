@@ -267,8 +267,7 @@ class TicketViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['POST'])
     def vote(self, request, slug=None):
         ticket = self.get_object()
-        data = request.data.get('vote', {})
-        vote = data.get('vote', True)
+        vote = request.data.get('vote', True)
         if vote:
             ticket.voters.add(request.user)
             msg = 'You voted this ticket'
@@ -279,13 +278,16 @@ class TicketViewSet(viewsets.ModelViewSet):
             else:
                 msg = 'You have not voted this ticket yet'
 
-        return Response({'results': msg}, status=status.HTTP_200_OK)
+        serializer = self.serializer_class(ticket)
+        return Response(
+            {'results': serializer.data, 'detail': msg},
+            status=status.HTTP_200_OK
+        )
 
     @action(detail=True, methods=['POST'])
     def subscribe(self, request, slug=None):
         ticket = self.get_object()
-        data = request.data.get('subscribe', {})
-        subscribe = data.get('subscribe', True)
+        subscribe = request.data.get('subscribe', True)
         if subscribe:
             ticket.subscribers.add(request.user)
             msg = 'You are subscribed to this ticket'
@@ -296,7 +298,11 @@ class TicketViewSet(viewsets.ModelViewSet):
             else:
                 msg = 'You are not subscribed to this ticket yet'
 
-        return Response({'results': msg}, status=status.HTTP_200_OK)
+        serializer = self.serializer_class(ticket)
+        return Response(
+            {'results': serializer.data, 'detail': msg},
+            status=status.HTTP_200_OK
+        )
 
     @action(detail=True, methods=['PUT'], parser_classes=[MultiPartParser])
     def upload(self, request, slug=None):
@@ -311,8 +317,9 @@ class TicketViewSet(viewsets.ModelViewSet):
                 ticket=obj
             )
 
+        serializer = self.serializer_class(obj)
         return Response(
-            {'results': 'Successfully uploaded'},
+            {'results': serializer.data, 'detail': 'Successfully uploaded'},
             status=status.HTTP_200_OK
         )
 
