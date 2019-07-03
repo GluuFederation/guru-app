@@ -33,13 +33,18 @@ export interface ClearPaymentInvoicesAction {
   type: string;
 }
 
+export interface ResetPaymentStateAction {
+  type: string;
+}
+
 export type PaymentAction =
   | SetPaymentCardsAction
   | ClearPaymentCardsAction
   | SetPaymentInvoicesAction
   | SetPaymentReceiptsAction
   | ClearPaymentInvoicesAction
-  | ClearPaymentReceiptsAction;
+  | ClearPaymentReceiptsAction
+  | ResetPaymentStateAction;
 
 export const setPaymentCards = (
   cards: Array<PaymentCard>
@@ -72,6 +77,10 @@ export const clearPaymentInvoices = (): ClearPaymentInvoicesAction => ({
 
 export const clearPaymentReceipts = (): ClearPaymentReceiptsAction => ({
   type: actions.CLEAR_PAYMENT_RECEIPTS
+});
+
+export const resetPaymentState = (): ResetPaymentStateAction => ({
+  type: actions.RESET_PAYMENTS_STATE
 });
 
 export const fetchPaymentCards = (company: Company) => {

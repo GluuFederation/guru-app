@@ -8,7 +8,7 @@ import storage from "redux-persist/lib/storage";
 import createRootReducer from "./reducers";
 
 const persistConfig = {
-  key: "rbht-app-root",
+  key: "gluu-app-root",
   blacklist: ["router"],
   storage
 };

@@ -290,13 +290,11 @@ class Attachment(models.Model):
     ticket = models.ForeignKey(
         Ticket,
         on_delete=models.CASCADE,
-        related_name='attachments',
         null=True
     )
 
     answer = models.ForeignKey(
         Answer,
         on_delete=models.CASCADE,
-        related_name='attachments',
         null=True
     )

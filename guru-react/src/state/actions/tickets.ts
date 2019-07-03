@@ -161,6 +161,10 @@ export interface SetTicketHistoryAction {
   history: Array<TicketHistory>;
 }
 
+export interface ResetTicketsStateAction {
+  type: string;
+}
+
 export type TicketsAction =
   | AddFilterCompanyAction
   | AddFilterAssigneeAction
@@ -190,7 +194,8 @@ export type TicketsAction =
   | SetTicketAnswersAction
   | AddTicketAnswerAction
   | RemoveTicketAnswerAction
-  | SetTicketHistoryAction;
+  | SetTicketHistoryAction
+  | ResetTicketsStateAction;
 
 export const addFilterCompany = (company: Company): AddFilterCompanyAction => ({
   type: actions.ADD_FILTER_COMPANY,
@@ -373,6 +378,10 @@ export const setTicketHistory = (
 ): SetTicketHistoryAction => ({
   type: actions.SET_TICKET_HISTORY,
   history
+});
+
+export const resetTicketsState = (): ResetTicketsStateAction => ({
+  type: actions.RESET_TICKETS_STATE
 });
 
 export const fetchTickets = (filters: TicketsFilterState) => {

@@ -1,12 +1,27 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
+import axios, { AxiosResponse, AxiosError } from "axios";
+import { push } from "connected-react-router";
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import App, { paths } from "./routes";
+import store from "./state/store";
+import { logout } from "./state/actions/logout";
+import * as serviceWorker from "./serviceWorker";
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
+ReactDOM.render(<App />, document.getElementById("root"));
+
+axios.interceptors.response.use(
+  function(response): AxiosResponse<any> | Promise<AxiosResponse<any>> {
+    return response;
+  },
+  function(error: AxiosError) {
+    if (error.response && error.response.status === 401) {
+      logout()(store.dispatch);
+      store.dispatch(push(paths.HOMEPAGE));
+    } else {
+      return Promise.reject(error);
+    }
+  }
+);
+
 serviceWorker.unregister();
