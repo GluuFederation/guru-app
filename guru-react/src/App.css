@@ -1,6 +1,8 @@
 body {
   margin: 0;
   font-family: "Lato", sans-serif;
+  background-color: #f4f5f7;
+  padding-top: 4em;
 }
 
 @media only screen and (max-width: 600px) {
