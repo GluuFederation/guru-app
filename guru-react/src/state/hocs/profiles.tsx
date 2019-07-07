@@ -18,6 +18,7 @@ import {
   getInvitees,
   leaveAssociatedCompany
 } from "../actions/profiles";
+import { logout } from "../actions/logout";
 
 export interface WithProfilesState {
   profiles: ProfilesState;
@@ -39,9 +40,15 @@ export interface WithProfilesDispatch {
 
 export type WithProfilesProps = WithProfilesState & WithProfilesDispatch;
 
-export interface WithUserProps {
+export interface WithUserState {
   user: User | null;
 }
+
+export interface WithUserDispatch {
+  logout: () => Promise<string>;
+}
+
+export type WithUserProps = WithUserState & WithUserDispatch;
 
 export const withProfiles = <P extends WithProfilesProps>(
   WrappedComponent: React.ComponentType<P>
@@ -86,9 +93,12 @@ export const withUser = <P extends WithUserProps>(WrappedComponent: React.Compon
     }
   }
 
-  return connect<WithUserProps, {}, any, any>(
+  return connect<WithUserState, WithUserDispatch, any, any>(
     (state: AppState) => ({
       user: state.profiles.user
+    }),
+    (dispatch: ThunkDispatch<{}, {}, AnyAction>) => ({
+      logout: () => dispatch(logout()),
     })
   )(WithUser)
 }

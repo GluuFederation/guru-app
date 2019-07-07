@@ -3,10 +3,12 @@ import { Switch, Route, RouteComponentProps } from "react-router-dom";
 import { ConnectedRouter } from "connected-react-router";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
+import { ThemeProvider } from '@material-ui/styles';
 
 import store, { history, persistor } from "./state/store";
 
 import "./App.css";
+import theme from "./theme";
 
 import Home from "./pages/Home";
 import NotFound from "./pages/Home";
@@ -58,6 +60,7 @@ class Routes extends React.Component {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <ConnectedRouter history={history}>
+            <ThemeProvider theme={theme}>
             <ErrorBoundary>
               <Switch>
                 <Route exact path={paths.HOMEPAGE} component={Home} />
@@ -68,6 +71,7 @@ class Routes extends React.Component {
                 <Route component={NotFound} />
               </Switch>
             </ErrorBoundary>
+            </ThemeProvider>
           </ConnectedRouter>
         </PersistGate>
       </Provider>
