@@ -25,7 +25,7 @@ class ErrorBoundary extends Component<{}, State> {
         <div>
           <div className="container text-center">
             <div className="get-started-title">
-              <img src={Logo} />
+              <img src={Logo} alt="" />
               <p>Oops, something happened!</p>
               <a href="/">Restart App</a>
             </div>

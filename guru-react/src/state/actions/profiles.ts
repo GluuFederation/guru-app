@@ -160,7 +160,6 @@ export const login = (queryParams: object) => {
     const params = { ...queryParams, app: "guru" };
     return axios.get(URL, { params }).then(response => {
       const user = response.data.results;
-      const company = user.company;
       const token = user.token;
       axios.defaults.headers.common["Authorization"] = `Token ${token}`;
       dispatch(saveUser(user));

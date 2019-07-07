@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 
-import { WithProfilesProps, withProfiles } from "../state/hocs/profiles";
-import { paths } from "../routes";
-import Page from "../components/Page";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import { WithProfilesProps, withProfiles } from "../../state/hocs/profiles";
+import { paths } from "../../routes";
+import Page from "../../components/Page";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 
 type Props = WithProfilesProps & RouteComponentProps;
 

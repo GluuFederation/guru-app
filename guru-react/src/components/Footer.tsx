@@ -11,11 +11,11 @@ import { paths } from "../routes";
 import NavLink from "./NavLink";
 
 import Logo from "../assets/images/logo.png";
-import GithubLogo from "../assets/images/github-logo.svg";
-import YoutubeLogo from "../assets/images/youtube-logo.svg";
-import SlideshareLogo from "../assets/images/slideshare-logo.svg";
-import TwitterLogo from "../assets/images/twitter-logo.svg";
-import LinkedinLogo from "../assets/images/linkedin-logo.svg";
+import { ReactComponent as GithubLogo } from "../assets/images/github-logo.svg";
+import { ReactComponent as YoutubeLogo } from "../assets/images/youtube-logo.svg";
+import { ReactComponent as SlideshareLogo } from "../assets/images/slideshare-logo.svg";
+import { ReactComponent as TwitterLogo } from "../assets/images/twitter-logo.svg";
+import { ReactComponent as LinkedinLogo } from "../assets/images/linkedin-logo.svg";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -30,7 +30,12 @@ const styles = (theme: Theme) =>
     },
     socialIcons: {
       height: "1em",
-      marginBottom: "-.1em"
+      marginBottom: "-.1em",
+      display: "inline",
+      width: "auto",
+      "&:hover g": {
+        fill: theme.palette.primary.main
+      }
     }
   });
 
@@ -148,39 +153,19 @@ class Footer extends Component<Props> {
               <p style={{ textAlign: "right" }}>
                 Follow Us
                 <NavLink to={paths.HOMEPAGE}>
-                  <img
-                    src={GithubLogo}
-                    alt=""
-                    className={classes.socialIcons}
-                  />
+                  <GithubLogo className={classes.socialIcons} />
                 </NavLink>
                 <NavLink to={paths.HOMEPAGE}>
-                  <img
-                    src={TwitterLogo}
-                    alt=""
-                    className={classes.socialIcons}
-                  />
+                  <TwitterLogo className={classes.socialIcons} />
                 </NavLink>
                 <NavLink to={paths.HOMEPAGE}>
-                  <img
-                    src={YoutubeLogo}
-                    alt=""
-                    className={classes.socialIcons}
-                  />
+                  <YoutubeLogo className={classes.socialIcons} />
                 </NavLink>
                 <NavLink to={paths.HOMEPAGE}>
-                  <img
-                    src={LinkedinLogo}
-                    alt=""
-                    className={classes.socialIcons}
-                  />
+                  <LinkedinLogo className={classes.socialIcons} />
                 </NavLink>
                 <NavLink to={paths.HOMEPAGE}>
-                  <img
-                    src={SlideshareLogo}
-                    alt=""
-                    className={classes.socialIcons}
-                  />
+                  <SlideshareLogo className={classes.socialIcons} />
                 </NavLink>
               </p>
             </Grid>

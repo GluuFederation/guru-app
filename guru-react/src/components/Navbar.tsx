@@ -1,9 +1,5 @@
-import React, { Component, ReactElement } from "react";
-import {
-  withRouter,
-  RouteComponentProps,
-  Link as RouterLink
-} from "react-router-dom";
+import React, { Component } from "react";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 
 import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
@@ -24,7 +20,7 @@ import Hidden from "@material-ui/core/Hidden";
 import Container from "@material-ui/core/Container";
 
 import MenuIcon from "@material-ui/icons/Menu";
-import AppsIcon from "@material-ui/icons/Apps";
+// import AppsIcon from "@material-ui/icons/Apps";
 import HeadsetMicIcon from "@material-ui/icons/HeadsetMic";
 import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
 import DashboardIcon from "@material-ui/icons/Dashboard";

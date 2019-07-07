@@ -2,10 +2,7 @@ import React from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import axios from "axios";
 
-import { AppState } from "../state/types/state";
-import { User } from "../state/types/profiles";
 import { paths } from "../routes";
-import { logout } from "../state/actions/logout";
 import { WithProfilesProps, withProfiles } from "../state/hocs/profiles";
 
 type Props = WithProfilesProps & RouteComponentProps;

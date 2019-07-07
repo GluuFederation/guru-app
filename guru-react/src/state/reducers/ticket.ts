@@ -1,7 +1,6 @@
 import actions from "../actions/constants";
 import * as ticketActions from "../actions/ticket";
 import { CreateTicketState } from "../types/state";
-import { TicketFilterOrder } from "../types/tickets";
 
 const initialState: CreateTicketState = {
   step: 1,
@@ -39,7 +38,7 @@ const ticketReducer = (
       const category = (action as ticketActions.SetTicketCategoryAction)
         .category;
       return { ...state, category };
-    case actions.SET_TICKET_CREATE_CREATOR:
+    case actions.SET_TICKET_CREATE_GLUU_SERVER:
       const gluuServer = (action as ticketActions.SetTicketGluuServerAction)
         .gluuServer;
       return { ...state, gluuServer };

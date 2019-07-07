@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React from "react";
 import { Switch, Route, RouteComponentProps } from "react-router-dom";
 import { ConnectedRouter } from "connected-react-router";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import { ThemeProvider } from '@material-ui/styles';
+import { ThemeProvider } from "@material-ui/styles";
 
 import store, { history, persistor } from "./state/store";
 
@@ -61,16 +61,16 @@ class Routes extends React.Component {
         <PersistGate loading={null} persistor={persistor}>
           <ConnectedRouter history={history}>
             <ThemeProvider theme={theme}>
-            <ErrorBoundary>
-              <Switch>
-                <Route exact path={paths.HOMEPAGE} component={Home} />
-                {routes.map((route: RouteType, index) => {
-                  const exact = route.exact === undefined || route.exact;
-                  return <Route key={index} {...route} exact={exact} />;
-                })}
-                <Route component={NotFound} />
-              </Switch>
-            </ErrorBoundary>
+              <ErrorBoundary>
+                <Switch>
+                  <Route exact path={paths.HOMEPAGE} component={Home} />
+                  {routes.map((route: RouteType, index) => {
+                    const exact = route.exact === undefined || route.exact;
+                    return <Route key={index} {...route} exact={exact} />;
+                  })}
+                  <Route component={NotFound} />
+                </Switch>
+              </ErrorBoundary>
             </ThemeProvider>
           </ConnectedRouter>
         </PersistGate>
