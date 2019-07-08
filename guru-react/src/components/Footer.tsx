@@ -6,6 +6,7 @@ import { Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
+import { colors } from "../theme";
 
 import { paths } from "../routes";
 import NavLink from "./NavLink";
@@ -22,11 +23,12 @@ const styles = (theme: Theme) =>
     root: {
       flexGrow: 1,
       position: "absolute",
-      backgroundColor: "#fff",
+      backgroundColor: colors.MAIN_BACKGROUND,
       bottom: 0,
       left: 0,
       right: 0,
-      padding: "2em"
+      padding: "2em",
+      borderTop: `1px solid ${colors.VERY_LIGHT_TEXT}`
     },
     socialIcons: {
       height: "1em",

@@ -4,11 +4,12 @@ import { Link as RouterLink } from "react-router-dom";
 import Link from "@material-ui/core/Link";
 import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
+import { colors } from "../theme";
 
 const styles = (theme: Theme) =>
   createStyles({
     root: {
-      color: "#181F1C",
+      color: colors.DARK_TEXT,
       "&:hover": {
         color: theme.palette.primary.main,
         textDecoration: "none"
@@ -21,7 +22,7 @@ const styles = (theme: Theme) =>
     footer: {
       marginTop: "1em",
       marginBottom: "1em",
-      color: "#6f757b",
+      color: colors.LIGHTER_TEXT,
       display: "block"
     }
   });

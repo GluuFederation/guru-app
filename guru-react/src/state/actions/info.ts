@@ -110,7 +110,7 @@ export const fetchInfo = () => {
       const results = response.data.results;
       dispatch(setCategories(results.categories));
       dispatch(setProducts(results.products));
-      dispatch(setIssueTypes(results.issueTypes));
+      dispatch(setIssueTypes(results.types));
       dispatch(setStatuses(results.statuses));
       dispatch(setPermissions(results.permissions));
       dispatch(setUserRoles(results.userRoles));

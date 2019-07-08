@@ -18,6 +18,7 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Hidden from "@material-ui/core/Hidden";
 import Container from "@material-ui/core/Container";
+import { colors } from "../theme";
 
 import MenuIcon from "@material-ui/icons/Menu";
 // import AppsIcon from "@material-ui/icons/Apps";
@@ -73,8 +74,8 @@ const styles = (theme: Theme) =>
       top: "3em !important"
     },
     button: {
-      color: "#fff",
-      backgroundColor: "#00b572",
+      color: colors.MAIN_BACKGROUND,
+      backgroundColor: colors.MAIN_COLOR,
       textTransform: "capitalize"
     }
   });
@@ -128,7 +129,10 @@ class Navbar extends Component<Props, State> {
       <div className={classes.root}>
         <AppBar
           position="fixed"
-          style={{ color: "#00b572", backgroundColor: "#fff" }}
+          style={{
+            color: colors.MAIN_COLOR,
+            backgroundColor: colors.MAIN_BACKGROUND
+          }}
           elevation={1}
         >
           <Container
