@@ -18,6 +18,7 @@ from info.models import UserRole
 
 
 class TicketSearchView(HaystackViewSet):
+    load_all = True
     index_models = [m.Ticket]
     serializer_class = s.TicketSearchSerializer
     filter_backends = [HaystackAutocompleteFilter]
@@ -236,6 +237,27 @@ class TicketViewSet(viewsets.ModelViewSet):
         )
 
         serializer = s.TicketHistorySerializer(
+            page,
+            many=True
+        )
+
+        return self.get_paginated_response(serializer.data)
+
+    @action(detail=False, methods=['GET'])
+    def search(self, request, slug=None):
+        params = request.query_params
+        queryset = self.get_queryset().filter(
+            get_tickets_query(self.request.user)
+        )
+        q = params.get('q', '')
+        if q:
+            queryset = queryset.filter(
+                Q(body__contains=q) |
+                Q(title__contains=q)
+            )
+
+        page = self.paginate_queryset(queryset)
+        serializer = s.TicketQSearchSerializer(
             page,
             many=True
         )

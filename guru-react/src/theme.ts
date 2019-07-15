@@ -18,6 +18,25 @@ const muiTheme = createMuiTheme({
   typography: {
     fontFamily: '"Lato", sans-serif'
   },
+  overrides: {
+    MuiInputBase: {
+      input: {
+        backgroundColor: "#fff",
+        borderRadius: ".2em"
+      },
+      root: {
+        backgroundColor: "#fff"
+      }
+    },
+    MuiInputAdornment: {
+      root: {
+        color: colors.MAIN_COLOR,
+        "& path, & g": {
+          fill: colors.MAIN_COLOR
+        }
+      }
+    }
+  },
   shadows: [
     "none",
     "0px 1px 3px 0px rgba(0,0,0,0.1),0px 0px 0px 0px rgba(0,0,0,0.1),0px 0px 0px 0px rgba(0,0,0,0.1)",

@@ -7,39 +7,16 @@ class TicketIndex(indexes.SearchIndex, indexes.Indexable):
 
     text = indexes.CharField(document=True, use_template=True)
 
-    status = indexes.IntegerField(
-        model_attr='status__id'
+    gluu_server = indexes.CharField(
+        model_attr='gluu_server'
     )
 
-    category = indexes.IntegerField(
-        model_attr='category__id'
+    os = indexes.CharField(
+        model_attr='os'
     )
 
-    issue_type = indexes.IntegerField(
-        model_attr='issue_type__id'
-    )
-
-    gluu_server = indexes.IntegerField(
-        model_attr='gluu_server__id'
-    )
-
-    os = indexes.IntegerField(
-        model_attr='os__id'
-    )
-
-    created_by = indexes.IntegerField(
-        model_attr='created_by__id',
-        default=0
-    )
-
-    assignee = indexes.IntegerField(
-        model_attr='assignee__id',
-        default=0
-    )
-
-    company = indexes.IntegerField(
-        model_attr='company_association__id',
-        default=0
+    title = indexes.CharField(
+        model_attr='title'
     )
 
     autocomplete = indexes.EdgeNgramField()

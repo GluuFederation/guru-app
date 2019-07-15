@@ -11,21 +11,25 @@ from profiles.models import UserRole, User
 from profiles.serializers import ShortUserSerializer, ShortCompanySerializer
 
 
-class TicketSearchSerializer(HighlighterMixin, HaystackSerializer):
-    highlighter_html_tag = "strong"
-    highlighter_field = "body"
+class TicketSearchSerializer(HaystackSerializer):
 
     class Meta:
         index_classes = [TicketIndex]
 
         fields = [
-            "text", "category", "status", "issue_type", "gluu_server", "os",
-            "created_by", "assignee", "company", "autocomplete"
+            "title"
         ]
         ignore_fields = ["autocomplete"]
         field_aliases = {
             "q": "autocomplete"
         }
+
+
+class TicketQSearchSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = m.Ticket
+        fields = ['id', 'title']
 
 
 class TicketProductSerializer(serializers.ModelSerializer):

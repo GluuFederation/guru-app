@@ -1,20 +1,24 @@
 import React, { Component } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
+import axios from "axios";
 
 import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
+import InputAdornment from "@material-ui/core/InputAdornment";
+
 import { colors } from "../../theme";
 
 import Page from "../../components/Page";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import Autocomplete, { Suggestion } from "../../components/Autocomplete";
 import CategoryItem from "./CategoryItem";
 import { withInfo, WithInfoProps } from "../../state/hocs/info";
 
 import HeroImg from "../../assets/images/hero.svg";
+import { ReactComponent as SearchImg } from "../../assets/images/search.svg";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -27,21 +31,72 @@ const styles = (theme: Theme) =>
     },
     searchHeader: {
       backgroundImage: `url(${HeroImg})`,
-      backgroundSize: "cover",
+      backgroundSize: "contain",
       height: "23em",
       marginBottom: "4em"
+    },
+    searchInput: {
+      border: "none",
+      boxShadow: `5px 3px 4px 2px ${colors.VERY_LIGHT_TEXT}`
     }
   });
 
 type Props = WithStyles<typeof styles> & RouteComponentProps & WithInfoProps;
 
-class Home extends Component<Props> {
+interface TicketSearchResult {
+  id: number;
+  title: string;
+}
+
+type SearchSuggestion = TicketSearchResult & Suggestion;
+
+interface State {
+  searchResults: Array<SearchSuggestion>;
+  searchResultsElement: HTMLElement | null;
+}
+
+class Home extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      searchResults: [],
+      searchResultsElement: null
+    };
+  }
+
   componentDidMount() {
     this.props.fetchInfo();
   }
+
+  searchTickets = (q: string) => {
+    const url = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/search/`;
+    const params = { q };
+
+    axios.get(url, { params }).then(response => {
+      this.setState({
+        searchResults: response.data.results
+          .map((result: TicketSearchResult) => ({
+            ...result,
+            text: result.title
+          }))
+          .slice(0, 5)
+      });
+    });
+  };
+
   render() {
     const { classes, info } = this.props;
+    const { searchResultsElement, searchResults } = this.state;
     const { categories } = info;
+
+    const InputProps = {
+      startAdornment: (
+        <InputAdornment position="start">
+          <SearchImg />
+        </InputAdornment>
+      ),
+      classes: { notchedOutline: classes.searchInput }
+    };
 
     return (
       <Page>
@@ -55,9 +110,13 @@ class Home extends Component<Props> {
               classes={{ container: classes.searchHeader }}
             >
               <Grid item xs={10} md={6}>
-                <Typography variant="h4" align="center">
+                <Typography variant="h5" align="center">
                   Search for a Ticket
-                  <TextField variant="filled" margin="normal" fullWidth />
+                  <Autocomplete
+                    suggestions={searchResults}
+                    InputProps={InputProps}
+                    updateQueryFunction={this.searchTickets}
+                  />
                 </Typography>
               </Grid>
             </Grid>
