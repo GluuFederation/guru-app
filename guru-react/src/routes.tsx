@@ -14,6 +14,8 @@ import Home from "./pages/Home";
 import NotFound from "./pages/Home";
 import ErrorBoundary from "./errorBoundary";
 
+import TicketList from "./pages/TicketList";
+
 export const paths = {
   // auth urls
   HOMEPAGE: "/",
@@ -51,6 +53,12 @@ const routes: Array<RouteType> = [
   {
     path: paths.HOMEPAGE,
     component: Home
+  },
+
+  // tickets
+  {
+    path: paths.TICKET_LIST,
+    component: TicketList
   }
 ];
 

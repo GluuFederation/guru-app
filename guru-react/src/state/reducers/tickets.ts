@@ -7,7 +7,7 @@ import {
 } from "../types/state";
 import { TicketFilterOrder } from "../types/tickets";
 
-const initialFilters: TicketsFilterState = {
+export const initialFilters: TicketsFilterState = {
   companies: [],
   creators: [],
   assignees: [],

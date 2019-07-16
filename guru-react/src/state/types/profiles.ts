@@ -71,6 +71,7 @@ export interface User {
   otherNames: string;
   email: string;
   company: Company;
+  companyName: string;
   timezone: string;
   address: Address;
   idpUuid: string;

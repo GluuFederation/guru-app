@@ -5,6 +5,7 @@ import Link from "@material-ui/core/Link";
 import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
 import { colors } from "../theme";
+import { replace } from "connected-react-router";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -29,22 +30,42 @@ const styles = (theme: Theme) =>
 
 interface ExternalProps {
   to: string;
+  search?: string;
+  hash?: string;
   isFooter?: boolean;
+  replace?: boolean;
+  onClick?: (event: React.MouseEvent) => void;
+  state?: any;
 }
 
 type Props = ExternalProps & WithStyles<typeof styles>;
 
 class NavLink extends Component<Props> {
   render() {
-    const { classes, to, children, isFooter } = this.props;
-
+    const {
+      classes,
+      to,
+      search,
+      children,
+      isFooter,
+      onClick,
+      state,
+      replace
+    } = this.props;
+    const linkTo = {
+      pathName: to,
+      search,
+      state
+    };
     return (
       <Link
         component={RouterLink}
         classes={{
           root: `${classes.root} ${isFooter ? classes.footer : classes.topNav}`
         }}
-        to={to}
+        to={linkTo}
+        onClick={onClick}
+        replace={replace}
       >
         {children}
       </Link>

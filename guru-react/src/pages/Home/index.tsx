@@ -22,13 +22,7 @@ import { ReactComponent as SearchImg } from "../../assets/images/search.svg";
 
 const styles = (theme: Theme) =>
   createStyles({
-    root: {
-      flexGrow: 1,
-      backgroundColor: colors.MAIN_BACKGROUND,
-      paddingBottom: "4em",
-      paddingLeft: "1em",
-      paddingRight: "1em"
-    },
+    root: {},
     searchHeader: {
       backgroundImage: `url(${HeroImg})`,
       backgroundSize: "contain",
@@ -52,15 +46,13 @@ type SearchSuggestion = TicketSearchResult & Suggestion;
 
 interface State {
   searchResults: Array<SearchSuggestion>;
-  searchResultsElement: HTMLElement | null;
 }
 
 class Home extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      searchResults: [],
-      searchResultsElement: null
+      searchResults: []
     };
   }
 
@@ -86,7 +78,7 @@ class Home extends Component<Props, State> {
 
   render() {
     const { classes, info } = this.props;
-    const { searchResultsElement, searchResults } = this.state;
+    const { searchResults } = this.state;
     const { categories } = info;
 
     const InputProps = {
@@ -101,7 +93,7 @@ class Home extends Component<Props, State> {
     return (
       <Page>
         <Navbar />
-        <div className={classes.root}>
+        <div className={`${classes.root} app-body`}>
           <div>
             <Grid
               container

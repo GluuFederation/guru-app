@@ -1,24 +1,10 @@
 import React, { Component } from "react";
 import Downshift from "downshift";
 
-import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
-import { Theme } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import MenuItem from "@material-ui/core/MenuItem";
-import { colors } from "../theme";
 import { OutlinedInputProps } from "@material-ui/core/OutlinedInput";
-
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      flexGrow: 1,
-      backgroundColor: colors.MAIN_BACKGROUND,
-      paddingBottom: "4em",
-      paddingLeft: "1em",
-      paddingRight: "1em"
-    }
-  });
 
 export interface Suggestion {
   id: number;
@@ -32,7 +18,7 @@ interface ExternalProps {
   suggestions: Array<Suggestion>;
 }
 
-type Props = WithStyles<typeof styles> & ExternalProps;
+type Props = ExternalProps;
 
 interface State {
   searchQuery: string;
@@ -123,4 +109,4 @@ class Autocomplete extends Component<Props, State> {
   }
 }
 
-export default withStyles(styles)(Autocomplete);
+export default Autocomplete;

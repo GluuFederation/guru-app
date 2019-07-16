@@ -13,7 +13,7 @@ class Page extends React.Component<Props> {
     const { user, token } = profiles;
     const pathname = this.props.match.path;
 
-    const openPaths: Array<string> = [paths.HOMEPAGE];
+    const openPaths: Array<string> = [paths.HOMEPAGE, paths.TICKET_LIST];
 
     if (!openPaths.includes(pathname)) {
       if (!user) {
