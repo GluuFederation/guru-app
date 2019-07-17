@@ -35,7 +35,7 @@ import UserOne from '../../assets/images/user_one.png';
 import UserTwo from '../../assets/images/user_two.jpg';
 import imgUserSend from '../../assets/images/modular.png';
 import CardMedia from '@material-ui/core/CardMedia';
-
+import AddAdditional from '@material-ui/icons/AddCircleOutlineRounded';
 // Card
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -48,7 +48,8 @@ import EditIcon from '@material-ui/icons/Edit';
 
 import TextField from '@material-ui/core/TextField';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-
+import SimpleMDE from "react-simplemde-editor";
+import "easymde/dist/easymde.min.css";
 
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -66,7 +67,7 @@ const styles = ((theme: Theme) =>
     },
     ContainerAlign: {
       marginBottom: 40,
-      marginTop: -40,
+      marginTop: -10,
       marginLeft: 0,
       marginRight: -40,
     },
@@ -88,7 +89,8 @@ const styles = ((theme: Theme) =>
 			fontSize: 14
 		},
 		contentContainer: {
-			marginTop: 40,
+			marginTop: 10,
+			marginBottom: 10,
 		},
 		titleBar: {
 			color: '#3E3E3E',
@@ -97,10 +99,28 @@ const styles = ((theme: Theme) =>
 			fontSize: 24,
 			textAlign: 'left',
 			left: 0
-		},
+    },
+    titleRespons: {
+			color: '#3E3E3E',
+			fontFamily: 'Open Sans',
+			fontWeight: 600,
+			fontSize: 24,
+			textAlign: 'left',
+			left: 0
+    },
 		gridContainer: {
 			marginTop: 20,
-      marginBottom: 20,
+			marginBottom: 20,
+		},
+		button: {
+			width: 3,
+			height: 30,
+			fontFamily: 'arial',
+			fontWeight: 600,
+			color: '#ABABAB',
+			marginLeft: 5,
+			marginRight: 5,
+			marginTop: 10
 		},
 		buttonEdit: {
 			width: 3,
@@ -139,22 +159,28 @@ const styles = ((theme: Theme) =>
       height: 28,
       textAlign: 'left',
     },
-		bigAvatar: {
+    avatarBig: {
 			width: 55,
-			height: 55,
+      height: 55,
+      textAlign: 'left',
+    },
+		bigAvatar: {
+			width: 60,
+			height: 60,
 			textAlign: 'left'
 		},
 		btnStaffAlig: {
 			textAlign: 'left'
 		},
 		btnStaff: {
-      width: '50%',
+      width: '35%',
       textAlign: 'center',
-      height: 28,
+      height: 22,
       borderRadius: 4,
-			fontFamily: 'arial',
+      fontFamily: 'arial',
+      fontSize: 14,
 			color: '#ffffff',
-			backgroundColor: '#3BBC38',
+			backgroundColor: '#00b372',
 			padding: 3,
 			marginRight: 5,
 			marginTop: 10
@@ -174,26 +200,28 @@ const styles = ((theme: Theme) =>
 		btnGluu: {
 			fontSize: 10,
 			fontFamily: 'arial',
-			fontWeight: 600,
+			fontWeight: 500,
 			marginTop: 5,
 			height: 20,
       width: '50%',
 			padding: 3,
 			borderRadius: 5,
-			backgroundColor: '#D0FDCF',
-			color: '#3BBC38'
+			backgroundColor: '#e5f7f0',
+      color: '#33c28e',
+      textAlign: 'center',
 		},
 		btnEnterprise: {
 			fontSize: 10,
 			fontFamily: 'arial',
-			fontWeight: 600,
+			fontWeight: 500,
 			marginTop: 5,
 			height: 20,
       width: '50%',
 			padding: 3,
 			borderRadius: 5,
-			backgroundColor: '#FFD499',
-			color: '#FFA428'
+			backgroundColor: '#fff1d2',
+			color: '#c7962d',
+      textAlign: 'center',
 		},
 		textPanel: {
 			fontSize: 14,
@@ -212,14 +240,14 @@ const styles = ((theme: Theme) =>
       marginTop: 5,
     },
 		CardHeader: {
-			backgroundColor: '#EAF3F3',
+			backgroundColor: '#f1f5f9',
 			textAlign: 'left',
 			fontFamily: 'arial',
 			height: 40,
 			fontSize: 12,
 			fontWeight: 600
-		},
-		textVote: {
+    },
+    textVoteDT:{
 			fontSize: 14,
 			fontFamily: 'arial',
 			marginLeft: 5,
@@ -227,9 +255,19 @@ const styles = ((theme: Theme) =>
       right: 0,
       color: '#858585',
     },
+    voteContent:{
+      
+
+    },
+		textVote: {
+			fontSize: 14,
+			fontFamily: 'arial',
+			marginLeft: 5,
+      fontWeight: 500,
+      color: '#858585',justifyContent: 'flex-end' 
+    },
     iconVote: {
-      color: '#858585',
-      right: 0,
+      color: '#858585',justifyContent: 'flex-end' 
     },
 		textVoteNo: {
 			fontSize: 14,
@@ -237,10 +275,10 @@ const styles = ((theme: Theme) =>
 			marginLeft: 15,
 			marginRight: 15,
 			fontWeight: 500,
-      right: 0,
-      color: '#858585',
+      color: '#858585',justifyContent: 'flex-end'
     },
     SettingsIconAlign: {
+      float: 'right',
     },
     SettingsIcon: {
       color: '#858585',
@@ -280,8 +318,9 @@ const styles = ((theme: Theme) =>
     createdBy: {
       fontSize: 14,
       fontFamily: 'arial',
-      marginTop: 5,
-      marginLeft: '20%',
+      marginBottom: 5,
+      marginLeft: '21%',
+      textAlign: 'left',
     },
     createdGrid:{
       fontSize: 14,
@@ -294,12 +333,17 @@ const styles = ((theme: Theme) =>
       fontFamily: 'arial',
       marginTop: -30,
       marginLeft: 30,
-      width: '75%',
+      width: '100%',
     },
     editPancile: {
       float: 'right',
-      marginTop: -20,
-      marginRight: -5,
+      marginTop: -40,
+      marginRight: -40,
+      fontSize: 14,
+    },
+    editPancileLable:{
+      float: 'right',
+      marginRight: -40,
       fontSize: 14,
     },
 		assignUpPeople: {
@@ -325,7 +369,7 @@ const styles = ((theme: Theme) =>
     cardSubscribe: {
       width: '80%',
       marginLeft: '33%',
-      backgroundColor: '#F6FEFE',
+      backgroundColor: '#f7f9fa',
     },
     notificationTxt: {
       fontFamily: 'arial',
@@ -337,7 +381,7 @@ const styles = ((theme: Theme) =>
       width: '100%',
       left: 0,
       fontSize: 14,
-      backgroundColor: '#ECECEC',
+      backgroundColor: '#e7ebed',
       fontFamily: 'arial',
     },
 
@@ -363,8 +407,10 @@ const styles = ((theme: Theme) =>
       fontSize: 18,
       fontFamily: 'arial',
       fontWeight: 600,
-      float: 'left',
-      margin: 15, 
+      textAlign: 'left',
+      marginTop: 15,
+      marginBottom: 5,
+      marginLeft: 15,
     }, 
     textField: {
       marginLeft: theme.spacing(1),
@@ -372,9 +418,8 @@ const styles = ((theme: Theme) =>
       width: '98%',
     },
     fromTextField: {
-      width: '47%',
+      width: '90%',
       margin: 8,
-      float: 'left',
     },
     fromtxtField: {
       fontSize: 14,
@@ -383,19 +428,101 @@ const styles = ((theme: Theme) =>
       float: 'left',
     },
     buttonComment:{
-      backgroundColor: '#3EC512',
+      backgroundColor: '#00b372',
       float: 'left',
-      padding: 5,
+      textTransform: 'capitalize',
       color: '#ffffff',
-      margin: 10,
+      marginBottom: 20,
+      marginRight: 10,
+      fontFamily: 'arial',
+      fontSize: 12,
+      fontWeight: 500,
     },
     buttonTicket:{
       backgroundColor: '#F0F0F0',
       float: 'left',
+      textTransform: 'capitalize',
       padding: 5,
-      color: '#717070',
-      margin: 10,
+      color: '#747474',
+      marginBottom: 20,
+      marginRight: 10,
+      fontFamily: 'arial',
+      fontSize: 12,
+      fontWeight: 500,
     },
+    fromLabel: {
+      float: 'left',
+      fontFamily: 'arial',
+      fontSize: 14,
+      marginLeft: 22,
+      fontWeight: 600,
+    },
+    
+    margin: {
+      margin: theme.spacing(1),
+    },
+
+    preProduction: {
+      color: '#ffffff',
+      borderRadius: 3,
+      padding: 5,
+      fontSize: 12,
+      backgroundColor: '#b736ff',
+      float: 'left',
+      marginBottom: 20,
+    },
+    statusLable: {
+      color: '#ffffff',
+      borderRadius: 3,
+      padding: 5,
+      fontSize: 12,
+      backgroundColor: '#53c507',
+      float: 'left',
+      marginBottom: 20,
+    },
+    CategoryLable:{
+      color: '#353b38',
+      borderRadius: 3,
+      padding: 5,
+      fontSize: 15,
+      fontWeight: 600,
+      textAlign: 'left',
+      marginBottom: 20,
+      float: 'left',
+    },
+    additionalProducts: {
+      color: '#00b372',
+      fontSize: 14,
+      fontWeight: 600,
+      fontFamily: 'arial',
+      marginBottom: 20,
+      marginLeft: 10,
+      float: 'left',
+    },
+    addAdditional:{
+      float: 'left',
+      fontSize: 14,
+      fontWeight: 600,
+      marginLeft: '23%',
+      marginTop: 2,
+      color: '#00b372',
+    },
+    createdName:{
+      marginTop: '-10%',
+      marginLeft: '15%',
+      float: 'left',
+      marginBottom: 20,
+    },
+    assignedName: {
+      marginTop: '-10%',
+      marginLeft: '15%',
+      float: 'left',
+      marginBottom: 20,
+    },
+    CodeMirror: {
+      height: 300,
+    }
+
 
 	})
 );
@@ -452,7 +579,7 @@ class TciketDetail extends Component<Props>{
               {/* Side bar Profile Start */}
               
               <Grid wrap="nowrap" className={classes.gridContainer} xs={2}>
-                <Avatar alt="Avatar" src={UserOne} className={classes.avatar} />
+                <Avatar alt="Avatar" src={UserOne} className={classes.avatarBig} />
                 <Typography className={classes.btnStaffAlig}>
                   <Typography className={classes.btnStaff}>
                     Staff
@@ -471,10 +598,13 @@ class TciketDetail extends Component<Props>{
                 <Card className={classes.card}>
 
                   <CardActions className={classes.CardHeader} disableSpacing>
-                    <Typography className={classes.textVoteNo}>18 Agust 2018 at 2:24 PM GMT </Typography>
+                    <Typography className={classes.textVoteDT}>18 Agust 2018 at 2:24 PM GMT </Typography>
 
-
-
+                    
+                      {/* <HowtoVote className={classes.iconVote} />
+                      <Typography className={classes.textVote}>Upvotes | </Typography>
+                      <Typography className={classes.textVoteNo}>12 </Typography> */}
+                    
                     <CardHeader
                         className={classes.SettingsIcon}
                         action={
@@ -483,7 +613,8 @@ class TciketDetail extends Component<Props>{
                           </IconButton>
                         }
                       />
-                    
+
+
                     {/* <HowtoVote className={classes.iconVote} />
                     <Typography className={classes.textVote}>Upvotes | </Typography>
                     <Typography className={classes.textVoteNo}>12 </Typography>
@@ -565,16 +696,21 @@ class TciketDetail extends Component<Props>{
 
             <Grid className={classes.contentContainer} container>
               <Grid xs={12}>
-                <Typography className={classes.titleBar}>3 Responses</Typography>
+                <Typography className={classes.titleRespons}>Response</Typography>
               </Grid>
             </Grid>
 
+            <Grid className={classes.contentContainer} container>
+              <Grid xs={12}>
+                <hr style={{color: "#F1F1F1", backgroundColor: "#F1F1F1", height: 1, marginTop: -10,}} />
+              </Grid>
+            </Grid>
 
             {/* Content Body Start */}
               {/* Side bar Profile Start */}
               
               <Grid wrap="nowrap" className={classes.gridContainer} xs={2}>
-                <Avatar alt="Avatar" src={UserTwo} className={classes.avatar} />
+                <Avatar alt="Avatar" src={UserTwo} className={classes.avatarBig} />
                 <Typography className={classes.btnStaffAlig}>
                   <Typography className={classes.btnStaff}>
                     Staff
@@ -593,7 +729,7 @@ class TciketDetail extends Component<Props>{
                 <Card className={classes.card}>
 
                   <CardActions className={classes.CardHeader} disableSpacing>
-                    <Typography className={classes.textVoteNo}>18 Agust 2018 at 2:24 PM GMT </Typography>
+                    <Typography className={classes.textVoteDT}>18 Agust 2018 at 2:24 PM GMT </Typography>
 
                     {/* <Typography className={classes.textVote}>Edit </Typography>
                     <Typography className={classes.textVoteNo}>Copy link </Typography> */}
@@ -655,39 +791,69 @@ class TciketDetail extends Component<Props>{
               <Grid className={classes.gridContainer} xs={12}>
                 <Card className={classes.card}>
 
-                  <CardContent>
-                    <Typography className={classes.formTitle} component="p">
-                      Post a response
-                    </Typography>
-                  </CardContent>
+
+                  <Typography className={classes.formTitle} component="p">
+                    Post a response
+                  </Typography>
 
                   <CardContent>
-                    <TextField
-                      id="filled-multiline-static"
-                      label="Write the answer"
-                      multiline
-                      rows="8"
-                      className={classes.textField}
-                      margin="normal"
-                      variant="filled"
-                    />
+                      <SimpleMDE
+                        id="your-custom-id"
+                        // label="Your label"
+                        // onChange={this.handleChange}
+                        // value={this.state.textValue}
+                        options={{
+                          autofocus: true,
+                          spellChecker: false
+                          // etc.
+                        }}
+                      />
                   </CardContent>
 
-                  <CardContent>
-                    <TextField className={classes.fromTextField}
-                      id="outlined-bare"
-                      placeholder="Search name..."
-                      margin="normal"
-                      variant="outlined"
-                    />
-                      
-                    <TextField className={classes.fromTextField}
-                      id="outlined-bare"
-                      placeholder="Search name..."
-                      margin="normal"
-                      variant="outlined"
-                    />
-                  </CardContent>   
+
+
+                  <Grid container spacing={3}>
+                    <Grid item xs={6}>
+                      <label className={classes.fromLabel}>Assign To</label>
+                        <FormControl className={classes.fromTextField}
+                          placeholder="Select a staff member"
+                          margin="normal"
+                          variant="outlined">
+                          <Select
+                            // value={age}
+                            // onChange={handleChange}
+                          >
+                            <MenuItem value="">
+                              <em>None</em>
+                            </MenuItem>
+                            <MenuItem value={10}>Ten</MenuItem>
+                            <MenuItem value={20}>Twenty</MenuItem>
+                            <MenuItem value={30}>Thirty</MenuItem>
+                          </Select>
+                        </FormControl>
+
+
+                    </Grid>
+                    <Grid item xs={6}>
+                      <label className={classes.fromLabel}>Ticket Status</label>
+                        <FormControl className={classes.fromTextField}
+                          placeholder="Select ticekt status"
+                          margin="normal"
+                          variant="outlined">
+                          <Select
+                            // value={age}
+                            // onChange={handleChange}
+                          >
+                            <MenuItem value="">
+                              <em>None</em>
+                            </MenuItem>
+                            <MenuItem value={10}>Ten</MenuItem>
+                            <MenuItem value={20}>Twenty</MenuItem>
+                            <MenuItem value={30}>Thirty</MenuItem>
+                          </Select>
+                        </FormControl>
+                    </Grid>
+                  </Grid> 
 
                   <CardContent>
                   <Button variant="contained" className={classes.buttonComment}>
@@ -715,20 +881,98 @@ class TciketDetail extends Component<Props>{
           <Grid className={classes.GridThreeRight} container xs={3}> 
             
             <div >
+
+              <div style={{float: 'left', width: '100%'}}>
               <Typography className={classes.createdBy}>Created by</Typography>
               <Typography className={classes.createdGrid}>
                 <Avatar alt="Avatar" src={UserTwo} className={classes.avatarSmall} />
-                <TextField
-                  placeholder="Name Enter"
-                  className={classes.textFieldcreated}
-                  margin="normal"
-                  value="Nasir Uddin"
-                />
+                <label className={classes.createdName}>William Lowe</label>
                 <EditIcon className={classes.editPancile}/>
               </Typography>
+              </div>
 
+              <hr style={{backgroundColor: '#F1F1F1',  height: 0.2, width: '95%', marginLeft: '20%'}} />
               
+              <div style={{float: 'left', width: '100%'}}>
               <Typography className={classes.createdBy}>Assigned to</Typography>
+              <Typography className={classes.createdGrid}>
+                <Avatar alt="Avatar" src={UserOne} className={classes.avatarSmall} />
+                <label className={classes.assignedName}>Nasir Uddin</label>
+                <EditIcon className={classes.editPancile}/>
+              </Typography>
+              </div>
+
+              <hr style={{backgroundColor: '#F1F1F1',  height: 0.2, width: '95%', marginLeft: '20%'}} />
+
+              <div style={{float: 'left', width: '100%'}}>
+                <Typography className={classes.createdBy}>Issue type</Typography>
+                <Typography className={classes.createdGrid}>
+                  <label className={classes.preProduction}>Pre-Production</label>
+                  <EditIcon className={classes.editPancileLable}/>
+                </Typography>
+              </div>
+
+              <hr style={{backgroundColor: '#F1F1F1',  height: 0.2, width: '95%', marginLeft: '20%'}} />
+
+              <div style={{float: 'left', width: '100%'}}>
+                <Typography className={classes.createdBy}>Status</Typography>
+                <Typography className={classes.createdGrid}>
+                  <label className={classes.statusLable}>in-Pogress</label>
+                  <EditIcon className={classes.editPancileLable}/>
+                </Typography>
+              </div>
+
+              <hr style={{backgroundColor: '#F1F1F1',  height: 0.2, width: '95%', marginLeft: '20%'}} />
+
+              <div style={{float: 'left', width: '100%'}}>
+                <Typography className={classes.createdBy}>Category</Typography>
+                <Typography className={classes.createdGrid}>
+                  <label className={classes.CategoryLable}>Installation</label>
+                  <EditIcon className={classes.editPancileLable}/>
+                </Typography>
+                </div>              
+                
+                <hr style={{backgroundColor: '#F1F1F1',  height: 0.2, width: '95%', marginLeft: '20%'}} />
+
+                <div style={{float: 'left', width: '100%'}}>
+                <Typography className={classes.createdBy}>Gluu Version</Typography>
+                <Typography className={classes.createdGrid}>
+                  <label className={classes.CategoryLable}>Gluu 3.1.4</label>
+                  <EditIcon className={classes.editPancileLable}/>
+                </Typography>
+                </div>
+
+                <hr style={{backgroundColor: '#F1F1F1',  height: 0.2, width: '95%', marginLeft: '20%'}} />
+
+                <div style={{float: 'left', width: '100%'}}>
+                <Typography className={classes.createdBy}>OS Version</Typography>
+                <Typography className={classes.createdGrid}>
+                  <label className={classes.CategoryLable}>CentOS 7</label>
+                  <EditIcon className={classes.editPancileLable}/>
+                </Typography>
+                </div>               
+
+                <hr style={{backgroundColor: '#F1F1F1',  height: 0.2, width: '95%', marginLeft: '20%'}} />
+
+                <div style={{float: 'left', width: '100%'}}>
+                <Typography className={classes.createdBy}>Additional Products</Typography>
+                <Typography className={classes.createdGrid}>
+                  <label className={classes.CategoryLable}>OXD 3.1.4</label>
+                  <EditIcon className={classes.editPancileLable}/>
+                </Typography>
+                </div>
+
+                
+
+              <hr style={{backgroundColor: '#F1F1F1',  height: 0.2, width: '95%', marginLeft: '20%'}} />
+
+              <div style={{float: 'left', width: '100%'}}>
+                <AddAdditional className={classes.addAdditional}/>
+                <Typography className={classes.additionalProducts}>Add Additional Products</Typography>
+              </div>
+
+
+              {/* <Typography className={classes.createdBy}>Assigned to</Typography>
               <Typography className={classes.createdGrid}>
                 <Avatar alt="Avatar" src={UserOne} className={classes.avatarSmall} />
                 <TextField
@@ -738,11 +982,12 @@ class TciketDetail extends Component<Props>{
                   value="christopher D.Blanton"
                 />
                 <EditIcon className={classes.editPancile}/>
-              </Typography>
+              </Typography> */}
+
               <div>
               
               
-              <Card className={classes.assignUpPeople}>
+              {/* <Card className={classes.assignUpPeople}>
                 <Container>
                   <Typography className={classes.assignUpPeopleTxt}>
                     Assign up to 5 people this issues
@@ -765,7 +1010,7 @@ class TciketDetail extends Component<Props>{
                     </Select>
                   </FormControl>
                 </Container>
-              </Card>
+              </Card> */}
 
     
               <Card className={classes.cardSubscribe}>
