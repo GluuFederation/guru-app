@@ -5,7 +5,6 @@ import Link from "@material-ui/core/Link";
 import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
 import { colors } from "../theme";
-import { replace } from "connected-react-router";
 
 const styles = (theme: Theme) =>
   createStyles({

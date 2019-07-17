@@ -93,7 +93,7 @@ class Autocomplete extends Component<Props, State> {
                         key: suggestion.id
                       })}
                       selected={
-                        !!selectedItems.find(item => item.id == suggestion.id)
+                        !!selectedItems.find(item => item.id === suggestion.id)
                       }
                     >
                       {suggestion.text}

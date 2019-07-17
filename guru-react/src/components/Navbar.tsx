@@ -31,6 +31,7 @@ import ReceiptOutlinedIcon from "@material-ui/icons/ReceiptOutlined";
 import PersonIcon from "@material-ui/icons/Person";
 import DomainIcon from "@material-ui/icons/Domain";
 import InputIcon from "@material-ui/icons/Input";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 
 import { WithUserProps, withUser } from "../state/hocs/profiles";
@@ -117,6 +118,12 @@ class Navbar extends Component<Props, State> {
 
   navigateTo = (path: string) => () => {
     this.props.history.push(path);
+  };
+
+  logout = () => {
+    this.props.logout().then(() => {
+      this.props.history.push(paths.HOMEPAGE);
+    });
   };
 
   render() {
@@ -244,6 +251,13 @@ class Navbar extends Component<Props, State> {
                         </ListItemIcon>
                         Billing
                       </MenuItem>
+                      <Divider />
+                      <MenuItem onClick={this.logout}>
+                        <ListItemIcon>
+                          <ExitToAppIcon />
+                        </ListItemIcon>
+                        Logout
+                      </MenuItem>
                     </Menu>
                   </React.Fragment>
                 ) : (
@@ -254,6 +268,7 @@ class Navbar extends Component<Props, State> {
                         root: `${classes.button} ${classes.navItems}`
                       }}
                       variant="outlined"
+                      onClick={this.navigateTo(paths.SIGNUP)}
                     >
                       Signup
                     </Button>
@@ -261,6 +276,7 @@ class Navbar extends Component<Props, State> {
                       color="primary"
                       classes={{ root: classes.button }}
                       variant="outlined"
+                      onClick={this.navigateTo(paths.LOGIN)}
                     >
                       Login
                     </Button>
@@ -339,18 +355,25 @@ class Navbar extends Component<Props, State> {
                     </ListItemIcon>
                     <ListItemText primary="Billing" />
                   </ListItem>
+                  <Divider />
+                  <ListItem button onClick={this.logout}>
+                    <ListItemIcon>
+                      <ExitToAppIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Logout" />
+                  </ListItem>
                 </List>
               </React.Fragment>
             ) : (
               <React.Fragment>
                 <List>
-                  <ListItem button onClick={this.navigateTo(paths.HOMEPAGE)}>
+                  <ListItem button onClick={this.navigateTo(paths.LOGIN)}>
                     <ListItemIcon>
                       <InputIcon />
                     </ListItemIcon>
                     <ListItemText primary="Login" />
                   </ListItem>
-                  <ListItem button>
+                  <ListItem button onClick={this.navigateTo(paths.SIGNUP)}>
                     <ListItemIcon>
                       <AddCircleOutlineIcon />
                     </ListItemIcon>
