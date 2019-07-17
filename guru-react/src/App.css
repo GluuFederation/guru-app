@@ -7,12 +7,30 @@ body {
   padding-bottom: 20em;
 }
 
+.app-body {
+  flex-grow: 1;
+  background-color: #fff;
+  padding-bottom: 10em;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
 @media only screen and (max-width: 600px) {
   body {
-    padding-top: 3em;
-    padding-bottom: 50em;
+    padding-top: 3.5em;
   }
+  .app-body {
+    padding-bottom: 35em;
+  }
+  div.MuiContainer-root {
+    padding: 0;
+  }
+}
 
+@media only screen and (min-width: 601px) and (max-width: 960px) {
+  .app-body {
+    padding-bottom: 30em;
+  }
   div.MuiContainer-root {
     padding: 0;
   }

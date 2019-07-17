@@ -202,7 +202,7 @@ class LoginCallbackAPIView(APIView):
 
 
 class GetSignupUrlAPIView(APIView):
-    permission_classes = (p.IsVisitor,)
+    permission_classes = (AllowAny,)
 
     def get(self, request):
         url = '{}/auth/register?from=guru'\

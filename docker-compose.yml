@@ -23,6 +23,15 @@ services:
       - ./guru-vue/public:/app/public
     ports:
       - "8080:8080"
+  guru-react:
+    image: guru-react
+    command: /bin/sh -c 'yarn start'
+    volumes:
+      - ./guru-react/src:/app/src
+      - ./guru-react/package.json:/app/package.json
+      - ./guru-react/public:/app/public
+    ports:
+      - "3000:3000"
   users-vue:
     image: users-vue
     command: /bin/sh -c 'npm run serve'

@@ -13,6 +13,14 @@ import theme from "./theme";
 import Home from "./pages/Home";
 import NotFound from "./pages/Home";
 import ErrorBoundary from "./errorBoundary";
+import ErrorPage from "./pages/error/ErrorPage";
+
+import LoginRedirect from "./pages/auth/LoginRedirect";
+import LoginCallback from "./pages/auth/LoginCallback";
+import SignupRedirect from "./pages/auth/SignupRedirect";
+
+import TicketList from "./pages/TicketList";
+import TicketDetail from "./pages/TicketDetail";
 
 export const paths = {
   // auth urls
@@ -36,7 +44,10 @@ export const paths = {
   PROFILE: "/dashboard/profile",
 
   //team
-  TEAM_DETAILS: "/dashboard/team"
+  TEAM_DETAILS: "/dashboard/team",
+
+  // errors
+  ERROR_PAGE: "/error-page"
 };
 
 interface RouteType {
@@ -51,6 +62,34 @@ const routes: Array<RouteType> = [
   {
     path: paths.HOMEPAGE,
     component: Home
+  },
+  {
+    path: paths.LOGIN,
+    component: LoginRedirect
+  },
+  {
+    path: paths.LOGIN_CALLBACK,
+    component: LoginCallback
+  },
+  {
+    path: paths.SIGNUP,
+    component: SignupRedirect
+  },
+
+  // tickets
+  {
+    path: paths.TICKET_LIST,
+    component: TicketList
+  },
+  {
+    path: paths.TICKET_DETAIL,
+    component: TicketDetail
+  },
+
+  // errors
+  {
+    path: paths.ERROR_PAGE,
+    component: ErrorPage
   }
 ];
 
