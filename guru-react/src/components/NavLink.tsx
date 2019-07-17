@@ -52,7 +52,7 @@ class NavLink extends Component<Props> {
       replace
     } = this.props;
     const linkTo = {
-      pathName: to,
+      pathname: to,
       search,
       state
     };

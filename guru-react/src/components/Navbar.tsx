@@ -163,7 +163,7 @@ class Navbar extends Component<Props, State> {
                 {isLoggedIn ? (
                   <Hidden xsDown>
                     <NavLink to={paths.HOMEPAGE}>Dashboard</NavLink>
-                    <NavLink to={paths.HOMEPAGE}>Tickets</NavLink>
+                    <NavLink to={paths.TICKET_LIST}>Tickets</NavLink>
                   </Hidden>
                 ) : null}
               </div>
@@ -316,7 +316,7 @@ class Navbar extends Component<Props, State> {
                     </ListItemIcon>
                     <ListItemText primary="Dashboard" />
                   </ListItem>
-                  <ListItem button>
+                  <ListItem button onClick={this.navigateTo(paths.TICKET_LIST)}>
                     <ListItemIcon>
                       <ReceiptOutlinedIcon />
                     </ListItemIcon>
