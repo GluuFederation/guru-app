@@ -72,7 +72,7 @@ class Autocomplete extends Component<Props, State> {
             <div>
               <TextField
                 variant="outlined"
-                margin="normal"
+                margin="dense"
                 placeholder="Search or ask a question"
                 fullWidth
                 InputProps={{

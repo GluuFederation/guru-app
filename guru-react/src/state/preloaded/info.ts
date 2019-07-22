@@ -1,4 +1,9 @@
-import { TicketStatus } from "../types/info";
+import {
+  TicketStatus,
+  TicketCategory,
+  TicketIssueType,
+  TicketPriority
+} from "../types/info";
 import { ShortUser } from "../types/profiles";
 
 export const newStatus: TicketStatus = {
@@ -29,6 +34,20 @@ export const closedStatus: TicketStatus = {
   id: 5,
   slug: "closed",
   name: "Closed"
+};
+
+export const otherCategory: TicketCategory = {
+  id: 13,
+  name: "Other",
+  slug: "other",
+  image: ""
+};
+
+export const minorIssueType: TicketIssueType = {
+  id: 4,
+  name: "Minor Issue",
+  slug: "minor-issue",
+  priority: TicketPriority.Low
 };
 
 export const unassigned: ShortUser = {

@@ -9,7 +9,7 @@ import { colors } from "../../theme";
 import { paths } from "../../routes";
 import { withUser, WithUserProps } from "../../state/hocs/profiles";
 import { withTicketList, WithTicketListProps } from "../../state/hocs/tickets";
-import { getSearchString } from "./filterQueries";
+import { getSearchString } from "../../utils/filterQueries";
 import { ShortUser } from "../../state/types/profiles";
 import { TicketStatus } from "../../state/types/info";
 
@@ -61,69 +61,37 @@ class TicketNav extends Component<Props> {
       removeFilterIssueType,
       removeFilterProduct,
       removeFilterStatus,
-      filters,
       fetchTickets,
       setTicketsLoading
     } = this.props;
 
-    let searchString = "";
-
     switch (tag.type) {
       case FilterType.Category:
         removeFilterCategory(tag.id);
-        searchString = getSearchString({
-          ...filters,
-          categories: [...filters.categories.filter(item => item.id !== tag.id)]
-        });
         break;
       case FilterType.Assignee:
         removeFilterAssignee(tag.id);
-        searchString = getSearchString({
-          ...filters,
-          assignees: [...filters.assignees.filter(item => item.id !== tag.id)]
-        });
         break;
       case FilterType.Creator:
         removeFilterCreator(tag.id);
-        searchString = getSearchString({
-          ...filters,
-          creators: [...filters.creators.filter(item => item.id !== tag.id)]
-        });
         break;
       case FilterType.Company:
         removeFilterCompany(tag.id);
-        searchString = getSearchString({
-          ...filters,
-          companies: [...filters.companies.filter(item => item.id !== tag.id)]
-        });
         break;
       case FilterType.IssueType:
         removeFilterIssueType(tag.id);
-        searchString = getSearchString({
-          ...filters,
-          issueTypes: [...filters.issueTypes.filter(item => item.id !== tag.id)]
-        });
         break;
       case FilterType.Product:
         removeFilterProduct(tag.id);
-        searchString = getSearchString({
-          ...filters,
-          products: [...filters.products.filter(item => item.id !== tag.id)]
-        });
         break;
       case FilterType.Status:
         removeFilterStatus(tag.id);
-        searchString = getSearchString({
-          ...filters,
-          statuses: [...filters.statuses.filter(item => item.id !== tag.id)]
-        });
         break;
     }
     setTicketsLoading(true);
-    fetchTickets(filters).then(() => {
+    fetchTickets(true).then(() => {
       setTicketsLoading(false);
     });
-    this.props.history.push(`${paths.TICKET_LIST}${searchString}`);
     this.setState({
       myAssignmentsElement: null,
       allTicketsElement: null,

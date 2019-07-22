@@ -15,6 +15,41 @@ body {
   padding-right: 1em;
 }
 
+.chip.light-blue {
+  background-color: rgba(31, 191, 221, 0.15);
+  color: #1fbfdd;
+}
+
+.chip.green {
+  background-color: rgba(65, 204, 34, 0.15);
+  color: #41cc22;
+}
+
+.chip.gray {
+  background-color: rgba(0, 0, 0, 0.15);
+  color: #4a4a4a;
+}
+
+.chip.yellow {
+  background-color: rgba(255, 188, 22, 0.15);
+  color: #ffbc16;
+}
+
+.chip.red {
+  background-color: rgba(255, 89, 28, 0.15);
+  color: #ff591c;
+}
+
+.chip.purple {
+  background-color: rgba(183, 54, 255, 0.15);
+  color: #b736ff;
+}
+
+.chip.blue {
+  background-color: rgba(120, 110, 255, 0.15);
+  color: #786eff;
+}
+
 @media only screen and (max-width: 600px) {
   body {
     padding-top: 3.5em;

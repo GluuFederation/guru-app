@@ -41,6 +41,11 @@ export interface Ticket {
   attachments: Array<string>;
 }
 
+export interface TicketSearchResult {
+  id: number;
+  title: string;
+}
+
 export interface TicketHistory {
   id: number;
   ticket: number;

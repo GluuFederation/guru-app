@@ -23,7 +23,7 @@ import { paths } from "../../routes";
 import { withUser, WithUserProps } from "../../state/hocs/profiles";
 import { withTicketList, WithTicketListProps } from "../../state/hocs/tickets";
 import { withInfo, WithInfoProps } from "../../state/hocs/info";
-import { getSearchString } from "./filterQueries";
+import { getSearchString } from "../../utils/filterQueries";
 import { ShortUser, Company } from "../../state/types/profiles";
 import { TicketStatus } from "../../state/types/info";
 import { emptyUser } from "../../state/preloaded/profiles";
@@ -134,93 +134,46 @@ class TicketSidebar extends Component<Props, State> {
   };
 
   setCompany = (selectedItem: Suggestion) => {
-    const {
-      addFilterCompany,
-      filters,
-      fetchTickets,
-      setTicketsLoading
-    } = this.props;
+    const { addFilterCompany, fetchTickets, setTicketsLoading } = this.props;
     const { companies } = this.state;
     const company = companies.find(item => item.id === selectedItem.id);
     if (company) {
       addFilterCompany(company);
       setTicketsLoading(true);
-      fetchTickets(filters).then(() => {
+      fetchTickets(true).then(() => {
         setTicketsLoading(false);
       });
-      this.props.history.push(
-        `${paths.TICKET_LIST}${getSearchString({
-          ...filters,
-          companies: [
-            ...filters.companies.filter(item => item.id !== company.id),
-            company
-          ]
-        })}`
-      );
     }
   };
 
   setCreator = (selectedItem: Suggestion) => {
-    const {
-      addFilterCreator,
-      filters,
-      fetchTickets,
-      setTicketsLoading
-    } = this.props;
+    const { addFilterCreator, fetchTickets, setTicketsLoading } = this.props;
     const { users } = this.state;
     const user = users.find(item => item.id === selectedItem.id);
     if (user) {
       addFilterCreator(user);
       setTicketsLoading(true);
-      fetchTickets(filters).then(() => {
+      fetchTickets(true).then(() => {
         setTicketsLoading(false);
       });
-      this.props.history.push(
-        `${paths.TICKET_LIST}${getSearchString({
-          ...filters,
-          creators: [
-            ...filters.creators.filter(item => item.id !== user.id),
-            user
-          ]
-        })}`
-      );
     }
   };
 
   setAssignee = (selectedItem: Suggestion) => {
-    const {
-      addFilterAssignee,
-      filters,
-      fetchTickets,
-      setTicketsLoading
-    } = this.props;
+    const { addFilterAssignee, fetchTickets, setTicketsLoading } = this.props;
     const { users } = this.state;
     const user = users.find(item => item.id === selectedItem.id);
     if (user) {
       addFilterAssignee(user);
       setTicketsLoading(true);
-      fetchTickets(filters).then(() => {
+      fetchTickets(true).then(() => {
         setTicketsLoading(false);
       });
-      this.props.history.push(
-        `${paths.TICKET_LIST}${getSearchString({
-          ...filters,
-          assignees: [
-            ...filters.assignees.filter(item => item.id !== user.id),
-            user
-          ]
-        })}`
-      );
     }
   };
 
   setCategory = (event: React.ChangeEvent<{ value: unknown }>) => {
-    const {
-      addFilterCategory,
-      filters,
-      fetchTickets,
-      setTicketsLoading
-    } = this.props;
+    const { addFilterCategory, fetchTickets, setTicketsLoading } = this.props;
     const { info } = this.props;
     const { categories } = info;
     const category = categories.find(
@@ -229,28 +182,14 @@ class TicketSidebar extends Component<Props, State> {
     if (category) {
       addFilterCategory(category);
       setTicketsLoading(true);
-      fetchTickets(filters).then(() => {
+      fetchTickets(true).then(() => {
         setTicketsLoading(false);
       });
-      this.props.history.push(
-        `${paths.TICKET_LIST}${getSearchString({
-          ...filters,
-          categories: [
-            ...filters.categories.filter(item => item.id !== category.id),
-            category
-          ]
-        })}`
-      );
     }
   };
 
   setProduct = (event: React.ChangeEvent<{ value: unknown }>) => {
-    const {
-      addFilterProduct,
-      filters,
-      fetchTickets,
-      setTicketsLoading
-    } = this.props;
+    const { addFilterProduct, fetchTickets, setTicketsLoading } = this.props;
     const { info } = this.props;
     const { products } = info;
     const product = products.find(
@@ -259,28 +198,14 @@ class TicketSidebar extends Component<Props, State> {
     if (product) {
       addFilterProduct(product);
       setTicketsLoading(true);
-      fetchTickets(filters).then(() => {
+      fetchTickets(true).then(() => {
         setTicketsLoading(false);
       });
-      this.props.history.push(
-        `${paths.TICKET_LIST}${getSearchString({
-          ...filters,
-          products: [
-            ...filters.products.filter(item => item.id !== product.id),
-            product
-          ]
-        })}`
-      );
     }
   };
 
   setIssueType = (event: React.ChangeEvent<{ value: unknown }>) => {
-    const {
-      addFilterIssueType,
-      filters,
-      fetchTickets,
-      setTicketsLoading
-    } = this.props;
+    const { addFilterIssueType, fetchTickets, setTicketsLoading } = this.props;
     const { info } = this.props;
     const { issueTypes } = info;
     const issueType = issueTypes.find(
@@ -289,28 +214,14 @@ class TicketSidebar extends Component<Props, State> {
     if (issueType) {
       addFilterIssueType(issueType);
       setTicketsLoading(true);
-      fetchTickets(filters).then(() => {
+      fetchTickets(true).then(() => {
         setTicketsLoading(false);
       });
-      this.props.history.push(
-        `${paths.TICKET_LIST}${getSearchString({
-          ...filters,
-          issueTypes: [
-            ...filters.issueTypes.filter(item => item.id !== issueType.id),
-            issueType
-          ]
-        })}`
-      );
     }
   };
 
   setStatus = (event: React.ChangeEvent<{ value: unknown }>) => {
-    const {
-      addFilterStatus,
-      filters,
-      fetchTickets,
-      setTicketsLoading
-    } = this.props;
+    const { addFilterStatus, fetchTickets, setTicketsLoading } = this.props;
     const { info } = this.props;
     const { statuses } = info;
     const status = statuses.find(
@@ -319,73 +230,38 @@ class TicketSidebar extends Component<Props, State> {
     if (status) {
       addFilterStatus(status);
       setTicketsLoading(true);
-      fetchTickets(filters).then(() => {
+      fetchTickets(true).then(() => {
         setTicketsLoading(false);
       });
-      this.props.history.push(
-        `${paths.TICKET_LIST}${getSearchString({
-          ...filters,
-          statuses: [
-            ...filters.statuses.filter(item => item.id !== status.id),
-            status
-          ]
-        })}`
-      );
     }
   };
 
   setStartDate = (startDate: Date | null) => {
-    if (!startDate) {
-      return;
+    const { setFilterStartDate, fetchTickets, setTicketsLoading } = this.props;
+    let dateString = "";
+    if (startDate) {
+      const date = moment(startDate);
+      dateString = date.format("YYYY-MM-DD");
     }
-    const {
-      setFilterStartDate,
-      filters,
-      fetchTickets,
-      setTicketsLoading
-    } = this.props;
-    const date = moment(startDate);
-    if (date.isValid()) {
-      const dateString = date.format("YYYY-MM-DD");
-      setFilterStartDate(dateString);
-      setTicketsLoading(true);
-      fetchTickets(filters).then(() => {
-        setTicketsLoading(false);
-      });
-      this.props.history.push(
-        `${paths.TICKET_LIST}${getSearchString({
-          ...filters,
-          startDate: dateString
-        })}`
-      );
-    }
+    setFilterStartDate(dateString);
+    setTicketsLoading(true);
+    fetchTickets(true).then(() => {
+      setTicketsLoading(false);
+    });
   };
 
   setEndDate = (endDate: Date | null) => {
-    if (!endDate) {
-      return;
+    const { setFilterEndDate, fetchTickets, setTicketsLoading } = this.props;
+    let dateString = "";
+    if (endDate) {
+      const date = moment(endDate);
+      dateString = date.format("YYYY-MM-DD");
     }
-    const {
-      setFilterEndDate,
-      filters,
-      fetchTickets,
-      setTicketsLoading
-    } = this.props;
-    const date = moment(endDate);
-    if (date.isValid()) {
-      const dateString = date.format("YYYY-MM-DD");
-      setFilterEndDate(dateString);
-      setTicketsLoading(true);
-      fetchTickets(filters).then(() => {
-        setTicketsLoading(false);
-      });
-      this.props.history.push(
-        `${paths.TICKET_LIST}${getSearchString({
-          ...filters,
-          endDate: dateString
-        })}`
-      );
-    }
+    setFilterEndDate(dateString);
+    setTicketsLoading(true);
+    fetchTickets(true).then(() => {
+      setTicketsLoading(false);
+    });
   };
 
   render() {
@@ -504,6 +380,7 @@ class TicketSidebar extends Component<Props, State> {
                 select
                 fullWidth
                 variant="outlined"
+                margin="dense"
                 value={
                   filters.categories.length
                     ? filters.categories[filters.categories.length - 1].name
@@ -539,6 +416,7 @@ class TicketSidebar extends Component<Props, State> {
                 select
                 fullWidth
                 variant="outlined"
+                margin="dense"
                 value={
                   filters.products.length
                     ? filters.products[filters.products.length - 1].name
@@ -574,6 +452,7 @@ class TicketSidebar extends Component<Props, State> {
                 select
                 fullWidth
                 variant="outlined"
+                margin="dense"
                 value={
                   filters.issueTypes.length
                     ? filters.issueTypes[filters.issueTypes.length - 1].name
@@ -609,6 +488,7 @@ class TicketSidebar extends Component<Props, State> {
                 select
                 fullWidth
                 variant="outlined"
+                margin="dense"
                 value={
                   filters.statuses.length
                     ? filters.statuses[filters.statuses.length - 1].name
@@ -626,7 +506,7 @@ class TicketSidebar extends Component<Props, State> {
             <div className={classes.inputSet}>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <div>
-                  <span>Created On:</span>
+                  <span>Created Date:</span>
                 </div>
                 <div>
                   <span>
@@ -646,6 +526,8 @@ class TicketSidebar extends Component<Props, State> {
                       ? moment(filters.endDate).toDate()
                       : null
                   }
+                  inputVariant="outlined"
+                  clearable={true}
                 />
                 <div>
                   <span>
@@ -665,6 +547,8 @@ class TicketSidebar extends Component<Props, State> {
                       ? moment(filters.startDate).toDate()
                       : null
                   }
+                  inputVariant="outlined"
+                  clearable={true}
                 />
               </MuiPickersUtilsProvider>
             </div>

@@ -1,7 +1,10 @@
 import axios from "axios";
-import { ThunkDispatch } from "redux-thunk";
+import { ThunkDispatch, ThunkAction } from "redux-thunk";
 import { AnyAction } from "redux";
+import { push } from "connected-react-router";
 
+import { paths } from "../../routes";
+import { getSearchString } from "../../utils/filterQueries";
 import { Company, ShortUser } from "../types/profiles";
 import {
   TicketCategory,
@@ -16,7 +19,7 @@ import {
   TicketHistory
 } from "../types/tickets";
 import actions from "./constants";
-import { TicketsFilterState } from "../types/state";
+import { TicketsFilterState, AppState } from "../types/state";
 
 export interface AddFilterCompanyAction {
   type: string;
@@ -384,10 +387,14 @@ export const resetTicketsState = (): ResetTicketsStateAction => ({
   type: actions.RESET_TICKETS_STATE
 });
 
-export const fetchTickets = (filters: TicketsFilterState) => {
+export const fetchTickets = (
+  routeToParams?: boolean
+): ThunkAction<any, AppState, any, AnyAction> => {
   return async (
-    dispatch: ThunkDispatch<{}, {}, AnyAction>
+    dispatch: ThunkDispatch<{}, {}, AnyAction>,
+    getState: () => AppState
   ): Promise<Array<Ticket>> => {
+    const { filters } = getState().tickets;
     let params: any = {};
 
     if (filters.companies.length)
@@ -418,6 +425,9 @@ export const fetchTickets = (filters: TicketsFilterState) => {
       const count = response.data.count;
       dispatch(setTickets(results));
       dispatch(setFilterTotalCount(count));
+      if (routeToParams) {
+        dispatch(push(`${paths.TICKET_LIST}${getSearchString(filters)}`));
+      }
       return Promise.resolve(results);
     });
   };

@@ -1,11 +1,11 @@
-import { Company, ShortUser } from "../../state/types/profiles";
+import { Company, ShortUser } from "../state/types/profiles";
 import {
   TicketIssueType,
   GluuProduct,
   TicketStatus,
   TicketCategory
-} from "../../state/types/info";
-import { TicketFilterOrder } from "../../state/types/tickets";
+} from "../state/types/info";
+import { TicketFilterOrder } from "../state/types/tickets";
 
 export const getSearchString = (params: {
   companies?: Array<Company>;

@@ -22,10 +22,16 @@ const muiTheme = createMuiTheme({
     MuiInputBase: {
       input: {
         backgroundColor: "#fff",
-        borderRadius: ".2em"
+        borderRadius: ".1em",
+        height: "1.5em"
       },
       root: {
         backgroundColor: "#fff"
+      }
+    },
+    MuiOutlinedInput: {
+      input: {
+        padding: "0.5em 1em"
       }
     },
     MuiInputAdornment: {
@@ -52,6 +58,12 @@ const muiTheme = createMuiTheme({
         "&:hover": {
           color: colors.VERY_LIGHT_TEXT
         }
+      },
+      root: {
+        height: "2em",
+        marginRight: ".5em",
+        borderRadius: "none",
+        marginBottom: ".8em"
       }
     }
   },

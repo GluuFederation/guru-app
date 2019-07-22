@@ -19,6 +19,7 @@ import { withInfo, WithInfoProps } from "../../state/hocs/info";
 
 import HeroImg from "../../assets/images/hero.svg";
 import { ReactComponent as SearchImg } from "../../assets/images/search.svg";
+import { TicketSearchResult } from "../../state/types/tickets";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -36,11 +37,6 @@ const styles = (theme: Theme) =>
   });
 
 type Props = WithStyles<typeof styles> & RouteComponentProps & WithInfoProps;
-
-interface TicketSearchResult {
-  id: number;
-  title: string;
-}
 
 type SearchSuggestion = TicketSearchResult & Suggestion;
 

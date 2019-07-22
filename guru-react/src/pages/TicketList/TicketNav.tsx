@@ -15,7 +15,7 @@ import { paths } from "../../routes";
 import { withUser, WithUserProps } from "../../state/hocs/profiles";
 import { withTicketList, WithTicketListProps } from "../../state/hocs/tickets";
 import NavLink from "../../components/NavLink";
-import { getSearchString } from "./filterQueries";
+import { getSearchString } from "../../utils/filterQueries";
 import * as infoData from "../../state/preloaded/info";
 import { ShortUser } from "../../state/types/profiles";
 import { TicketStatus } from "../../state/types/info";
@@ -108,7 +108,6 @@ class TicketNav extends Component<Props, State> {
       addFilterAssignee,
       addFilterStatus,
       clearAllFilters,
-      filters,
       fetchTickets,
       setTicketsLoading
     } = this.props;
@@ -120,16 +119,9 @@ class TicketNav extends Component<Props, State> {
       addFilterStatus(status);
     }
     setTicketsLoading(true);
-    fetchTickets(filters).then(() => {
+    fetchTickets(true).then(() => {
       setTicketsLoading(false);
     });
-    this.props.history.push(
-      `${paths.TICKET_LIST}${getSearchString({
-        ...filters,
-        assignees: assignment ? [assignment] : undefined,
-        statuses: status ? [status] : undefined
-      })}`
-    );
     this.setState({
       myAssignmentsElement: null,
       allTicketsElement: null,

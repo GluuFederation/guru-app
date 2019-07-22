@@ -101,7 +101,7 @@ export interface WithTicketsListDispatch {
   setFilterPageItems: (pageItems: number) => SetFilterPageItemsAction;
   setFilterTotalCount: (totalCount: number) => SetFilterTotalCountAction;
   clearAllFilters: () => ClearAllFiltersAction;
-  fetchTickets: (filters: TicketsFilterState) => Promise<Array<Ticket>>;
+  fetchTickets: (routeToParams?: boolean) => Promise<Array<Ticket>>;
 }
 
 export interface WithTicketDetailState {
@@ -143,7 +143,7 @@ export const withTicketList = <P extends WithTicketListProps>(
       tickets: state.tickets.tickets,
       filters: state.tickets.filters
     }),
-    (dispatch: ThunkDispatch<{}, {}, AnyAction>) => ({
+    (dispatch: ThunkDispatch<any, AppState, AnyAction>) => ({
       addFilterCompany: (company: Company) =>
         dispatch(addFilterCompany(company)),
       addFilterCreator: (creator: ShortUser) =>
@@ -185,8 +185,8 @@ export const withTicketList = <P extends WithTicketListProps>(
       setFilterTotalCount: (totalCount: number) =>
         dispatch(setFilterTotalCount(totalCount)),
       clearAllFilters: () => dispatch(clearAllFilters()),
-      fetchTickets: (filters: TicketsFilterState) =>
-        dispatch(fetchTickets(filters))
+      fetchTickets: (routeToParams?: boolean) =>
+        dispatch(fetchTickets(routeToParams))
     })
   )(WithInfo);
 };
