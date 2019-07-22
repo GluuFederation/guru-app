@@ -86,17 +86,13 @@ export interface WithTicketsListDispatch {
   addFilterProduct: (product: GluuProduct) => AddFilterProductAction;
   addFilterStatus: (status: TicketStatus) => AddFilterStatusAction;
   addFilterCategory: (category: TicketCategory) => AddFilterCategoryAction;
-  removeFilterCompany: (company: Company) => RemoveFilterCompanyAction;
-  removeFilterCreator: (creator: ShortUser) => RemoveFilterCreatorAction;
-  removeFilterAssignee: (assignee: ShortUser) => RemoveFilterAssigneeAction;
-  removeFilterIssueType: (
-    issueType: TicketIssueType
-  ) => RemoveFilterIssueTypeAction;
-  removeFilterProduct: (product: GluuProduct) => RemoveFilterProductAction;
-  removeFilterStatus: (status: TicketStatus) => RemoveFilterStatusAction;
-  removeFilterCategory: (
-    category: TicketCategory
-  ) => RemoveFilterCategoryAction;
+  removeFilterCompany: (companyId: number) => RemoveFilterCompanyAction;
+  removeFilterCreator: (creatorId: number) => RemoveFilterCreatorAction;
+  removeFilterAssignee: (assigneeId: number) => RemoveFilterAssigneeAction;
+  removeFilterIssueType: (issueTypeId: number) => RemoveFilterIssueTypeAction;
+  removeFilterProduct: (productId: number) => RemoveFilterProductAction;
+  removeFilterStatus: (statusId: number) => RemoveFilterStatusAction;
+  removeFilterCategory: (categoryId: number) => RemoveFilterCategoryAction;
   setFilterStartDate: (startDate: string) => SetFilterStartDateAction;
   setFilterEndDate: (endDate: string) => SetFilterEndDateAction;
   setFilterQuery: (query: string) => SetFilterQueryAction;
@@ -162,20 +158,20 @@ export const withTicketList = <P extends WithTicketListProps>(
         dispatch(addFilterCategory(category)),
       addFilterStatus: (status: TicketStatus) =>
         dispatch(addFilterStatus(status)),
-      removeFilterCompany: (company: Company) =>
-        dispatch(removeFilterCompany(company)),
-      removeFilterCreator: (creator: ShortUser) =>
-        dispatch(removeFilterCreator(creator)),
-      removeFilterAssignee: (assignee: ShortUser) =>
-        dispatch(removeFilterAssignee(assignee)),
-      removeFilterIssueType: (issueType: TicketIssueType) =>
-        dispatch(removeFilterIssueType(issueType)),
-      removeFilterProduct: (product: GluuProduct) =>
-        dispatch(removeFilterProduct(product)),
-      removeFilterCategory: (category: TicketCategory) =>
-        dispatch(removeFilterCategory(category)),
-      removeFilterStatus: (status: TicketStatus) =>
-        dispatch(removeFilterStatus(status)),
+      removeFilterCompany: (companyId: number) =>
+        dispatch(removeFilterCompany(companyId)),
+      removeFilterCreator: (creatorId: number) =>
+        dispatch(removeFilterCreator(creatorId)),
+      removeFilterAssignee: (assigneeId: number) =>
+        dispatch(removeFilterAssignee(assigneeId)),
+      removeFilterIssueType: (issueTypeId: number) =>
+        dispatch(removeFilterIssueType(issueTypeId)),
+      removeFilterProduct: (productId: number) =>
+        dispatch(removeFilterProduct(productId)),
+      removeFilterCategory: (categoryId: number) =>
+        dispatch(removeFilterCategory(categoryId)),
+      removeFilterStatus: (statusId: number) =>
+        dispatch(removeFilterStatus(statusId)),
       setFilterEndDate: (endDate: string) =>
         dispatch(setFilterEndDate(endDate)),
       setFilterStartDate: (startDate: string) =>

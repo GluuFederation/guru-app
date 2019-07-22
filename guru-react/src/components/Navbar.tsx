@@ -130,7 +130,6 @@ class Navbar extends Component<Props, State> {
     const { classes, user } = this.props;
     const isLoggedIn = user !== null;
     const { isDrawerOpen, userMenuElement, scheduleMenuElement } = this.state;
-    console.log(userMenuElement);
 
     return (
       <div className={classes.root}>

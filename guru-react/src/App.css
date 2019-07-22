@@ -25,6 +25,13 @@ body {
   div.MuiContainer-root {
     padding: 0;
   }
+  .sm-center {
+    text-align: center;
+    align-content: center;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+  }
 }
 
 @media only screen and (min-width: 601px) and (max-width: 960px) {
@@ -33,5 +40,54 @@ body {
   }
   div.MuiContainer-root {
     padding: 0;
+  }
+  .sm-center {
+    text-align: center;
+    align-content: center;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+  }
+}
+
+@media only screen and (min-width: 961px) and (max-width: 1280px) {
+  .app-container {
+    padding-left: 3em;
+    padding-right: 3em;
+  }
+  .md-center {
+    text-align: center;
+    align-content: center;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+  }
+}
+
+@media only screen and (min-width: 1281px) and (max-width: 1920px) {
+  .app-container {
+    padding-left: 4em !important;
+    padding-right: 4em !important;
+  }
+  .lg-center {
+    text-align: center;
+    align-content: center;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+  }
+}
+
+@media only screen and (min-width: 1921px) {
+  .app-container {
+    padding-left: 8em !important;
+    padding-right: 8em !important;
+  }
+  .xl-center {
+    text-align: center;
+    align-content: center;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
   }
 }

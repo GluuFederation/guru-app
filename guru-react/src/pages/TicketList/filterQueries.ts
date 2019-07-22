@@ -38,54 +38,26 @@ export const getSearchString = (params: {
     page,
     pageItems
   } = params;
-  if (companies) {
-    searchString += "companies=";
-    companies.forEach(item => {
-      searchString += `${item.id},`;
-    });
-    searchString += "&";
+  if (companies && companies.length) {
+    searchString += `companies=${companies.map(item => item.id).join()}&`;
   }
-  if (creators) {
-    searchString += "creators=";
-    creators.forEach(item => {
-      searchString += `${item.id},`;
-    });
-    searchString += "&";
+  if (creators && creators.length) {
+    searchString += `creators=${creators.map(item => item.id).join()}&`;
   }
-  if (assignees) {
-    searchString += "assignees=";
-    assignees.forEach(item => {
-      searchString += `${item.id},`;
-    });
-    searchString += "&";
+  if (assignees && assignees.length) {
+    searchString += `assignees=${assignees.map(item => item.id).join()}&`;
   }
-  if (issueTypes) {
-    searchString += "types=";
-    issueTypes.forEach(item => {
-      searchString += `${item.id},`;
-    });
-    searchString += "&";
+  if (issueTypes && issueTypes.length) {
+    searchString += `types=${issueTypes.map(item => item.id).join()}&`;
   }
-  if (products) {
-    searchString += "products=";
-    products.forEach(item => {
-      searchString += `${item.id},`;
-    });
-    searchString += "&";
+  if (products && products.length) {
+    searchString += `products=${products.map(item => item.id).join()}&`;
   }
-  if (statuses) {
-    searchString += "statuses=";
-    statuses.forEach(item => {
-      searchString += `${item.id},`;
-    });
-    searchString += "&";
+  if (statuses && statuses.length) {
+    searchString += `statuses=${statuses.map(item => item.id).join()}&`;
   }
-  if (categories) {
-    searchString += "categories=";
-    categories.forEach(item => {
-      searchString += `${item.id},`;
-    });
-    searchString += "&";
+  if (categories && categories.length) {
+    searchString += `categories=${categories.map(item => item.id).join()}&`;
   }
   if (startDate) {
     searchString += `start=${startDate}&`;
@@ -101,6 +73,9 @@ export const getSearchString = (params: {
   }
   if (page && pageItems) {
     searchString += `offset=${(page - 1) * pageItems}&limit=${pageItems}`;
+  }
+  if (searchString[searchString.length - 1] === "&") {
+    searchString = searchString.substring(0, searchString.length - 1);
   }
   return searchString;
 };

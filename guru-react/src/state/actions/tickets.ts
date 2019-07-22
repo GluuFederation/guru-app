@@ -55,37 +55,37 @@ export interface AddFilterStatusAction {
 
 export interface RemoveFilterCompanyAction {
   type: string;
-  company: Company;
+  companyId: number;
 }
 
 export interface RemoveFilterCreatorAction {
   type: string;
-  creator: ShortUser;
+  creatorId: number;
 }
 
 export interface RemoveFilterAssigneeAction {
   type: string;
-  assignee: ShortUser;
+  assigneeId: number;
 }
 
 export interface RemoveFilterCategoryAction {
   type: string;
-  category: TicketCategory;
+  categoryId: number;
 }
 
 export interface RemoveFilterProductAction {
   type: string;
-  product: GluuProduct;
+  productId: number;
 }
 
 export interface RemoveFilterIssueTypeAction {
   type: string;
-  issueType: TicketIssueType;
+  issueTypeId: number;
 }
 
 export interface RemoveFilterStatusAction {
   type: string;
-  status: TicketStatus;
+  statusId: number;
 }
 
 export interface SetFilterStartDateAction {
@@ -245,52 +245,52 @@ export const addFilterStatus = (
 });
 
 export const removeFilterCompany = (
-  company: Company
+  companyId: number
 ): RemoveFilterCompanyAction => ({
   type: actions.REMOVE_FILTER_COMPANY,
-  company
+  companyId
 });
 
 export const removeFilterCreator = (
-  creator: ShortUser
+  creatorId: number
 ): RemoveFilterCreatorAction => ({
   type: actions.REMOVE_FILTER_CREATOR,
-  creator
+  creatorId
 });
 
 export const removeFilterAssignee = (
-  assignee: ShortUser
+  assigneeId: number
 ): RemoveFilterAssigneeAction => ({
   type: actions.REMOVE_FILTER_ASSIGNEE,
-  assignee
+  assigneeId
 });
 
 export const removeFilterCategory = (
-  category: TicketCategory
+  categoryId: number
 ): RemoveFilterCategoryAction => ({
   type: actions.REMOVE_FILTER_CATEGORY,
-  category
+  categoryId
 });
 
 export const removeFilterIssueType = (
-  issueType: TicketIssueType
+  issueTypeId: number
 ): RemoveFilterIssueTypeAction => ({
   type: actions.REMOVE_FILTER_ISSUE_TYPE,
-  issueType
+  issueTypeId
 });
 
 export const removeFilterProduct = (
-  product: GluuProduct
+  productId: number
 ): RemoveFilterProductAction => ({
   type: actions.REMOVE_FILTER_PRODUCT,
-  product
+  productId
 });
 
 export const removeFilterStatus = (
-  status: TicketStatus
+  statusId: number
 ): RemoveFilterStatusAction => ({
   type: actions.REMOVE_FILTER_STATUS,
-  status
+  statusId
 });
 
 export const setFilterStartDate = (

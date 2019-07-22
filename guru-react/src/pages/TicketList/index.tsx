@@ -12,7 +12,6 @@ import { colors } from "../../theme";
 import { paths } from "../../routes";
 import Page from "../../components/Page";
 import Navbar from "../../components/Navbar";
-import NavLink from "../../components/NavLink";
 import Footer from "../../components/Footer";
 import { withTicketList, WithTicketListProps } from "../../state/hocs/tickets";
 import { withUser, WithUserProps } from "../../state/hocs/profiles";
@@ -28,10 +27,15 @@ import { TicketFilterOrder } from "../../state/types/tickets";
 import { TicketsFilterState } from "../../state/types/state";
 import { initialFilters } from "../../state/reducers/tickets";
 import { getSearchString } from "./filterQueries";
+import TicketNav from "./TicketNav";
+import TicketSidebar from "./TicketSidebar";
 
 const styles = (theme: Theme) =>
   createStyles({
-    root: {}
+    root: {
+      backgroundColor: "inherit",
+      padding: "4em 10em 10em 4em"
+    }
   });
 
 type Props = WithStyles<typeof styles> &
@@ -82,8 +86,8 @@ class Home extends Component<Props, State> {
       categories: categories ? categories : undefined
     };
 
-    const startDate = searchParams.get("startDate");
-    const endDate = searchParams.get("endDate");
+    const startDate = searchParams.get("start");
+    const endDate = searchParams.get("end");
     const query = searchParams.get("query");
     const order = searchParams.get("order");
     const pageItemsStr = searchParams.get("pageItems");
@@ -179,32 +183,29 @@ class Home extends Component<Props, State> {
       }
 
       this.setState({ isLoading: false, isTicketsLoading: true });
-      fetchTickets(filters).then(tickets => {
+      fetchTickets(filters).then(() => {
         this.setState({ isLoading: false, isTicketsLoading: false });
       });
     });
   };
 
+  setTicketsLoading = (isTicketsLoading: boolean) => {
+    this.setState({ isTicketsLoading });
+  };
+
   render() {
-    const { user } = this.props;
+    const { user, classes } = this.props;
     return (
       <Page>
         <Navbar />
-        <div className={`app-body`}>
-          {user !== null ? (
-            <Hidden smDown>
-              <Grid container spacing={1}>
-                <Grid item xs={12}>
-                  <NavLink
-                    to={paths.TICKET_LIST}
-                    search={getSearchString({ assignees: [user] })}
-                  >
-                    My assignment
-                  </NavLink>
-                </Grid>
-              </Grid>
-            </Hidden>
-          ) : null}
+        <TicketNav setTicketsLoading={this.setTicketsLoading} />
+        <div className={`app-body ${classes.root}`}>
+          <Grid container spacing={4}>
+            <Grid item md={4} lg={3} xl={2}>
+              <TicketSidebar setTicketsLoading={this.setTicketsLoading} />
+            </Grid>
+            <Grid item md={8} lg={9} xl={10} />
+          </Grid>
         </div>
         <Footer />
       </Page>

@@ -1,3 +1,4 @@
+from django.db.models import Q
 from rest_framework import serializers
 from rest_framework import fields
 from django_countries.serializer_fields import CountryField
@@ -7,6 +8,7 @@ from profiles import models as m
 from profiles import constants as c
 from oxd import scim
 from billing.serializers import AccountSerializer
+from info.serializers import UserRoleSerializer
 
 
 class AddressSerializer(serializers.ModelSerializer):
@@ -23,12 +25,45 @@ class AddressSerializer(serializers.ModelSerializer):
 
 
 class ShortUserSerializer(serializers.ModelSerializer):
+    avatar = serializers.ReadOnlyField(source='avatar_url')
 
     class Meta:
         model = m.User
         fields = (
-            'id', 'full_name',
+            'id', 'first_name', 'last_name', 'other_names',
+            'avatar'
         )
+
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        role = None
+        email = ''
+        company_name = ''
+        request = self.context.get('request')
+        if request:
+            user = request.user
+            is_connected = m.User.objects.filter(
+                Q(
+                    membership__company__id__in=list(
+                        user.company_set.values_list(
+                            'id', flat=True
+                        )
+                    ),
+                    id=instance.id
+                )
+            ).exists() or instance.id == user.id
+            if is_connected:
+                email = instance.email
+                if instance.company:
+                    company_name = instance.company.name
+
+                if instance.role:
+                    role = UserRoleSerializer(instance.role).data
+
+        rep['role'] = role
+        rep['email'] = email
+        rep['company_name'] = company_name
+        return rep
 
 
 class ShortCompanySerializer(serializers.ModelSerializer):

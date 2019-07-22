@@ -131,88 +131,86 @@ const ticketsReducer = (
         }
       };
     case actions.REMOVE_FILTER_COMPANY:
-      const companyR = (action as ticketsActions.RemoveFilterCompanyAction)
-        .company;
+      const companyId = (action as ticketsActions.RemoveFilterCompanyAction)
+        .companyId;
       return {
         ...state,
         filters: {
           ...state.filters,
           companies: [
-            ...state.filters.companies.filter(item => item.id !== companyR.id)
+            ...state.filters.companies.filter(item => item.id !== companyId)
           ]
         }
       };
     case actions.REMOVE_FILTER_CREATOR:
-      const creatorR = (action as ticketsActions.RemoveFilterCreatorAction)
-        .creator;
+      const creatorId = (action as ticketsActions.RemoveFilterCreatorAction)
+        .creatorId;
       return {
         ...state,
         filters: {
           ...state.filters,
           creators: [
-            ...state.filters.creators.filter(item => item.id !== creatorR.id)
+            ...state.filters.creators.filter(item => item.id !== creatorId)
           ]
         }
       };
     case actions.REMOVE_FILTER_ASSIGNEE:
-      const assigneeR = (action as ticketsActions.RemoveFilterAssigneeAction)
-        .assignee;
+      const assigneeId = (action as ticketsActions.RemoveFilterAssigneeAction)
+        .assigneeId;
       return {
         ...state,
         filters: {
           ...state.filters,
           assignees: [
-            ...state.filters.assignees.filter(item => item.id !== assigneeR.id)
+            ...state.filters.assignees.filter(item => item.id !== assigneeId)
           ]
         }
       };
     case actions.REMOVE_FILTER_CATEGORY:
-      const categoryR = (action as ticketsActions.RemoveFilterCategoryAction)
-        .category;
+      const categoryId = (action as ticketsActions.RemoveFilterCategoryAction)
+        .categoryId;
       return {
         ...state,
         filters: {
           ...state.filters,
           categories: [
-            ...state.filters.categories.filter(item => item.id !== categoryR.id)
+            ...state.filters.categories.filter(item => item.id !== categoryId)
           ]
         }
       };
     case actions.REMOVE_FILTER_PRODUCT:
-      const productR = (action as ticketsActions.RemoveFilterProductAction)
-        .product;
+      const productId = (action as ticketsActions.RemoveFilterProductAction)
+        .productId;
       return {
         ...state,
         filters: {
           ...state.filters,
           products: [
-            ...state.filters.products.filter(item => item.id !== productR.id)
+            ...state.filters.products.filter(item => item.id !== productId)
           ]
         }
       };
     case actions.REMOVE_FILTER_ISSUE_TYPE:
-      const issueTypeR = (action as ticketsActions.RemoveFilterIssueTypeAction)
-        .issueType;
+      const issueTypeId = (action as ticketsActions.RemoveFilterIssueTypeAction)
+        .issueTypeId;
       return {
         ...state,
         filters: {
           ...state.filters,
           issueTypes: [
-            ...state.filters.issueTypes.filter(
-              item => item.id !== issueTypeR.id
-            )
+            ...state.filters.issueTypes.filter(item => item.id !== issueTypeId)
           ]
         }
       };
     case actions.REMOVE_FILTER_STATUS:
-      const statusR = (action as ticketsActions.RemoveFilterStatusAction)
-        .status;
+      const statusId = (action as ticketsActions.RemoveFilterStatusAction)
+        .statusId;
       return {
         ...state,
         filters: {
           ...state.filters,
           statuses: [
-            ...state.filters.statuses.filter(item => item.id !== statusR.id)
+            ...state.filters.statuses.filter(item => item.id !== statusId)
           ]
         }
       };
