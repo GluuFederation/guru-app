@@ -15,7 +15,6 @@ import { paths } from "../../routes";
 import { withUser, WithUserProps } from "../../state/hocs/profiles";
 import { withTicketList, WithTicketListProps } from "../../state/hocs/tickets";
 import NavLink from "../../components/NavLink";
-import { getSearchString } from "../../utils/filterQueries";
 import * as infoData from "../../state/preloaded/info";
 import { ShortUser } from "../../state/types/profiles";
 import { TicketStatus } from "../../state/types/info";

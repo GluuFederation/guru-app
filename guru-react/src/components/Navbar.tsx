@@ -158,7 +158,12 @@ class Navbar extends Component<Props, State> {
                 </IconButton>
               </Hidden>
               <div className={classes.title}>
-                <img src={Logo} alt="" className={classes.logo} />
+                <img
+                  src={Logo}
+                  alt=""
+                  className={classes.logo}
+                  onClick={this.navigateTo(paths.HOMEPAGE)}
+                />
                 {isLoggedIn ? (
                   <Hidden xsDown>
                     <NavLink to={paths.HOMEPAGE}>Dashboard</NavLink>

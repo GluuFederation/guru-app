@@ -5,13 +5,8 @@ import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
 import Chip from "@material-ui/core/Chip";
 
-import { colors } from "../../theme";
-import { paths } from "../../routes";
 import { withUser, WithUserProps } from "../../state/hocs/profiles";
 import { withTicketList, WithTicketListProps } from "../../state/hocs/tickets";
-import { getSearchString } from "../../utils/filterQueries";
-import { ShortUser } from "../../state/types/profiles";
-import { TicketStatus } from "../../state/types/info";
 
 const styles = (theme: Theme) =>
   createStyles({

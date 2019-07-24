@@ -9,6 +9,10 @@ import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import Chip from "@material-ui/core/Chip";
 
+import ChatBubbleOutline from "@material-ui/icons/ChatBubbleOutline";
+import PersonOutline from "@material-ui/icons/PersonOutline";
+import ThumbUpOutlined from "@material-ui/icons/ThumbUpOutlined";
+
 import { colors } from "../../theme";
 import { getChipClass } from "../../utils/chipStyles";
 import { paths } from "../../routes";
@@ -43,6 +47,14 @@ const styles = (theme: Theme) =>
     },
     ticketId: {
       color: colors.MAIN_COLOR
+    },
+    avatar: {
+      height: 50,
+      width: 50,
+      marginBottom: "1em"
+    },
+    ticketActivity: {
+      fontSize: ".9em"
     }
   });
 
@@ -77,18 +89,33 @@ class TicketNav extends Component<Props> {
     const issueType = tempIssueType ? tempIssueType : minorIssueType;
     return (
       <div className={classes.root} onClick={this.goToTicket}>
-        <Grid container>
+        <Grid container alignItems="center">
           <Grid item md={3} lg={2} className={classes.owner}>
-            <Avatar src={owner.avatar} />
-            <div>
-              <strong>
-                {owner.firstName} {owner.otherNames} {owner.lastName}
-              </strong>
-            </div>
-            <div>
-              <small>{owner.companyName}</small>
-            </div>
-            <div>{owner.role ? owner.role.name : ""}</div>
+            <Grid
+              container
+              justify="center"
+              direction="column"
+              alignItems="center"
+            >
+              <Grid item>
+                <Avatar src={owner.avatar} className={classes.avatar} />
+              </Grid>
+              <Grid item>
+                <div>
+                  <strong>
+                    {owner.firstName} {owner.otherNames} {owner.lastName}
+                  </strong>
+                </div>
+              </Grid>
+              <Grid item>
+                <div>
+                  <small>{owner.companyName}</small>
+                </div>
+              </Grid>
+              <Grid item>
+                <div>{owner.role ? owner.role.name : ""}</div>
+              </Grid>
+            </Grid>
           </Grid>
           <Grid item md={6} lg={8} className={classes.ticket}>
             <div>
@@ -123,21 +150,41 @@ class TicketNav extends Component<Props> {
             <Grid
               container
               justify="center"
-              alignItems="flex-start"
+              alignItems="baseline"
               direction="column"
+              spacing={1}
             >
               <Grid item xs={12}>
-                <div>{ticket.responseNumber} responses</div>
+                <Grid container justify="center" spacing={2}>
+                  <Grid item xs={3}>
+                    <ChatBubbleOutline />
+                  </Grid>
+                  <Grid item xs={9} className={classes.ticketActivity}>
+                    {ticket.responseNumber} responses
+                  </Grid>
+                </Grid>
               </Grid>
               <Grid item xs={12}>
-                <div>{ticket.voters.length} votes</div>
+                <Grid container justify="center" spacing={4}>
+                  <Grid item xs={3}>
+                    <ThumbUpOutlined />
+                  </Grid>
+                  <Grid item xs={9} className={classes.ticketActivity}>
+                    {ticket.voters.length} votes
+                  </Grid>
+                </Grid>
               </Grid>
               {ticket.assignee ? (
                 <Grid item xs={12}>
-                  <div>
-                    {ticket.assignee.firstName} {ticket.assignee.otherNames}{" "}
-                    {ticket.assignee.lastName}
-                  </div>
+                  <Grid container justify="center" spacing={2}>
+                    <Grid item xs={3}>
+                      <PersonOutline />
+                    </Grid>
+                    <Grid item xs={9} className={classes.ticketActivity}>
+                      {ticket.assignee.firstName} {ticket.assignee.otherNames}{" "}
+                      {ticket.assignee.lastName}
+                    </Grid>
+                  </Grid>
                 </Grid>
               ) : null}
             </Grid>

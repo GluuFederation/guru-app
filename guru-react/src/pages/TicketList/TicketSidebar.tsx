@@ -16,16 +16,13 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 
-import ExpandMore from "@material-ui/icons/ExpandMore";
+// import ExpandMore from "@material-ui/icons/ExpandMore";
 
 import { colors } from "../../theme";
-import { paths } from "../../routes";
 import { withUser, WithUserProps } from "../../state/hocs/profiles";
 import { withTicketList, WithTicketListProps } from "../../state/hocs/tickets";
 import { withInfo, WithInfoProps } from "../../state/hocs/info";
-import { getSearchString } from "../../utils/filterQueries";
 import { ShortUser, Company } from "../../state/types/profiles";
-import { TicketStatus } from "../../state/types/info";
 import { emptyUser } from "../../state/preloaded/profiles";
 import Autocomplete, { Suggestion } from "../../components/Autocomplete";
 import FilterTag, { FilterType } from "./FilterTag";

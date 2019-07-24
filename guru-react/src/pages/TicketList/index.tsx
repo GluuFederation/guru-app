@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import axios from "axios";
 import moment from "moment";
+import ReactPaginate from "react-paginate";
 
 import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
@@ -10,9 +11,10 @@ import Hidden from "@material-ui/core/Hidden";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import MenuItem from "@material-ui/core/MenuItem";
 import { colors } from "../../theme";
 
-import { paths } from "../../routes";
 import Page from "../../components/Page";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
@@ -31,8 +33,6 @@ import {
   TicketFilterOrder,
   TicketSearchResult
 } from "../../state/types/tickets";
-import { TicketsFilterState } from "../../state/types/state";
-import { initialFilters } from "../../state/reducers/tickets";
 import TicketNav from "./TicketNav";
 import TicketSidebar from "./TicketSidebar";
 import TicketListItem from "./TicketListItem";
@@ -44,13 +44,42 @@ const styles = (theme: Theme) =>
     root: {
       flexGrow: 1,
       backgroundColor: "inherit",
-      padding: "4em 4em 10em 4em"
+      padding: "4em 4em 10em 4em",
+      wordWrap: "break-word"
     },
-    tickets: {},
+    ticketCount: {
+      marginTop: "1.5em"
+    },
     loading: {
       textAlign: "center",
       width: "100%",
       margin: "5em"
+    },
+    paginationContainer: {
+      marginTop: "2em",
+      listStyle: "none",
+      "& li": {
+        display: "inline-block",
+        backgroundColor: colors.MAIN_BACKGROUND,
+        marginLeft: ".7em",
+        border: `1px solid ${colors.VERY_LIGHT_TEXT}`,
+        borderRadius: ".2em"
+      },
+      "& li.selected": {
+        backgroundColor: colors.MAIN_COLOR,
+        color: colors.MAIN_BACKGROUND
+      },
+      "& li:hover": {
+        border: `1px solid ${colors.MAIN_COLOR}`,
+        cursor: "pointer"
+      },
+      "& li a": {
+        padding: ".5em",
+        display: "inline-block"
+      },
+      "& li a:focus": {
+        outline: "none"
+      }
     }
   });
 
@@ -64,6 +93,7 @@ interface State {
   isLoading: boolean;
   isTicketsLoading: boolean;
   autocompleteResults: Array<Suggestion>;
+  searchQuery: string;
 }
 
 class Home extends Component<Props, State> {
@@ -72,7 +102,8 @@ class Home extends Component<Props, State> {
     this.state = {
       isLoading: false,
       isTicketsLoading: false,
-      autocompleteResults: []
+      autocompleteResults: [],
+      searchQuery: ""
     };
   }
 
@@ -105,7 +136,19 @@ class Home extends Component<Props, State> {
     });
   };
 
-  handleSearchButton = () => {};
+  handleSearchButton = () => {
+    const { searchQuery } = this.state;
+    const { setFilterQuery, fetchTickets } = this.props;
+    setFilterQuery(searchQuery);
+    this.setTicketsLoading(true);
+    fetchTickets(true).then(() => {
+      this.setTicketsLoading(false);
+    });
+  };
+
+  handleSearchQueryChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    this.setState({ searchQuery: event.target.value as string });
+  };
 
   setPageItems = (event: React.ChangeEvent<{ value: unknown }>) => {
     const { setFilterPageItems, fetchTickets } = this.props;
@@ -119,10 +162,10 @@ class Home extends Component<Props, State> {
     }
   };
 
-  setPage = (page: number) => () => {
+  setPage = ({ selected }: { selected: number }) => () => {
     const { setFilterPage, fetchTickets } = this.props;
-    if (!isNaN(page)) {
-      setFilterPage(page);
+    if (!isNaN(selected)) {
+      setFilterPage(selected);
       this.setTicketsLoading(true);
       fetchTickets(true).then(() => {
         this.setTicketsLoading(false);
@@ -166,8 +209,8 @@ class Home extends Component<Props, State> {
     const endDate = searchParams.get("end");
     const query = searchParams.get("query");
     const order = searchParams.get("order");
-    const pageItemsStr = searchParams.get("pageItems");
-    const pageStr = searchParams.get("page");
+    const pageItemsStr = searchParams.get("limit");
+    const pageStr = searchParams.get("offset");
     this.setState({ isLoading: true });
     axios.get(url, { params }).then(response => {
       const results = response.data.results;
@@ -186,9 +229,11 @@ class Home extends Component<Props, State> {
         setFilterPage,
         setFilterPageItems,
         setFilterQuery,
-        fetchTickets
+        fetchTickets,
+        filters
       } = this.props;
       clearAllFilters();
+      let pageItems = filters.pageItems;
       if (results.companies) {
         results.companies.forEach((company: Company) => {
           addFilterCompany(company);
@@ -225,13 +270,13 @@ class Home extends Component<Props, State> {
         });
       }
       if (pageItemsStr) {
-        const pageItems = parseInt(pageItemsStr, 10);
+        pageItems = parseInt(pageItemsStr, 10);
         if (!isNaN(pageItems)) {
           setFilterPageItems(pageItems);
         }
       }
       if (pageStr) {
-        const page = parseInt(pageStr, 10);
+        const page = Math.round(parseInt(pageStr, 10) / pageItems) + 1;
         if (!isNaN(page)) {
           setFilterPage(page);
         }
@@ -269,16 +314,18 @@ class Home extends Component<Props, State> {
   };
 
   render() {
-    const { user, classes, tickets } = this.props;
+    const { user, classes, tickets, filters } = this.props;
     const { isTicketsLoading, autocompleteResults } = this.state;
     const InputProps = {
       endAdornment: (
         <InputAdornment position="end">
-          <Button>
+          <Button onClick={this.handleSearchButton}>
             <SearchImg />
           </Button>
         </InputAdornment>
-      )
+      ),
+      onChange: this.handleSearchQueryChange,
+      placeholder: "Type the keyword"
     };
     return (
       <Page>
@@ -286,9 +333,12 @@ class Home extends Component<Props, State> {
         <TicketNav setTicketsLoading={this.setTicketsLoading} />
         <div className={`app-body ${classes.root}`}>
           <Grid container spacing={2}>
-            <Grid item xs={12} md={4} lg={3} xl={2}>
-              <TicketSidebar setTicketsLoading={this.setTicketsLoading} />
-            </Grid>
+            <Hidden smDown>
+              <Grid item xs={12} md={4} lg={3} xl={2}>
+                <TicketSidebar setTicketsLoading={this.setTicketsLoading} />
+              </Grid>
+            </Hidden>
+
             <Grid item xs={12} md={8} lg={9} xl={10}>
               <Grid container spacing={1}>
                 <Grid item xs={12} lg={6}>
@@ -299,7 +349,27 @@ class Home extends Component<Props, State> {
                     InputProps={InputProps}
                   />
                 </Grid>
-                <Grid item xs={12} lg={6} />
+                <Grid item xs={12} lg={6}>
+                  <Grid container justify="flex-end" alignItems="center">
+                    <Grid item>Order by: &emsp;</Grid>
+                    <Grid item>
+                      <TextField
+                        select
+                        variant="outlined"
+                        margin="dense"
+                        value={filters.order ? filters.order : ""}
+                        onChange={this.setOrder}
+                      >
+                        <MenuItem value={TicketFilterOrder.MostRecent}>
+                          Most recent
+                        </MenuItem>
+                        <MenuItem value={TicketFilterOrder.LeastRecent}>
+                          Least recent
+                        </MenuItem>
+                      </TextField>
+                    </Grid>
+                  </Grid>
+                </Grid>
                 {isTicketsLoading ? (
                   <div className={classes.loading}>
                     <CircularProgress />
@@ -313,6 +383,44 @@ class Home extends Component<Props, State> {
                     ))}
                   </React.Fragment>
                 )}
+              </Grid>
+              <Grid container>
+                <Grid item>
+                  <Grid
+                    container
+                    alignItems="center"
+                    className={classes.ticketCount}
+                  >
+                    <Grid item>Show: &emsp;</Grid>
+                    <Grid item>
+                      <TextField
+                        select
+                        variant="outlined"
+                        margin="dense"
+                        value={
+                          !isNaN(filters.pageItems) ? filters.pageItems : ""
+                        }
+                        onChange={this.setPageItems}
+                      >
+                        <MenuItem value={10}>10</MenuItem>
+                        <MenuItem value={15}>15</MenuItem>
+                        <MenuItem value={20}>20</MenuItem>
+                        <MenuItem value={25}>25</MenuItem>
+                      </TextField>
+                    </Grid>
+                    <Grid item>&emsp; of {filters.totalCount} tickets.</Grid>
+                  </Grid>
+                </Grid>
+                <Grid item>
+                  <ReactPaginate
+                    previousLabel="Previous"
+                    pageCount={filters.totalCount / filters.pageItems}
+                    pageRangeDisplayed={2}
+                    marginPagesDisplayed={3}
+                    onPageChange={this.setPage}
+                    containerClassName={classes.paginationContainer}
+                  />
+                </Grid>
               </Grid>
             </Grid>
           </Grid>

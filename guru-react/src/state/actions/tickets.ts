@@ -19,7 +19,7 @@ import {
   TicketHistory
 } from "../types/tickets";
 import actions from "./constants";
-import { TicketsFilterState, AppState } from "../types/state";
+import { AppState } from "../types/state";
 
 export interface AddFilterCompanyAction {
   type: string;
@@ -335,7 +335,7 @@ export const setFilterPageItems = (
 export const setFilterTotalCount = (
   totalCount: number
 ): SetFilterTotalCountAction => ({
-  type: actions.SET_FILTER_PAGE_ITEMS,
+  type: actions.SET_FILTER_TOTAL_COUNT,
   totalCount
 });
 

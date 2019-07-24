@@ -8,6 +8,7 @@ import { colors } from "../../theme";
 
 import { paths } from "../../routes";
 import { TicketCategory } from "../../state/types/info";
+import { getSearchString } from "../../utils/filterQueries";
 
 import { ReactComponent as AuthenticationIcon } from "../../assets/images/authentication.svg";
 import { ReactComponent as AccessManagementIcon } from "../../assets/images/access-management.svg";
@@ -60,6 +61,14 @@ interface ExternalProps {
 type Props = WithStyles<typeof styles> & RouteComponentProps & ExternalProps;
 
 class CategoryItem extends Component<Props> {
+  handleClick = () => {
+    this.props.history.push(
+      `${paths.TICKET_LIST}${getSearchString({
+        categories: [this.props.category]
+      })}`
+    );
+  };
+
   getComponentFromSlug = (slug: string) => {
     switch (slug) {
       case "authentication":
@@ -92,7 +101,7 @@ class CategoryItem extends Component<Props> {
     const { classes, category } = this.props;
     const Icon = this.getComponentFromSlug(category.slug);
     return (
-      <Paper className={classes.root}>
+      <Paper className={classes.root} onClick={this.handleClick}>
         <Icon className={classes.icon} />
         <p>{category.name}</p>
       </Paper>
