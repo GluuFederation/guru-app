@@ -6,18 +6,25 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.parsers import MultiPartParser
+from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
 from drf_haystack.viewsets import HaystackViewSet
 from drf_haystack.filters import HaystackAutocompleteFilter
 
 from tickets import models as m
 from tickets import serializers as s
 from tickets import permissions as p
+from profiles import models as pm
+from info import models as im
+from info import serializers as info_s
+from profiles.serializers import ShortCompanySerializer, ShortUserSerializer
 from guru import viewsets
 from tickets.utils import get_tickets_query
 from info.models import UserRole
 
 
 class TicketSearchView(HaystackViewSet):
+    load_all = True
     index_models = [m.Ticket]
     serializer_class = s.TicketSearchSerializer
     filter_backends = [HaystackAutocompleteFilter]
@@ -41,7 +48,7 @@ class TicketViewSet(viewsets.ModelViewSet):
 
         return queryset
 
-    def create(self, request):
+    def create(self, request, *args, **kwargs):
         serializer_data = request.data.get('ticket', {})
 
         context = {
@@ -162,7 +169,10 @@ class TicketViewSet(viewsets.ModelViewSet):
         page = self.paginate_queryset(queryset)
         serializer = self.serializer_class(
             page,
-            many=True
+            many=True,
+            context={
+                'request': request
+            }
         )
 
         return self.get_paginated_response(serializer.data)
@@ -242,6 +252,27 @@ class TicketViewSet(viewsets.ModelViewSet):
 
         return self.get_paginated_response(serializer.data)
 
+    @action(detail=False, methods=['GET'])
+    def search(self, request, slug=None):
+        params = request.query_params
+        queryset = self.get_queryset().filter(
+            get_tickets_query(self.request.user)
+        )
+        q = params.get('q', '')
+        if q:
+            queryset = queryset.filter(
+                Q(body__contains=q) |
+                Q(title__contains=q)
+            )
+
+        page = self.paginate_queryset(queryset)
+        serializer = s.TicketQSearchSerializer(
+            page,
+            many=True
+        )
+
+        return self.get_paginated_response(serializer.data)
+
     @action(detail=True, methods=['POST'])
     def assign(self, request, slug=None):
         serializer_instance = self.get_object()
@@ -267,8 +298,7 @@ class TicketViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['POST'])
     def vote(self, request, slug=None):
         ticket = self.get_object()
-        data = request.data.get('vote', {})
-        vote = data.get('vote', True)
+        vote = request.data.get('vote', True)
         if vote:
             ticket.voters.add(request.user)
             msg = 'You voted this ticket'
@@ -279,13 +309,16 @@ class TicketViewSet(viewsets.ModelViewSet):
             else:
                 msg = 'You have not voted this ticket yet'
 
-        return Response({'results': msg}, status=status.HTTP_200_OK)
+        serializer = self.serializer_class(ticket)
+        return Response(
+            {'results': serializer.data, 'detail': msg},
+            status=status.HTTP_200_OK
+        )
 
     @action(detail=True, methods=['POST'])
     def subscribe(self, request, slug=None):
         ticket = self.get_object()
-        data = request.data.get('subscribe', {})
-        subscribe = data.get('subscribe', True)
+        subscribe = request.data.get('subscribe', True)
         if subscribe:
             ticket.subscribers.add(request.user)
             msg = 'You are subscribed to this ticket'
@@ -296,7 +329,11 @@ class TicketViewSet(viewsets.ModelViewSet):
             else:
                 msg = 'You are not subscribed to this ticket yet'
 
-        return Response({'results': msg}, status=status.HTTP_200_OK)
+        serializer = self.serializer_class(ticket)
+        return Response(
+            {'results': serializer.data, 'detail': msg},
+            status=status.HTTP_200_OK
+        )
 
     @action(detail=True, methods=['PUT'], parser_classes=[MultiPartParser])
     def upload(self, request, slug=None):
@@ -311,8 +348,9 @@ class TicketViewSet(viewsets.ModelViewSet):
                 ticket=obj
             )
 
+        serializer = self.serializer_class(obj)
         return Response(
-            {'results': 'Successfully uploaded'},
+            {'results': serializer.data, 'detail': 'Successfully uploaded'},
             status=status.HTTP_200_OK
         )
 
@@ -327,7 +365,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
             ticket__is_deleted=False
         )
 
-    def create(self, request, ticket_slug=None):
+    def create(self, request, ticket_slug=None, *args, **kwargs):
         serializer_data = request.data.get('answer', {})
         ticket = get_object_or_404(
             m.Ticket, is_deleted=False, slug=ticket_slug
@@ -403,3 +441,109 @@ class AnswerViewSet(viewsets.ModelViewSet):
             {'results': 'Successfully uploaded'},
             status=status.HTTP_200_OK
         )
+
+
+class GetTicketParamsDataView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        params = request.query_params
+        user = request.user
+        is_auth = user.is_authenticated
+        response = {}
+
+        company_ids = params.get('companies')
+        if company_ids and is_auth:
+            if user.is_staff:
+                companies = pm.Company.objects.filter(
+                    id__in=company_ids.split(',')
+                )
+            else:
+                companies = user.company_set.filter(
+                    id__in=company_ids.split(',')
+                )
+            response['companies'] = ShortCompanySerializer(
+                companies, many=True
+            ).data
+
+        creator_ids = params.get('creators')
+        if creator_ids and is_auth:
+            if user.is_staff:
+                creators = pm.User.objects.filter(
+                    id__in=creator_ids.split(',')
+                )
+            else:
+                creators = pm.User.objects.filter(
+                    Q(
+                        membership__company__id__in=list(
+                            user.company_set.values_list(
+                                'id', flat=True
+                            )
+                        ),
+                        id__in=creator_ids.split(',')
+                    ) | Q(id=user.id, id__in=creator_ids.split(','))
+                )
+            response['creators'] = ShortUserSerializer(
+                creators, many=True
+            ).data
+
+        assignee_ids = params.get('assignees')
+        if assignee_ids and is_auth:
+            if user.is_staff:
+                assignees = pm.User.objects.filter(
+                    id__in=assignee_ids.split(',')
+                )
+            else:
+                assignees = pm.User.objects.filter(
+                    Q(
+                        membership__company__id__in=list(
+                            user.company_set.values_list(
+                                'id', flat=True
+                            )
+                        ),
+                        id__in=assignee_ids.split(',')
+                    ) | Q(id=user.id, id__in=assignee_ids.split(','))
+                )
+            response['assignees'] = ShortUserSerializer(
+                assignees, many=True
+            ).data
+
+        issue_type_ids = params.get('types')
+        if issue_type_ids:
+            issue_types = im.TicketIssueType.objects.filter(
+                id__in=issue_type_ids.split(',')
+            )
+            response['issue_types'] = info_s.TicketIssueTypeSerializer(
+                issue_types, many=True
+            ).data
+
+        product_ids = params.get('products')
+        if product_ids:
+            products = im.GluuProduct.objects.filter(
+                id__in=product_ids.split(',')
+            )
+            response['products'] = info_s.GluuProductSerializer(
+                products, many=True
+            ).data
+
+        status_ids = params.get('statuses')
+        if status_ids:
+            statuses = im.TicketStatus.objects.filter(
+                id__in=status_ids.split(',')
+            )
+            response['statuses'] = info_s.TicketStatusSerializer(
+                statuses, many=True
+            ).data
+
+        category_ids = params.get('categories')
+        if category_ids:
+            categories = im.TicketCategory.objects.filter(
+                id__in=category_ids.split(',')
+            )
+            response['categories'] = info_s.TicketCategorySerializer(
+                categories, many=True
+            ).data
+
+        return Response({
+            'results': response
+        }, status=status.HTTP_200_OK)

@@ -269,6 +269,15 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
         membership = self.membership_set.all().order_by('-is_primary')
         return list(m.company for m in membership)
 
+    @property
+    def avatar_url(self):
+        return ''
+
+    @property
+    def role(self):
+        membership = self.membership_set.filter(is_primary=True).first()
+        return membership.role if membership else None
+
     def get_account(self):
         try:
             account = self.account

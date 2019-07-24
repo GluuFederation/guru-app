@@ -1,4 +1,4 @@
-FROM guru-vue as guru-stage
+FROM guru-react as guru-stage
 ARG ENVIRON
 RUN cp /app/.env.${ENVIRON} /app/.env && npm run build
 
@@ -14,7 +14,7 @@ ARG ENVIRON
 RUN mkdir /app /app/guru /app/users /app/api-static /nginx-conf
 RUN ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/nginx/error.log
 
-COPY --from=guru-stage /app/dist/ /app/guru
+COPY --from=guru-stage /app/build/ /app/guru
 COPY --from=users-stage /app/dist/ /app/users
 COPY --from=backend-stage /app/staticfiles/ /app/api-static
 COPY ./ /nginx-conf
