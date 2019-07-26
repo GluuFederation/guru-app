@@ -16,7 +16,7 @@ const styles = (theme: Theme) =>
         CardHeader: {
             backgroundColor: '#f1f5f9',
             textAlign: 'left',
-            fontFamily: 'arial',
+            fontFamily: '"Lato", sans-serif',
             height: 40,
             fontSize: 12,
             fontWeight: 600
@@ -30,7 +30,7 @@ const styles = (theme: Theme) =>
         },
         textVoteNo: {
             fontSize: 14,
-            fontFamily: 'arial',
+            fontFamily: '"Lato", sans-serif',
             marginLeft: 10,
             marginRight: 5,
             fontWeight: 500,
@@ -38,14 +38,14 @@ const styles = (theme: Theme) =>
         },
         textVote: {
             fontSize: 14,
-            fontFamily: 'arial',
+            fontFamily: '"Lato", sans-serif',
             marginLeft: 5,
             fontWeight: 500,
             color: '#858585',
         },
         textPanel: {
             fontSize: 14,
-            fontFamily: 'arial',
+            fontFamily: '"Lato", sans-serif',
             textAlign: 'left',
             fontWeight: 500,
             color: '#989898',
@@ -53,7 +53,7 @@ const styles = (theme: Theme) =>
         },
         textLink: {
             fontSize: 14,
-            fontFamily: 'arial',
+            fontFamily: '"Lato", sans-serif',
             textAlign: 'left',
             fontWeight: 500,
             color: '#7FD0FF',
@@ -61,7 +61,7 @@ const styles = (theme: Theme) =>
         },
         textVoteDT: {
             fontSize: 14,
-            fontFamily: 'arial',
+            fontFamily: '"Lato", sans-serif',
             marginLeft: 5,
             fontWeight: 500,
             right: 0,

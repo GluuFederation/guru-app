@@ -38,7 +38,7 @@ const styles = (theme: Theme) =>
         buttonEdit: {
             width: 3,
             height: 30,
-            fontFamily: 'arial',
+            fontFamily: '"Lato", sans-serif',
             fontWeight: 600,
             color: '#ABABAB',
             marginLeft: 5,
@@ -47,11 +47,11 @@ const styles = (theme: Theme) =>
             float: 'right',
         },
         titleEditeForm: {
-            fontFamily: 'arial',
+            fontFamily: '"Lato", sans-serif',
             fontWeight: 500,
         },
         subjectEditeForm: {
-            fontFamily: 'arial',
+            fontFamily: '"Lato", sans-serif',
             fontWeight: 500,
             marginTop: 5,
             marginBottom: 5,
@@ -61,18 +61,18 @@ const styles = (theme: Theme) =>
             width: '100%'
         },
         discriptionEditeForm: {
-            fontFamily: 'arial',
+            fontFamily: '"Lato", sans-serif',
             fontWeight: 500,
             marginTop: 5,
             marginBottom: 5,
         },
         radioFont: {
-            fontFamily: 'arial',
+            fontFamily: '"Lato", sans-serif',
             marginTop: 12,
             marginRight: 10,
         },
         radioTitle: {
-            fontFamily: 'arial',
+            fontFamily: '"Lato", sans-serif',
             fontWeight: 500,
             fontSize: 16,
             marginTop: 7,
@@ -83,14 +83,14 @@ const styles = (theme: Theme) =>
             padding: 10,
             color: '#ffffff',
             backgroundColor: '#00b372',
-            fontFamily: 'arial',
+            fontFamily: '"Lato", sans-serif',
             marginRight: 5,
         },
         editBtnCancel: {
             padding: 10,
             color: '#CACFD2',
             backgroundColor: 'white',
-            fontFamily: 'arial',
+            fontFamily: '"Lato", sans-serif',
             marginLeft: 5,
         },
 

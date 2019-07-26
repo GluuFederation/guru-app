@@ -31,11 +31,11 @@ const useStyles = makeStyles((theme: Theme) =>
             top: '30%',
         },
         titleEditeForm: {
-            fontFamily: 'arial',
+            fontFamily: '"Lato", sans-serif',
             fontWeight: 500,
         },
         ticketDelete: {
-            fontFamily: 'arial',
+            fontFamily: '"Lato", sans-serif',
             fontWeight: 500,
             marginRight: 15,
             '&:hover': {

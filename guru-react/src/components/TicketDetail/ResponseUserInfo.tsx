@@ -22,7 +22,7 @@ const styles = (theme: Theme) =>
             textAlign: 'center',
             height: 28,
             borderRadius: 4,
-            fontFamily: 'arial',
+            fontFamily: '"Lato", sans-serif',
             fontSize: 13,
             color: '#ffffff',
             backgroundColor: '#00b372',
@@ -35,7 +35,7 @@ const styles = (theme: Theme) =>
         },
         userName: {
             fontSize: 12,
-            fontFamily: 'arial',
+            fontFamily: '"Lato", sans-serif',
             fontWeight: 600,
             marginTop: 5,
             textAlign: 'left'
@@ -47,7 +47,7 @@ const styles = (theme: Theme) =>
         },
         btnGluu: {
             fontSize: 10,
-            fontFamily: 'arial',
+            fontFamily: '"Lato", sans-serif',
             fontWeight: 500,
             marginTop: 5,
             height: 20,
@@ -60,7 +60,7 @@ const styles = (theme: Theme) =>
         },
         btnEnterprise: {
             fontSize: 10,
-            fontFamily: 'arial',
+            fontFamily: '"Lato", sans-serif',
             fontWeight: 500,
             marginTop: 5,
             height: 20,
