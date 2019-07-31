@@ -252,6 +252,11 @@ def get_user(idp_uuid):
 
     if 200 <= r.status_code < 300:
         response = r.json()
+        email = None
+        emails = response.get('emails', [])
+        if emails:
+            email = emails[0].get('value', '')
+        response['email'] = email
         return response
 
     raise e.ScimError(

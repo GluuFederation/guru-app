@@ -146,6 +146,23 @@ def get_auth_headers():
     return headers
 
 
+def logout_callback(state):
+    """
+    Redirect user to logout state.
+
+    :param state: logout state.
+    :returns boolean to confirm logout state
+    """
+    if state:
+        try:
+            LogoutState.objects.get(state=state)
+            return True
+        except LogoutState.DoesNotExist:
+            pass
+
+    return False
+
+
 def get_token_from_callback(query_params):
     """
     Get access token from callback.

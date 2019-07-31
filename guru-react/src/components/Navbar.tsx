@@ -121,8 +121,8 @@ class Navbar extends Component<Props, State> {
   };
 
   logout = () => {
-    this.props.logout().then(() => {
-      this.props.history.push(paths.HOMEPAGE);
+    this.props.logout().then(url => {
+      window.location.href = url;
     });
   };
 

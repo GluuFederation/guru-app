@@ -19,17 +19,23 @@ class OpenIdBackend:
         user_inum = get_user_info(access_token)
         idp_uuid = user_inum.get('sub', '')
         user = None
+        user_info = get_user(idp_uuid)
+        email = user_info.get('email')
         try:
             user = user_model.objects.get(
                 idp_uuid=idp_uuid
             )
-
         except user_model.DoesNotExist:
-            user = user_model(
-                idp_uuid=idp_uuid
-            )
+            try:
+                user = user_model.objects.get(
+                    email=email
+                )
+            except user_model.DoesNotExist:
+                user = user_model.objects.create_user(
+                    idp_uuid=idp_uuid,
+                    email=email
+                )
 
-        user_info = get_user(idp_uuid)
         try:
             user.update_from_idp(user_info)
 

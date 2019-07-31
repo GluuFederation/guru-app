@@ -46,8 +46,13 @@ urlpatterns = [
         name='verify_code'
     ),
     path(
+        'auth/get-logout-url/',
+        av.GetLogoutUrlAPIView.as_view(),
+        name='get_logout_url'
+    ),
+    path(
         'auth/logout/',
-        av.LogoutUrlAPIView.as_view(),
+        av.LogoutCallbackAPIView.as_view(),
         name='logout'
     ),
     path(

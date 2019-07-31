@@ -166,10 +166,11 @@ class LoginCallbackAPIView(APIView):
         }
         token_json = api.get_token_from_callback(query_params)
         access_token = token_json.get('access_token')
+        id_token = token_json.get('id_token')
         if not access_token:
             raise e.OxdError('Invalid token')
         user = authenticate(
-            request, access_token=access_token
+            request, access_token=access_token, id_token=id_token
         )
         if user is not None:
             has_account = user.get_account()
@@ -286,7 +287,7 @@ class ConfirmSignupAPIView(APIView):
             raise ValidationError('Incorrect activation key')
 
 
-class LogoutUrlAPIView(APIView):
+class GetLogoutUrlAPIView(APIView):
     permission_classes = (IsAuthenticated, )
 
     def get(self, request):
@@ -295,6 +296,22 @@ class LogoutUrlAPIView(APIView):
             {
                 'results': {
                     'logout_url': url
+                }
+            },
+            status=status.HTTP_200_OK
+        )
+
+
+class LogoutCallbackAPIView(APIView):
+    permission_classes = (IsAuthenticated, )
+
+    def get(self, request):
+        state = request.query_params.get('state')
+        is_valid = api.logout_callback(state)
+        return Response(
+            {
+                'results': {
+                    'is_valid': is_valid
                 }
             },
             status=status.HTTP_200_OK
