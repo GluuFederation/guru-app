@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'haystack',
     'fieldsignals',
     'phonenumber_field',
+    'guru',
     'profiles',
     'tickets',
     'notification',
@@ -191,6 +192,7 @@ REST_FRAMEWORK = {
         '.LimitOffsetPagination'
     ),
     'PAGE_SIZE': 20,
+    'EXCEPTION_HANDLER': 'guru.exceptions.custom_exception_handler',
 }
 
 # Q CLUSTER SETTINGS
