@@ -34,7 +34,7 @@ class GluuUserAdmin(UserAdmin):
         ('Permissions', {'fields': ('is_staff', 'is_verified')}),
         (
             'Additional Info',
-            {'fields': ('is_active', 'created_on', 'idp_uuid')}
+            {'fields': ('is_active', 'created_on', 'idp_uuid', 'id_token')}
         ),
     )
     add_fieldsets = (
@@ -62,7 +62,13 @@ class InvitationAdmin(admin.ModelAdmin):
 
 @admin.register(Membership)
 class MembershipAdmin(admin.ModelAdmin):
-    pass
+    list_display = (
+        'user', 'role', 'company', 'is_primary', 'date_joined'
+    )
+    search_fields = (
+        'user__id', 'user__email', 'user__first_name', 'user__last_name',
+        'company__name', 'role__name'
+    )
 
 
 admin.site.unregister(Group)

@@ -1,7 +1,10 @@
 import axios from "axios";
-import { ThunkDispatch } from "redux-thunk";
+import { ThunkDispatch, ThunkAction } from "redux-thunk";
 import { AnyAction } from "redux";
+import { push } from "connected-react-router";
 
+import { paths } from "../../routes";
+import { getSearchString } from "../../utils/filterQueries";
 import { Company, ShortUser } from "../types/profiles";
 import {
   TicketCategory,
@@ -16,7 +19,7 @@ import {
   TicketHistory
 } from "../types/tickets";
 import actions from "./constants";
-import { TicketsFilterState } from "../types/state";
+import { AppState } from "../types/state";
 
 export interface AddFilterCompanyAction {
   type: string;
@@ -55,37 +58,37 @@ export interface AddFilterStatusAction {
 
 export interface RemoveFilterCompanyAction {
   type: string;
-  company: Company;
+  companyId: number;
 }
 
 export interface RemoveFilterCreatorAction {
   type: string;
-  creator: ShortUser;
+  creatorId: number;
 }
 
 export interface RemoveFilterAssigneeAction {
   type: string;
-  assignee: ShortUser;
+  assigneeId: number;
 }
 
 export interface RemoveFilterCategoryAction {
   type: string;
-  category: TicketCategory;
+  categoryId: number;
 }
 
 export interface RemoveFilterProductAction {
   type: string;
-  product: GluuProduct;
+  productId: number;
 }
 
 export interface RemoveFilterIssueTypeAction {
   type: string;
-  issueType: TicketIssueType;
+  issueTypeId: number;
 }
 
 export interface RemoveFilterStatusAction {
   type: string;
-  status: TicketStatus;
+  statusId: number;
 }
 
 export interface SetFilterStartDateAction {
@@ -245,52 +248,52 @@ export const addFilterStatus = (
 });
 
 export const removeFilterCompany = (
-  company: Company
+  companyId: number
 ): RemoveFilterCompanyAction => ({
   type: actions.REMOVE_FILTER_COMPANY,
-  company
+  companyId
 });
 
 export const removeFilterCreator = (
-  creator: ShortUser
+  creatorId: number
 ): RemoveFilterCreatorAction => ({
   type: actions.REMOVE_FILTER_CREATOR,
-  creator
+  creatorId
 });
 
 export const removeFilterAssignee = (
-  assignee: ShortUser
+  assigneeId: number
 ): RemoveFilterAssigneeAction => ({
   type: actions.REMOVE_FILTER_ASSIGNEE,
-  assignee
+  assigneeId
 });
 
 export const removeFilterCategory = (
-  category: TicketCategory
+  categoryId: number
 ): RemoveFilterCategoryAction => ({
   type: actions.REMOVE_FILTER_CATEGORY,
-  category
+  categoryId
 });
 
 export const removeFilterIssueType = (
-  issueType: TicketIssueType
+  issueTypeId: number
 ): RemoveFilterIssueTypeAction => ({
   type: actions.REMOVE_FILTER_ISSUE_TYPE,
-  issueType
+  issueTypeId
 });
 
 export const removeFilterProduct = (
-  product: GluuProduct
+  productId: number
 ): RemoveFilterProductAction => ({
   type: actions.REMOVE_FILTER_PRODUCT,
-  product
+  productId
 });
 
 export const removeFilterStatus = (
-  status: TicketStatus
+  statusId: number
 ): RemoveFilterStatusAction => ({
   type: actions.REMOVE_FILTER_STATUS,
-  status
+  statusId
 });
 
 export const setFilterStartDate = (
@@ -332,7 +335,7 @@ export const setFilterPageItems = (
 export const setFilterTotalCount = (
   totalCount: number
 ): SetFilterTotalCountAction => ({
-  type: actions.SET_FILTER_PAGE_ITEMS,
+  type: actions.SET_FILTER_TOTAL_COUNT,
   totalCount
 });
 
@@ -384,10 +387,14 @@ export const resetTicketsState = (): ResetTicketsStateAction => ({
   type: actions.RESET_TICKETS_STATE
 });
 
-export const fetchTickets = (filters: TicketsFilterState) => {
+export const fetchTickets = (
+  routeToParams?: boolean
+): ThunkAction<any, AppState, any, AnyAction> => {
   return async (
-    dispatch: ThunkDispatch<{}, {}, AnyAction>
+    dispatch: ThunkDispatch<{}, {}, AnyAction>,
+    getState: () => AppState
   ): Promise<Array<Ticket>> => {
+    const { filters } = getState().tickets;
     let params: any = {};
 
     if (filters.companies.length)
@@ -418,6 +425,9 @@ export const fetchTickets = (filters: TicketsFilterState) => {
       const count = response.data.count;
       dispatch(setTickets(results));
       dispatch(setFilterTotalCount(count));
+      if (routeToParams) {
+        dispatch(push(`${paths.TICKET_LIST}${getSearchString(filters)}`));
+      }
       return Promise.resolve(results);
     });
   };

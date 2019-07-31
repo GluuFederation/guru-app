@@ -33,8 +33,9 @@ interface ExternalProps {
   hash?: string;
   isFooter?: boolean;
   replace?: boolean;
-  onClick?: (event: React.MouseEvent) => void;
+  onClick?: (event: React.MouseEvent<HTMLElement>) => void;
   state?: any;
+  extraClasses?: string;
 }
 
 type Props = ExternalProps & WithStyles<typeof styles>;
@@ -49,7 +50,8 @@ class NavLink extends Component<Props> {
       isFooter,
       onClick,
       state,
-      replace
+      replace,
+      extraClasses
     } = this.props;
     const linkTo = {
       pathname: to,
@@ -60,7 +62,9 @@ class NavLink extends Component<Props> {
       <Link
         component={RouterLink}
         classes={{
-          root: `${classes.root} ${isFooter ? classes.footer : classes.topNav}`
+          root: `${classes.root} ${
+            isFooter ? classes.footer : classes.topNav
+          } ${extraClasses ? extraClasses : ""}`
         }}
         to={linkTo}
         onClick={onClick}

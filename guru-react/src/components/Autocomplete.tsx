@@ -14,7 +14,7 @@ export interface Suggestion {
 interface ExternalProps {
   InputProps?: Partial<OutlinedInputProps>;
   updateQueryFunction?: (query: string) => void;
-  selectFunction?: (selectedItems: Array<Suggestion>) => void;
+  selectFunction?: (selectedItem: Suggestion) => void;
   suggestions: Array<Suggestion>;
 }
 
@@ -22,7 +22,7 @@ type Props = ExternalProps;
 
 interface State {
   searchQuery: string;
-  selectedItems: Array<Suggestion>;
+  selectedItem: Suggestion | null;
 }
 
 class Autocomplete extends Component<Props, State> {
@@ -30,7 +30,7 @@ class Autocomplete extends Component<Props, State> {
     super(props);
     this.state = {
       searchQuery: "",
-      selectedItems: []
+      selectedItem: null
     };
   }
 
@@ -43,20 +43,20 @@ class Autocomplete extends Component<Props, State> {
   };
 
   handleChange = (item: Suggestion) => {
-    let selectedItems = [...this.state.selectedItems];
-    selectedItems = selectedItems.filter(
-      selectedItem => item.id !== selectedItem.id
-    );
-    selectedItems.push(item);
-    this.setState({ searchQuery: item.text, selectedItems }, () => {
+    // let selectedItems = [...this.state.selectedItems];
+    // selectedItems = selectedItems.filter(
+    //   selectedItem => item.id !== selectedItem.id
+    // );
+    // selectedItems.push(item);
+    this.setState({ searchQuery: item.text, selectedItem: { ...item } }, () => {
       const { selectFunction } = this.props;
-      if (selectFunction) selectFunction(selectedItems);
+      if (selectFunction) selectFunction(item);
     });
   };
 
   render() {
     const { InputProps, suggestions } = this.props;
-    const { searchQuery, selectedItems } = this.state;
+    const { searchQuery, selectedItem } = this.state;
 
     return (
       <Downshift
@@ -72,7 +72,7 @@ class Autocomplete extends Component<Props, State> {
             <div>
               <TextField
                 variant="outlined"
-                margin="normal"
+                margin="dense"
                 placeholder="Search or ask a question"
                 fullWidth
                 InputProps={{
@@ -93,7 +93,7 @@ class Autocomplete extends Component<Props, State> {
                         key: suggestion.id
                       })}
                       selected={
-                        !!selectedItems.find(item => item.id === suggestion.id)
+                        selectedItem ? selectedItem.id === suggestion.id : false
                       }
                     >
                       {suggestion.text}

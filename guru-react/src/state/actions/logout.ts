@@ -12,7 +12,7 @@ export const logout = () => {
   return async (
     dispatch: ThunkDispatch<{}, {}, AnyAction>
   ): Promise<string> => {
-    const URL = `${process.env.REACT_APP_API_BASE}/api/v1/auth/logout/`;
+    const URL = `${process.env.REACT_APP_API_BASE}/api/v1/auth/get-logout-url/`;
     const params = { app: "guru" };
     return axios.get(URL, { params }).then(response => {
       const results = response.data.results;

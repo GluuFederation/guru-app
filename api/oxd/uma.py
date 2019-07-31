@@ -81,10 +81,11 @@ def get_authorization_url(redirect_uri=None):
         'response_type': 'code',
         'client_id': config.client_id,
         'redirect_uri': urllib.parse.quote(redirect_uri),
-        'scope': ','.join(config.scope),
+        'scope': ' '.join(config.scope),
         'state': state,
         'nonce': nonce
     }
+    # print(params)
 
     return (
         '{op_host}/oxauth/restv1/authorize?response_type={response_type}'
@@ -145,6 +146,23 @@ def get_auth_headers():
     return headers
 
 
+def logout_callback(state):
+    """
+    Redirect user to logout state.
+
+    :param state: logout state.
+    :returns boolean to confirm logout state
+    """
+    if state:
+        try:
+            LogoutState.objects.get(state=state)
+            return True
+        except LogoutState.DoesNotExist:
+            pass
+
+    return False
+
+
 def get_token_from_callback(query_params):
     """
     Get access token from callback.
@@ -166,7 +184,7 @@ def get_token_from_callback(query_params):
             'code': code,
             'grant_type': 'authorization_code',
             'redirect_uri': urllib.parse.quote(redirect_uri),
-            'scope': ','.join(config.scope),
+            'scope': ' '.join(config.scope),
         }
         headers = get_auth_headers()
         url = '{}/oxauth/restv1/token'.format(config.op_host)

@@ -169,7 +169,10 @@ class TicketViewSet(viewsets.ModelViewSet):
         page = self.paginate_queryset(queryset)
         serializer = self.serializer_class(
             page,
-            many=True
+            many=True,
+            context={
+                'request': request
+            }
         )
 
         return self.get_paginated_response(serializer.data)
@@ -471,10 +474,14 @@ class GetTicketParamsDataView(APIView):
                 )
             else:
                 creators = pm.User.objects.filter(
-                    company_set__id__in=list(user.company_set.values_list(
-                        'id', flat=True
-                    )),
-                    id__in=creator_ids.split(',')
+                    Q(
+                        membership__company__id__in=list(
+                            user.company_set.values_list(
+                                'id', flat=True
+                            )
+                        ),
+                        id__in=creator_ids.split(',')
+                    ) | Q(id=user.id, id__in=creator_ids.split(','))
                 )
             response['creators'] = ShortUserSerializer(
                 creators, many=True
@@ -488,10 +495,14 @@ class GetTicketParamsDataView(APIView):
                 )
             else:
                 assignees = pm.User.objects.filter(
-                    company_set__id__in=list(user.company_set.values_list(
-                        'id', flat=True
-                    )),
-                    id__in=assignee_ids.split(',')
+                    Q(
+                        membership__company__id__in=list(
+                            user.company_set.values_list(
+                                'id', flat=True
+                            )
+                        ),
+                        id__in=assignee_ids.split(',')
+                    ) | Q(id=user.id, id__in=assignee_ids.split(','))
                 )
             response['assignees'] = ShortUserSerializer(
                 assignees, many=True

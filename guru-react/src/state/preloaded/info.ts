@@ -1,4 +1,10 @@
-import { TicketStatus, UserRole, Permission } from "../types/info";
+import {
+  TicketStatus,
+  TicketCategory,
+  TicketIssueType,
+  TicketPriority
+} from "../types/info";
+import { ShortUser } from "../types/profiles";
 
 export const newStatus: TicketStatus = {
   id: 1,
@@ -8,8 +14,8 @@ export const newStatus: TicketStatus = {
 
 export const assignedStatus: TicketStatus = {
   id: 2,
-  slug: "Assigned",
-  name: "assigned"
+  slug: "assigned",
+  name: "Assigned"
 };
 
 export const inProgressStatus: TicketStatus = {
@@ -30,9 +36,38 @@ export const closedStatus: TicketStatus = {
   name: "Closed"
 };
 
-export const staffRole: UserRole = {
-  id: 1,
-  name: "staff",
-  isCompanyAssociated: false,
-  permissions: []
+export const otherCategory: TicketCategory = {
+  id: 13,
+  name: "Other",
+  slug: "other",
+  image: ""
+};
+
+export const minorIssueType: TicketIssueType = {
+  id: 4,
+  name: "Minor Issue",
+  slug: "minor-issue",
+  priority: TicketPriority.Low
+};
+
+export const unassigned: ShortUser = {
+  id: -1,
+  firstName: "Unassigned",
+  lastName: "",
+  otherNames: "",
+  companyName: "",
+  email: "",
+  role: null,
+  avatar: ""
+};
+
+export const assigned: ShortUser = {
+  id: -2,
+  firstName: "Assigned",
+  lastName: "",
+  otherNames: "",
+  companyName: "",
+  email: "",
+  role: null,
+  avatar: ""
 };

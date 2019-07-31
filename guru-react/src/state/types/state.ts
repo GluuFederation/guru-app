@@ -1,3 +1,5 @@
+import { RouteComponentProps } from "react-router-dom";
+
 import { Company, ShortUser, User, TeamMember } from "./profiles";
 import {
   TicketCategory,
@@ -98,4 +100,5 @@ export interface AppState {
   notifications: AppNotificationsState;
   profiles: ProfilesState;
   payments: PaymentsState;
+  router: RouteComponentProps;
 }

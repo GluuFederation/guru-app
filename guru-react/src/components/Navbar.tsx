@@ -121,8 +121,8 @@ class Navbar extends Component<Props, State> {
   };
 
   logout = () => {
-    this.props.logout().then(() => {
-      this.props.history.push(paths.HOMEPAGE);
+    this.props.logout().then(url => {
+      window.location.href = url;
     });
   };
 
@@ -130,7 +130,6 @@ class Navbar extends Component<Props, State> {
     const { classes, user } = this.props;
     const isLoggedIn = user !== null;
     const { isDrawerOpen, userMenuElement, scheduleMenuElement } = this.state;
-    console.log(userMenuElement);
 
     return (
       <div className={classes.root}>
@@ -159,7 +158,12 @@ class Navbar extends Component<Props, State> {
                 </IconButton>
               </Hidden>
               <div className={classes.title}>
-                <img src={Logo} alt="" className={classes.logo} />
+                <img
+                  src={Logo}
+                  alt=""
+                  className={classes.logo}
+                  onClick={this.navigateTo(paths.HOMEPAGE)}
+                />
                 {isLoggedIn ? (
                   <Hidden xsDown>
                     <NavLink to={paths.HOMEPAGE}>Dashboard</NavLink>

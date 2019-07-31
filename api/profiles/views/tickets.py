@@ -20,10 +20,10 @@ class UserAccessList(APIView):
         if user.is_staff:
             return m.User.objects.all()
 
-        companies = user.companies.values_list('id')
+        companies = user.company_set.values_list('id')
         if companies:
             return m.User.objects.filter(
-                membership_set__company_id__in=companies
+                membership__company_id__in=companies
             )
 
         return m.User.objects.none()
@@ -47,7 +47,9 @@ class UserAccessList(APIView):
             if last_name:
                 users = users.filter(last_name=last_name)[:20]
 
-        serializer = self.serializer_class(users, many=True)
+        serializer = self.serializer_class(
+            users, many=True, context={'request': request}
+        )
         return Response({
             'results': serializer.data
         }, status=status.HTTP_200_OK)
@@ -65,7 +67,7 @@ class CompanyAccessList(APIView):
         if user.is_staff:
             return m.Company.objects.all()
 
-        return user.companies.all()
+        return user.company_set.all()
 
     def get(self, request):
         q = request.query_params.get('q', '')

@@ -47,7 +47,7 @@ class Footer extends Component<Props> {
   render() {
     const { classes } = this.props;
     return (
-      <div className={classes.root}>
+      <div className={`${classes.root} app-container`}>
         <div>
           <Grid container spacing={4}>
             <Grid item xs={6} md={3}>
