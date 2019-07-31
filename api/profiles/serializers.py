@@ -42,23 +42,24 @@ class ShortUserSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         if request:
             user = request.user
-            is_connected = m.User.objects.filter(
-                Q(
-                    membership__company__id__in=list(
-                        user.company_set.values_list(
-                            'id', flat=True
-                        )
-                    ),
-                    id=instance.id
-                )
-            ).exists() or instance.id == user.id
-            if is_connected:
-                email = instance.email
-                if instance.company:
-                    company_name = instance.company.name
+            if user.is_authenticated:
+                is_connected = m.User.objects.filter(
+                    Q(
+                        membership__company__id__in=list(
+                            user.company_set.values_list(
+                                'id', flat=True
+                            )
+                        ),
+                        id=instance.id
+                    )
+                ).exists() or instance.id == user.id
+                if is_connected:
+                    email = instance.email
+                    if instance.company:
+                        company_name = instance.company.name
 
-                if instance.role:
-                    role = UserRoleSerializer(instance.role).data
+                    if instance.role:
+                        role = UserRoleSerializer(instance.role).data
 
         rep['role'] = role
         rep['email'] = email
@@ -82,13 +83,14 @@ class UserSerializer(serializers.ModelSerializer):
     company = ShortCompanySerializer()
     address = AddressSerializer(required=False)
     account = AccountSerializer(source='get_account', read_only=True)
+    role = UserRoleSerializer(read_only=True)
 
     class Meta:
         model = m.User
         fields = (
             'id', 'first_name', 'last_name', 'other_names',
             'email', 'token', 'company', 'timezone',  'address',
-            'idp_uuid', 'account'
+            'idp_uuid', 'account', 'role'
         )
 
     def update(self, instance, validated_data):

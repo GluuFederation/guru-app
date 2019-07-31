@@ -265,10 +265,12 @@ class TicketSidebar extends Component<Props, State> {
     const { classes, user, info, filters, setTicketsLoading } = this.props;
     const { companies, users } = this.state;
     const { statuses, categories, issueTypes, products } = info;
-
-    if (!user) {
-      return <div />;
-    }
+    let isStaff = user
+      ? user.role
+        ? user.role.name === "staff"
+        : false
+      : false;
+    isStaff = isStaff ? isStaff : !!user;
 
     return (
       <div className={classes.root}>
@@ -278,84 +280,89 @@ class TicketSidebar extends Component<Props, State> {
             <Typography variant="h6">Advanced Filter</Typography>
             <br />
             <Divider />
-            <div className={classes.inputSet}>
-              <div>
-                <span>Company:</span>
-              </div>
-              <div>
-                {filters.companies.map(company => (
-                  <FilterTag
-                    key={company.id}
-                    tag={{
-                      ...company,
-                      text: `${company.name}`,
-                      type: FilterType.Company
+            {isStaff ? (
+              <React.Fragment>
+                <div className={classes.inputSet}>
+                  <div>
+                    <span>Company:</span>
+                  </div>
+                  <div>
+                    {filters.companies.map(company => (
+                      <FilterTag
+                        key={company.id}
+                        tag={{
+                          ...company,
+                          text: `${company.name}`,
+                          type: FilterType.Company
+                        }}
+                        setTicketsLoading={setTicketsLoading}
+                      />
+                    ))}
+                  </div>
+                  <Autocomplete
+                    suggestions={companies}
+                    updateQueryFunction={this.searchCompanies}
+                    selectFunction={this.setCompany}
+                    InputProps={{
+                      placeholder: "Select Company"
                     }}
-                    setTicketsLoading={setTicketsLoading}
                   />
-                ))}
-              </div>
-              <Autocomplete
-                suggestions={companies}
-                updateQueryFunction={this.searchCompanies}
-                selectFunction={this.setCompany}
-                InputProps={{
-                  placeholder: "Select Company"
-                }}
-              />
-            </div>
-            <div className={classes.inputSet}>
-              <div>
-                <span>Created By:</span>
-              </div>
-              <div>
-                {filters.creators.map(creator => (
-                  <FilterTag
-                    key={creator.id}
-                    tag={{
-                      ...creator,
-                      text: `${creator.firstName} ${creator.lastName}`,
-                      type: FilterType.Creator
+                </div>
+                <div className={classes.inputSet}>
+                  <div>
+                    <span>Created By:</span>
+                  </div>
+                  <div>
+                    {filters.creators.map(creator => (
+                      <FilterTag
+                        key={creator.id}
+                        tag={{
+                          ...creator,
+                          text: `${creator.firstName} ${creator.lastName}`,
+                          type: FilterType.Creator
+                        }}
+                        setTicketsLoading={setTicketsLoading}
+                      />
+                    ))}
+                  </div>
+                  <Autocomplete
+                    suggestions={users}
+                    updateQueryFunction={this.searchCreators}
+                    selectFunction={this.setCreator}
+                    InputProps={{
+                      placeholder: "Select Creator"
                     }}
-                    setTicketsLoading={setTicketsLoading}
                   />
-                ))}
-              </div>
-              <Autocomplete
-                suggestions={users}
-                updateQueryFunction={this.searchCreators}
-                selectFunction={this.setCreator}
-                InputProps={{
-                  placeholder: "Select Creator"
-                }}
-              />
-            </div>
-            <div className={classes.inputSet}>
-              <div>
-                <span>Assigned To:</span>
-              </div>
-              <div>
-                {filters.assignees.map(assignee => (
-                  <FilterTag
-                    key={assignee.id}
-                    tag={{
-                      ...assignee,
-                      text: `${assignee.firstName} ${assignee.lastName}`,
-                      type: FilterType.Assignee
+                </div>
+                <div className={classes.inputSet}>
+                  <div>
+                    <span>Assigned To:</span>
+                  </div>
+                  <div>
+                    {filters.assignees.map(assignee => (
+                      <FilterTag
+                        key={assignee.id}
+                        tag={{
+                          ...assignee,
+                          text: `${assignee.firstName} ${assignee.lastName}`,
+                          type: FilterType.Assignee
+                        }}
+                        setTicketsLoading={setTicketsLoading}
+                      />
+                    ))}
+                  </div>
+                  <Autocomplete
+                    suggestions={users}
+                    updateQueryFunction={this.searchAssignees}
+                    selectFunction={this.setAssignee}
+                    InputProps={{
+                      placeholder: "Select Assignee"
                     }}
-                    setTicketsLoading={setTicketsLoading}
                   />
-                ))}
-              </div>
-              <Autocomplete
-                suggestions={users}
-                updateQueryFunction={this.searchAssignees}
-                selectFunction={this.setAssignee}
-                InputProps={{
-                  placeholder: "Select Assignee"
-                }}
-              />
-            </div>
+                </div>
+              </React.Fragment>
+            ) : null}
+
             <div className={classes.inputSet}>
               <div>
                 <span>Category:</span>
