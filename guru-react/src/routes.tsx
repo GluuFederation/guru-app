@@ -21,14 +21,14 @@ import SignupRedirect from "./pages/auth/SignupRedirect";
 
 import TicketList from "./pages/TicketList";
 import TicketDetail from "./pages/TicketDetail";
-
+import Dashboard from "./pages/Dashboard";
 export const paths = {
   // auth urls
   HOMEPAGE: "/",
   SELECT_PLAN: "/auth/select-plan",
   LOGIN: "/auth/login",
   SIGNUP: "/auth/signup",
-  LOGIN_CALLBACK: "/auth/login-callback",
+  LOGIN_CALLBACK: "/auth/login-callbaclist?ordering=+recent&offset=0&limit=10k",
 
   // tickets urls
   TICKET_LIST: "/tickets/list",
@@ -36,7 +36,7 @@ export const paths = {
   getCreateTicketPath: (step: number) => `/tickets/create/${step}`,
   TICKET_DETAIL: "/tickets/:slug",
   getTicketDetailPath: (slug: string) => `/tickets/${slug}`,
-
+  
   // notifications
   NOTIFICATIONS: "/dashboard/notifications",
 
@@ -75,7 +75,10 @@ const routes: Array<RouteType> = [
     path: paths.SIGNUP,
     component: SignupRedirect
   },
-
+  {
+    path:paths.TEAM_DETAILS,
+    component:Dashboard
+  },
   // tickets
   {
     path: paths.TICKET_LIST,
