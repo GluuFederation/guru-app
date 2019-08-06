@@ -3,7 +3,7 @@ import { WithUserProps, withUser } from "../../state/hocs/profiles";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { withStyles, WithStyles } from "@material-ui/styles";
 import Container from '@material-ui/core/Container';
-import { createStyles, Theme} from '@material-ui/core/styles';
+import { createStyles, Theme } from '@material-ui/core/styles';
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import Tabs from '@material-ui/core/Tabs';
@@ -17,6 +17,10 @@ import VerifyIcon from '../../assets/images/verify_icon.png';
 import Paper from '@material-ui/core/Paper';
 import Edit from '@material-ui/icons/Edit';
 import TeamPage from "./TeamPage";
+import PartnersPage from "./PartnersPage";
+
+
+
 interface TabPanelProps {
   children?: React.ReactNode;
   index: any;
@@ -64,7 +68,7 @@ const styles = ((theme: Theme) =>
       margin: 'auto',
       marginBottom: 15,
     },
-    
+
     editImageP: {
       backgroundColor: '#ffffff',
       width: 30,
@@ -142,15 +146,15 @@ const styles = ((theme: Theme) =>
       fontFamily: '"Lato", sans-serif',
     },
     contentContainer: {},
-        detailMembers: {
+    detailMembers: {
       fontSize: 14,
       color: '#232323',
       fontWeight: 500,
       fontFamily: '"Lato", sans-serif',
     },
-    
-    
-    
+
+
+
     margin: {
       margin: theme.spacing(1),
     },
@@ -158,13 +162,11 @@ const styles = ((theme: Theme) =>
     paper: {
       marginRight: theme.spacing(2),
     },
-    
-    
+
     tabs: {
-      borderRight: '1px solid ${theme.palette.divider}',
-      textTransform: 'capitalize'
     },
 
+    
 
   })
 );
@@ -175,18 +177,22 @@ type Props = WithUserProps & RouteComponentProps & WithStyles<typeof styles>;
 
 interface State {
   value: number;
+  
 }
 
 class Dashboard extends Component<Props, State>{
 
   state = {
-    value: 2
+    value: 2,
+    
   };
 
 
   handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     this.setState({ value: newValue });
   };
+
+
 
   render() {
 
@@ -228,16 +234,17 @@ class Dashboard extends Component<Props, State>{
                     onChange={this.handleChange}
                     aria-label="Vertical tabs example"
                     className={classes.tabs}
-
+                    indicatorColor="primary"
+                    textColor="primary"
 
                   >
-                    <Tab style={{ width: '100%', flex: 0, alignSelf: 'center', }} label="Notification"  {...a11yProps(0)} />
-                    <Tab style={{ width: '100%', flex: 0, alignSelf: 'center', }} label="Profile"  {...a11yProps(1)} />
-                    <Tab style={{ width: '100%', flex: 0, alignSelf: 'center', }} label="Team"   {...a11yProps(2)} />
-                    <Tab style={{ width: '100%', flex: 0, alignSelf: 'center', }} label="Partners"  {...a11yProps(3)} />
-                    <Tab style={{ width: '100%', flex: 0, alignSelf: 'center', }} label="Billing"  {...a11yProps(4)} />
-                    <Tab style={{ width: '100%', flex: 0, alignSelf: 'center', }} label="Account Security"  {...a11yProps(5)} />
-                    <Tab style={{ width: '100%', flex: 0, alignSelf: 'center', }} label="Admin"  {...a11yProps(6)} />
+                    <Tab style={{ width: '100%', alignSelf: 'center' }} label="Notification"  {...a11yProps(0)} />
+                    <Tab style={{ width: '100%', alignSelf: 'center' }} label="Profile"  {...a11yProps(1)} />
+                    <Tab style={{ width: '100%', alignSelf: 'center' }} label="Team"   {...a11yProps(2)} />
+                    <Tab style={{ width: '100%', alignSelf: 'center' }} label="Partners"  {...a11yProps(3)} />
+                    <Tab style={{ width: '100%', alignSelf: 'center' }} label="Billing"  {...a11yProps(4)} />
+                    <Tab style={{ width: '100%', alignSelf: 'center' }} label="Account Security"  {...a11yProps(5)} />
+                    <Tab style={{ width: '100%', alignSelf: 'center' }} label="Admin"  {...a11yProps(6)} />
                   </Tabs>
                 </div>
               </Paper>
@@ -257,7 +264,8 @@ class Dashboard extends Component<Props, State>{
 
               </TabPanel>
               <TabPanel value={this.state.value} index={3}>
-                Partners
+                <PartnersPage></PartnersPage>
+                
               </TabPanel>
               <TabPanel value={this.state.value} index={4}>
                 Billing
