@@ -18,6 +18,7 @@ from guru.utils import send_mail
 from info.models import UserRole
 from oxd import scim
 from profiles import constants as c
+from billing import constants as bc
 
 
 TIMEZONE_CHOICES = [(tz, tz) for tz in pytz.common_timezones]
@@ -26,11 +27,11 @@ TIMEZONE_CHOICES = [(tz, tz) for tz in pytz.common_timezones]
 class Address(TimestampedModel):
     line_1 = models.CharField(
         _('line 1'),
-        max_length=100
+        max_length=510
     )
     line_2 = models.CharField(
         _('line 2'),
-        max_length=100,
+        max_length=510,
         blank=True
     )
     city = models.CharField(
@@ -228,9 +229,6 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
             self.__class__, self.id
         )
 
-    def __unicode__(self):
-        return self.email
-
     def __str__(self):
         return self.email
 
@@ -278,25 +276,6 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
         membership = self.membership_set.filter(is_primary=True).first()
         return membership.role if membership else None
 
-    def get_account(self):
-        try:
-            account = self.account
-            if account:
-                return account
-        except ObjectDoesNotExist:
-            pass
-
-        try:
-            company = self.company
-            if company:
-                account = company.account
-                if account:
-                    return account
-        except ObjectDoesNotExist:
-            pass
-
-        return None
-
     def sync_data(self):
         scim.update_user(self)
 
@@ -323,8 +302,10 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
     def update_from_idp(self, user_info):
         # Validate email
         email = user_info.get('email')
+        if not email:
+            raise ValidationError('Invalid email')
         try:
-            user = User.objects.get(email=email)
+            User.objects.get(email=email)
         except User.DoesNotExist:
             self.email = email
 
@@ -366,6 +347,39 @@ class Company(TimestampedModel):
     users = models.ManyToManyField(
         User,
         through='Membership'
+    )
+
+    crm_id = models.CharField(
+        _('crm id'),
+        max_length=150,
+        blank=True
+    )
+
+    website = models.URLField(
+        _('website'),
+        blank=True
+    )
+
+    plan = models.CharField(
+        _('support plan'),
+        max_length=25,
+        choices=bc.GURU_PLAN_CHOICES,
+        default=bc.COMMUNITY
+    )
+
+    support_hours = models.PositiveSmallIntegerField(
+        _('support hours'),
+        default=0
+    )
+
+    named_contacts = models.PositiveSmallIntegerField(
+        _('named contacts'),
+        default=0
+    )
+
+    review_hours = models.PositiveSmallIntegerField(
+        _('review hours'),
+        default=0
     )
 
     def __str__(self):

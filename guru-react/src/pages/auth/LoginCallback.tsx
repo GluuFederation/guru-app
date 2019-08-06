@@ -40,10 +40,27 @@ class LoginCallback extends Component<Props> {
       .then(success => {
         this.props.history.push(paths.HOMEPAGE);
       })
-      .catch(() => {
-        this.props.history.push(paths.ERROR_PAGE, {
-          errorTitle: "Unable to Log you in"
-        });
+      .catch(error => {
+        if (
+          error &&
+          error.response &&
+          error.response.data &&
+          error.response.data.details &&
+          error.response.data.details === "['login-405']"
+        ) {
+          this.props.history.push(paths.ERROR_PAGE, {
+            errorTitle: "Email not found",
+            errorMessage:
+              "We were unable to find an email for this account. Please sign up for a new account",
+            errorActionText: "Signup",
+            errorAction: process.env.REACT_APP_USERS_BASE,
+            isExternalAction: true
+          });
+        } else {
+          this.props.history.push(paths.ERROR_PAGE, {
+            errorTitle: "Unable to Log you in"
+          });
+        }
       });
   }
   render() {
@@ -54,7 +71,7 @@ class LoginCallback extends Component<Props> {
         <div className="app-body">
           <div className={classes.root}>
             <CircularProgress />
-            <p>Redirecting you to Gluu IDP...</p>
+            <p>Logging you in...</p>
           </div>
         </div>
         <Footer />

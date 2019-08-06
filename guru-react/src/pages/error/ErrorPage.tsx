@@ -27,8 +27,12 @@ const styles = (theme: Theme) =>
 type Props = WithStyles<typeof styles> & RouteComponentProps;
 
 class ErrorPage extends Component<Props> {
-  navigateTo = (path: string) => () => {
-    this.props.history.push(path);
+  navigateTo = (path: string, isExternalAction: boolean = false) => () => {
+    if (isExternalAction) {
+      window.location.href = path;
+    } else {
+      this.props.history.push(path);
+    }
   };
 
   render() {
@@ -39,12 +43,14 @@ class ErrorPage extends Component<Props> {
       "We ran into a problem fulfilling your request. Don't worry, you did not do anything wrong. Our developers have been notified and we're working on the issue now. In the mean time, why don't you...";
     let errorActionText = "Go home";
     let errorAction = paths.HOMEPAGE;
+    let isExternalAction = false;
 
     if (state) {
       if (state.errorTitle) errorTitle = state.errorTitle;
       if (state.errorMessage) errorMessage = state.errorMessage;
       if (state.errorActionText) errorActionText = state.errorActionText;
       if (state.errorAction) errorAction = state.errorAction;
+      isExternalAction = !!state.isExternalAction;
     }
 
     return (
@@ -61,7 +67,7 @@ class ErrorPage extends Component<Props> {
                 <Button
                   color="primary"
                   variant="outlined"
-                  onClick={this.navigateTo(errorAction)}
+                  onClick={this.navigateTo(errorAction, isExternalAction)}
                 >
                   {errorActionText}
                 </Button>

@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 
 from oxd.uma import get_user_info
 from oxd.scim import get_user
@@ -21,6 +22,8 @@ class OpenIdBackend:
         user = None
         user_info = get_user(idp_uuid)
         email = user_info.get('email')
+        if not email:
+            raise ValidationError('login-405')
         try:
             user = user_model.objects.get(
                 idp_uuid=idp_uuid
