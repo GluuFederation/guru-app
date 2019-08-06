@@ -23,6 +23,7 @@ import {
   minorIssueType
 } from "../../state/preloaded/info";
 import { withInfo, WithInfoProps } from "../../state/hocs/info";
+import { TicketIssueType } from "../../state/types/info";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -83,10 +84,14 @@ class TicketNav extends Component<Props> {
     );
     const category = tempCategory ? tempCategory : otherCategory;
 
-    const tempIssueType = info.issueTypes.find(
-      item => item.id === ticket.issueType
-    );
-    const issueType = tempIssueType ? tempIssueType : minorIssueType;
+    let issueType: TicketIssueType | null = null;
+    if (ticket.issueType) {
+      const tempIssueType = info.issueTypes.find(
+        item => item.id === ticket.issueType
+      );
+      issueType = tempIssueType ? tempIssueType : minorIssueType;
+    }
+
     return (
       <div className={classes.root} onClick={this.goToTicket}>
         <Grid container alignItems="center">
@@ -120,10 +125,13 @@ class TicketNav extends Component<Props> {
           <Grid item md={6} lg={8} className={classes.ticket}>
             <div>
               <Chip label={status.name} className={getChipClass(status)} />
-              <Chip
-                label={issueType.name}
-                className={getChipClass(issueType)}
-              />
+              {issueType ? (
+                <Chip
+                  label={issueType.name}
+                  className={getChipClass(issueType)}
+                />
+              ) : null}
+
               <Chip label={category.name} className={getChipClass(category)} />
             </div>
             <Typography variant="h6">{ticket.title}</Typography>
