@@ -17,6 +17,8 @@ import VerifyIcon from "../../assets/images/verified.svg";
 import Paper from "@material-ui/core/Paper";
 import Edit from "@material-ui/icons/Edit";
 import TeamPage from "./TeamPage";
+import PartnersPage from "./PartnersPage";
+
 interface TabPanelProps {
   children?: React.ReactNode;
   index: any;
@@ -303,7 +305,7 @@ class Dashboard extends Component<Props, State> {
                 <TeamPage />
               </TabPanel>
               <TabPanel value={this.state.value} index={3}>
-                Partners
+                <PartnersPage />
               </TabPanel>
               <TabPanel value={this.state.value} index={4}>
                 Billing
