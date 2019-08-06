@@ -166,7 +166,7 @@ class Navbar extends Component<Props, State> {
                 />
                 {isLoggedIn ? (
                   <Hidden xsDown>
-                    <NavLink to={paths.HOMEPAGE}>Dashboard</NavLink>
+                    <NavLink to={paths.TEAM_DETAILS}>Dashboard</NavLink>
                     <NavLink to={paths.TICKET_LIST}>Tickets</NavLink>
                   </Hidden>
                 ) : null}
