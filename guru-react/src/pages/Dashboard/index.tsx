@@ -18,7 +18,7 @@ import Paper from '@material-ui/core/Paper';
 import Edit from '@material-ui/icons/Edit';
 import TeamPage from "./TeamPage";
 import PartnersPage from "./PartnersPage";
-
+import NotificationPage from "./NotificationPage";
 
 
 interface TabPanelProps {
@@ -229,14 +229,13 @@ class Dashboard extends Component<Props, State>{
                 <div style={{ backgroundColor: '#eeeeee', height: 1, width: '100%', }} ></div>
                 <div>
                   <Tabs
-                    orientation="vertical"
+                    orientation= "vertical"
                     value={this.state.value}
                     onChange={this.handleChange}
                     aria-label="Vertical tabs example"
                     className={classes.tabs}
                     indicatorColor="primary"
                     textColor="primary"
-
                   >
                     <Tab style={{ width: '100%', alignSelf: 'center' }} label="Notification"  {...a11yProps(0)} />
                     <Tab style={{ width: '100%', alignSelf: 'center' }} label="Profile"  {...a11yProps(1)} />
@@ -253,7 +252,7 @@ class Dashboard extends Component<Props, State>{
             <Grid item md={8} xs={12} sm={12}>
 
               <TabPanel value={this.state.value} index={0}>
-                Notification
+                <NotificationPage></NotificationPage>
               </TabPanel>
 
               <TabPanel value={this.state.value} index={1}>
@@ -277,7 +276,6 @@ class Dashboard extends Component<Props, State>{
                 Admin
               </TabPanel>
             </Grid>
-
           </Grid>
         </Container>
         <Footer></Footer>
