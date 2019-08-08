@@ -18,6 +18,7 @@ import Paper from "@material-ui/core/Paper";
 import Edit from "@material-ui/icons/Edit";
 import TeamPage from "./TeamPage";
 import PartnersPage from "./PartnersPage";
+import NotificationPage from "./NotificationPage";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -252,6 +253,8 @@ class Dashboard extends Component<Props, State> {
                     onChange={this.handleChange}
                     aria-label="Vertical tabs example"
                     className={classes.tabs}
+                    indicatorColor="primary"
+                    textColor="primary"
                   >
                     <Tab
                       style={{ width: "100%", flex: 0, alignSelf: "center" }}
@@ -295,7 +298,7 @@ class Dashboard extends Component<Props, State> {
 
             <Grid item md={8} xs={12} sm={12}>
               <TabPanel value={this.state.value} index={0}>
-                Notification
+                <NotificationPage />
               </TabPanel>
 
               <TabPanel value={this.state.value} index={1}>
