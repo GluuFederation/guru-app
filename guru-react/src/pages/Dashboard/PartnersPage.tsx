@@ -16,7 +16,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { green } from '@material-ui/core/colors';
 import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox';
-
+import InvitePartnerPopover from "../../components/Dashboard/InvitePartnerPopover";
 const styles = (theme: Theme) =>
     createStyles({
         partnerCompTitle: {
@@ -172,8 +172,7 @@ type Props = WithStyles<typeof styles> & RouteComponentProps;
 
 
 class PartnersPage extends Component<Props> {
-
-
+    
     render() {
         const { classes } = this.props;
 
@@ -187,9 +186,7 @@ class PartnersPage extends Component<Props> {
                         <Typography style={{ marginBottom: 20, marginTop: 20 }} className={classes.partnerCompDetail}>Give a partner company access to your company access. View all of the certified Gluu services Partners on your <a style={{ color: '#00b372' }} href="#">website</a></Typography>
                     </Grid>
                     <Grid item md={3} xs={4} sm={4}>
-                        <Button variant="outlined" size="medium" className={classes.btnInviteNewPartn}>
-                            Invite New Partner
-                    </Button>
+                        <InvitePartnerPopover></InvitePartnerPopover>
                     </Grid>
                 </Grid>
 
