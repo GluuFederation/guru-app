@@ -28,7 +28,7 @@ export const paths = {
   SELECT_PLAN: "/auth/select-plan",
   LOGIN: "/auth/login",
   SIGNUP: "/auth/signup",
-  LOGIN_CALLBACK: "/auth/login-callbaclist?ordering=+recent&offset=0&limit=10k",
+  LOGIN_CALLBACK: "/auth/login-callback",
 
   // tickets urls
   TICKET_LIST: "/tickets/list",
@@ -36,7 +36,7 @@ export const paths = {
   getCreateTicketPath: (step: number) => `/tickets/create/${step}`,
   TICKET_DETAIL: "/tickets/:slug",
   getTicketDetailPath: (slug: string) => `/tickets/${slug}`,
-  
+
   // notifications
   NOTIFICATIONS: "/dashboard/notifications",
 
@@ -76,8 +76,8 @@ const routes: Array<RouteType> = [
     component: SignupRedirect
   },
   {
-    path:paths.TEAM_DETAILS,
-    component:Dashboard
+    path: paths.TEAM_DETAILS,
+    component: Dashboard
   },
   // tickets
   {

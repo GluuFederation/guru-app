@@ -35,6 +35,7 @@ class LoginCallback extends Component<Props> {
       state: searchParams.get("state"),
       session_state: searchParams.get("session_state")
     };
+    console.log("are", queryParams);
     this.props
       .login(queryParams)
       .then(success => {
@@ -71,7 +72,7 @@ class LoginCallback extends Component<Props> {
         <div className="app-body">
           <div className={classes.root}>
             <CircularProgress />
-            <p>Logging you in...</p>
+            <p>Loading your info...</p>
           </div>
         </div>
         <Footer />
