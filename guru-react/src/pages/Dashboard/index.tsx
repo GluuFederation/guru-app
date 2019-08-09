@@ -246,6 +246,7 @@ class Dashboard extends Component<Props, State> {
                 />
                 <div>
                   <Tabs
+                    orientation="vertical"
                     value={this.state.value}
                     onChange={this.handleChange}
                     aria-label="Vertical tabs example"
