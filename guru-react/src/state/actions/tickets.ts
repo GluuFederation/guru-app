@@ -16,7 +16,7 @@ import {
   TicketFilterOrder,
   Ticket,
   Answer,
-  TicketHistory
+  TicketHistoryItem
 } from "../types/tickets";
 import actions from "./constants";
 import { AppState } from "../types/state";
@@ -161,7 +161,7 @@ export interface RemoveTicketAnswerAction {
 
 export interface SetTicketHistoryAction {
   type: string;
-  history: Array<TicketHistory>;
+  history: Array<TicketHistoryItem>;
 }
 
 export interface ResetTicketsStateAction {
@@ -377,7 +377,7 @@ export const removeTicketAnswer = (
 });
 
 export const setTicketHistory = (
-  history: Array<TicketHistory>
+  history: Array<TicketHistoryItem>
 ): SetTicketHistoryAction => ({
   type: actions.SET_TICKET_HISTORY,
   history
@@ -433,45 +433,53 @@ export const fetchTickets = (
   };
 };
 
-export const fetchTicket = (ticketId: number) => {
+export const fetchTicket = (ticketSlug: string) => {
   return async (
     dispatch: ThunkDispatch<{}, {}, AnyAction>
   ): Promise<Ticket> => {
     const ticketUrl = `${
       process.env.REACT_APP_API_BASE
-    }/api/v1/tickets/${ticketId}/`;
+    }/api/v1/tickets/${ticketSlug}/`;
     const answersUrl = `${
       process.env.REACT_APP_API_BASE
-    }/api/v1/tickets/${ticketId}/answers/`;
+    }/api/v1/tickets/${ticketSlug}/answers/`;
     const historyUrl = `${
       process.env.REACT_APP_API_BASE
-    }/api/v1/tickets/${ticketId}/history/`;
+    }/api/v1/tickets/${ticketSlug}/history/`;
 
     return Promise.all([
       axios.get(ticketUrl),
       axios.get(answersUrl),
       axios.get(historyUrl)
-    ]).then(responses => {
-      const ticketResults = responses[0].data.results;
-      const answersResults = responses[1].data.results;
-      const historyResults = responses[2].data.results;
+    ])
+      .then(responses => {
+        const ticketResults = responses[0].data.results;
+        const answersResults = responses[1].data.results;
+        const historyResults = responses[2].data.results;
 
-      dispatch(setTicket(ticketResults));
-      dispatch(setTicketAnswers(answersResults));
-      dispatch(setTicketHistory(historyResults));
+        dispatch(setTicket(ticketResults));
+        dispatch(setTicketAnswers(answersResults));
+        dispatch(setTicketHistory(historyResults));
 
-      return Promise.resolve(ticketResults);
-    });
+        return Promise.resolve(ticketResults);
+      })
+      .catch(error => {
+        if (error && error.response && error.response.status === 404) {
+          dispatch(clearTicket());
+          dispatch(setTicketAnswers([]));
+          dispatch(setTicketHistory([]));
+        }
+      });
   };
 };
 
-export const changeTicketVote = (ticketId: number, vote: boolean) => {
+export const changeTicketVote = (ticketSlug: string, vote: boolean) => {
   return async (
     dispatch: ThunkDispatch<{}, {}, AnyAction>
   ): Promise<Ticket> => {
     const URL = `${
       process.env.REACT_APP_API_BASE
-    }/api/v1/tickets/${ticketId}/vote/`;
+    }/api/v1/tickets/${ticketSlug}/vote/`;
     return axios.post(URL, { vote }).then(response => {
       const results = response.data.results;
       dispatch(setTicket(results));
@@ -480,14 +488,30 @@ export const changeTicketVote = (ticketId: number, vote: boolean) => {
   };
 };
 
-export const setTicketAssignee = (ticketId: number, assignee: ShortUser) => {
+export const setTicketAssignee = (ticketSlug: string, assignee: number) => {
   return async (
     dispatch: ThunkDispatch<{}, {}, AnyAction>
   ): Promise<Ticket> => {
     const URL = `${
       process.env.REACT_APP_API_BASE
-    }/api/v1/tickets/${ticketId}/assign/`;
-    const data = { ticket: { assignee: assignee.id } };
+    }/api/v1/tickets/${ticketSlug}/assign/`;
+    const data = { ticket: { assignee } };
+    return axios.post(URL, { ...data }).then(response => {
+      const results = response.data.results;
+      dispatch(setTicket(results));
+      return Promise.resolve(results);
+    });
+  };
+};
+
+export const setTicketCreator = (ticketSlug: string, creator: number) => {
+  return async (
+    dispatch: ThunkDispatch<{}, {}, AnyAction>
+  ): Promise<Ticket> => {
+    const URL = `${
+      process.env.REACT_APP_API_BASE
+    }/api/v1/tickets/${ticketSlug}/set-creator/`;
+    const data = { ticket: { creator } };
     return axios.post(URL, { ...data }).then(response => {
       const results = response.data.results;
       dispatch(setTicket(results));
@@ -501,7 +525,7 @@ export const updateTicket = (ticket: Ticket) => {
     dispatch: ThunkDispatch<{}, {}, AnyAction>
   ): Promise<Ticket> => {
     const URL = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/${
-      ticket.id
+      ticket.slug
     }/`;
     return axios.put(URL, { ticket }).then(response => {
       const results = response.data.results;
@@ -512,7 +536,7 @@ export const updateTicket = (ticket: Ticket) => {
 };
 
 export const changeTicketSubscription = (
-  ticketId: number,
+  tickerSlug: string,
   subscribe: boolean
 ) => {
   return async (
@@ -520,7 +544,7 @@ export const changeTicketSubscription = (
   ): Promise<Ticket> => {
     const URL = `${
       process.env.REACT_APP_API_BASE
-    }/api/v1/tickets/${ticketId}/subscribe/`;
+    }/api/v1/tickets/${tickerSlug}/subscribe/`;
     return axios.post(URL, { subscribe }).then(response => {
       const results = response.data.results;
       dispatch(setTicket(results));

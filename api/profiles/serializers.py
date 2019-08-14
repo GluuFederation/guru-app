@@ -24,21 +24,30 @@ class AddressSerializer(serializers.ModelSerializer):
         ]
 
 
+class ShortCompanySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = m.Company
+        fields = (
+            'id', 'name'
+        )
+
+
 class ShortUserSerializer(serializers.ModelSerializer):
     avatar = serializers.ReadOnlyField(source='avatar_url')
+    company = ShortCompanySerializer()
 
     class Meta:
         model = m.User
         fields = (
             'id', 'first_name', 'last_name', 'other_names',
-            'avatar'
+            'avatar', 'company'
         )
 
     def to_representation(self, instance):
         rep = super().to_representation(instance)
         role = None
         email = ''
-        company_name = ''
         request = self.context.get('request')
         if request:
             user = request.user
@@ -53,17 +62,13 @@ class ShortUserSerializer(serializers.ModelSerializer):
                         id=instance.id
                     )
                 ).exists() or instance.id == user.id
-                if is_connected:
+                if is_connected or user.is_gluu_staff:
                     email = instance.email
-                    if instance.company:
-                        company_name = instance.company.name
-
                     if instance.role:
                         role = UserRoleSerializer(instance.role).data
 
         rep['role'] = role
         rep['email'] = email
-        rep['company_name'] = company_name
         return rep
 
 

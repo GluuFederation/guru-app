@@ -34,7 +34,7 @@ import {
   TicketSearchResult
 } from "../../state/types/tickets";
 import TicketNav from "./TicketNav";
-import TicketSidebar from "./TicketSidebar";
+import TicketListSidebar from "./TicketListSidebar";
 import TicketListItem from "./TicketListItem";
 
 import { ReactComponent as SearchImg } from "../../assets/images/search.svg";
@@ -335,7 +335,7 @@ class Home extends Component<Props, State> {
           <Grid container spacing={2}>
             <Hidden smDown>
               <Grid item xs={12} md={4} lg={3} xl={2}>
-                <TicketSidebar setTicketsLoading={this.setTicketsLoading} />
+                <TicketListSidebar setTicketsLoading={this.setTicketsLoading} />
               </Grid>
             </Hidden>
 

@@ -25,6 +25,7 @@ export interface Ticket {
   createdFor: ShortUser;
   updatedBy: ShortUser;
   assignee: ShortUser;
+  isPrivate: boolean;
   category: number;
   status: number;
   issueType: number;
@@ -46,11 +47,30 @@ export interface TicketSearchResult {
   title: string;
 }
 
-export interface TicketHistory {
+export enum HistoryChangedField {
+  Title = "title",
+  Category = "category",
+  Status = "status",
+  IssueType = "issue type",
+  GluuServer = "gluu server",
+  Os = "os",
+  OsVersion = "os version",
+  Body = "body",
+  CreatedBy = "creator",
+  Assignee = "assignee",
+  Privacy = "privacy",
+  Products = "products",
+  Comment = "comment",
+  EditComment = "edit comment"
+}
+
+export interface TicketHistoryItem {
   id: number;
   ticket: number;
+  createdOn: string;
   changedBy: ShortUser;
-  changedField: string;
+  affectedUser?: ShortUser;
+  changedField: HistoryChangedField;
   beforeValue: string;
   afterValue: string;
 }

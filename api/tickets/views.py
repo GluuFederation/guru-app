@@ -295,6 +295,28 @@ class TicketViewSet(viewsets.ModelViewSet):
             status=status.HTTP_200_OK
         )
 
+    @action(detail=True, methods=['POST'], url_path='set-creator')
+    def set_creator(self, request, slug=None):
+        serializer_instance = self.get_object()
+        serializer_data = request.data.get('ticket', {})
+        context = {
+            'creator_id': serializer_data.pop('creator', None),
+            'updated_by': request.user
+        }
+        serializer = self.serializer_class(
+            serializer_instance,
+            data=serializer_data,
+            context=context,
+            partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(
+            {'results': serializer.data},
+            status=status.HTTP_200_OK
+        )
+
     @action(detail=True, methods=['POST'])
     def vote(self, request, slug=None):
         ticket = self.get_object()

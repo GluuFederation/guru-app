@@ -1,13 +1,5 @@
-import {
-  TicketCategory,
-  TicketStatus,
-  TicketIssueType
-} from "../state/types/info";
-
-export const getChipClass = (
-  item: TicketCategory | TicketStatus | TicketIssueType
-): string => {
-  switch (item.slug) {
+export const getChipClass = (slug: string): string => {
+  switch (slug) {
     case "production-outage":
       return "chip gray";
     case "production-impaired":

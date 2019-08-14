@@ -24,7 +24,15 @@ const styles = (theme: Theme) =>
     }
   });
 
-type Props = WithStyles<typeof styles> & RouteComponentProps;
+interface ExternalProps {
+  errorTitle?: string;
+  errorMessage?: string;
+  errorActionText?: string;
+  errorAction?: string;
+  isExternalAction?: boolean;
+}
+
+type Props = ExternalProps & WithStyles<typeof styles> & RouteComponentProps;
 
 class ErrorPage extends Component<Props> {
   navigateTo = (path: string, isExternalAction: boolean = false) => () => {
@@ -36,22 +44,32 @@ class ErrorPage extends Component<Props> {
   };
 
   render() {
-    const { classes, location } = this.props;
+    let {
+      classes,
+      location,
+      errorAction,
+      errorActionText,
+      errorMessage,
+      errorTitle,
+      isExternalAction
+    } = this.props;
     const { state } = location;
-    let errorTitle = "It's not you, it's us.";
-    let errorMessage =
-      "We ran into a problem fulfilling your request. Don't worry, you did not do anything wrong. Our developers have been notified and we're working on the issue now. In the mean time, why don't you...";
-    let errorActionText = "Go home";
-    let errorAction = paths.HOMEPAGE;
-    let isExternalAction = false;
 
     if (state) {
       if (state.errorTitle) errorTitle = state.errorTitle;
       if (state.errorMessage) errorMessage = state.errorMessage;
       if (state.errorActionText) errorActionText = state.errorActionText;
       if (state.errorAction) errorAction = state.errorAction;
-      isExternalAction = !!state.isExternalAction;
+      if (state.isExternalAction !== undefined)
+        isExternalAction = !!state.isExternalAction;
     }
+
+    if (!errorTitle) errorTitle = "It's not you, it's us.";
+    if (!errorMessage)
+      errorMessage =
+        "We ran into a problem fulfilling your request. Don't worry, you did not do anything wrong. Our developers have been notified and we're working on the issue now. In the mean time, why don't you...";
+    if (!errorActionText) errorActionText = "Go home";
+    if (!errorAction) errorAction = paths.HOMEPAGE;
 
     return (
       <Page>

@@ -276,6 +276,14 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
         membership = self.membership_set.filter(is_primary=True).first()
         return membership.role if membership else None
 
+    @property
+    def is_gluu_staff(self):
+        role = self.role
+        if role:
+            return role.name == 'staff'
+
+        return False
+
     def sync_data(self):
         scim.update_user(self)
 

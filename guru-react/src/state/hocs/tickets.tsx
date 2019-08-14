@@ -7,7 +7,7 @@ import { AppState, TicketsFilterState } from "../types/state";
 import {
   Ticket,
   TicketFilterOrder,
-  TicketHistory,
+  TicketHistoryItem,
   Answer
 } from "../types/tickets";
 import { Company, ShortUser } from "../types/profiles";
@@ -60,6 +60,7 @@ import {
   fetchTicket,
   changeTicketVote,
   setTicketAssignee,
+  setTicketCreator,
   updateTicket,
   changeTicketSubscription,
   createTicketAnswer,
@@ -106,17 +107,18 @@ export interface WithTicketsListDispatch {
 
 export interface WithTicketDetailState {
   ticket: Ticket | null;
-  ticketHistory: Array<TicketHistory>;
+  ticketHistory: Array<TicketHistoryItem>;
   answers: Array<Answer>;
 }
 
 export interface WithTicketDetailDispatch {
-  fetchTicket: (ticketId: number) => Promise<Ticket>;
-  changeTicketVote: (ticketId: number, vote: boolean) => Promise<Ticket>;
-  setTicketAssignee: (ticketId: number, assignee: ShortUser) => Promise<Ticket>;
+  fetchTicket: (ticketSlug: string) => Promise<Ticket>;
+  changeTicketVote: (ticketSlug: string, vote: boolean) => Promise<Ticket>;
+  setTicketAssignee: (ticketSlug: string, assignee: number) => Promise<Ticket>;
+  setTicketCreator: (ticketSlug: string, creator: number) => Promise<Ticket>;
   updateTicket: (ticket: Ticket) => Promise<Ticket>;
   changeTicketSubscription: (
-    ticketId: number,
+    ticketSlug: string,
     subscribe: boolean
   ) => Promise<Ticket>;
   createTicketAnswer: (ticketSlug: string, body: string) => Promise<Answer>;
@@ -207,14 +209,16 @@ export const withTicketDetail = <P extends WithTicketDetailProps>(
       answers: state.tickets.ticketDetail.answers
     }),
     (dispatch: ThunkDispatch<{}, {}, AnyAction>) => ({
-      fetchTicket: (ticketId: number) => dispatch(fetchTicket(ticketId)),
-      changeTicketVote: (ticketId: number, vote: boolean) =>
-        dispatch(changeTicketVote(ticketId, vote)),
-      setTicketAssignee: (ticketId: number, assignee: ShortUser) =>
-        dispatch(setTicketAssignee(ticketId, assignee)),
+      fetchTicket: (ticketSlug: string) => dispatch(fetchTicket(ticketSlug)),
+      changeTicketVote: (ticketSlug: string, vote: boolean) =>
+        dispatch(changeTicketVote(ticketSlug, vote)),
+      setTicketAssignee: (ticketSlug: string, assignee: number) =>
+        dispatch(setTicketAssignee(ticketSlug, assignee)),
+      setTicketCreator: (ticketSlug: string, creator: number) =>
+        dispatch(setTicketCreator(ticketSlug, creator)),
       updateTicket: (ticket: Ticket) => dispatch(updateTicket(ticket)),
-      changeTicketSubscription: (ticketId: number, subscribe: boolean) =>
-        dispatch(changeTicketSubscription(ticketId, subscribe)),
+      changeTicketSubscription: (ticketSlug: string, subscribe: boolean) =>
+        dispatch(changeTicketSubscription(ticketSlug, subscribe)),
       createTicketAnswer: (ticketSlug: string, body: string) =>
         dispatch(createTicketAnswer(ticketSlug, body)),
       deleteTicketAnswer: (ticketSlug: string, answer: Answer) =>

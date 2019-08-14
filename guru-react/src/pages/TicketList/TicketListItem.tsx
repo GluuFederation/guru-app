@@ -84,13 +84,9 @@ class TicketNav extends Component<Props> {
     );
     const category = tempCategory ? tempCategory : otherCategory;
 
-    let issueType: TicketIssueType | null = null;
-    if (ticket.issueType) {
-      const tempIssueType = info.issueTypes.find(
-        item => item.id === ticket.issueType
-      );
-      issueType = tempIssueType ? tempIssueType : minorIssueType;
-    }
+    const issueType = info.issueTypes.find(
+      item => item.id === ticket.issueType
+    );
 
     return (
       <div className={classes.root} onClick={this.goToTicket}>
@@ -114,7 +110,7 @@ class TicketNav extends Component<Props> {
               </Grid>
               <Grid item>
                 <div>
-                  <small>{owner.companyName}</small>
+                  <small>{owner.company ? owner.company.name : ""}</small>
                 </div>
               </Grid>
               <Grid item>
@@ -124,15 +120,18 @@ class TicketNav extends Component<Props> {
           </Grid>
           <Grid item md={6} lg={8} className={classes.ticket}>
             <div>
-              <Chip label={status.name} className={getChipClass(status)} />
+              <Chip label={status.name} className={getChipClass(status.slug)} />
               {issueType ? (
                 <Chip
                   label={issueType.name}
-                  className={getChipClass(issueType)}
+                  className={getChipClass(issueType.slug)}
                 />
               ) : null}
 
-              <Chip label={category.name} className={getChipClass(category)} />
+              <Chip
+                label={category.name}
+                className={getChipClass(category.slug)}
+              />
             </div>
             <Typography variant="h6">{ticket.title}</Typography>
             <div>

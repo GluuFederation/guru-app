@@ -12,7 +12,7 @@ import {
 import {
   Ticket,
   TicketFilterOrder,
-  TicketHistory,
+  TicketHistoryItem,
   Answer,
   TicketProduct
 } from "./tickets";
@@ -47,7 +47,7 @@ export interface TicketsFilterState {
 
 export interface TicketDetailState {
   ticket: Ticket | null;
-  ticketHistory: Array<TicketHistory>;
+  ticketHistory: Array<TicketHistoryItem>;
   answers: Array<Answer>;
 }
 

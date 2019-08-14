@@ -5,7 +5,6 @@ export const emptyUser: ShortUser = {
   firstName: "",
   lastName: "",
   otherNames: "",
-  companyName: "",
   email: "",
   role: null,
   avatar: ""

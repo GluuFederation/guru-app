@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 from rest_framework.exceptions import PermissionDenied
 from drf_haystack.serializers import HaystackSerializer
@@ -6,7 +7,9 @@ from drf_haystack.serializers import HighlighterMixin
 
 from tickets.search_indexes import TicketIndex
 from tickets import models as m
-from info.models import GluuProduct, TicketStatus
+from info.models import (
+    GluuProduct, TicketStatus, TicketCategory, TicketIssueType
+)
 from profiles.models import UserRole, User
 from profiles.serializers import ShortUserSerializer, ShortCompanySerializer
 
@@ -58,15 +61,12 @@ class TicketSerializer(serializers.ModelSerializer):
     created_for = ShortUserSerializer(read_only=True)
     assignee = ShortUserSerializer(read_only=True)
     updated_by = ShortUserSerializer(read_only=True)
-    voters = ShortUserSerializer(many=True, required=False)
-    subscribers = ShortUserSerializer(many=True, required=False)
+    voters = ShortUserSerializer(many=True, read_only=True)
+    subscribers = ShortUserSerializer(many=True, read_only=True)
     company_association = ShortCompanySerializer(read_only=True)
     products = TicketProductSerializer(
-        source='ticketproduct_set', many=True, required=False
+        source='ticketproduct_set', many=True, read_only=True
     )
-    # created_on = serializers.DateTimeField(
-    #     format='%d %a %Y at %I:%M %p GMT', read_only=True
-    # )
 
     class Meta:
         model = m.Ticket
@@ -85,17 +85,17 @@ class TicketSerializer(serializers.ModelSerializer):
             'os': {'required': True}
         }
 
-    def validate_gluu_server(self, value):
-        server = GluuProduct.objects.get(name='Gluu Server')
-        if value not in server.version:
-            raise serializers.ValidationError('Invalid Gluu Server Value')
-        return value
+    # def validate_gluu_server(self, value):
+    #     server = GluuProduct.objects.get(name='Gluu Server')
+    #     if value not in server.version:
+    #         raise serializers.ValidationError('Invalid Gluu Server Value')
+    #     return value
 
-    def validate_os(self, value):
-        server = GluuProduct.objects.get(name='Gluu Server')
-        if value not in server.os:
-            raise serializers.ValidationError('Invalid OS Value')
-        return value
+    # def validate_os(self, value):
+    #     server = GluuProduct.objects.get(name='Gluu Server')
+    #     if value not in server.os:
+    #         raise serializers.ValidationError('Invalid OS Value')
+    #     return value
 
     def create(self, validated_data):
         created_by = self.context.get('created_by', None)
@@ -177,6 +177,14 @@ class TicketSerializer(serializers.ModelSerializer):
             except User.DoesNotExist:
                 raise serializers.ValidationError('Such user does not exist')
 
+        creator_id = self.context.get('creator_id', None)
+        if creator_id is not None:
+            try:
+                creator = User.objects.get(pk=creator_id)
+                instance.created_by = creator
+            except User.DoesNotExist:
+                raise serializers.ValidationError('Such user does not exist')
+
         instance.updated_by = self.context.get('updated_by', None)
 
         instance.save()
@@ -192,9 +200,6 @@ class TicketHistorySerializer(serializers.ModelSerializer):
 
 class AnswerSerializer(serializers.ModelSerializer):
     created_by = ShortUserSerializer(read_only=True)
-    created_on = serializers.DateTimeField(
-        format='%d %a %Y at %I:%M %p GMT', read_only=True
-    )
 
     class Meta:
         model = m.Answer
