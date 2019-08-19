@@ -19,6 +19,7 @@ import Edit from '@material-ui/icons/Edit';
 import TeamPage from "./TeamPage";
 import PartnersPage from "./PartnersPage";
 import NotificationPage from "./NotificationPage";
+import CustomerPage from "./CustomerPage";
 
 
 interface TabPanelProps {
@@ -241,9 +242,10 @@ class Dashboard extends Component<Props, State>{
                     <Tab style={{ width: '100%', alignSelf: 'center' }} label="Profile"  {...a11yProps(1)} />
                     <Tab style={{ width: '100%', alignSelf: 'center' }} label="Team"   {...a11yProps(2)} />
                     <Tab style={{ width: '100%', alignSelf: 'center' }} label="Partners"  {...a11yProps(3)} />
-                    <Tab style={{ width: '100%', alignSelf: 'center' }} label="Billing"  {...a11yProps(4)} />
-                    <Tab style={{ width: '100%', alignSelf: 'center' }} label="Account Security"  {...a11yProps(5)} />
-                    <Tab style={{ width: '100%', alignSelf: 'center' }} label="Admin"  {...a11yProps(6)} />
+                    <Tab style={{ width: '100%', alignSelf: 'center' }} label="Customer"  {...a11yProps(4)} />
+                    <Tab style={{ width: '100%', alignSelf: 'center' }} label="Billing"  {...a11yProps(5)} />
+                    <Tab style={{ width: '100%', alignSelf: 'center' }} label="Account Security"  {...a11yProps(6)} />
+                    <Tab style={{ width: '100%', alignSelf: 'center' }} label="Admin"  {...a11yProps(7)} />
                   </Tabs>
                 </div>
               </Paper>
@@ -267,12 +269,16 @@ class Dashboard extends Component<Props, State>{
                 
               </TabPanel>
               <TabPanel value={this.state.value} index={4}>
-                Billing
+                <CustomerPage></CustomerPage>
+                
               </TabPanel>
               <TabPanel value={this.state.value} index={5}>
-                Account Security
+                Billing
               </TabPanel>
               <TabPanel value={this.state.value} index={6}>
+                Account Security
+              </TabPanel>
+              <TabPanel value={this.state.value} index={7}>
                 Admin
               </TabPanel>
             </Grid>
