@@ -40,7 +40,7 @@ class TicketProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = m.TicketProduct
         fields = (
-            'product', 'version', 'os', 'os_version'
+            'id', 'product', 'version', 'os', 'os_version'
         )
 
     def validate(self, data):
@@ -54,6 +54,26 @@ class TicketProductSerializer(serializers.ModelSerializer):
         if os not in product.os:
             raise serializers.ValidationError('Invalid OS Value')
         return data
+
+    def create(self, validated_data):
+        ticket = self.context.get('ticket', None)
+        ticket.updated_by = self.context['updated_by']
+        ticket.save()
+
+        return m.TicketProduct.objects.create(
+            ticket=ticket,
+            **validated_data
+        )
+
+    def update(self, instance, validated_data):
+        for (key, value) in validated_data.items():
+            setattr(instance, key, value)
+
+        instance.ticket.updated_by = self.context['updated_by']
+        instance.ticket.save()
+
+        instance.save()
+        return instance
 
 
 class TicketSerializer(serializers.ModelSerializer):
@@ -75,7 +95,7 @@ class TicketSerializer(serializers.ModelSerializer):
             'updated_by', 'assignee', 'category', 'status', 'issue_type',
             'gluu_server', 'os', 'os_version', 'response_no', 'products',
             'voters', 'subscribers', 'company_association', 'created_on',
-            'updated_on', 'response_number'
+            'updated_on', 'response_number', 'is_private'
         ]
         extra_kwargs = {
             'slug': {'required': False},
@@ -213,42 +233,6 @@ class AnswerSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         ticket = self.context.get('ticket', None)
         created_by = self.context.get('created_by', None)
-
-        if not created_by.is_superuser and created_by.is_staff:
-            staff_role = UserRole.objects.get(name='staff')
-            if not staff_role.has_permission(
-                app_name='tickets',
-                model_name='Answer',
-                action='create'
-            ):
-                raise PermissionDenied(
-                    'You do not have permission to perform this action.'
-                )
-        if not created_by.is_staff:
-            if ticket.company_association is None:
-                if created_by != ticket.created_by:
-                    raise PermissionDenied(
-                        'You do not have permission to perform this action.'
-                    )
-            else:
-                membership = created_by.membership_set.filter(
-                    company=ticket.company_association
-                ).first()
-
-                if membership is None or membership.role is None:
-                    raise PermissionDenied(
-                        'You do not have permission to perform this action.'
-                    )
-
-                if not membership.role.has_permission(
-                    app_name='tickets',
-                    model_name='Answer',
-                    action='create'
-                ):
-                    raise PermissionDenied(
-                        'You do not have permission to perform this action.'
-                    )
-
         return m.Answer.objects.create(
             ticket=ticket,
             created_by=created_by,

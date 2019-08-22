@@ -8,11 +8,13 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Chip from "@material-ui/core/Chip";
 import Modal from "@material-ui/core/Modal";
+import Button from "@material-ui/core/Button";
 
 import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/Edit";
+import AddCircleOutline from "@material-ui/icons/AddCircleOutline";
 
 import { colors } from "../../theme";
 import Autocomplete, { Suggestion } from "../Autocomplete";
@@ -28,10 +30,11 @@ import { closedStatus, otherCategory } from "../../state/preloaded/info";
 import {
   TicketCategory,
   TicketStatus,
-  TicketIssueType,
-  GluuProduct
+  TicketIssueType
 } from "../../state/types/info";
 import ChangeOs from "./ChangeOs";
+import ChangeProduct from "./ChangeProduct";
+import { TicketProduct } from "../../state/types/tickets";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -53,7 +56,8 @@ export enum MenuType {
   Category = "category",
   GluuServer = "gluuServer",
   Os = "os",
-  Products = ""
+  Products = "products",
+  NewProduct = "newProduct"
 }
 
 interface ExternalProps {
@@ -68,8 +72,7 @@ type Props = ExternalProps &
 
 enum ModalType {
   Os,
-  Products,
-  NewProduct
+  Product
 }
 
 interface State {
@@ -77,6 +80,7 @@ interface State {
   menuElement: HTMLElement | null;
   isModalOpen: boolean;
   modalType: ModalType;
+  product?: TicketProduct;
 }
 
 class TicketDetailSideBarItem extends Component<Props, State> {
@@ -102,14 +106,25 @@ class TicketDetailSideBarItem extends Component<Props, State> {
     const { menuType } = this.props;
     if (menuType === MenuType.Os) {
       this.setState({ isModalOpen: true, modalType: ModalType.Os });
-    } else if (menuType === MenuType.Products) {
-      this.setState({
-        isModalOpen: true,
-        modalType: ModalType.Products
-      });
     } else {
       this.setState({ menuElement: event.currentTarget });
     }
+  };
+
+  openProductMenu = (product: TicketProduct) => () => {
+    this.setState({
+      isModalOpen: true,
+      modalType: ModalType.Product,
+      product
+    });
+  };
+
+  addAdditionalProduct = () => {
+    this.setState({
+      isModalOpen: true,
+      modalType: ModalType.Product,
+      product: undefined
+    });
   };
 
   searchCreators = (q: string) => {
@@ -252,9 +267,6 @@ class TicketDetailSideBarItem extends Component<Props, State> {
         title = "Gluu version";
         break;
       case MenuType.Products:
-        infoText = products
-          .map(product => `${product.product.name} ${product.product.version}`)
-          .join("\n");
         title = "Additional Products";
         break;
       case MenuType.Os:
@@ -270,74 +282,123 @@ class TicketDetailSideBarItem extends Component<Props, State> {
 
     return (
       <Grid item xs={12}>
-        <Grid container spacing={1} alignItems="center">
-          <Grid item xs={12}>
-            <small className={classes.titleText}>{title}</small>
-          </Grid>
-          {menuType === MenuType.Creator || menuType === MenuType.Assignee ? (
-            <React.Fragment>
-              <Grid item xs={3}>
-                <Avatar src={avatar} />
+        {menuType === MenuType.NewProduct ? (
+          <Button fullWidth onClick={this.addAdditionalProduct}>
+            <AddCircleOutline /> Add Additional Product
+          </Button>
+        ) : (
+          <React.Fragment>
+            <Grid container spacing={1} alignItems="center">
+              <Grid item xs={12}>
+                <small className={classes.titleText}>{title}</small>
               </Grid>
-              <Grid item xs={7}>
-                {infoText}
-              </Grid>
-            </React.Fragment>
-          ) : menuType === MenuType.Status ||
-            menuType === MenuType.IssueType ? (
-            <Grid item xs={10}>
-              {showChip ? (
-                <Chip label={chipName} className={getChipClass(chipSlug)} />
+              {menuType === MenuType.Products ? (
+                <React.Fragment>
+                  {products.map(ticketProduct => {
+                    const gluuProduct = gluuProducts.find(
+                      item => item.id === ticketProduct.product
+                    );
+                    if (!gluuProduct) return <span key={ticketProduct.id} />;
+                    return (
+                      <React.Fragment key={ticketProduct.id}>
+                        <Grid item xs={10}>
+                          {gluuProduct.name} {ticketProduct.version}
+                        </Grid>
+                        <Grid item xs={2}>
+                          <IconButton
+                            onClick={this.openProductMenu(ticketProduct)}
+                          >
+                            <EditIcon />
+                          </IconButton>
+                        </Grid>
+                      </React.Fragment>
+                    );
+                  })}
+                </React.Fragment>
               ) : (
-                <span />
+                <React.Fragment>
+                  {menuType === MenuType.Creator ||
+                  menuType === MenuType.Assignee ? (
+                    <React.Fragment>
+                      <Grid item xs={3}>
+                        <Avatar src={avatar} />
+                      </Grid>
+                      <Grid item xs={7}>
+                        {infoText}
+                      </Grid>
+                    </React.Fragment>
+                  ) : menuType === MenuType.Status ||
+                    menuType === MenuType.IssueType ? (
+                    <Grid item xs={10}>
+                      {showChip ? (
+                        <Chip
+                          label={chipName}
+                          className={getChipClass(chipSlug)}
+                        />
+                      ) : (
+                        <span />
+                      )}
+                    </Grid>
+                  ) : (
+                    <Grid item xs={10}>
+                      {infoText}
+                    </Grid>
+                  )}
+                  <Grid item xs={2}>
+                    <IconButton onClick={this.openMenu}>
+                      <EditIcon />
+                    </IconButton>
+                  </Grid>
+                </React.Fragment>
               )}
             </Grid>
-          ) : (
-            <Grid item xs={10}>
-              {infoText}
-            </Grid>
-          )}
-          <Grid item xs={2}>
-            <IconButton onClick={this.openMenu}>
-              <EditIcon />
-            </IconButton>
-          </Grid>
-        </Grid>
-        <Menu
-          id="creator-menu"
-          anchorEl={menuElement}
-          variant="menu"
-          open={Boolean(menuElement)}
-          onClose={this.closeMenu}
-        >
-          {menuType === MenuType.Creator || menuType === MenuType.Assignee ? (
-            <Autocomplete
-              InputProps={InputProps}
-              suggestions={users}
-              updateQueryFunction={this.searchCreators}
-              selectFunction={this.updateTicketCreator}
-            />
-          ) : (
-            <div>
-              {chipMenuItems.map(chipMenuItem => (
-                <MenuItem
-                  key={chipMenuItem.id}
-                  value={chipMenuItem.id}
-                  onClick={this.updateTicket(chipMenuItem)}
-                >
-                  {chipMenuItem.name}
-                </MenuItem>
-              ))}
-            </div>
-          )}
-        </Menu>
-        <Divider />
+            <Menu
+              id="creator-menu"
+              anchorEl={menuElement}
+              variant="menu"
+              open={Boolean(menuElement)}
+              onClose={this.closeMenu}
+            >
+              {menuType === MenuType.Creator ||
+              menuType === MenuType.Assignee ? (
+                <Autocomplete
+                  InputProps={InputProps}
+                  suggestions={users}
+                  updateQueryFunction={this.searchCreators}
+                  selectFunction={this.updateTicketCreator}
+                />
+              ) : (
+                <div>
+                  {chipMenuItems.map(chipMenuItem => (
+                    <MenuItem
+                      key={chipMenuItem.id}
+                      value={chipMenuItem.id}
+                      onClick={this.updateTicket(chipMenuItem)}
+                    >
+                      {chipMenuItem.name}
+                    </MenuItem>
+                  ))}
+                </div>
+              )}
+            </Menu>
+            <Divider />
+          </React.Fragment>
+        )}
 
-        {menuType === MenuType.Os || menuType === MenuType.Products ? (
+        {menuType === MenuType.Os ||
+        menuType === MenuType.Products ||
+        menuType === MenuType.NewProduct ? (
           <Modal open={isModalOpen} onClose={this.closeModal}>
             <div className="modal-super-container">
               <div className="modal-container">
-                <ChangeOs closeModal={this.closeModal} />
+                {modalType === ModalType.Os ? (
+                  <ChangeOs closeModal={this.closeModal} />
+                ) : (
+                  <ChangeProduct
+                    closeModal={this.closeModal}
+                    product={this.state.product}
+                  />
+                )}
               </div>
             </div>
           </Modal>

@@ -66,7 +66,7 @@ class ChangeOs extends Component<Props, State> {
     this.setState({ osVersion: event.target.value });
   };
 
-  deleteItem = () => {
+  updateTicket = () => {
     const { ticket, closeModal, updateTicket } = this.props;
     const { os, osVersion } = this.state;
     if (ticket && os && osVersion) {
@@ -113,7 +113,7 @@ class ChangeOs extends Component<Props, State> {
           />
         </Box>
         <Button
-          onClick={this.deleteItem}
+          onClick={this.updateTicket}
           classes={{ root: classes.saveButton }}
         >
           Save

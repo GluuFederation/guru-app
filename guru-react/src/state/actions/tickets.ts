@@ -16,7 +16,8 @@ import {
   TicketFilterOrder,
   Ticket,
   Answer,
-  TicketHistoryItem
+  TicketHistoryItem,
+  TicketProduct
 } from "../types/tickets";
 import actions from "./constants";
 import { AppState } from "../types/state";
@@ -159,6 +160,16 @@ export interface RemoveTicketAnswerAction {
   answer: Answer;
 }
 
+export interface AddTicketProductAction {
+  type: string;
+  product: TicketProduct;
+}
+
+export interface RemoveTicketProductAction {
+  type: string;
+  product: TicketProduct;
+}
+
 export interface SetTicketHistoryAction {
   type: string;
   history: Array<TicketHistoryItem>;
@@ -197,6 +208,8 @@ export type TicketsAction =
   | SetTicketAnswersAction
   | AddTicketAnswerAction
   | RemoveTicketAnswerAction
+  | AddTicketProductAction
+  | RemoveTicketProductAction
   | SetTicketHistoryAction
   | ResetTicketsStateAction;
 
@@ -374,6 +387,20 @@ export const removeTicketAnswer = (
 ): RemoveTicketAnswerAction => ({
   type: actions.REMOVE_TICKET_ANSWER,
   answer
+});
+
+export const addTicketProduct = (
+  product: TicketProduct
+): AddTicketProductAction => ({
+  type: actions.ADD_TICKET_PRODUCT,
+  product
+});
+
+export const removeTicketProduct = (
+  product: TicketProduct
+): RemoveTicketProductAction => ({
+  type: actions.REMOVE_TICKET_PRODUCT,
+  product
 });
 
 export const setTicketHistory = (
@@ -568,6 +595,22 @@ export const createTicketAnswer = (ticketSlug: string, body: string) => {
   };
 };
 
+export const updateTicketAnswer = (ticketSlug: string, answer: Answer) => {
+  return async (
+    dispatch: ThunkDispatch<{}, {}, AnyAction>
+  ): Promise<Answer> => {
+    const URL = `${
+      process.env.REACT_APP_API_BASE
+    }/api/v1/tickets/${ticketSlug}/answers/${answer.id}/`;
+    return axios.put(URL, { answer }).then(response => {
+      const results = response.data.results;
+      dispatch(removeTicketAnswer(answer));
+      dispatch(addTicketAnswer(results));
+      return Promise.resolve(results);
+    });
+  };
+};
+
 export const deleteTicketAnswer = (ticketSlug: string, answer: Answer) => {
   return async (
     dispatch: ThunkDispatch<{}, {}, AnyAction>
@@ -582,6 +625,60 @@ export const deleteTicketAnswer = (ticketSlug: string, answer: Answer) => {
   };
 };
 
+export const createTicketProduct = (
+  ticketSlug: string,
+  product: TicketProduct
+) => {
+  return async (
+    dispatch: ThunkDispatch<{}, {}, AnyAction>
+  ): Promise<TicketProduct> => {
+    const URL = `${
+      process.env.REACT_APP_API_BASE
+    }/api/v1/tickets/${ticketSlug}/products/`;
+    return axios.post(URL, { product }).then(response => {
+      const results = response.data.results;
+      dispatch(addTicketProduct(results));
+      return Promise.resolve(results);
+    });
+  };
+};
+
+export const updateTicketProduct = (
+  ticketSlug: string,
+  product: TicketProduct
+) => {
+  return async (
+    dispatch: ThunkDispatch<{}, {}, AnyAction>
+  ): Promise<TicketProduct> => {
+    const URL = `${
+      process.env.REACT_APP_API_BASE
+    }/api/v1/tickets/${ticketSlug}/products/${product.id}/`;
+    return axios.put(URL, { product }).then(response => {
+      const results = response.data.results;
+      dispatch(removeTicketProduct(product));
+      dispatch(addTicketProduct(results));
+      return Promise.resolve(results);
+    });
+  };
+};
+
+export const deleteTicketProduct = (
+  ticketSlug: string,
+  product: TicketProduct
+) => {
+  return async (
+    dispatch: ThunkDispatch<{}, {}, AnyAction>
+  ): Promise<TicketProduct> => {
+    const URL = `${
+      process.env.REACT_APP_API_BASE
+    }/api/v1/tickets/${ticketSlug}/products/${product.id}/`;
+    return axios.delete(URL).then(() => {
+      dispatch(removeTicketProduct(product));
+      return Promise.resolve(product);
+    });
+  };
+};
+
 export const deleteTicket = (ticketSlug: string) => {
   return async (
     dispatch: ThunkDispatch<{}, {}, AnyAction>
@@ -589,7 +686,7 @@ export const deleteTicket = (ticketSlug: string) => {
     const URL = `${
       process.env.REACT_APP_API_BASE
     }/api/v1/tickets/${ticketSlug}/`;
-    return axios.delete(URL).then(response => {
+    return axios.delete(URL).then(() => {
       dispatch(clearTicket());
       return Promise.resolve(true);
     });

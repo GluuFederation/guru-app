@@ -3,7 +3,7 @@ from rest_framework_nested import routers
 
 from tickets.views import (
     TicketViewSet, AnswerViewSet, TicketSearchView,
-    GetTicketParamsDataView
+    GetTicketParamsDataView, TicketProductViewSet
 )
 
 router = routers.SimpleRouter()
@@ -29,6 +29,12 @@ tickets_router.register(
     r'answers',
     AnswerViewSet,
     base_name='ticket-answers'
+)
+
+tickets_router.register(
+    r'products',
+    TicketProductViewSet,
+    base_name='ticket-products'
 )
 
 urlpatterns = [

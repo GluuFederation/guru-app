@@ -327,6 +327,47 @@ const ticketsReducer = (
           ]
         }
       };
+    case actions.ADD_TICKET_PRODUCT:
+      const ticketProduct = (action as ticketsActions.AddTicketProductAction)
+        .product;
+      if (state.ticketDetail.ticket) {
+        return {
+          ...state,
+          ticketDetail: {
+            ...state.ticketDetail,
+            ticket: {
+              ...state.ticketDetail.ticket,
+              products: [
+                ...state.ticketDetail.ticket.products.filter(
+                  item => item.id !== ticketProduct.id
+                ),
+                ticketProduct
+              ]
+            }
+          }
+        };
+      }
+      return state;
+    case actions.REMOVE_TICKET_PRODUCT:
+      const ticketProductR = (action as ticketsActions.RemoveTicketProductAction)
+        .product;
+      if (state.ticketDetail.ticket) {
+        return {
+          ...state,
+          ticketDetail: {
+            ...state.ticketDetail,
+            ticket: {
+              ...state.ticketDetail.ticket,
+              products: [
+                ...state.ticketDetail.ticket.products.filter(
+                  item => item.id !== ticketProductR.id
+                )
+              ]
+            }
+          }
+        };
+      }
+      return state;
     case actions.SET_TICKET_HISTORY:
       const ticketHistory = (action as ticketsActions.SetTicketHistoryAction)
         .history;

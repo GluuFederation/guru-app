@@ -14,6 +14,7 @@ import LockOpen from "@material-ui/icons/LockOpen";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Box from "@material-ui/core/Box";
 import Divider from "@material-ui/core/Divider";
+import Modal from "@material-ui/core/Modal";
 
 import { colors } from "../../theme";
 import Navbar from "../../components/Navbar";
@@ -29,11 +30,13 @@ import TicketCard from "./TicketCard";
 import TicketUserInfo from "./TicketUserInfo";
 import ResponseCard from "./ResponseCard";
 import SideBar from "./TicketDetailSideBar";
+import EditTicket from "./EditTicket";
 import TicketHistoryListItem from "./TicketHistoryListItem";
-import ResponsePost from "../../components/TicketDetail/ResponsePost";
-import EditTicket from "../../components/TicketDetail/EditTicket";
+import ResponsePost from "./ResponsePost";
 import { paths } from "../../routes";
 import ErrorPage from "../error/ErrorPage";
+
+import "easymde/dist/easymde.min.css";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -58,26 +61,33 @@ type Props = WithUserProps &
   WithStyles<typeof styles>;
 
 interface State {
-  openAdd: boolean;
+  isModalOpen: boolean;
   isLoading: boolean;
 }
 
 class TicketDetail extends Component<Props, State> {
-  handleOpenAdd = () => {
-    this.setState({ openAdd: true });
-  };
-
-  handleCloseAdd = () => {
-    this.setState({ openAdd: false });
-  };
-
   constructor(props: Props) {
     super(props);
     this.state = {
-      openAdd: false,
+      isModalOpen: false,
       isLoading: false
     };
   }
+
+  openModal = () => {
+    this.setState({ isModalOpen: true });
+  };
+
+  closeModal = () => {
+    this.setState({ isModalOpen: false });
+  };
+
+  togglePrivacy = () => {
+    const { ticket, updateTicket } = this.props;
+    if (ticket) {
+      updateTicket({ ...ticket, isPrivate: !ticket.isPrivate });
+    }
+  };
 
   componentDidMount() {
     const slug = (this.props.match.params as any).slug;
@@ -89,7 +99,7 @@ class TicketDetail extends Component<Props, State> {
 
   render() {
     const { classes, ticket, ticketHistory, answers } = this.props;
-    const { isLoading } = this.state;
+    const { isLoading, isModalOpen } = this.state;
 
     if (isLoading) {
       return (
@@ -151,6 +161,7 @@ class TicketDetail extends Component<Props, State> {
                           <Button
                             variant="outlined"
                             classes={{ root: classes.privacyButton }}
+                            onClick={this.togglePrivacy}
                           >
                             {ticket.isPrivate ? (
                               <Lock
@@ -168,6 +179,7 @@ class TicketDetail extends Component<Props, State> {
                           <Button
                             variant="outlined"
                             classes={{ root: classes.editButton }}
+                            onClick={this.openModal}
                           >
                             <small>Edit</small>
                           </Button>
@@ -214,6 +226,11 @@ class TicketDetail extends Component<Props, State> {
                         </Grid>
                       </Grid>
                     ))}
+                    <Grid container spacing={8}>
+                      <Grid item xs={12}>
+                        <ResponsePost />
+                      </Grid>
+                    </Grid>
                   </Grid>
 
                   <Grid item md={3}>
@@ -223,16 +240,13 @@ class TicketDetail extends Component<Props, State> {
               </Grid>
             </Grid>
 
-            <Grid container spacing={3}>
-              <Grid container item={true} md={9} xs={12} sm={12}>
-                {/* <Grid item={true} md={12} xs={12} sm={12}>
-                  <ResponsePost />
-                </Grid> */}
-              </Grid>
-              <Grid container item={true} md={3} xs={12} sm={12}>
-                <div />
-              </Grid>
-            </Grid>
+            <Modal open={isModalOpen} onClose={this.closeModal}>
+              <div className="modal-super-container">
+                <div className="modal-container">
+                  <EditTicket closeModal={this.closeModal} />
+                </div>
+              </div>
+            </Modal>
           </Container>
           <Footer />
         </div>

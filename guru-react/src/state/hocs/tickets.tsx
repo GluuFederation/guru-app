@@ -8,7 +8,8 @@ import {
   Ticket,
   TicketFilterOrder,
   TicketHistoryItem,
-  Answer
+  Answer,
+  TicketProduct
 } from "../types/tickets";
 import { Company, ShortUser } from "../types/profiles";
 import {
@@ -64,7 +65,11 @@ import {
   updateTicket,
   changeTicketSubscription,
   createTicketAnswer,
+  updateTicketAnswer,
   deleteTicketAnswer,
+  createTicketProduct,
+  updateTicketProduct,
+  deleteTicketProduct,
   deleteTicket
 } from "../actions/tickets";
 import {
@@ -122,7 +127,20 @@ export interface WithTicketDetailDispatch {
     subscribe: boolean
   ) => Promise<Ticket>;
   createTicketAnswer: (ticketSlug: string, body: string) => Promise<Answer>;
+  updateTicketAnswer: (ticketSlug: string, answer: Answer) => Promise<Answer>;
   deleteTicketAnswer: (ticketSlug: string, answer: Answer) => Promise<Answer>;
+  createTicketProduct: (
+    ticketSlug: string,
+    product: TicketProduct
+  ) => Promise<TicketProduct>;
+  updateTicketProduct: (
+    ticketSlug: string,
+    product: TicketProduct
+  ) => Promise<TicketProduct>;
+  deleteTicketProduct: (
+    ticketSlug: string,
+    product: TicketProduct
+  ) => Promise<TicketProduct>;
   deleteTicket: (ticketSlug: string) => Promise<boolean>;
 }
 
@@ -223,6 +241,14 @@ export const withTicketDetail = <P extends WithTicketDetailProps>(
         dispatch(createTicketAnswer(ticketSlug, body)),
       deleteTicketAnswer: (ticketSlug: string, answer: Answer) =>
         dispatch(deleteTicketAnswer(ticketSlug, answer)),
+      updateTicketAnswer: (ticketSlug: string, answer: Answer) =>
+        dispatch(updateTicketAnswer(ticketSlug, answer)),
+      createTicketProduct: (ticketSlug: string, product: TicketProduct) =>
+        dispatch(createTicketProduct(ticketSlug, product)),
+      deleteTicketProduct: (ticketSlug: string, product: TicketProduct) =>
+        dispatch(deleteTicketProduct(ticketSlug, product)),
+      updateTicketProduct: (ticketSlug: string, product: TicketProduct) =>
+        dispatch(updateTicketProduct(ticketSlug, product)),
       deleteTicket: (ticketSlug: string) => dispatch(deleteTicket(ticketSlug))
     })
   )(WithInfo);

@@ -465,6 +465,53 @@ class AnswerViewSet(viewsets.ModelViewSet):
         )
 
 
+class TicketProductViewSet(viewsets.ModelViewSet):
+    serializer_class = s.TicketProductSerializer
+    queryset = m.TicketProduct.objects.all()
+    permission_classes = (p.TicketProductCustomPermission,)
+
+    def create(self, request, ticket_slug=None, *args, **kwargs):
+        serializer_data = request.data.get('product', {})
+        ticket = get_object_or_404(
+            m.Ticket, is_deleted=False, slug=ticket_slug
+        )
+        context = {
+            'updated_by': request.user,
+            'ticket': ticket
+        }
+        serializer = self.serializer_class(
+            data=serializer_data,
+            context=context
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(
+            {'results': serializer.data},
+            status=status.HTTP_201_CREATED
+        )
+
+    def update(self, request, ticket_slug=None, pk=None):
+        serializer_instance = self.get_object()
+        serializer_data = request.data.get('product', {})
+        context = {
+            'updated_by': request.user
+        }
+        serializer = self.serializer_class(
+            serializer_instance,
+            data=serializer_data,
+            context=context,
+            partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(
+            {'results': serializer.data},
+            status=status.HTTP_200_OK
+        )
+
+
 class GetTicketParamsDataView(APIView):
     permission_classes = [AllowAny]
 

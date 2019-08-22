@@ -77,7 +77,7 @@ class TicketDetail extends Component<Props, State> {
     ).format("LT")} GMT`;
 
     return (
-      <Card>
+      <Card elevation={0}>
         <CardHeader
           action={
             <IconButton aria-label="settings" onClick={this.openResponseMenu}>

@@ -183,9 +183,7 @@ export const clearTicketEntry = (): ClearTicketEntryAction => ({
 });
 
 export const createTicket = (ticket: CreateTicketState) => {
-  return async (
-    dispatch: ThunkDispatch<{}, {}, AnyAction>
-  ): Promise<Ticket> => {
+  return async (): Promise<Ticket> => {
     const URL = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/`;
     const data = { ticket: { ...ticket, createdFor: ticket.creator } };
     return axios.post(URL, { ...data }).then(response => {

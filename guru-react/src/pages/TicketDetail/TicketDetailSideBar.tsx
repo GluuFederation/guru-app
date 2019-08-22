@@ -90,7 +90,7 @@ class TicketSideBar extends Component<Props, State> {
             <TicketDetailSideBarItem key={key} menuType={key} ticket={ticket} />
           ))}
           <Grid item>
-            <Card classes={{ root: classes.notificationArea }}>
+            <Card classes={{ root: classes.notificationArea }} elevation={0}>
               <CardContent>
                 <Typography variant="h6">Notifications</Typography> <br />
                 <div>

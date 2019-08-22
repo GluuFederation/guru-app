@@ -15,6 +15,11 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 
 import { Ticket } from "../../state/types/tickets";
+import {
+  withTicketDetail,
+  WithTicketDetailProps
+} from "../../state/hocs/tickets";
+import { withUser, WithUserProps } from "../../state/hocs/profiles";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -25,7 +30,11 @@ interface ExternalProps {
   ticket: Ticket;
 }
 
-type Props = ExternalProps & WithStyles<typeof styles> & RouteComponentProps;
+type Props = WithUserProps &
+  WithTicketDetailProps &
+  ExternalProps &
+  WithStyles<typeof styles> &
+  RouteComponentProps;
 
 interface State {
   ticketMenuElement: HTMLElement | null;
@@ -48,19 +57,34 @@ class TicketDetail extends Component<Props, State> {
     this.setState({ ticketMenuElement: event.currentTarget });
   };
 
+  isVoted = () => {
+    const { ticket, user } = this.props;
+    if (ticket && user) {
+      return ticket.voters.findIndex(voter => voter.id === user.id) >= 0;
+    }
+    return false;
+  };
+
+  toggleVote = () => {
+    const { ticket, changeTicketVote } = this.props;
+    if (ticket) {
+      changeTicketVote(ticket.slug, !this.isVoted());
+    }
+  };
+
   render() {
     const { classes, ticket } = this.props;
     const { ticketMenuElement } = this.state;
 
     return (
-      <Card className={classes.card} square={true}>
+      <Card className={classes.card} elevation={0}>
         <CardHeader
           action={
             <div>
-              <IconButton>
+              <IconButton onClick={this.toggleVote}>
                 <ThumbUpAlt />
               </IconButton>
-              <span>Upvote{ticket.voters.length === 1 ? "" : "s"} | </span>
+              <span>Upvotes | </span>
               <span>{ticket.voters.length} </span>
               <IconButton onClick={this.openTicketMenu}>
                 <MoreHoriz />
@@ -91,4 +115,6 @@ class TicketDetail extends Component<Props, State> {
   }
 }
 
-export default withRouter(withStyles(styles)(TicketDetail));
+export default withTicketDetail(
+  withUser(withRouter(withStyles(styles)(TicketDetail)))
+);

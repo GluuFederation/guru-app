@@ -10,7 +10,7 @@ export enum TicketFilterOrder {
 
 export interface TicketProduct {
   id: number;
-  product: GluuProduct;
+  product: number;
   version: string;
   os: string;
   osVersion: string;
