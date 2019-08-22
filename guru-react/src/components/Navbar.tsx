@@ -242,31 +242,31 @@ class Navbar extends Component<Props, State> {
                       onClose={this.closeUserMenu}
                       classes={{ paper: classes.menuPaper }}
                     >
-                      <MenuItem onClick={this.navigateTo(paths.HOMEPAGE)}>
+                      <MenuItem onClick={this.navigateTo(paths.TEAM_DETAILS)}>
                         <ListItemIcon>
                           <NotificationsNoneIcon />
                         </ListItemIcon>
                         Notifications
                       </MenuItem>
-                      <MenuItem onClick={this.navigateTo(paths.HOMEPAGE)}>
+                      <MenuItem onClick={this.navigateTo(paths.TEAM_DETAILS)}>
                         <ListItemIcon>
                           <PersonIcon />
                         </ListItemIcon>
                         Profile
                       </MenuItem>
-                      <MenuItem onClick={this.navigateTo(paths.HOMEPAGE)}>
+                      <MenuItem onClick={this.navigateTo(paths.TEAM_DETAILS)}>
                         <ListItemIcon>
                           <PeopleOutlineIcon />
                         </ListItemIcon>
                         Team
                       </MenuItem>
-                      <MenuItem onClick={this.navigateTo(paths.HOMEPAGE)}>
+                      <MenuItem onClick={this.navigateTo(paths.TEAM_DETAILS)}>
                         <ListItemIcon>
                           <DomainIcon />
                         </ListItemIcon>
                         Partners
                       </MenuItem>
-                      <MenuItem onClick={this.navigateTo(paths.HOMEPAGE)}>
+                      <MenuItem onClick={this.navigateTo(paths.TEAM_DETAILS)}>
                         <ListItemIcon>
                           <CreditCardIcon />
                         </ListItemIcon>
