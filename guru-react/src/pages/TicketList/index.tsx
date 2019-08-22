@@ -21,7 +21,6 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import Autocomplete, { Suggestion } from "../../components/Autocomplete";
 import { withTicketList, WithTicketListProps } from "../../state/hocs/tickets";
-import { withUser, WithUserProps } from "../../state/hocs/profiles";
 import { withInfo, WithInfoProps } from "../../state/hocs/info";
 import { Company, ShortUser } from "../../state/types/profiles";
 import {
@@ -88,7 +87,6 @@ const styles = (theme: Theme) =>
 type Props = WithStyles<typeof styles> &
   RouteComponentProps &
   WithTicketListProps &
-  WithUserProps &
   WithInfoProps;
 
 interface State {
@@ -316,7 +314,7 @@ class Home extends Component<Props, State> {
   };
 
   render() {
-    const { user, classes, tickets, filters } = this.props;
+    const { classes, tickets, filters } = this.props;
     const { isTicketsLoading, autocompleteResults } = this.state;
     const InputProps = {
       endAdornment: (
@@ -329,6 +327,7 @@ class Home extends Component<Props, State> {
       onChange: this.handleSearchQueryChange,
       placeholder: "Type the keyword"
     };
+
     return (
       <Page>
         <Navbar />
@@ -436,6 +435,4 @@ class Home extends Component<Props, State> {
   }
 }
 
-export default withInfo(
-  withUser(withTicketList(withRouter(withStyles(styles)(Home))))
-);
+export default withInfo(withTicketList(withRouter(withStyles(styles)(Home))));

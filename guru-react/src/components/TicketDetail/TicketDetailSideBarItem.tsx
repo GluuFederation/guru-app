@@ -62,6 +62,7 @@ export enum MenuType {
 
 interface ExternalProps {
   menuType: MenuType;
+  canEdit?: boolean;
 }
 
 type Props = ExternalProps &
@@ -184,7 +185,7 @@ class TicketDetailSideBarItem extends Component<Props, State> {
   };
 
   render() {
-    const { ticket, menuType, classes, info } = this.props;
+    const { ticket, menuType, classes, info, canEdit } = this.props;
     if (!ticket) return <div />;
 
     const { createdBy, assignee, products } = ticket;
@@ -283,9 +284,13 @@ class TicketDetailSideBarItem extends Component<Props, State> {
     return (
       <Grid item xs={12}>
         {menuType === MenuType.NewProduct ? (
-          <Button fullWidth onClick={this.addAdditionalProduct}>
-            <AddCircleOutline /> Add Additional Product
-          </Button>
+          <React.Fragment>
+            {canEdit ? (
+              <Button fullWidth onClick={this.addAdditionalProduct}>
+                <AddCircleOutline /> Add Additional Product
+              </Button>
+            ) : null}
+          </React.Fragment>
         ) : (
           <React.Fragment>
             <Grid container spacing={1} alignItems="center">
@@ -305,11 +310,13 @@ class TicketDetailSideBarItem extends Component<Props, State> {
                           {gluuProduct.name} {ticketProduct.version}
                         </Grid>
                         <Grid item xs={2}>
-                          <IconButton
-                            onClick={this.openProductMenu(ticketProduct)}
-                          >
-                            <EditIcon />
-                          </IconButton>
+                          {canEdit ? (
+                            <IconButton
+                              onClick={this.openProductMenu(ticketProduct)}
+                            >
+                              <EditIcon />
+                            </IconButton>
+                          ) : null}
                         </Grid>
                       </React.Fragment>
                     );
@@ -345,9 +352,11 @@ class TicketDetailSideBarItem extends Component<Props, State> {
                     </Grid>
                   )}
                   <Grid item xs={2}>
-                    <IconButton onClick={this.openMenu}>
-                      <EditIcon />
-                    </IconButton>
+                    {canEdit ? (
+                      <IconButton onClick={this.openMenu}>
+                        <EditIcon />
+                      </IconButton>
+                    ) : null}
                   </Grid>
                 </React.Fragment>
               )}

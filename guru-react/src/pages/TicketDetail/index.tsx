@@ -98,7 +98,7 @@ class TicketDetail extends Component<Props, State> {
   }
 
   render() {
-    const { classes, ticket, ticketHistory, answers } = this.props;
+    const { classes, ticket, ticketHistory, answers, user } = this.props;
     const { isLoading, isModalOpen } = this.state;
 
     if (isLoading) {
@@ -127,6 +127,19 @@ class TicketDetail extends Component<Props, State> {
         />
       );
     }
+
+    const isCommunity = user
+      ? user.role
+        ? user.role.name === "community"
+        : true
+      : true;
+    const isUserCompany = user
+      ? user.company
+        ? !!ticket.companyAssociation &&
+          user.company.id === ticket.companyAssociation.id
+        : false
+      : false;
+    const canEdit = isUserCompany && !isCommunity && !!user;
 
     return (
       <Page>
@@ -157,33 +170,35 @@ class TicketDetail extends Component<Props, State> {
                             {ticket.title} #{ticket.id}
                           </Typography>
                         </Grid>
-                        <Grid item sm={3}>
-                          <Button
-                            variant="outlined"
-                            classes={{ root: classes.privacyButton }}
-                            onClick={this.togglePrivacy}
-                          >
-                            {ticket.isPrivate ? (
-                              <Lock
-                                height="10"
-                                classes={{ root: classes.privacyIcon }}
-                              />
-                            ) : (
-                              <LockOpen
-                                height="10"
-                                classes={{ root: classes.privacyIcon }}
-                              />
-                            )}
-                          </Button>
-                          &emsp;
-                          <Button
-                            variant="outlined"
-                            classes={{ root: classes.editButton }}
-                            onClick={this.openModal}
-                          >
-                            <small>Edit</small>
-                          </Button>
-                        </Grid>
+                        {canEdit ? (
+                          <Grid item sm={3}>
+                            <Button
+                              variant="outlined"
+                              classes={{ root: classes.privacyButton }}
+                              onClick={this.togglePrivacy}
+                            >
+                              {ticket.isPrivate ? (
+                                <Lock
+                                  height="10"
+                                  classes={{ root: classes.privacyIcon }}
+                                />
+                              ) : (
+                                <LockOpen
+                                  height="10"
+                                  classes={{ root: classes.privacyIcon }}
+                                />
+                              )}
+                            </Button>
+                            &emsp;
+                            <Button
+                              variant="outlined"
+                              classes={{ root: classes.editButton }}
+                              onClick={this.openModal}
+                            >
+                              <small>Edit</small>
+                            </Button>
+                          </Grid>
+                        ) : null}
                       </Grid>
                     </Box>
                     <Grid container>
@@ -226,11 +241,13 @@ class TicketDetail extends Component<Props, State> {
                         </Grid>
                       </Grid>
                     ))}
-                    <Grid container spacing={8}>
-                      <Grid item xs={12}>
-                        <ResponsePost />
+                    {canEdit ? (
+                      <Grid container spacing={8}>
+                        <Grid item xs={12}>
+                          <ResponsePost />
+                        </Grid>
                       </Grid>
-                    </Grid>
+                    ) : null}
                   </Grid>
 
                   <Grid item md={3}>
