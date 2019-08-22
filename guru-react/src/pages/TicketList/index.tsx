@@ -164,10 +164,10 @@ class Home extends Component<Props, State> {
     }
   };
 
-  setPage = ({ selected }: { selected: number }) => () => {
+  setPage = ({ selected }: { selected: number }) => {
     const { setFilterPage, fetchTickets } = this.props;
     if (!isNaN(selected)) {
-      setFilterPage(selected);
+      setFilterPage(selected + 1);
       this.setTicketsLoading(true);
       fetchTickets(true).then(() => {
         this.setTicketsLoading(false);
