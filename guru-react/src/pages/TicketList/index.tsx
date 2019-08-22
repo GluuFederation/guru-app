@@ -13,6 +13,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
+import Chip from "@material-ui/core/Chip";
 import { colors } from "../../theme";
 
 import Page from "../../components/Page";
@@ -36,6 +37,7 @@ import {
 import TicketNav from "./TicketNav";
 import TicketListSidebar from "./TicketListSidebar";
 import TicketListItem from "./TicketListItem";
+import AllFilters from "./AllFilters";
 
 import { ReactComponent as SearchImg } from "../../assets/images/search.svg";
 
@@ -101,7 +103,7 @@ class Home extends Component<Props, State> {
     super(props);
     this.state = {
       isLoading: false,
-      isTicketsLoading: false,
+      isTicketsLoading: true,
       autocompleteResults: [],
       searchQuery: ""
     };
@@ -369,6 +371,9 @@ class Home extends Component<Props, State> {
                       </TextField>
                     </Grid>
                   </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                  <AllFilters setTicketsLoading={this.setTicketsLoading} />
                 </Grid>
                 {isTicketsLoading ? (
                   <div className={classes.loading}>
