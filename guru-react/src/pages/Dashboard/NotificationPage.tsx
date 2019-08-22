@@ -177,7 +177,7 @@ class NotificationPage extends Component<Props, State> {
                                 value={this.state.valueNotif}
                                 onChange={this.handleChange}
                                 indicatorColor="primary"
-                                textColor="success"
+                                textColor="primary"
                                 variant="fullWidth"
                                 aria-label="full width tabs example"
                             >
