@@ -9,8 +9,23 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 import ManageNotificationPopover from "../../components/Dashboard/ManageNotificationPopover";
+import Navbar from "../../components/Navbar";
+import Container from '@material-ui/core/Container';
+import Footer from "../../components/Footer";
+import DashboardSideMenu from "../../components/Dashboard/DashboardSideMenu";
+
 const styles = (theme: Theme) =>
     createStyles({
+        root: {
+            flexGrow: 1,
+        },
+        ContainerAlign: {
+            width: '80%',
+            margin: '0 auto',
+            marginTop: -4,
+            marginBottom: 54,
+        },
+        contentContainer: {},
         notificationTitle: {
             marginTop: 0,
             marginBottom: 0,
@@ -92,7 +107,7 @@ const styles = (theme: Theme) =>
             fontFamily: '"Lato", sans-serif',
         },
 
-        
+
         paper: {
             marginRight: theme.spacing(2),
         },
@@ -160,130 +175,142 @@ class NotificationPage extends Component<Props, State> {
 
         return (
             <div>
+                <Navbar />
+                <Container className={classes.ContainerAlign} fixed>
+                    <Grid className={classes.contentContainer} container>
+                        <Grid item md={4} xs={12} sm={12}>
+                            <DashboardSideMenu></DashboardSideMenu>
+                        </Grid>
 
-                <Paper style={{ marginBottom: 20, marginTop: 20 }} className={classes.paper}>
-                    <div style={{ padding: 25 }}>
-                        <Grid style={{ marginBottom: -17, }} container>
+                        <Grid item md={8} xs={12} sm={12}>
 
-                            <Grid item xs={8}>
-                                <Typography className={classes.notificationTitle}>Notifications</Typography>
-                            </Grid>
-                            <Grid item xs={4}>
-                                
-                                <ManageNotificationPopover></ManageNotificationPopover>
-                            </Grid>
+                            <Paper style={{ marginBottom: 20, marginTop: 20 }} className={classes.paper}>
+                                <div style={{ padding: 25 }}>
+                                    <Grid style={{ marginBottom: -17, }} container>
 
-                            <Tabs
-                                value={this.state.valueNotif}
-                                onChange={this.handleChange}
-                                indicatorColor="primary"
-                                textColor="primary"
-                                variant="fullWidth"
-                                aria-label="full width tabs example"
-                            >
-                                <Tab label="All activities" {...a11yProps(0)} />
-                                <Tab label="Your activities" {...a11yProps(1)} />
-                            </Tabs>
+                                        <Grid item xs={8}>
+                                            <Typography className={classes.notificationTitle}>Notifications</Typography>
+                                        </Grid>
+                                        <Grid item xs={4}>
 
-                            <div style={{ width: '100%', }}>
-                                <TabPanel value={this.state.valueNotif} index={0}>
-                                    <Grid container style={{ marginBottom: 20 }}>
-                                        <Typography className={classes.titleDesc}>A new ticket has been Opened</Typography>
+                                            <ManageNotificationPopover></ManageNotificationPopover>
+                                        </Grid>
 
-                                        <Paper style={{ marginTop: 10, padding: 10, width: '100%', backgroundColor: '#f7f7f7' }} className={classes.paper}>
-                                            <Typography style={{ marginTop: 0 }} className={classes.decPaperB}>Docker single host oxtrust cannot download SSL certificate</Typography>
-                                            <Typography style={{ marginTop: 0 }} className={classes.decPaperG}>it is a long established fact that a reader will be directed by the readable content of a page</Typography>
-                                            <Typography style={{ marginTop: 0 }} className={classes.decPaperI}>just Now</Typography>
-                                        </Paper>
+                                        <Tabs
+                                            value={this.state.valueNotif}
+                                            onChange={this.handleChange}
+                                            indicatorColor="primary"
+                                            textColor="primary"
+                                            variant="fullWidth"
+                                            aria-label="full width tabs example"
+                                        >
+                                            <Tab label="All activities" {...a11yProps(0)} />
+                                            <Tab label="Your activities" {...a11yProps(1)} />
+                                        </Tabs>
+
+                                        <div style={{ width: '100%', }}>
+                                            <TabPanel value={this.state.valueNotif} index={0}>
+                                                <Grid container style={{ marginBottom: 20 }}>
+                                                    <Typography className={classes.titleDesc}>A new ticket has been Opened</Typography>
+
+                                                    <Paper style={{ marginTop: 10, padding: 10, width: '100%', backgroundColor: '#f7f7f7' }} className={classes.paper}>
+                                                        <Typography style={{ marginTop: 0 }} className={classes.decPaperB}>Docker single host oxtrust cannot download SSL certificate</Typography>
+                                                        <Typography style={{ marginTop: 0 }} className={classes.decPaperG}>it is a long established fact that a reader will be directed by the readable content of a page</Typography>
+                                                        <Typography style={{ marginTop: 0 }} className={classes.decPaperI}>just Now</Typography>
+                                                    </Paper>
 
 
-                                        <Typography className={classes.titleDesc}><span style={{ color: '#2dce56', marginRight: 2 }}>William</span>replied to your ticket</Typography>
+                                                    <Typography className={classes.titleDesc}><span style={{ color: '#2dce56', marginRight: 2 }}>William</span>replied to your ticket</Typography>
 
-                                        <Paper style={{ marginTop: 10, padding: 10, width: '100%', backgroundColor: '#f7f7f7' }} className={classes.paper}>
-                                            <Typography style={{ marginTop: 0 }} className={classes.decPaperB}>Mass Updating user Information</Typography>
-                                            <Typography style={{ marginTop: 0 }} className={classes.decPaperG}>Our current Provisioning process does not include your user date of birth</Typography>
-                                            <Typography style={{ marginTop: 0 }} className={classes.decPaperI}>10 min ago</Typography>
-                                        </Paper>
+                                                    <Paper style={{ marginTop: 10, padding: 10, width: '100%', backgroundColor: '#f7f7f7' }} className={classes.paper}>
+                                                        <Typography style={{ marginTop: 0 }} className={classes.decPaperB}>Mass Updating user Information</Typography>
+                                                        <Typography style={{ marginTop: 0 }} className={classes.decPaperG}>Our current Provisioning process does not include your user date of birth</Typography>
+                                                        <Typography style={{ marginTop: 0 }} className={classes.decPaperI}>10 min ago</Typography>
+                                                    </Paper>
 
-                                        <div>
-                                            <Typography className={classes.decPaperB}>Your Invoice of September is ready</Typography>
-                                            <Typography style={{ marginTop: 0, }} className={classes.decPaperI}>Last week</Typography>
+                                                    <div>
+                                                        <Typography className={classes.decPaperB}>Your Invoice of September is ready</Typography>
+                                                        <Typography style={{ marginTop: 0, }} className={classes.decPaperI}>Last week</Typography>
+                                                    </div>
+
+
+                                                </Grid>
+                                            </TabPanel>
                                         </div>
 
+                                        <div style={{ width: '100%', }}>
+                                            <TabPanel value={this.state.valueNotif} index={1}>
+                                                <Grid container style={{ marginBottom: 25 }}>
+                                                    <Grid item xs={8}>
+                                                        <Typography className={classes.userTicketD}>Nasir<span className={classes.userTicketLig}>Created a ticket</span></Typography>
+                                                    </Grid>
+                                                    <Grid item xs={4}>
+                                                        <Typography className={classes.timeTicket}>9 hours ago</Typography>
+                                                    </Grid>
+                                                </Grid>
+                                                <Paper style={{ marginTop: 10, padding: 10, width: '100%', backgroundColor: '#efefef' }} className={classes.paper}>
+                                                    <Typography style={{ marginTop: 0 }} className={classes.decTitlePaper}>Cheche Option not available in cluster manager V 3.1.4-06</Typography>
+                                                    <Typography style={{ marginTop: 0 }} className={classes.decPaperG}>Hi Gluu support,</Typography>
+                                                    <Typography style={{ marginTop: 0 }} className={classes.decPaperG}>I'm trying to get two servers clustered using the cluster manager.</Typography>
+                                                </Paper>
+
+                                                <Grid container style={{ marginBottom: 20 }}>
+                                                    <Grid item xs={8}>
+                                                        <Typography className={classes.userTicketD}>Nasir<span className={classes.userTicketLig}>Relied to your ticket</span></Typography>
+                                                    </Grid>
+                                                    <Grid item xs={4}>
+                                                        <Typography className={classes.timeTicket}>Yesturday</Typography>
+                                                    </Grid>
+
+                                                    <Paper style={{ marginTop: 10, padding: 10, width: '100%', backgroundColor: '#f7f7f7' }} className={classes.paper}>
+                                                        <Typography style={{ marginTop: 0 }} className={classes.decPaperG}>I think we know the origin of the bug. It has to do with the button that comes pre-selected in 3.1.4 and when you drop down to 3.1.2, it doesn't automatically deselected it, revealing the <span style={{ color: 'red', backgroundColor: '#f9e0e0', padding: 3 }}>Cache Configuration</span> menu. A fix is cooming shortly.</Typography>
+                                                    </Paper>
+
+
+                                                    <Grid container style={{ marginBottom: 20 }}>
+                                                        <Grid item xs={8}>
+                                                            <Typography className={classes.userTicketD}>Nasir<span className={classes.userTicketLig}>Relied to your ticket</span></Typography>
+                                                        </Grid>
+                                                        <Grid item xs={4}>
+                                                            <Typography className={classes.timeTicket}>Jan18, 2018</Typography>
+                                                        </Grid>
+                                                    </Grid>
+
+                                                    <Paper style={{ marginTop: 10, padding: 10, width: '100%', backgroundColor: '#f7f7f7' }} className={classes.paper}>
+                                                        <Typography style={{ marginTop: 0 }} className={classes.decPaperB}>Can you specify what is trying to connect to OpenDJ Here</Typography>
+                                                        <Paper style={{ marginTop: 10, padding: 10, width: '100%', backgroundColor: '#f7f7f7' }} className={classes.paper}>
+                                                            <Typography style={{ marginTop: 0 }} className={classes.decPaperG}>descriplication.Java-args=-Xms8m. Client-Dcom.sun.jndi.ldap.object.disableEndpoint.</Typography>
+                                                        </Paper>
+                                                    </Paper>
+
+
+                                                    <Grid container style={{ marginBottom: 20 }}>
+                                                        <Grid item xs={8}>
+                                                            <Typography className={classes.userTicketD}>Nasir<span className={classes.userTicketLig}>Created a ticket</span></Typography>
+                                                        </Grid>
+                                                        <Grid item xs={4}>
+                                                            <Typography className={classes.timeTicket}>Jan18, 2018</Typography>
+                                                        </Grid>
+                                                    </Grid>
+
+
+                                                    <Paper style={{ marginTop: 10, padding: 10, width: '100%', backgroundColor: '#f7f7f7' }} className={classes.paper}>
+                                                        <Typography style={{ marginTop: 0 }} className={classes.decPaperB}>Java Update - Cert Error w/OpenDJ</Typography>
+                                                        <Typography style={{ marginTop: 0 }} className={classes.decPaperG}>Hello,</Typography>
+                                                        <Typography style={{ marginTop: 0 }} className={classes.decPaperG}>Upon a recent patch to our in-house servers (to 1.8.0_191), our servers or not longer able to...</Typography>
+                                                    </Paper>
+                                                </Grid>
+
+                                            </TabPanel>
+                                        </div>
 
                                     </Grid>
-                                </TabPanel>
-                            </div>
-
-                            <div style={{ width: '100%', }}>
-                                <TabPanel value={this.state.valueNotif} index={1}>
-                                    <Grid container style={{ marginBottom: 25 }}>
-                                        <Grid item xs={8}>
-                                            <Typography className={classes.userTicketD}>Nasir<span className={classes.userTicketLig}>Created a ticket</span></Typography>
-                                        </Grid>
-                                        <Grid item xs={4}>
-                                            <Typography className={classes.timeTicket}>9 hours ago</Typography>
-                                        </Grid>
-                                    </Grid>
-                                    <Paper style={{ marginTop: 10, padding: 10, width: '100%', backgroundColor: '#efefef' }} className={classes.paper}>
-                                        <Typography style={{ marginTop: 0 }} className={classes.decTitlePaper}>Cheche Option not available in cluster manager V 3.1.4-06</Typography>
-                                        <Typography style={{ marginTop: 0 }} className={classes.decPaperG}>Hi Gluu support,</Typography>
-                                        <Typography style={{ marginTop: 0 }} className={classes.decPaperG}>I'm trying to get two servers clustered using the cluster manager.</Typography>
-                                    </Paper>
-
-                                    <Grid container style={{ marginBottom: 20 }}>
-                                        <Grid item xs={8}>
-                                            <Typography className={classes.userTicketD}>Nasir<span className={classes.userTicketLig}>Relied to your ticket</span></Typography>
-                                        </Grid>
-                                        <Grid item xs={4}>
-                                            <Typography className={classes.timeTicket}>Yesturday</Typography>
-                                        </Grid>
-
-                                        <Paper style={{ marginTop: 10, padding: 10, width: '100%', backgroundColor: '#f7f7f7' }} className={classes.paper}>
-                                            <Typography style={{ marginTop: 0 }} className={classes.decPaperG}>I think we know the origin of the bug. It has to do with the button that comes pre-selected in 3.1.4 and when you drop down to 3.1.2, it doesn't automatically deselected it, revealing the <span style={{ color: 'red', backgroundColor: '#f9e0e0', padding: 3 }}>Cache Configuration</span> menu. A fix is cooming shortly.</Typography>
-                                        </Paper>
-
-
-                                        <Grid container style={{ marginBottom: 20 }}>
-                                            <Grid item xs={8}>
-                                                <Typography className={classes.userTicketD}>Nasir<span className={classes.userTicketLig}>Relied to your ticket</span></Typography>
-                                            </Grid>
-                                            <Grid item xs={4}>
-                                                <Typography className={classes.timeTicket}>Jan18, 2018</Typography>
-                                            </Grid>
-                                        </Grid>
-
-                                        <Paper style={{ marginTop: 10, padding: 10, width: '100%', backgroundColor: '#f7f7f7' }} className={classes.paper}>
-                                            <Typography style={{ marginTop: 0 }} className={classes.decPaperB}>Can you specify what is trying to connect to OpenDJ Here</Typography>
-                                            <Paper style={{ marginTop: 10, padding: 10, width: '100%', backgroundColor: '#f7f7f7' }} className={classes.paper}>
-                                                <Typography style={{ marginTop: 0 }} className={classes.decPaperG}>descriplication.Java-args=-Xms8m. Client-Dcom.sun.jndi.ldap.object.disableEndpoint.</Typography>
-                                            </Paper>
-                                        </Paper>
-
-
-                                        <Grid container style={{ marginBottom: 20 }}>
-                                            <Grid item xs={8}>
-                                                <Typography className={classes.userTicketD}>Nasir<span className={classes.userTicketLig}>Created a ticket</span></Typography>
-                                            </Grid>
-                                            <Grid item xs={4}>
-                                                <Typography className={classes.timeTicket}>Jan18, 2018</Typography>
-                                            </Grid>
-                                        </Grid>
-
-
-                                        <Paper style={{ marginTop: 10, padding: 10, width: '100%', backgroundColor: '#f7f7f7' }} className={classes.paper}>
-                                            <Typography style={{ marginTop: 0 }} className={classes.decPaperB}>Java Update - Cert Error w/OpenDJ</Typography>
-                                            <Typography style={{ marginTop: 0 }} className={classes.decPaperG}>Hello,</Typography>
-                                            <Typography style={{ marginTop: 0 }} className={classes.decPaperG}>Upon a recent patch to our in-house servers (to 1.8.0_191), our servers or not longer able to...</Typography>
-                                        </Paper>
-                                    </Grid>
-
-                                </TabPanel>
-                            </div>
-
+                                </div>
+                            </Paper>
                         </Grid>
-                    </div>
-                </Paper>
+                    </Grid>
+                </Container>
+                <Footer></Footer>
 
             </div>
         );

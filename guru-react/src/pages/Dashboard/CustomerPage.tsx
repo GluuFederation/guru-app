@@ -15,10 +15,22 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import AddUserPopover from "../../components/Dashboard/AddUserPopover";
-
+import Container from '@material-ui/core/Container';
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
+import DashboardSideMenu from "../../components/Dashboard/DashboardSideMenu";
 const styles = (theme: Theme) =>
     createStyles({
-        
+        root: {
+            flexGrow: 1,
+        },
+        ContainerAlign: {
+            width: '80%',
+            margin: '0 auto',
+            marginTop: -4,
+            marginBottom: 54,
+        },
+        contentContainer: {},
         avatarAverage: {
             width: 65,
             height: 65,
@@ -193,135 +205,146 @@ class CustomerPage extends Component<Props> {
 
         return (
             <div>
-                <Grid container>
-                    <Grid item md={12} xs={12} sm={12}>
-                        <Typography style={{ marginTop: 20 }} className={classes.partnerCompTitle}>Customer</Typography>
-                    </Grid>
-                    <Grid item md={8} xs={12} sm={12}>
-                        <Typography style={{ marginBottom: 20, marginTop: 20 }} className={classes.partnerCompDetail}>It is a long established fact that a reader will be distracted by the readable content of the page when looking at its layout.</Typography>
-                    </Grid>
-                    <Grid item md={4} xs={12} sm={12}>
+                <Navbar />
+                <Container className={classes.ContainerAlign} fixed>
+                    <Grid className={classes.contentContainer} container>
+                        <Grid item md={4} xs={12} sm={12}>
+                            <DashboardSideMenu></DashboardSideMenu>
+                        </Grid>
 
-                    </Grid>
+                        <Grid item md={8} xs={12} sm={12}>
+                            <Grid container>
+                                <Grid item md={12} xs={12} sm={12}>
+                                    <Typography style={{ marginTop: 20 }} className={classes.partnerCompTitle}>Customer</Typography>
+                                </Grid>
+                                <Grid item md={8} xs={12} sm={12}>
+                                    <Typography style={{ marginBottom: 20, marginTop: 20 }} className={classes.partnerCompDetail}>It is a long established fact that a reader will be distracted by the readable content of the page when looking at its layout.</Typography>
+                                </Grid>
+                                <Grid item md={4} xs={12} sm={12}>
 
-                </Grid>
+                                </Grid>
 
-                {/* <MySnackbarContentWrapper
+                            </Grid>
+
+                            {/* <MySnackbarContentWrapper
                     variant="success"
                     className={classes.margin}
                     message="Hub City Media has been added as a customer. You can now assign users to this account."
                 /> */}
 
-                <Paper style={{ marginBottom: 20, marginTop: 20 }} className={classes.paper}>
-                    <div style={{ padding: 25 }}>
-                        <Grid style={{ marginBottom: -17, }} container>
-                            <Grid item xs={2}>
-                                <Avatar alt="Avatar" src={UserTwo} className={classes.avatarAverage} />
-                            </Grid>
-                            <Grid item xs={3}>
-                                <Typography className={classes.nameGroup}>Identity Nested</Typography>
-                                <Typography className={classes.nameGroupInvited}>Invited Feb 28, 2019</Typography>
-                            </Grid>
+                            <Paper style={{ marginBottom: 20, marginTop: 20 }} className={classes.paper}>
+                                <div style={{ padding: 25 }}>
+                                    <Grid style={{ marginBottom: -17, }} container>
+                                        <Grid item xs={2}>
+                                            <Avatar alt="Avatar" src={UserTwo} className={classes.avatarAverage} />
+                                        </Grid>
+                                        <Grid item xs={3}>
+                                            <Typography className={classes.nameGroup}>Identity Nested</Typography>
+                                            <Typography className={classes.nameGroupInvited}>Invited Feb 28, 2019</Typography>
+                                        </Grid>
 
-                            <Grid item xs={3}>
-                                <Typography className={classes.pendingInvi}>Invitation pending</Typography>
-                            </Grid>
-                            <Grid item xs={2}>
-                                <Button variant="outlined" size="medium" className={classes.btnApprove}>
-                                    Approve
+                                        <Grid item xs={3}>
+                                            <Typography className={classes.pendingInvi}>Invitation pending</Typography>
+                                        </Grid>
+                                        <Grid item xs={2}>
+                                            <Button variant="outlined" size="medium" className={classes.btnApprove}>
+                                                Approve
                                 </Button>
-                            </Grid>
-                            <Grid item xs={2}>
-                                <Button variant="outlined" size="medium" className={classes.btnDeny}>
-                                    Deny
+                                        </Grid>
+                                        <Grid item xs={2}>
+                                            <Button variant="outlined" size="medium" className={classes.btnDeny}>
+                                                Deny
                                 </Button>
-                            </Grid>
-                        </Grid>
-                    </div>
-                </Paper>
-                <Paper style={{ marginTop: 20, marginBottom: 20 }} className={classes.paper}>
-                    <div style={{ padding: 25 }}>
-                        <Grid container>
-                            <Grid item xs={2}>
-                                <Avatar alt="Avatar" src={UserOne} className={classes.avatarAverage} />
-                            </Grid>
-                            <Grid item xs={7}>
-                                <Typography className={classes.nameGroup}>Team Orizon</Typography>
-                                <Typography className={classes.nameGroupInvited}>Added on July 12, 2019</Typography>
-                            </Grid>
-                            <Grid item xs={3}>
-                                <Button variant="outlined" size="medium" className={classes.btnRevokeAcc}>
-                                    Remove Company
-                                </Button>
-                            </Grid>
-                        </Grid>
-                        <hr style={{ backgroundColor: '#ffffff', height: 0.1, width: '100%', marginBottom: 10, }} />
-
-                        <Grid container>
-                            <Grid item xs={12}>
-                                <div>
-                                    <Typography className={classes.assignedUserTitle}>Assigned Users</Typography>
-                                    <Typography className={classes.assignedUserDes} style={{ float: 'left' }}>The Customer will able to manage privileges for this users.</Typography>
+                                        </Grid>
+                                    </Grid>
                                 </div>
-                            </Grid>
-                        </Grid>
+                            </Paper>
+                            <Paper style={{ marginTop: 20, marginBottom: 20 }} className={classes.paper}>
+                                <div style={{ padding: 25 }}>
+                                    <Grid container>
+                                        <Grid item xs={2}>
+                                            <Avatar alt="Avatar" src={UserOne} className={classes.avatarAverage} />
+                                        </Grid>
+                                        <Grid item xs={7}>
+                                            <Typography className={classes.nameGroup}>Team Orizon</Typography>
+                                            <Typography className={classes.nameGroupInvited}>Added on July 12, 2019</Typography>
+                                        </Grid>
+                                        <Grid item xs={3}>
+                                            <Button variant="outlined" size="medium" className={classes.btnRevokeAcc}>
+                                                Remove Company
+                                </Button>
+                                        </Grid>
+                                    </Grid>
+                                    <hr style={{ backgroundColor: '#ffffff', height: 0.1, width: '100%', marginBottom: 10, }} />
 
-                        <div style={{ overflowX: 'auto' }}>
-                            <Table className={classes.table}>
-                                <TableHead>
-                                    <TableRow style={{ width: '100%' }}>
-                                        <TableCell className={classes.tableTitleAssigned} style={{ width: '50%' }} align="left">Name</TableCell>
-                                        <TableCell className={classes.tableTitleAssigned} style={{ width: '12%' }} align="left">Delete</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    <TableRow style={{ width: '100%' }}>
-                                        <TableCell style={{ width: '50%' }}><Avatar alt="Avatar" src={UserTwo} className={classes.avatarSmall} /><span className={classes.assgnedUserName}>Nasir Uddin</span></TableCell>
+                                    <Grid container>
+                                        <Grid item xs={12}>
+                                            <div>
+                                                <Typography className={classes.assignedUserTitle}>Assigned Users</Typography>
+                                                <Typography className={classes.assignedUserDes} style={{ float: 'left' }}>The Customer will able to manage privileges for this users.</Typography>
+                                            </div>
+                                        </Grid>
+                                    </Grid>
 
-                                        <TableCell style={{ width: '12%' }} align="left">
-                                            <a href="#" className={classes.removeUserType}>Remove</a>
-                                        </TableCell>
-                                    </TableRow>
-                                    <TableRow style={{ width: '100%' }}>
-                                        <TableCell style={{ width: '50%' }}><Avatar alt="Avatar" src={UserOne} className={classes.avatarSmall} /><span className={classes.assgnedUserName}>Nasir Uddin</span></TableCell>
+                                    <div style={{ overflowX: 'auto' }}>
+                                        <Table className={classes.table}>
+                                            <TableHead>
+                                                <TableRow style={{ width: '100%' }}>
+                                                    <TableCell className={classes.tableTitleAssigned} style={{ width: '50%' }} align="left">Name</TableCell>
+                                                    <TableCell className={classes.tableTitleAssigned} style={{ width: '12%' }} align="left">Delete</TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                <TableRow style={{ width: '100%' }}>
+                                                    <TableCell style={{ width: '50%' }}><Avatar alt="Avatar" src={UserTwo} className={classes.avatarSmall} /><span className={classes.assgnedUserName}>Nasir Uddin</span></TableCell>
 
-                                        <TableCell style={{ width: '12%' }} align="left">
-                                            <a href="#" className={classes.removeUserType}>Remove</a>
-                                        </TableCell>
-                                    </TableRow>
-                                </TableBody>
-                            </Table>
-                            <AddUserPopover></AddUserPopover>
-                        </div>
-                    </div>
-                </Paper>
+                                                    <TableCell style={{ width: '12%' }} align="left">
+                                                        <a href="#" className={classes.removeUserType}>Remove</a>
+                                                    </TableCell>
+                                                </TableRow>
+                                                <TableRow style={{ width: '100%' }}>
+                                                    <TableCell style={{ width: '50%' }}><Avatar alt="Avatar" src={UserOne} className={classes.avatarSmall} /><span className={classes.assgnedUserName}>Nasir Uddin</span></TableCell>
+
+                                                    <TableCell style={{ width: '12%' }} align="left">
+                                                        <a href="#" className={classes.removeUserType}>Remove</a>
+                                                    </TableCell>
+                                                </TableRow>
+                                            </TableBody>
+                                        </Table>
+                                        <AddUserPopover></AddUserPopover>
+                                    </div>
+                                </div>
+                            </Paper>
 
 
-                <Paper style={{ marginBottom: 20, marginTop: 20 }} className={classes.paper}>
-                    <div style={{ padding: 25 }}>
-                        <Grid container>
-                            <Grid item xs={2}>
-                                <Avatar alt="Avatar" src={UserOne} className={classes.avatarAverage} />
-                            </Grid>
-                            <Grid item xs={7}>
-                                <Typography className={classes.nameGroup}>Hub City Media</Typography>
-                                <Typography className={classes.nameGroupInvited}>Added on July 12, 2019</Typography>
-                            </Grid>
-                            <Grid item xs={3}>
-                                <Button variant="outlined" size="medium" className={classes.btnRevokeAcc}>
-                                    Remove Company
+                            <Paper style={{ marginBottom: 20, marginTop: 20 }} className={classes.paper}>
+                                <div style={{ padding: 25 }}>
+                                    <Grid container>
+                                        <Grid item xs={2}>
+                                            <Avatar alt="Avatar" src={UserOne} className={classes.avatarAverage} />
+                                        </Grid>
+                                        <Grid item xs={7}>
+                                            <Typography className={classes.nameGroup}>Hub City Media</Typography>
+                                            <Typography className={classes.nameGroupInvited}>Added on July 12, 2019</Typography>
+                                        </Grid>
+                                        <Grid item xs={3}>
+                                            <Button variant="outlined" size="medium" className={classes.btnRevokeAcc}>
+                                                Remove Company
                           </Button>
-                            </Grid>
+                                        </Grid>
+                                    </Grid>
+
+                                    <hr style={{ backgroundColor: '#ffffff', height: 0.1, width: '100%', marginBottom: 10, }} />
+
+                                    <p className={classes.footerTitle}>You don't have any assigned user for this company</p>
+                                    <p style={{ textAlign: 'center', margin: 'auto' }}><a href="#" className={classes.addUser}>Add User</a></p>
+
+                                </div>
+                            </Paper>
                         </Grid>
-
-                        <hr style={{ backgroundColor: '#ffffff', height: 0.1, width: '100%', marginBottom: 10, }} />
-
-                        <p className={classes.footerTitle}>You don't have any assigned user for this company</p>
-                        <p style={{textAlign: 'center', margin: 'auto'}}><a href="#" className={classes.addUser}>Add User</a></p>
-
-                    </div>
-                </Paper>
-
+                    </Grid>
+                </Container>
+                <Footer></Footer>
             </div>
         );
     }

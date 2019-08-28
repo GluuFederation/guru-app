@@ -17,8 +17,22 @@ import TableRow from '@material-ui/core/TableRow';
 import { green } from '@material-ui/core/colors';
 import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox';
 import InvitePartnerPopover from "../../components/Dashboard/InvitePartnerPopover";
+import Container from '@material-ui/core/Container';
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
+import DashboardSideMenu from "../../components/Dashboard/DashboardSideMenu";
 const styles = (theme: Theme) =>
     createStyles({
+        root: {
+            flexGrow: 1,
+        },
+        ContainerAlign: {
+            width: '80%',
+            margin: '0 auto',
+            marginTop: -4,
+            marginBottom: 54,
+        },
+        contentContainer: {},
         partnerCompTitle: {
             marginTop: 0,
             marginBottom: 0,
@@ -172,154 +186,167 @@ type Props = WithStyles<typeof styles> & RouteComponentProps;
 
 
 class PartnersPage extends Component<Props> {
-    
+
     render() {
         const { classes } = this.props;
 
         return (
             <div>
-                <Grid container>
-                    <Grid item md={12} xs={12} sm={12}>
-                        <Typography style={{ marginTop: 20 }} className={classes.partnerCompTitle}>Partner Companies</Typography>
-                    </Grid>
-                    <Grid item md={9} xs={8} sm={8}>
-                        <Typography style={{ marginBottom: 20, marginTop: 20 }} className={classes.partnerCompDetail}>Give a partner company access to your company access. View all of the certified Gluu services Partners on your <a style={{ color: '#00b372' }} href="#">website</a></Typography>
-                    </Grid>
-                    <Grid item md={3} xs={4} sm={4}>
-                        <InvitePartnerPopover></InvitePartnerPopover>
-                    </Grid>
-                </Grid>
-
-                <Paper style={{ marginBottom: 20, marginTop: 20 }} className={classes.paper}>
-                    <div style={{ padding: 25 }}>
-                        <Grid style={{ marginBottom: -17, }} container>
-                            <Grid item xs={2}>
-                                <Avatar alt="Avatar" src={UserTwo} className={classes.avatarAverage} />
-                            </Grid>
-                            <Grid item xs={3}>
-                                <Typography className={classes.nameGroup}>Cogito Group</Typography>
-                                <Typography className={classes.nameGroupInvited}>invited Feb 28, 2019</Typography>
-                            </Grid>
-
-                            <Grid item xs={3}>
-                                <Typography className={classes.pendingInvi}>Invitation pending</Typography>
-                            </Grid>
-                            <Grid item xs={2}>
-                                <Button variant="outlined" size="medium" className={classes.btnApprove}>
-                                    Approve
-                        </Button>
-                            </Grid>
-                            <Grid item xs={2}>
-                                <Button variant="outlined" size="medium" className={classes.btnDeny}>
-                                    Deny
-                        </Button>
-                            </Grid>
-                        </Grid>
-                    </div>
-                </Paper>
-
-                <Paper style={{ marginTop: 20, marginBottom: 20 }} className={classes.paper}>
-                    <div style={{ padding: 25 }}>
-                        <Grid container>
-                            <Grid item xs={2}>
-                                <Avatar alt="Avatar" src={UserOne} className={classes.avatarAverage} />
-                            </Grid>
-                            <Grid item xs={7}>
-                                <Typography className={classes.nameGroup}>Falcom Systems Consulting</Typography>
-                                <Typography className={classes.nameGroupInvited}>Added on July 12, 2019</Typography>
-                            </Grid>
-                            <Grid item xs={3}>
-                                <Button variant="outlined" size="medium" className={classes.btnRevokeAcc}>
-                                    Revoke access
-                        </Button>
-                            </Grid>
-                        </Grid>
-                        <hr style={{ backgroundColor: '#ffffff', height: 0.1, width: '100%', marginBottom: 10, }} />
-
-                        <Grid container>
-                            <Grid item xs={12}>
-                                <Typography className={classes.assignedUserTitle} style={{ float: 'left' }}>Assigned Users</Typography>
-                            </Grid>
+                <Navbar />
+                <Container className={classes.ContainerAlign} fixed>
+                    <Grid className={classes.contentContainer} container>
+                        <Grid item md={4} xs={12} sm={12}>
+                            <DashboardSideMenu></DashboardSideMenu>
                         </Grid>
 
-                        <div style={{ overflowX: 'auto' }}>
-                            <Table className={classes.table}>
-                                <TableHead>
-                                    <TableRow style={{ width: '100%' }}>
-                                        <TableCell className={classes.tableTitleAssigned} style={{ width: '50%' }} align="left">Name</TableCell>
-                                        <TableCell className={classes.tableTitleAssigned} style={{ width: '12%' }} align="left">View</TableCell>
-                                        <TableCell className={classes.tableTitleAssigned} style={{ width: '12%' }} align="left">Create</TableCell>
-                                        <TableCell className={classes.tableTitleAssigned} style={{ width: '12%' }} align="left">Edit</TableCell>
-                                        <TableCell className={classes.tableTitleAssigned} style={{ width: '12%' }} align="left">Delete</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
+                        <Grid item md={8} xs={12} sm={12}>
+
+                            <Grid container>
+                                <Grid item md={12} xs={12} sm={12}>
+                                    <Typography style={{ marginTop: 20 }} className={classes.partnerCompTitle}>Partner Companies</Typography>
+                                </Grid>
+                                <Grid item md={9} xs={8} sm={8}>
+                                    <Typography style={{ marginBottom: 20, marginTop: 20 }} className={classes.partnerCompDetail}>Give a partner company access to your company access. View all of the certified Gluu services Partners on your <a style={{ color: '#00b372' }} href="#">website</a></Typography>
+                                </Grid>
+                                <Grid item md={3} xs={4} sm={4}>
+                                    <InvitePartnerPopover></InvitePartnerPopover>
+                                </Grid>
+                            </Grid>
+
+                            <Paper style={{ marginBottom: 20, marginTop: 20 }} className={classes.paper}>
+                                <div style={{ padding: 25 }}>
+                                    <Grid style={{ marginBottom: -17, }} container>
+                                        <Grid item xs={2}>
+                                            <Avatar alt="Avatar" src={UserTwo} className={classes.avatarAverage} />
+                                        </Grid>
+                                        <Grid item xs={3}>
+                                            <Typography className={classes.nameGroup}>Cogito Group</Typography>
+                                            <Typography className={classes.nameGroupInvited}>invited Feb 28, 2019</Typography>
+                                        </Grid>
+
+                                        <Grid item xs={3}>
+                                            <Typography className={classes.pendingInvi}>Invitation pending</Typography>
+                                        </Grid>
+                                        <Grid item xs={2}>
+                                            <Button variant="outlined" size="medium" className={classes.btnApprove}>
+                                                Approve
+                        </Button>
+                                        </Grid>
+                                        <Grid item xs={2}>
+                                            <Button variant="outlined" size="medium" className={classes.btnDeny}>
+                                                Deny
+                        </Button>
+                                        </Grid>
+                                    </Grid>
+                                </div>
+                            </Paper>
+
+                            <Paper style={{ marginTop: 20, marginBottom: 20 }} className={classes.paper}>
+                                <div style={{ padding: 25 }}>
+                                    <Grid container>
+                                        <Grid item xs={2}>
+                                            <Avatar alt="Avatar" src={UserOne} className={classes.avatarAverage} />
+                                        </Grid>
+                                        <Grid item xs={7}>
+                                            <Typography className={classes.nameGroup}>Falcom Systems Consulting</Typography>
+                                            <Typography className={classes.nameGroupInvited}>Added on July 12, 2019</Typography>
+                                        </Grid>
+                                        <Grid item xs={3}>
+                                            <Button variant="outlined" size="medium" className={classes.btnRevokeAcc}>
+                                                Revoke access
+                        </Button>
+                                        </Grid>
+                                    </Grid>
+                                    <hr style={{ backgroundColor: '#ffffff', height: 0.1, width: '100%', marginBottom: 10, }} />
+
+                                    <Grid container>
+                                        <Grid item xs={12}>
+                                            <Typography className={classes.assignedUserTitle} style={{ float: 'left' }}>Assigned Users</Typography>
+                                        </Grid>
+                                    </Grid>
+
+                                    <div style={{ overflowX: 'auto' }}>
+                                        <Table className={classes.table}>
+                                            <TableHead>
+                                                <TableRow style={{ width: '100%' }}>
+                                                    <TableCell className={classes.tableTitleAssigned} style={{ width: '50%' }} align="left">Name</TableCell>
+                                                    <TableCell className={classes.tableTitleAssigned} style={{ width: '12%' }} align="left">View</TableCell>
+                                                    <TableCell className={classes.tableTitleAssigned} style={{ width: '12%' }} align="left">Create</TableCell>
+                                                    <TableCell className={classes.tableTitleAssigned} style={{ width: '12%' }} align="left">Edit</TableCell>
+                                                    <TableCell className={classes.tableTitleAssigned} style={{ width: '12%' }} align="left">Delete</TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
 
 
-                                    <TableRow style={{ width: '100%' }}>
-                                        <TableCell style={{ width: '50%' }}><Avatar alt="Avatar" src={UserTwo} className={classes.avatarSmall} /><span className={classes.assgnedUserName}>Nasir Uddin</span></TableCell>
-                                        <TableCell style={{ width: '12%' }} align="left">
-                                            <GreenCheckbox
-                                                // onChange={this.handleChangeCheckBox('A')}
-                                                value="A"
-                                            />
-                                        </TableCell>
-                                        <TableCell style={{ width: '12%' }} align="left">
-                                            <GreenCheckbox
-                                                // onChange={this.handleChangeCheckBox('B')}
-                                                value="B"
-                                            />
-                                        </TableCell>
-                                        <TableCell style={{ width: '12%' }} align="left">
-                                            <GreenCheckbox
-                                                // onChange={this.handleChangeCheckBox('C')}
-                                                value="C"
-                                            />
-                                        </TableCell>
-                                        <TableCell style={{ width: '12%' }} align="left">
-                                            <GreenCheckbox
-                                                // onChange={this.handleChangeCheckBox('E')}
-                                                value="E"
-                                            />
-                                        </TableCell>
-                                    </TableRow>
+                                                <TableRow style={{ width: '100%' }}>
+                                                    <TableCell style={{ width: '50%' }}><Avatar alt="Avatar" src={UserTwo} className={classes.avatarSmall} /><span className={classes.assgnedUserName}>Nasir Uddin</span></TableCell>
+                                                    <TableCell style={{ width: '12%' }} align="left">
+                                                        <GreenCheckbox
+                                                            // onChange={this.handleChangeCheckBox('A')}
+                                                            value="A"
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell style={{ width: '12%' }} align="left">
+                                                        <GreenCheckbox
+                                                            // onChange={this.handleChangeCheckBox('B')}
+                                                            value="B"
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell style={{ width: '12%' }} align="left">
+                                                        <GreenCheckbox
+                                                            // onChange={this.handleChangeCheckBox('C')}
+                                                            value="C"
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell style={{ width: '12%' }} align="left">
+                                                        <GreenCheckbox
+                                                            // onChange={this.handleChangeCheckBox('E')}
+                                                            value="E"
+                                                        />
+                                                    </TableCell>
+                                                </TableRow>
 
 
 
-                                    <TableRow style={{ width: '100%' }}>
-                                        <TableCell style={{ width: '50%' }}><Avatar alt="Avatar" src={UserOne} className={classes.avatarSmall} /><span className={classes.assgnedUserName}>Nasir Uddin</span></TableCell>
-                                        <TableCell style={{ width: '12%' }} align="left">
-                                            <GreenCheckbox
-                                                // onChange={this.handleChangeCheckBox('A')}
-                                                value="A"
-                                            />
-                                        </TableCell>
-                                        <TableCell style={{ width: '12%' }} align="left">
-                                            <GreenCheckbox
-                                                // onChange={this.handleChangeCheckBox('B')}
-                                                value="B"
-                                            />
-                                        </TableCell>
-                                        <TableCell style={{ width: '12%' }} align="left">
-                                            <GreenCheckbox
-                                                // onChange={this.handleChangeCheckBox('C')}
-                                                value="C"
-                                            />
-                                        </TableCell>
-                                        <TableCell style={{ width: '12%' }} align="left">
-                                            <GreenCheckbox
-                                                // onChange={this.handleChangeCheckBox('E')}
-                                                value="E"
-                                            />
-                                        </TableCell>
-                                    </TableRow>
+                                                <TableRow style={{ width: '100%' }}>
+                                                    <TableCell style={{ width: '50%' }}><Avatar alt="Avatar" src={UserOne} className={classes.avatarSmall} /><span className={classes.assgnedUserName}>Nasir Uddin</span></TableCell>
+                                                    <TableCell style={{ width: '12%' }} align="left">
+                                                        <GreenCheckbox
+                                                            // onChange={this.handleChangeCheckBox('A')}
+                                                            value="A"
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell style={{ width: '12%' }} align="left">
+                                                        <GreenCheckbox
+                                                            // onChange={this.handleChangeCheckBox('B')}
+                                                            value="B"
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell style={{ width: '12%' }} align="left">
+                                                        <GreenCheckbox
+                                                            // onChange={this.handleChangeCheckBox('C')}
+                                                            value="C"
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell style={{ width: '12%' }} align="left">
+                                                        <GreenCheckbox
+                                                            // onChange={this.handleChangeCheckBox('E')}
+                                                            value="E"
+                                                        />
+                                                    </TableCell>
+                                                </TableRow>
 
-                                </TableBody>
-                            </Table>
-                        </div>
+                                            </TableBody>
+                                        </Table>
+                                    </div>
 
-                    </div>
-                </Paper>
+                                </div>
+                            </Paper>
+                        </Grid>
+                    </Grid>
+                </Container>
+                <Footer></Footer>
             </div>
         );
     }

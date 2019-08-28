@@ -21,8 +21,13 @@ import SignupRedirect from "./pages/auth/SignupRedirect";
 
 import TicketList from "./pages/TicketList";
 import TicketDetail from "./pages/TicketDetail";
-import Dashboard from "./pages/Dashboard";
+import Notification from "./pages/Dashboard/NotificationPage";
+import Team from "./pages/Dashboard/TeamPage";
+import Partner from "./pages/Dashboard/PartnersPage";
+import Customer from "./pages/Dashboard/CustomerPage";
+import Admin from "./pages/Dashboard/AdminPage";
 export const paths = {
+
   // auth urls
   HOMEPAGE: "/",
   SELECT_PLAN: "/auth/select-plan",
@@ -45,6 +50,15 @@ export const paths = {
 
   //team
   TEAM_DETAILS: "/dashboard/team",
+
+  //partner
+  PARTNER:"/dashboard/partner",
+
+  //customer
+  CUSTOMER:"/dashboard/customer",
+
+  //admin
+  ADMIN: "/dashboard/admin",
 
   // errors
   ERROR_PAGE: "/error-page"
@@ -77,7 +91,23 @@ const routes: Array<RouteType> = [
   },
   {
     path:paths.TEAM_DETAILS,
-    component:Dashboard
+    component:Team
+  },
+  {
+    path:paths.NOTIFICATIONS,
+    component:Notification
+  },
+  {
+    path:paths.PARTNER,
+    component:Partner
+  },
+  {
+    path:paths.CUSTOMER,
+    component:Customer
+  },
+  {
+    path:paths.ADMIN,
+    component:Admin
   },
   // tickets
   {
