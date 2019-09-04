@@ -11,11 +11,9 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import BellIcon from '../../assets/images/bell_icon.png';
 import NextArrow from '../../assets/images/next_arrow.png';
+import Box from '@material-ui/core/Box';
 const styles = (theme: Theme) =>
     createStyles({
-        divGenralPedd: {
-            padding: 20,
-        },
         editTextField: {
             margin: 0,
             width: '80%',
@@ -35,23 +33,6 @@ const styles = (theme: Theme) =>
             marginTop: -34,
             float: 'right',
         },
-        catagoryName: {
-            marginTop: 30,
-            marginLeft: 30,
-            textAlign: 'left',
-            color: '#ffffff',
-            fontSize: 14,
-            fontWeight: 600,
-            fontFamily: '"Lato", sans-serif',
-        },
-        catagoryClick: {
-            marginLeft: 30,
-            textAlign: 'left',
-            color: '#ffffff',
-            fontSize: 12,
-            fontWeight: 500,
-            fontFamily: '"Lato", sans-serif',
-        },
         nextArrow: {
             width: 15,
             marginTop: 5,
@@ -68,40 +49,6 @@ const styles = (theme: Theme) =>
             outline: 'none',
             left: '35%',
             top: '2%',
-        },
-        headerTitle: {
-            marginTop: 0,
-            marginBottom: 0,
-            textAlign: 'left',
-            color: '#232323',
-            fontSize: 24,
-            fontWeight: 500,
-            fontFamily: '"Lato", sans-serif',
-        },
-        textReguBold: {
-            marginTop: 0,
-            marginBottom: 0,
-            textAlign: 'left',
-            color: '#727272',
-            fontSize: 14,
-            fontWeight: 600,
-            fontFamily: '"Lato", sans-serif',
-        },
-        textRegu: {
-            marginTop: 0,
-            marginBottom: 0,
-            textAlign: 'left',
-            color: '#727272',
-            fontSize: 14,
-            fontWeight: 500,
-            fontFamily: '"Lato", sans-serif',
-        },
-        textReguDesc: {
-            fontFamily: '"Lato", sans-serif',
-            fontSize: 12,
-            fontWeight: 500,
-            marginTop: 10,
-            color: '#232323',
         },
         selectType: {
             paddingLeft: 10,
@@ -148,12 +95,10 @@ type Props = WithStyles<typeof styles> & RouteComponentProps
 interface State {
     openClNoti: boolean
 }
-
 class AdminNotificationPopover extends Component<Props, State> {
     state = {
         openClNoti: false,
     }
-
     handleOpenClNoti = () => {
         this.setState({ openClNoti: true });
     };
@@ -161,39 +106,33 @@ class AdminNotificationPopover extends Component<Props, State> {
     handleCloseClNoti = () => {
         this.setState({ openClNoti: false });
     };
-
-
     render() {
         const { classes } = this.props;
-
         return (
             <div>
-                <Card onClick={this.handleOpenClNoti} className={classes.cardBell}>
-                    <CardActionArea>
-                        <Typography className={classes.catagoryName}>Notifications</Typography>
-                        <Typography className={classes.catagoryClick}>Click here<img className={classes.nextArrow} alt="" src={NextArrow} /></Typography>
-                        <img className={classes.dashboardClickImg} alt="" src={BellIcon} />
+                <Box ml={1} mr={1}>
+                    <Card onClick={this.handleOpenClNoti} className={classes.cardBell}>
+                        <CardActionArea>
+                            <Box mt={3} ml={5}><Typography variant="subtitle1" align="left">Notifications</Typography></Box>
+                            <Box ml={5}><Typography variant="caption" align="left">Click here<img className={classes.nextArrow} alt="" src={NextArrow} /></Typography></Box>
+                            <img className={classes.dashboardClickImg} alt="" src={BellIcon} />
 
-                    </CardActionArea>
-                </Card>
+                        </CardActionArea>
+                    </Card>
+                </Box>
                 <Modal open={this.state.openClNoti} onClose={this.handleCloseClNoti}>
-                    <div style={{ width: '40%' }} className={classes.paperModel}>
+                    <Box style={{ width: '40%' }} className={classes.paperModel}>
                         <form>
-                            <div>
-
-                                <div style={{padding: 0}} className={classes.divGenralPedd}>
-                                    <Typography className={classes.headerTitle}>Notification</Typography>
-                                    <p className={classes.textRegu}>For important updates regarding your Gull activity, certain notification cannot be disabled.</p>
-
-                                    <hr style={{ backgroundColor: '#ffffff', height: 0.1, width: '100%', marginBottom: 10, }} />
-                                 
-
-                                    <Typography className={classes.textReguBold}>Settings</Typography>
-
-                                
+                            <Box>
+                                <Box>
+                                    <Typography variant="h6" align="left">Notification</Typography>
+                                    <Typography variant="caption" align="left">For important updates regarding your Gull activity, certain notification cannot be disabled.</Typography>
+                                    <hr />
+                                    <Box mt={2}><Typography variant="subtitle1" align="left">Settings</Typography> </Box>
+                                    <Box style={{ marginTop: 5 }}> </Box>
                                     <Grid container>
                                         <Grid item xs={5}>
-                                            <p className={classes.textRegu}>New ticket reminder interval:</p>
+                                            <Box mt={1}><Typography variant="body2">New ticket reminder interval:</Typography></Box>
                                         </Grid>
                                         <Grid item xs={7}>
                                             <TextField
@@ -207,7 +146,7 @@ class AdminNotificationPopover extends Component<Props, State> {
 
                                     <Grid container>
                                         <Grid item xs={5}>
-                                            <p className={classes.textRegu}>New ticket reminder frequency:</p>
+                                            <Box mt={1}><Typography variant="body2" align="left">New ticket reminder frequency:</Typography></Box>
                                         </Grid>
                                         <Grid item xs={7}>
                                             <TextField
@@ -219,26 +158,12 @@ class AdminNotificationPopover extends Component<Props, State> {
                                         </Grid>
                                     </Grid>
 
-                             
-                                    <Typography className={classes.textReguBold}>Idle ticket reminder</Typography>
-                               
+                                    <Box style={{ marginTop: 10 }}> </Box>
+                                    <Typography variant="subtitle1" align="left">Idle ticket reminder</Typography>
+                                    <Box style={{ marginTop: 10 }}> </Box>
                                     <Grid container>
                                         <Grid item xs={5}>
-                                            <p className={classes.textRegu}>Community user:</p>
-                                        </Grid>
-                                        <Grid item xs={7}>
-                                            <TextField
-                                                className={classes.editTextField}
-                                                placeholder="Search Name..."
-                                                variant="outlined"
-                                                margin="dense"
-                                            />
-                                        </Grid>
-                                    </Grid>
-
-                                    <Grid container>
-                                        <Grid item xs={5}>
-                                            <p className={classes.textRegu}>Core user:</p>
+                                            <Box mt={1}><Typography variant="body2" align="left">Community user:</Typography></Box>
                                         </Grid>
                                         <Grid item xs={7}>
                                             <TextField
@@ -252,7 +177,21 @@ class AdminNotificationPopover extends Component<Props, State> {
 
                                     <Grid container>
                                         <Grid item xs={5}>
-                                            <p className={classes.textRegu}>VIP user:</p>
+                                            <Box mt={1}><Typography variant="body2" align="left">Core user:</Typography></Box>
+                                        </Grid>
+                                        <Grid item xs={7}>
+                                            <TextField
+                                                className={classes.editTextField}
+                                                placeholder="Search Name..."
+                                                variant="outlined"
+                                                margin="dense"
+                                            />
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid container>
+                                        <Grid item xs={5}>
+                                            <Box mt={1}><Typography variant="body2" align="left">VIP user:</Typography></Box>
                                         </Grid>
                                         <Grid item xs={7}>
                                             <TextField
@@ -268,25 +207,24 @@ class AdminNotificationPopover extends Component<Props, State> {
                                         <Grid item xs={5}>
                                         </Grid>
                                         <Grid item xs={7}>
-                                            <div style={{ textAlign: 'left',}}>
-                                                <Button variant="outlined" className={classes.btnSuccess}>
+                                            <Box mt={2} mr={1} display="inline">
+                                                <Button variant="contained" className={classes.btnSuccess} size="medium">
                                                     Save
-                                        </Button>
-                                                <Button variant="outlined" className={classes.btnCancel}>
+                                                </Button>
+                                            </Box>
+                                            <Box mt={2} ml={1} display="inline">
+                                                <Button variant="contained" className={classes.btnCancel} size="medium">
                                                     Cancel
-                                        </Button>
-                                            </div>
+                                                </Button>
+                                            </Box>
                                         </Grid>
                                     </Grid>
-
-                                    <hr style={{ backgroundColor: '#ffffff', height: 0.1, width: '100%'}} />
-
-                                    <div style={{ marginTop: 5 }}> </div>
-                                    <Typography className={classes.textReguBold}>Send test email notification</Typography>
-                                    <div style={{ marginTop: 5 }}> </div>
+                                    <Box mb={2}> </Box>
+                                    <hr />
+                                    <Box mt={2} mb={2}><Typography variant="subtitle1" align="left">Send test email notification</Typography></Box>
                                     <Grid container>
                                         <Grid item xs={3}>
-                                            <p className={classes.textRegu}>Comunity user:</p>
+                                            <Box mt={1}><Typography variant="body2" align="left">Comunity user:</Typography></Box>
                                         </Grid>
                                         <Grid item xs={9}>
                                             <select
@@ -297,25 +235,21 @@ class AdminNotificationPopover extends Component<Props, State> {
                                             </select>
                                         </Grid>
                                     </Grid>
-
                                     <Grid container>
                                         <Grid item xs={3}>
                                         </Grid>
                                         <Grid item xs={9}>
-                                            <div style={{ textAlign: 'left', marginTop: 10, }}>
-                                                <Button style={{width: '44%'}} variant="outlined" className={classes.btnSuccess}>
+                                            <Box style={{ textAlign: 'left', marginTop: 10, }}>
+                                                <Button variant="outlined" className={classes.btnSuccess} size="medium">
                                                     Send Email
-                                        </Button>
-                                            </div>
+                                                </Button>
+                                            </Box>
                                         </Grid>
                                     </Grid>
-
-
-                                </div>
-
-                            </div>
+                                </Box>
+                            </Box>
                         </form>
-                    </div>
+                    </Box>
                 </Modal>
             </div>
 

@@ -9,8 +9,8 @@ import Edit from '@material-ui/icons/Edit';
 import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
 import TextField from '@material-ui/core/TextField';
-
-
+import Link from '@material-ui/core/Link';
+import Box from '@material-ui/core/Box';
 const styles = (theme: Theme) =>
     createStyles({
         editImageP: {
@@ -31,15 +31,6 @@ const styles = (theme: Theme) =>
             borderRadius: 20,
             color: '#2dce56',
         },
-        editDetails: {
-            marginTop: 0,
-            marginBottom: 0,
-            color: '#ADADAD',
-            fontSize: 14,
-            fontWeight: 500,
-            fontFamily: '"Lato", sans-serif',
-            '&:hover': { color: '#00b372', backgroundColor: 'transparent' }
-        },
         margin: {
             margin: theme.spacing(1),
         },
@@ -56,48 +47,6 @@ const styles = (theme: Theme) =>
             outline: 'none',
             left: '35%',
             top: '20%',
-        },
-
-        editTitleProfile: {
-            fontFamily: 'arial',
-            fontSize: 22,
-            fontWeight: 500,
-            marginTop: 10,
-            color: '#232323',
-        },
-        saveTeamProfile: {
-            padding: 10,
-            color: '#ffffff',
-            backgroundColor: '#00b372',
-            fontFamily: 'arial',
-            '&:hover': {
-                color: '#00b372',
-            },
-        },
-        labelPopup: {
-            fontFamily: '"Lato", sans-serif',
-            fontWeight: 500,
-            fontSize: 15,
-            marginTop: 5,
-            marginBottom: 5,
-        },
-        teamNameField: {
-            margin: 0,
-            width: '100%',
-            marginBottom: 10,
-        },
-        teamBioField: {
-            margin: 0,
-            width: '100%',
-            marginBottom: 10,
-        },
-        bioWords: {
-            fontFamily: '"Lato", sans-serif',
-            fontWeight: 500,
-            fontSize: 12,
-            marginTop: -8,
-            marginBottom: 15,
-            color: '#95A5A6',
         },
         popupEditImageP: {
             backgroundColor: '#ffffff',
@@ -125,19 +74,30 @@ const styles = (theme: Theme) =>
             marginBottom: 15,
             marginTop: 15,
         },
+        txtField: {
+            margin: 0,
+            width: '100%',
+            marginBottom: 10,
+        },
+        btnSuccess: {
+            backgroundColor: '#2dce56',
+            textTransform: 'capitalize',
+            color: '#ffffff',
+            '&:hover': { color: '#2dce56', backgroundColor: 'transparent', }
+        },
     });
 
 
 type Props = WithStyles<typeof styles> & RouteComponentProps
 
 interface State {
-    openAdd:boolean
+    openAdd: boolean
 
 }
 
-class EditTeamPopover extends Component<Props,State> {
+class EditTeamPopover extends Component<Props, State> {
     state = {
-        openAdd:false
+        openAdd: false
     }
 
     handleOpenAdd = () => {
@@ -153,41 +113,40 @@ class EditTeamPopover extends Component<Props,State> {
 
         return (
             <div>
-                <a href="#" style={{ float: 'left', marginBottom: 3, marginTop: 0 }} className={classes.editDetails} onClick={this.handleOpenAdd}>Edit details</a>
-
+                <Typography align="left"><Link href="#" onClick={this.handleOpenAdd} color="textSecondary">Edit details</Link></Typography>
                 <Modal open={this.state.openAdd} onClose={this.handleCloseAdd}>
-                    <div style={{ width: '28%' }} className={classes.paperModel}>
+                    <Box style={{ width: '28%' }} className={classes.paperModel}>
                         <form>
-                            <div>
-                                <Typography className={classes.editTitleProfile}>Edit team profile</Typography>
+                            <Box>
+                                <Typography variant="h5" align="left">Edit team profile</Typography>
 
-                                <div style={{ marginBottom: 15, }}>
+                                <Box mb={2}>
                                     <Avatar style={{ marginBottom: -26, }} alt="Avatar" src={UserOne} className={classes.popupAvatar} />
                                     <button className={classes.popupEditImageP}>
                                         <Edit className={classes.popupEditPancil} />
                                     </button>
-                                </div>
-                                <p className={classes.labelPopup}>Name</p>
+                                </Box>
+                                <Typography variant="body2" align="left">Name</Typography>
                                 <TextField
-                                    className={classes.teamNameField}
+                                    className={classes.txtField}
                                     variant="outlined"
                                     margin="dense"
                                 />
 
-                                <p className={classes.labelPopup}>BIO</p>
+                                <Typography variant="body2" align="left">BIO</Typography>
                                 <TextField
-                                    className={classes.teamBioField}
+                                    className={classes.txtField}
                                     variant="outlined"
                                     margin="dense"
                                 />
-                                <p className={classes.bioWords}>Maximum 25 words</p>
+                                <Typography display="block" variant="caption" align="left">Maximum 25 words</Typography>
 
-                                <Button variant="outlined" className={classes.saveTeamProfile}>
+                                <Button variant="outlined" className={classes.btnSuccess}>
                                     Save
                                   </Button>
-                            </div>
+                            </Box>
                         </form>
-                    </div>
+                    </Box>
                 </Modal>
             </div>
 

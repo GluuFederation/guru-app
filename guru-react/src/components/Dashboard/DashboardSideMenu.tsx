@@ -11,7 +11,7 @@ import UserOne from '../../assets/images/user_one.png';
 import VerifyIcon from '../../assets/images/verify_icon.png';
 import Paper from '@material-ui/core/Paper';
 import Edit from '@material-ui/icons/Edit';
-
+import Box from '@material-ui/core/Box';
 const styles = (theme: Theme) =>
     createStyles({
         avatarBig: {
@@ -20,7 +20,6 @@ const styles = (theme: Theme) =>
             margin: 'auto',
             marginBottom: 15,
         },
-
         editImageP: {
             backgroundColor: '#ffffff',
             width: 30,
@@ -39,72 +38,6 @@ const styles = (theme: Theme) =>
             borderRadius: 20,
             color: '#2dce56',
         },
-        userPname: {
-            fontSize: 22,
-            color: '#232323',
-            fontWeight: 500,
-            display: 'flex',
-            justifyContent: 'center',
-            width: '100%',
-            fontFamily: '"Lato", sans-serif',
-        },
-        userCompany: {
-            marginTop: 0,
-            marginBottom: 0,
-            color: '#ADADAD',
-            textAlign: 'center',
-            fontSize: 14,
-            fontWeight: 400,
-            fontFamily: '"Lato", sans-serif',
-        },
-        userCompanyEmail: {
-            marginTop: 0,
-            color: '#232323',
-            textAlign: 'center',
-            fontSize: 14,
-            fontWeight: 500,
-            fontFamily: '"Lato", sans-serif',
-        },
-        ticketsCount: {
-            marginBottom: 0,
-            color: '#232323',
-            textAlign: 'center',
-            fontSize: 22,
-            fontWeight: 500,
-            fontFamily: '"Lato", sans-serif',
-        },
-        ticketsTitle: {
-            marginTop: 10,
-            color: '#ADADAD',
-            textAlign: 'center',
-            fontSize: 14,
-            fontWeight: 500,
-            fontFamily: '"Lato", sans-serif',
-        },
-        votesCount: {
-            marginBottom: 0,
-            color: '#232323',
-            textAlign: 'center',
-            fontSize: 22,
-            fontWeight: 500,
-            fontFamily: '"Lato", sans-serif',
-        },
-        votesTitle: {
-            marginTop: 10,
-            color: '#ADADAD',
-            textAlign: 'center',
-            fontSize: 14,
-            fontWeight: 500,
-            fontFamily: '"Lato", sans-serif',
-        },
-
-        detailMembers: {
-            fontSize: 14,
-            color: '#232323',
-            fontWeight: 500,
-            fontFamily: '"Lato", sans-serif',
-        },
-
         menuSidebar: {
             color: '#232323',
             fontSize: 14,
@@ -113,13 +46,11 @@ const styles = (theme: Theme) =>
             backgroundColor: '#ffffff',
             '&:hover': { color: '#00b372', borderLeft: 'solid #2dce56', }
         },
-        anchorMenu:{
+        anchorMenu: {
             textDecoration: 'none',
             color: '#232323',
             marginLeft: '10%',
-            '&:hover': { color: '#2dce56',}
-        },
-        menuSidebarTxt: {
+            '&:hover': { color: '#2dce56', }
         },
         paper: {
             marginRight: theme.spacing(2),
@@ -136,59 +67,68 @@ class DashboardSideMenu extends Component<Props> {
 
         return (
             <div>
-                <Paper style={{ marginTop: 20, marginBottom: 20 }} className={classes.paper}>
-                    <div style={{ padding: 25 }}>
-                        <div>
+
+            <Box mb={2}>    
+                <Paper className={classes.paper}>
+                    <Box p={2}>
+                        <Box>
                             <Avatar style={{ marginBottom: -26 }} alt="Avatar" src={UserOne} className={classes.avatarBig} />
                             <button className={classes.editImageP}>
                                 <Edit className={classes.editPancil} />
                             </button>
-                        </div>
-                        <span className={classes.userPname}>Nasir uddin<img alt="Verify Icon" style={{ width: 18, height: 18, marginLeft: 5, marginTop: 8, }} src={VerifyIcon} /></span>
-                        <p className={classes.userCompany}>Gluu Inc</p>
-                        <p className={classes.userCompanyEmail}>nasir@gluu.org</p>
-                        <div style={{ backgroundColor: '#eeeeee', height: 1, width: '100%', }} ></div>
+                        </Box>
+                        <Typography variant="h6"  align="center">Nasir uddin<img alt="Verify Icon" style={{ width: 18, height: 18, marginLeft: 5, marginBottom: -3 }} src={VerifyIcon} /></Typography>
+                        <Typography variant="subtitle1" align="center" color="textSecondary">Gluu Inc</Typography>
+                        <Typography variant="subtitle2" color="textPrimary"  align="center">nasir@gluu.org</Typography>
+                    </Box>
+                    <hr />
+                    <Box p={2}>
                         <Grid container>
-                            <Grid item md={6} xs={6} sm={6}>
-                                <p className={classes.ticketsCount}>12</p>
-                                <p className={classes.ticketsTitle}>Opened Tickets</p>
+                            <Grid justify="center" item md={6} xs={6} sm={6}>
+                                <Typography align="center" variant="h6">12</Typography>
+                                <Typography align="center"  variant="subtitle1" color="textSecondary">Opened Tickets</Typography>
                             </Grid>
-                            <Grid item md={6} xs={6} sm={6}>
-                                <p className={classes.votesCount}>170</p>
-                                <p className={classes.votesTitle}>Upvotes</p>
+                            <Grid justify="center" item md={6} xs={6} sm={6}>
+                                <Typography align="center" variant="h6">170</Typography>
+                                <Typography align="center" variant="subtitle1" color="textSecondary">Upvotes</Typography>
                             </Grid>
                         </Grid>
-                    </div>
-                    <div style={{ backgroundColor: '#eeeeee', height: 1, width: '100%', }} ></div>
-                    <div>
+                    </Box>
+                    <hr />
+
+                    <Box>
                         <MenuList>
                             <MenuItem className={classes.menuSidebar}>
-                                <a className={classes.anchorMenu} href="/dashboard/notifications"><Typography className={classes.menuSidebarTxt} variant="inherit">Notification</Typography></a>
+                                <a className={classes.anchorMenu} href="/dashboard/notifications"><Typography variant="subtitle1" align="left">Notification</Typography></a>
                             </MenuItem>
                             <MenuItem className={classes.menuSidebar}>
-                                <a className={classes.anchorMenu} href="/dashboard/profile"><Typography className={classes.menuSidebarTxt} variant="inherit">Profile</Typography></a>
+                                <a className={classes.anchorMenu} href="/dashboard/profile"><Typography variant="subtitle1" align="left">Profile</Typography></a>
                             </MenuItem>
                             <MenuItem className={classes.menuSidebar}>
-                                <a className={classes.anchorMenu} href="/dashboard/team"><Typography className={classes.menuSidebarTxt} variant="inherit" noWrap>Team</Typography></a>
+                                <a className={classes.anchorMenu} href="/dashboard/team"><Typography variant="subtitle1" align="left">Team</Typography></a>
                             </MenuItem>
                             <MenuItem className={classes.menuSidebar}>
-                                <a className={classes.anchorMenu} href="/dashboard/partner"><Typography className={classes.menuSidebarTxt} variant="inherit" noWrap>Partners</Typography></a>
+                                <a className={classes.anchorMenu} href="/dashboard/partner"><Typography variant="subtitle1" align="left">Partners</Typography></a>
                             </MenuItem>
                             <MenuItem className={classes.menuSidebar}>
-                                <a className={classes.anchorMenu} href="/dashboard/customer"><Typography className={classes.menuSidebarTxt} variant="inherit" noWrap>Customers</Typography></a>
+                                <a className={classes.anchorMenu} href="/dashboard/customer"><Typography variant="subtitle1" align="left">Customers</Typography></a>
                             </MenuItem>
                             <MenuItem className={classes.menuSidebar}>
-                                <a className={classes.anchorMenu} href="/dashboard/billing"><Typography className={classes.menuSidebarTxt} variant="inherit" noWrap>Billing</Typography></a>
+                                <a className={classes.anchorMenu} href="/dashboard/billing"><Typography variant="subtitle1" align="left">Billing</Typography></a>
                             </MenuItem>
                             <MenuItem className={classes.menuSidebar}>
-                                <a className={classes.anchorMenu} href="/dashboard/account-setting"><Typography className={classes.menuSidebarTxt} variant="inherit" noWrap>Account Security</Typography></a>
+                                <a className={classes.anchorMenu} href="/dashboard/account-setting"><Typography variant="subtitle1" align="left">Account Security</Typography></a>
                             </MenuItem>
                             <MenuItem className={classes.menuSidebar}>
-                                <a className={classes.anchorMenu} href="/dashboard/admin"><Typography className={classes.menuSidebarTxt} variant="inherit" noWrap>Admin</Typography></a>
+                                <a className={classes.anchorMenu} href="/dashboard/admin"><Typography variant="subtitle1" align="left">Admin</Typography></a>
                             </MenuItem>
                         </MenuList>
-                    </div>
+                    </Box>
                 </Paper>
+
+            </Box>
+
+
             </div>
 
         );

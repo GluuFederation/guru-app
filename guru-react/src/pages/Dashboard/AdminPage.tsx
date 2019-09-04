@@ -6,11 +6,11 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import GroupIcon from '../../assets/images/group_icon.png';
 import GraphIcon from '../../assets/images/graph_icon.png';
 import PersonIcon from '../../assets/images/person_icon.png';
 import NextArrow from '../../assets/images/next_arrow.png';
 import Container from '@material-ui/core/Container';
+import Box from '@material-ui/core/Box';
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import DashboardSideMenu from "../../components/Dashboard/DashboardSideMenu";
@@ -41,32 +41,12 @@ const styles = (theme: Theme) =>
             backgroundColor: '#059599',
             color: '#ffffff',
         },
-        cardBackground: {
-            backgroundImage: "url(" + { GroupIcon } + ")"
-        },
         dashboardClickImg: {
             width: 90,
             height: 90,
             marginTop: -34,
             opacity: 0.3,
             float: 'right',
-        },
-        catagoryName: {
-            marginTop: 30,
-            marginLeft: 30,
-            textAlign: 'left',
-            color: '#ffffff',
-            fontSize: 16,
-            fontWeight: 600,
-            fontFamily: '"Lato", sans-serif',
-        },
-        catagoryClick: {
-            marginLeft: 30,
-            textAlign: 'left',
-            color: '#ffffff',
-            fontSize: 14,
-            fontWeight: 500,
-            fontFamily: '"Lato", sans-serif',
         },
         nextArrow: {
             width: 15,
@@ -87,55 +67,50 @@ class AdminPage extends Component<Props> {
         const { classes } = this.props;
 
         return (
-            <div style={{ marginTop: 20, }}>
+            <div >
                 <Navbar />
                 <Container className={classes.ContainerAlign} fixed>
-                    <Grid className={classes.contentContainer} container>
-                        <Grid item md={4} xs={12} sm={12}>
-                            <DashboardSideMenu></DashboardSideMenu>
-                        </Grid>
-
-                        <Grid item md={8} xs={12} sm={12}>
-
-                            <Grid style={{marginTop: 20}} container>
-
-                                <Grid item xs={3} style={{ margin: 5,}}>
-                                    <AdminUserRolePopover></AdminUserRolePopover>
-                                </Grid>
-
-
-                                <Grid item xs={3} style={{ margin: 5,}}>
-                                    <AdminNotificationPopover></AdminNotificationPopover>
-                                </Grid>
-
-
-                                <Grid item xs={3} style={{ margin: 5,}}>
-                                    <Card className={classes.cardGraph}>
-                                        <CardActionArea>
-                                            <Typography className={classes.catagoryName}>System Metrics</Typography>
-                                            <Typography className={classes.catagoryClick}>Click here<img alt="" className={classes.nextArrow} src={NextArrow} /></Typography>
-                                            <img alt="" className={classes.dashboardClickImg} src={GraphIcon} />
-
-                                        </CardActionArea>
-                                    </Card>
-                                </Grid>
-
-
-                                <Grid item xs={3} style={{ margin: 5,}}>
-                                    <Card className={classes.cardPerson}>
-                                        <CardActionArea>
-                                            <Typography className={classes.catagoryName}>Profile Setting</Typography>
-                                            <Typography className={classes.catagoryClick}>Click here<img alt="" className={classes.nextArrow} src={NextArrow} /></Typography>
-                                            <img alt="" className={classes.dashboardClickImg} src={PersonIcon} />
-                                        </CardActionArea>
-                                    </Card>
+                    <Box mt={2}>
+                        <Grid className={classes.contentContainer} container>
+                            <Grid item md={4} xs={12} sm={12}>
+                                <DashboardSideMenu></DashboardSideMenu>
+                            </Grid>
+                            <Grid item md={8} xs={12} sm={12}>
+                                <Grid container>
+                                    <Grid item md={4} sm={6} xs={12}>
+                                        <AdminUserRolePopover></AdminUserRolePopover>
+                                    </Grid>
+                                    <Grid item md={4} sm={6} xs={12}>
+                                        <AdminNotificationPopover></AdminNotificationPopover>
+                                    </Grid>
+                                    <Grid item md={4} sm={6} xs={12}>
+                                        <Box ml={1} mr={1} >
+                                            <Card className={classes.cardGraph}>
+                                                <CardActionArea>
+                                                    <Box mt={3} ml={5}><Typography variant="subtitle1" align="left">System Metrics</Typography></Box>
+                                                    <Box ml={5}><Typography variant="caption" align="left">Click here<img className={classes.nextArrow} alt="" src={NextArrow} /></Typography></Box>
+                                                    <img className={classes.dashboardClickImg} alt="" src={GraphIcon} />
+                                                </CardActionArea>
+                                            </Card>
+                                        </Box>
+                                    </Grid>
+                                    <Grid item md={4} sm={6} xs={12}>
+                                        <Box ml={1} mr={1} mt={2}>
+                                            <Card className={classes.cardPerson}>
+                                                <CardActionArea>
+                                                    <Box mt={3} ml={5}><Typography variant="subtitle1" align="left">Profile Setting</Typography></Box>
+                                                    <Box ml={5}><Typography variant="caption" align="left">Click here<img alt="" className={classes.nextArrow} src={NextArrow} /></Typography></Box>
+                                                    <img className={classes.dashboardClickImg} alt="" src={PersonIcon} />
+                                                </CardActionArea>
+                                            </Card>
+                                        </Box>
+                                    </Grid>
                                 </Grid>
                             </Grid>
-                        </Grid>
-                    </Grid >
+                        </Grid >
+                    </Box>
                 </Container >
                 <Footer></Footer>
-
             </div >
 
         );

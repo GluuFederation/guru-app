@@ -8,7 +8,7 @@ import Modal from '@material-ui/core/Modal';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import InvitationSeccess from '../../assets/images/invitation_seccess.png';
 import CrossIcon from '../../assets/images/cross_icon.png';
-
+import Box from '@material-ui/core/Box';
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -23,6 +23,12 @@ const styles = (theme: Theme) =>
             left: '35%',
             top: '20%',
         },
+        btnSuccess: {
+            backgroundColor: '#2dce56',
+            textTransform: 'capitalize',
+            color: '#ffffff',
+            '&:hover': { color: '#2dce56', backgroundColor: 'transparent', }
+        },
         btnInviteNewPartn: {
             margin: theme.spacing(1),
             fontSize: 12,
@@ -34,48 +40,6 @@ const styles = (theme: Theme) =>
             textTransform: 'capitalize',
             fontFamily: '"Lato", sans-serif',
             '&:hover': { color: '#00b372', }
-        },
-        labelInvite: {
-            fontFamily: '"Lato", sans-serif',
-            fontWeight: 500,
-            fontSize: 15,
-            marginTop: 15,
-            marginBottom: 5,
-        },
-
-        editTitleProfile: {
-            fontFamily: 'arial',
-            fontSize: 22,
-            fontWeight: 500,
-            marginTop: 10,
-            color: '#232323',
-        },
-
-        sendInvite: {
-            padding: 10,
-            color: '#ffffff',
-            backgroundColor: '#00b372',
-            fontFamily: 'arial',
-            '&:hover': {
-                color: '#00b372',
-            }
-        },
-        labelPopup: {
-            fontFamily: '"Lato", sans-serif',
-            fontWeight: 500,
-            fontSize: 15,
-            marginTop: 5,
-            marginBottom: 5,
-        },
-        inviteNameField: {
-            margin: 0,
-            width: '100%',
-            marginBottom: 10,
-        },
-        inviteEmailField: {
-            margin: 0,
-            width: '100%',
-            marginBottom: 10,
         },
         selectType: {
             paddingLeft: 10,
@@ -111,30 +75,6 @@ const styles = (theme: Theme) =>
             color: '#232323',
             textAlign: 'center',
         },
-        inviteNewPartnComp: {
-            fontFamily: '"Lato", sans-serif',
-            fontSize: 22,
-            fontWeight: 500,
-            marginTop: 10,
-            color: '#232323',
-        },
-        ditailWords: {
-            fontFamily: '"Lato", sans-serif',
-            fontWeight: 500,
-            fontSize: 13,
-            marginTop: -8,
-            marginBottom: 15,
-            color: '#95A5A6',
-        },
-        btnSendInvit: {
-            padding: 10,
-            color: '#ffffff',
-            backgroundColor: '#00b372',
-            fontFamily: 'arial',
-            '&:hover': {
-                color: '#00b372',
-            },
-        },
         invitePartnMsg: {
             margin: 0,
             fontFamily: '"Lato", sans-serif',
@@ -155,7 +95,7 @@ interface State {
 }
 
 class InvitePartnerPopover extends Component<Props, State> {
-    
+
     state = {
         openInviteNewPartn: false,
         openInviteSend: false
@@ -186,12 +126,15 @@ class InvitePartnerPopover extends Component<Props, State> {
                     Invite New Partner
                         </Button>
                 <Modal open={this.state.openInviteNewPartn} onClose={this.handleCloseInviteNewPartn}>
-                    <div style={{ width: '28%' }} className={classes.paperModel}>
+                    <Box style={{ width: '28%' }} className={classes.paperModel}>
                         <form>
-                            <div>
-                                <Typography className={classes.inviteNewPartnComp}>Invite new Partner Company</Typography>
+                            <Box>
+                                <Typography variant="h6" align="left">Invite new Partner Company</Typography>
 
-                                <p className={classes.labelInvite}>Partner Company:</p>
+                                <Box mt={2} mb={1}>
+                                    <Typography variant="body2" align="left">Partner Company:</Typography>
+                                </Box>
+
                                 <select
                                     style={{ width: '100%', height: 40 }}
                                     className={classes.selectType}>
@@ -201,18 +144,24 @@ class InvitePartnerPopover extends Component<Props, State> {
                                     <option value="corporate">Corporate</option>
                                 </select>
 
-                                <p className={classes.labelInvite}>Message</p>
+                                <Box mt={2} mb={1}>
+                                    <Typography variant="body2" align="left">Message</Typography>
+                                </Box>
+
                                 <TextareaAutosize style={{ height: 100, }} aria-label="maximum height" defaultValue="we are authorizing your company access to your account on Gluu sports. if you agree, Please approve the request and assign users to work on our account." className={classes.invitePartnMsg} />
 
-                                <p className={classes.ditailWords}>Invitation will be sent for approval to admin contacts at the partner Organization</p>
+                                <Box mb={1}>
+                                    <Typography variant="caption" display="block" align="left">Invitation will be sent for approval to admin contacts at the partner Organization</Typography>
+                                </Box>
 
-                                <Button onClick={this.handleOpenInviteSend} variant="outlined" className={classes.btnSendInvit}>
+                                <Button variant="contained" className={classes.btnSuccess} size="medium" color="primary" onClick={this.handleOpenInviteSend} >
                                     Send Invite
                                   </Button>
-                            </div>
+                            </Box>
                         </form>
-                    </div>
+                    </Box>
                 </Modal>
+
                 <Modal open={this.state.openInviteSend} onClose={this.handleCloseInviteSend}>
                     <div style={{ width: '28%' }} className={classes.paperModel}>
                         <form>

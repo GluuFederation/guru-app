@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { withStyles, WithStyles } from "@material-ui/styles";
-import { createStyles, Theme} from '@material-ui/core/styles';
+import { createStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
@@ -9,42 +9,20 @@ import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
 import TextField from '@material-ui/core/TextField';
-
+import Box from '@material-ui/core/Box';
 
 const styles = (theme: Theme) =>
     createStyles({
-        editImageP: {
-            backgroundColor: '#ffffff',
-            width: 30,
-            height: 30,
-            borderRadius: 20,
-            border: 'none',
-            outline: 'none',
-            cursor: 'pointer',
-            textAlign: 'right',
-            marginLeft: '53%',
-            position: 'relative',
-            boxShadow: '0 0 0 0.1rem rgba(0,123,255,.1)',
-        },
-        editPancil: {
-            fontSize: 15,
-            borderRadius: 20,
-            color: '#2dce56',
-        },
-        btnInvite: {
-            margin: theme.spacing(1),
-            fontSize: 14,
-            fontWeight: 500,
-            backgroundColor: '#f4f5f7',
+        btnSuccess: {
+            backgroundColor: '#2dce56',
             textTransform: 'capitalize',
-            fontFamily: '"Lato", sans-serif',
+            color: '#ffffff',
+            '&:hover': { color: '#2dce56', backgroundColor: 'transparent', }
         },
-        pendingNote: {
-            fontSize: 14,
-            textAlign: 'center',
-            color: '#EBB400',
-            marginBottom: 20,
-            float: 'left',
+        txtField: {
+            margin: 0,
+            width: '100%',
+            marginBottom: 10,
         },
         membersType: {
             fontSize: 14,
@@ -80,41 +58,6 @@ const styles = (theme: Theme) =>
             left: '35%',
             top: '20%',
         },
-
-        editTitleProfile: {
-            fontFamily: 'arial',
-            fontSize: 22,
-            fontWeight: 500,
-            marginTop: 10,
-            color: '#232323',
-        },
-
-        sendInvite: {
-            padding: 10,
-            color: '#ffffff',
-            backgroundColor: '#00b372',
-            fontFamily: 'arial',
-            '&:hover': {
-                color: '#00b372',
-            }
-        },
-        labelPopup: {
-            fontFamily: '"Lato", sans-serif',
-            fontWeight: 500,
-            fontSize: 15,
-            marginTop: 5,
-            marginBottom: 5,
-        },
-        inviteNameField: {
-            margin: 0,
-            width: '100%',
-            marginBottom: 10,
-        },
-        inviteEmailField: {
-            margin: 0,
-            width: '100%',
-            marginBottom: 10,
-        },
     });
 
 
@@ -143,31 +86,31 @@ class InviteMemberPopover extends Component<Props, State> {
 
         return (
             <div>
-                <Button variant="outlined" size="medium" className={classes.btnInvite} onClick={this.handleOpenInviteMen}>
+                <Button variant="outlined" size="medium" className={classes.btnSuccess} onClick={this.handleOpenInviteMen}>
                     Invite new
                 </Button>
-                
+
                 <Modal open={this.state.openInviteMen} onClose={this.handleCloseInviteMen}>
-                    <div style={{ width: '28%' }} className={classes.paperModel}>
+                    <Box style={{ width: '28%' }} className={classes.paperModel}>
                         <form>
-                            <div>
-                                <Typography className={classes.editTitleProfile}>Invite new member</Typography>
+                            <Box>
+                                <Typography variant="h6" align="left">Invite new member</Typography>
 
-                                <p className={classes.labelPopup}>Name</p>
+                                <Typography variant="body2" align="left">Name</Typography>
                                 <TextField
-                                    className={classes.inviteNameField}
+                                    className={classes.txtField}
                                     variant="outlined"
                                     margin="dense"
                                 />
 
-                                <p className={classes.labelPopup}>Email</p>
+                                <Typography variant="body2" align="left">Email</Typography>
                                 <TextField
-                                    className={classes.inviteEmailField}
+                                    className={classes.txtField}
                                     variant="outlined"
                                     margin="dense"
                                 />
 
-                                <p className={classes.labelPopup}>Role</p>
+                                <Typography variant="body2" align="left">Role</Typography>
                                 <FormControl style={{ width: '100%' }} className={classes.membersType}>
                                     <Select
                                         className={classes.selectType}
@@ -179,13 +122,14 @@ class InviteMemberPopover extends Component<Props, State> {
                                     </Select>
                                 </FormControl>
 
-                                <Button variant="outlined" className={classes.sendInvite}>
+                                <Button variant="outlined" className={classes.btnSuccess}>
                                     Send Invite
-                                  </Button>
-                            </div>
+                              </Button>
+                            </Box>
                         </form>
-                    </div>
+                    </Box>
                 </Modal>
+
 
             </div>
 

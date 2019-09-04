@@ -15,7 +15,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { green } from '@material-ui/core/colors';
 import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox';
-
+import Box from '@material-ui/core/Box';
 const styles = (theme: Theme) =>
     createStyles({
         cardGroup: {
@@ -23,23 +23,6 @@ const styles = (theme: Theme) =>
             height: 100,
             backgroundColor: '#00b572',
             color: '#ffffff',
-        },
-        catagoryName: {
-            marginTop: 30,
-            marginLeft: 30,
-            textAlign: 'left',
-            color: '#ffffff',
-            fontSize: 16,
-            fontWeight: 600,
-            fontFamily: '"Lato", sans-serif',
-        },
-        catagoryClick: {
-            marginLeft: 30,
-            textAlign: 'left',
-            color: '#ffffff',
-            fontSize: 14,
-            fontWeight: 500,
-            fontFamily: '"Lato", sans-serif',
         },
         nextArrow: {
             width: 15,
@@ -53,27 +36,6 @@ const styles = (theme: Theme) =>
             marginTop: -34,
             opacity: 0.3,
             float: 'right',
-        },
-        textRegu: {
-            marginTop: 0,
-            marginBottom: 0,
-            textAlign: 'left',
-            color: '#727272',
-            fontSize: 14,
-            fontWeight: 500,
-            fontFamily: '"Lato", sans-serif',
-        },
-        divGenralPedd: {
-            padding: 20,
-        },
-        headerTitle: {
-            marginTop: 0,
-            marginBottom: 0,
-            textAlign: 'left',
-            color: '#232323',
-            fontSize: 24,
-            fontWeight: 500,
-            fontFamily: '"Lato", sans-serif',
         },
         paperModel: {
             position: 'absolute',
@@ -124,35 +86,42 @@ class AdminUserRolePopover extends Component<Props, State> {
 
         return (
             <div>
-                <Card className={classes.cardGroup} onClick={this.handleOpenRoleDash}>
-                    <CardActionArea>
-                        <Typography className={classes.catagoryName}>Users</Typography>
-                        <Typography className={classes.catagoryClick}>Click here<img alt="" className={classes.nextArrow} src={NextArrow} /></Typography>
-                        <img alt="" className={classes.dashboardClickImg} src={GroupIcon} />
-                    </CardActionArea>
-                </Card>
+                <Box ml={1} mr={1}>
+                    <Card onClick={this.handleOpenRoleDash} className={classes.cardGroup}>
+                        <CardActionArea>
+                            <Box mt={3} ml={5}><Typography variant="subtitle1" align="left">Users</Typography></Box>
+                            <Box ml={5}><Typography variant="caption" align="left">Click here<img className={classes.nextArrow} alt="" src={NextArrow} /></Typography></Box>
+                            <img className={classes.dashboardClickImg} alt="" src={GroupIcon} />
+
+                        </CardActionArea>
+                    </Card>
+                </Box>
                 <Modal open={this.state.openRoleDash} onClose={this.handleCloseRoleDash}>
-                    <div style={{ width: '35%' }} className={classes.paperModel}>
+                    <Box style={{ width: '40%' }} className={classes.paperModel}>
                         <form>
-                            <div>
-                                <div className={classes.divGenralPedd}>
-                                    <Typography className={classes.headerTitle}>Roles</Typography>
-                                    <p className={classes.textRegu}>Permission granted to user rules in Gluu</p>
+                            <Box>
+
+                                <Box>
+                                    <Typography variant="h6" align="left">Roles</Typography>
+                                    <Typography variant="caption" align="left">Permission granted to user rules in Gluu.</Typography>
+
                                     <hr style={{ backgroundColor: '#ffffff', height: 0.1, width: '100%', marginBottom: 10, }} />
-                                    <div style={{ overflowX: 'auto' }}>
+
+
+                                    <Box style={{ overflowX: 'auto' }}>
                                         <Table className={classes.table}>
                                             <TableHead>
                                                 <TableRow style={{ width: '100%' }}>
-                                                    <TableCell className={classes.textRegu} style={{ width: '40%', padding: 0, }} align="left">Permission</TableCell>
-                                                    <TableCell className={classes.textRegu} style={{ width: '14%', padding: 0, }} align="left">Staff</TableCell>
-                                                    <TableCell className={classes.textRegu} style={{ width: '14%', padding: 0, }} align="left">Admin</TableCell>
-                                                    <TableCell className={classes.textRegu} style={{ width: '18%', padding: 0, }} align="left">Named user</TableCell>
-                                                    <TableCell className={classes.textRegu} style={{ width: '14%', padding: 0, }} align="left">User</TableCell>
+                                                    <TableCell style={{ width: '40%', padding: 0, }} align="left"><Typography variant="caption">Permission</Typography></TableCell>
+                                                    <TableCell style={{ width: '14%', padding: 0, }} align="left"><Typography variant="caption">Staff</Typography></TableCell>
+                                                    <TableCell style={{ width: '14%', padding: 0, }} align="left"><Typography variant="caption">Admin</Typography></TableCell>
+                                                    <TableCell style={{ width: '18%', padding: 0, }} align="left"><Typography variant="caption">Named user</Typography></TableCell>
+                                                    <TableCell style={{ width: '14%', padding: 0, }} align="left"><Typography variant="caption">User</Typography></TableCell>
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
                                                 <TableRow style={{ width: '100%' }}>
-                                                    <TableCell style={{ width: '40%', padding: 0, }}><span className={classes.textRegu}>All Permission</span></TableCell>
+                                                    <TableCell style={{ width: '40%', padding: 0, }}><Typography variant="caption">All Permission</Typography></TableCell>
                                                     <TableCell style={{ width: '14%', padding: 0 }} align="left">
                                                         <GreenCheckbox
                                                             // onChange={handleChangeCheckBox('A')}
@@ -179,35 +148,7 @@ class AdminUserRolePopover extends Component<Props, State> {
                                                     </TableCell>
                                                 </TableRow>
                                                 <TableRow style={{ width: '100%' }}>
-                                                    <TableCell style={{ width: '40%', padding: 0, }}><span className={classes.textRegu}>Add and remove staff</span></TableCell>
-                                                    <TableCell style={{ width: '14%', padding: 0, }} align="left">
-                                                        <GreenCheckbox
-                                                            // onChange={handleChangeCheckBox('A')}
-                                                            value="A"
-                                                        />
-                                                    </TableCell>
-                                                    <TableCell style={{ width: '14%', padding: 0, }} align="left">
-                                                        <GreenCheckbox
-                                                            // onChange={handleChangeCheckBox('B')}
-                                                            value="B"
-                                                        />
-                                                    </TableCell>
-                                                    <TableCell style={{ width: '18%', padding: 0, }} align="left">
-                                                        <GreenCheckbox
-                                                            // onChange={handleChangeCheckBox('C')}
-                                                            value="C"
-                                                        />
-                                                    </TableCell>
-                                                    <TableCell style={{ width: '14%', padding: 0, }} align="left">
-                                                        <GreenCheckbox
-                                                            // onChange={handleChangeCheckBox('E')}
-                                                            value="E"
-                                                        />
-                                                    </TableCell>
-                                                </TableRow>
-
-                                                <TableRow style={{ width: '100%' }}>
-                                                    <TableCell style={{ width: '40%', padding: 0, }}><span className={classes.textRegu}>Assign tickets</span></TableCell>
+                                                    <TableCell style={{ width: '40%', padding: 0, }}><Typography variant="caption">Add and remove staff</Typography></TableCell>
                                                     <TableCell style={{ width: '14%', padding: 0, }} align="left">
                                                         <GreenCheckbox
                                                             // onChange={handleChangeCheckBox('A')}
@@ -234,7 +175,7 @@ class AdminUserRolePopover extends Component<Props, State> {
                                                     </TableCell>
                                                 </TableRow>
                                                 <TableRow style={{ width: '100%' }}>
-                                                    <TableCell style={{ width: '40%', padding: 0, }}><span className={classes.textRegu}>View billing information</span></TableCell>
+                                                    <TableCell style={{ width: '40%', padding: 0, }}><Typography variant="caption">Assign tickets</Typography></TableCell>
                                                     <TableCell style={{ width: '14%', padding: 0, }} align="left">
                                                         <GreenCheckbox
                                                             // onChange={handleChangeCheckBox('A')}
@@ -261,7 +202,7 @@ class AdminUserRolePopover extends Component<Props, State> {
                                                     </TableCell>
                                                 </TableRow>
                                                 <TableRow style={{ width: '100%' }}>
-                                                    <TableCell style={{ width: '40%', padding: 0, }}><span className={classes.textRegu}>Change billing information</span></TableCell>
+                                                    <TableCell style={{ width: '40%', padding: 0, }}><Typography variant="caption">View billing information</Typography></TableCell>
                                                     <TableCell style={{ width: '14%', padding: 0, }} align="left">
                                                         <GreenCheckbox
                                                             // onChange={handleChangeCheckBox('A')}
@@ -288,7 +229,7 @@ class AdminUserRolePopover extends Component<Props, State> {
                                                     </TableCell>
                                                 </TableRow>
                                                 <TableRow style={{ width: '100%' }}>
-                                                    <TableCell style={{ width: '40%', padding: 0, }}><span className={classes.textRegu}>View tickets</span></TableCell>
+                                                    <TableCell style={{ width: '40%', padding: 0, }}><Typography variant="caption">Change billing information</Typography></TableCell>
                                                     <TableCell style={{ width: '14%', padding: 0, }} align="left">
                                                         <GreenCheckbox
                                                             // onChange={handleChangeCheckBox('A')}
@@ -315,7 +256,7 @@ class AdminUserRolePopover extends Component<Props, State> {
                                                     </TableCell>
                                                 </TableRow>
                                                 <TableRow style={{ width: '100%' }}>
-                                                    <TableCell style={{ width: '40%', padding: 0, }}><span className={classes.textRegu}>Create tickets</span></TableCell>
+                                                    <TableCell style={{ width: '40%', padding: 0, }}><Typography variant="caption">View tickets</Typography></TableCell>
                                                     <TableCell style={{ width: '14%', padding: 0, }} align="left">
                                                         <GreenCheckbox
                                                             // onChange={handleChangeCheckBox('A')}
@@ -342,7 +283,7 @@ class AdminUserRolePopover extends Component<Props, State> {
                                                     </TableCell>
                                                 </TableRow>
                                                 <TableRow style={{ width: '100%' }}>
-                                                    <TableCell style={{ width: '40%', padding: 0, }}><span className={classes.textRegu}>Response to tickets</span></TableCell>
+                                                    <TableCell style={{ width: '40%', padding: 0, }}><Typography variant="caption">Create tickets</Typography></TableCell>
                                                     <TableCell style={{ width: '14%', padding: 0, }} align="left">
                                                         <GreenCheckbox
                                                             // onChange={handleChangeCheckBox('A')}
@@ -369,7 +310,7 @@ class AdminUserRolePopover extends Component<Props, State> {
                                                     </TableCell>
                                                 </TableRow>
                                                 <TableRow style={{ width: '100%' }}>
-                                                    <TableCell style={{ width: '40%', padding: 0, }}><span className={classes.textRegu}>Change member role</span></TableCell>
+                                                    <TableCell style={{ width: '40%', padding: 0, }}><Typography variant="caption">Response to tickets</Typography></TableCell>
                                                     <TableCell style={{ width: '14%', padding: 0, }} align="left">
                                                         <GreenCheckbox
                                                             // onChange={handleChangeCheckBox('A')}
@@ -396,7 +337,7 @@ class AdminUserRolePopover extends Component<Props, State> {
                                                     </TableCell>
                                                 </TableRow>
                                                 <TableRow style={{ width: '100%' }}>
-                                                    <TableCell style={{ width: '40%', padding: 0, }}><span className={classes.textRegu}>Add and remove members</span></TableCell>
+                                                    <TableCell style={{ width: '40%', padding: 0, }}><Typography variant="caption">Change member role</Typography></TableCell>
                                                     <TableCell style={{ width: '14%', padding: 0, }} align="left">
                                                         <GreenCheckbox
                                                             // onChange={handleChangeCheckBox('A')}
@@ -422,15 +363,42 @@ class AdminUserRolePopover extends Component<Props, State> {
                                                         />
                                                     </TableCell>
                                                 </TableRow>
-
+                                                <TableRow style={{ width: '100%' }}>
+                                                    <TableCell style={{ width: '40%', padding: 0, }}><Typography variant="caption">Add and remove members</Typography></TableCell>
+                                                    <TableCell style={{ width: '14%', padding: 0, }} align="left">
+                                                        <GreenCheckbox
+                                                            // onChange={handleChangeCheckBox('A')}
+                                                            value="A"
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell style={{ width: '14%', padding: 0, }} align="left">
+                                                        <GreenCheckbox
+                                                            // onChange={handleChangeCheckBox('B')}
+                                                            value="B"
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell style={{ width: '18%', padding: 0, }} align="left">
+                                                        <GreenCheckbox
+                                                            // onChange={handleChangeCheckBox('C')}
+                                                            value="C"
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell style={{ width: '14%', padding: 0, }} align="left">
+                                                        <GreenCheckbox
+                                                            // onChange={handleChangeCheckBox('E')}
+                                                            value="E"
+                                                        />
+                                                    </TableCell>
+                                                </TableRow>
                                             </TableBody>
                                         </Table>
-                                    </div>
-                                </div>
-                            </div>
+                                    </Box>
+                                </Box>
+                            </Box>
                         </form>
-                    </div>
+                    </Box>
                 </Modal>
+
 
                 {/* //////////////  Popup Moded Code End //////// */}
 

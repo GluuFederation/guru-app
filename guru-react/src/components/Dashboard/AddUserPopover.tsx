@@ -9,21 +9,17 @@ import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
-
+import Box from '@material-ui/core/Box';
 
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         addNewUser: {
-            alignSelf: 'center',
-            justifySelf: 'center',
             color: '#00b372',
             fontFamily: '"Lato", sans-serif',
             fontWeight: 600,
-            fontSize: 13,
-            float: 'left',
-            marginLeft: 10,
-            marginTop: 20,
+            fontSize: 12,
+            marginLeft: 0,
         },
         paperModel: {
             position: 'absolute',
@@ -36,35 +32,16 @@ const useStyles = makeStyles((theme: Theme) =>
             left: '35%',
             top: '15%',
         },
-        titlePopup: {
-            fontFamily: '"Lato", sans-serif',
-            fontSize: 16,
-            fontWeight: 500,
-            marginTop: 10,
-            color: '#232323',
-        },
-        titlePopupDesc: {
-            fontFamily: '"Lato", sans-serif',
-            fontSize: 12,
-            fontWeight: 500,
-            marginTop: 10,
-            color: '#232323',
-        },
-        titlePopupCust: {
-            fontFamily: '"Lato", sans-serif',
-            fontSize: 14,
-            fontWeight: 500,
-            marginTop: 10,
-            color: '#232323',
-        },
-        btnAssignTas: {
+        btnSuccess: {
             padding: 10,
             width: '30%',
             marginTop: 20,
             color: '#ffffff',
             backgroundColor: '#00b372',
             fontFamily: '"Lato", sans-serif',
+            textTransform:'capitalize',
             '&:hover': {
+                backgroundColor:'#ffffff',
                 color: '#00b372',
             },
         },
@@ -137,13 +114,12 @@ export default function AddUserPopover() {
             <a href="#" onClick={handleOpenInviteNewPartn} className={classes.addNewUser}>Add New User</a>
 
             <Modal open={openInviteNewPartn} onClose={handleCloseInviteNewPartn}>
-                <div style={{ width: '28%' }} className={classes.paperModel}>
+                <Box style={{ width: '28%' }} className={classes.paperModel}>
                     <form>
-                        <div>
-                            <Typography className={classes.titlePopup}>Add new user</Typography>
-                            <p className={classes.titlePopupDesc}>Assign resources that are available to help manage this customer's Gluu support account.</p>
-                            <Typography className={classes.titlePopupCust}>Customer : <span style={{ color: '#00b372' }}>Team Orizon</span></Typography>
-
+                        <Box>
+                            <Typography variant="subtitle1" align="left" color="textPrimary">Add new user</Typography>
+                            <Typography variant="caption" align="left" color="textSecondary">Assign resources that are available to help manage this customer's Gluu support account.</Typography>
+                            <Typography variant="caption" align="left" color="textPrimary" display="block">Customer : <span style={{ color: '#00b372' }}>Team Orizon</span></Typography>
                             <Select
                                 style={{ width: '100%', marginTop: 15 }}
                                 multiple
@@ -152,14 +128,14 @@ export default function AddUserPopover() {
                                 onChange={handleChange}
                                 input={<Input id="select-multiple-chip" />}
                                 renderValue={selected => (
-                                    <div className={classes.chips}>
+                                    <Box className={classes.chips}>
                                         {(selected as string[]).map(value => (
                                             <span style={{ backgroundColor: '#00b372', borderRadius: 20, margin: 2, }}>
                                                 <Avatar alt="Avatar" src={UserOne} className={classes.avatarXsmall} />
                                                 <Chip label={value} className={classes.chip} />
                                             </span>
                                         ))}
-                                    </div>
+                                    </Box>
                                 )}
                                 MenuProps={MenuProps}
                             >
@@ -170,19 +146,15 @@ export default function AddUserPopover() {
                                     </MenuItem>
                                 ))}
                             </Select>
-
-                            <Button variant="outlined" className={classes.btnAssignTas}>
-                                Assign
-                            </Button>
-
-                        </div>
+                            <Box mt={2}>
+                                <Button variant="contained" className={classes.btnSuccess} size="medium" color="primary">
+                                    Assign
+                                </Button>
+                            </Box>
+                        </Box>
                     </form>
-                </div>
+                </Box>
             </Modal>
-
-
-
-
         </div>
     )
 }
