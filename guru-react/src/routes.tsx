@@ -31,20 +31,40 @@ export const paths = {
   LOGIN_CALLBACK: "/auth/login-callback",
 
   // tickets urls
-  TICKET_LIST: "/tickets/list",
+  TICKET_LIST: "/dashboard",
   CREATE_TICKET: "/tickets/create/:step",
   getCreateTicketPath: (step: number) => `/tickets/create/${step}`,
   TICKET_DETAIL: "/tickets/:slug",
   getTicketDetailPath: (slug: string) => `/tickets/${slug}`,
 
   // notifications
-  NOTIFICATIONS: "/dashboard/notifications",
+  NOTIFICATIONS: "/notifications",
 
   // profile
-  PROFILE: "/dashboard/profile",
+  PROFILE: "/profile",
 
   //team
-  TEAM_DETAILS: "/dashboard/team",
+  TEAM_DETAILS: "/team",
+
+  //partner
+
+  PARTNERS : "/partners",
+
+  //customer
+
+  CUSTOMERS : "/customers",
+
+  //billing 
+
+  BILLING : "/billing",
+
+  //account_settings
+
+  ACCOUNT_SETTING : "/account_setting",
+
+  //Admin
+
+  ADMIN : "/admin_user",
 
   // errors
   ERROR_PAGE: "/error-page"
