@@ -280,9 +280,9 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
     def is_gluu_staff(self):
         role = self.role
         if role:
-            return role.name == 'staff'
+            return role.name == 'staff' or self.is_staff
 
-        return False
+        return self.is_staff
 
     def sync_data(self):
         scim.update_user(self)

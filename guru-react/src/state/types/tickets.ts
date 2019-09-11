@@ -1,5 +1,5 @@
 import { GluuProduct } from "./info";
-import { ShortUser, Company } from "./profiles";
+import { ShortUser, ShortCompany } from "./profiles";
 
 export enum TicketFilterOrder {
   MostRecent = "+recent",
@@ -22,9 +22,9 @@ export interface Ticket {
   title: string;
   body: string;
   createdBy: ShortUser;
-  createdFor: ShortUser;
-  updatedBy: ShortUser;
-  assignee: ShortUser;
+  createdFor: ShortUser | null;
+  updatedBy: ShortUser | null;
+  assignee: ShortUser | null;
   isPrivate: boolean;
   category: number;
   status: number;
@@ -34,7 +34,7 @@ export interface Ticket {
   osVersion: string;
   voters: Array<ShortUser>;
   subscribers: Array<ShortUser>;
-  companyAssociation: Company;
+  companyAssociation: ShortCompany;
   products: Array<TicketProduct>;
   createdOn: string;
   updatedOn: string;

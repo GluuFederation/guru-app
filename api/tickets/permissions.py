@@ -16,7 +16,7 @@ class TicketCustomPermission(permissions.BasePermission):
         action = 'retrieve'\
             if request.method in permissions.SAFE_METHODS else view.action
 
-        if request.user.is_staff:
+        if request.user.is_gluu_staff:
             staff_role = UserRole.objects.get(name='staff')
             return staff_role.has_permission(
                 app_name='tickets',
@@ -54,7 +54,7 @@ class TicketItemCustomPermission(permissions.BasePermission):
         if request.user.is_superuser:
             return True
 
-        if request.user.is_staff:
+        if request.user.is_gluu_staff:
             staff_role = UserRole.objects.get(name='staff')
             model_name = 'Ticket' if view.action == 'retrieve' else item_model
             return staff_role.has_permission(
@@ -104,7 +104,7 @@ class TicketAccessPermission(permissions.BasePermission):
         if request.user.is_superuser:
             return True
 
-        if request.user.is_staff:
+        if request.user.is_gluu_staff:
             staff_role = UserRole.objects.get(name='staff')
             return staff_role.has_permission(
                 app_name='tickets',

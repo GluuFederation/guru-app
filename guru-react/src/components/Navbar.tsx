@@ -195,6 +195,7 @@ class Navbar extends Component<Props, State> {
                       color="primary"
                       classes={{ root: classes.button }}
                       variant="outlined"
+                      onClick={this.navigateTo(paths.getCreateTicketPath(NaN))}
                     >
                       + Add Ticket
                     </Button>

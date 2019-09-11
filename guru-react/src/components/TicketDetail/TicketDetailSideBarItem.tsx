@@ -18,7 +18,7 @@ import AddCircleOutline from "@material-ui/icons/AddCircleOutline";
 
 import { colors } from "../../theme";
 import Autocomplete, { Suggestion } from "../Autocomplete";
-import { ShortUser } from "../../state/types/profiles";
+import { ShortUser, ShortCompany } from "../../state/types/profiles";
 import { withUser, WithUserProps } from "../../state/hocs/profiles";
 import { withInfo, WithInfoProps } from "../../state/hocs/info";
 import { getChipClass } from "../../utils/chipStyles";
@@ -26,6 +26,10 @@ import {
   withTicketDetail,
   WithTicketDetailProps
 } from "../../state/hocs/tickets";
+import {
+  withCreateTicket,
+  WithCreateTicketProps
+} from "../../state/hocs/ticket";
 import { closedStatus, otherCategory } from "../../state/preloaded/info";
 import {
   TicketCategory,
@@ -49,6 +53,7 @@ const styles = (theme: Theme) =>
   });
 
 export enum MenuType {
+  CompanyAssociation = "companyAssociation",
   Creator = "creator",
   Assignee = "assignee",
   IssueType = "issueType",
@@ -63,11 +68,13 @@ export enum MenuType {
 interface ExternalProps {
   menuType: MenuType;
   canEdit?: boolean;
+  isNew?: boolean;
 }
 
 type Props = ExternalProps &
   WithUserProps &
   WithInfoProps &
+  WithCreateTicketProps &
   WithTicketDetailProps &
   WithStyles<typeof styles>;
 
@@ -78,6 +85,7 @@ enum ModalType {
 
 interface State {
   users: Array<Suggestion>;
+  companies: Array<Suggestion>;
   menuElement: HTMLElement | null;
   isModalOpen: boolean;
   modalType: ModalType;
@@ -89,6 +97,7 @@ class TicketDetailSideBarItem extends Component<Props, State> {
     super(props);
     this.state = {
       users: [],
+      companies: [],
       menuElement: null,
       isModalOpen: false,
       modalType: ModalType.Os
@@ -144,10 +153,35 @@ class TicketDetailSideBarItem extends Component<Props, State> {
     });
   };
 
+  searchCompanies = (q: string) => {
+    const url = `${process.env.REACT_APP_API_BASE}/api/v1/access-list/companies/`;
+    const params = { q };
+
+    axios.get(url, { params }).then(response => {
+      this.setState({
+        companies: response.data.results
+          .map((result: ShortCompany) => ({
+            ...result,
+            text: result.name
+          }))
+          .slice(0, 5)
+      });
+    });
+  };
+
   updateTicketCreator = (selectedItem: Suggestion) => {
-    const { ticket } = this.props;
-    if (!ticket) return;
-    this.props.setTicketCreator(ticket.slug, selectedItem.id);
+    const {
+      ticket,
+      isNew,
+      setCreateTicketCreator,
+      setTicketCreator
+    } = this.props;
+    if (isNew) {
+      setCreateTicketCreator((selectedItem as unknown) as ShortUser);
+    } else {
+      if (!ticket) return;
+      setTicketCreator(ticket.slug, selectedItem.id);
+    }
     this.setState({ menuElement: null });
   };
 
@@ -158,22 +192,36 @@ class TicketDetailSideBarItem extends Component<Props, State> {
     this.setState({ menuElement: null });
   };
 
-  updateTicket = (selectedItem: { id: number; slug?: string }) => () => {
-    const { ticket } = this.props;
-    if (!ticket) return;
+  updateTicket = (selectedItem: {
+    id: number;
+    slug?: string;
+    text?: string;
+  }) => () => {
+    const {
+      ticket,
+      newTicket,
+      isNew,
+      updateTicket,
+      updateNewTicket
+    } = this.props;
     const menuType = this.props.menuType;
     switch (menuType) {
       case MenuType.Category:
       case MenuType.Status:
       case MenuType.IssueType:
-        this.props.updateTicket({
-          ...ticket,
-          [menuType]: selectedItem.id
-        });
+        if (isNew)
+          updateNewTicket({ ...newTicket, [menuType]: selectedItem.id });
+        else {
+          if (!ticket) return;
+          updateTicket({
+            ...ticket,
+            [menuType]: selectedItem.id
+          });
+        }
         this.setState({ menuElement: null });
         break;
       case MenuType.GluuServer:
-        if (selectedItem.slug) {
+        if (selectedItem.slug && ticket) {
           this.props.updateTicket({
             ...ticket,
             [menuType]: selectedItem.slug
@@ -181,15 +229,37 @@ class TicketDetailSideBarItem extends Component<Props, State> {
           this.setState({ menuElement: null });
         }
         break;
+      case MenuType.CompanyAssociation:
+        console.log(selectedItem);
+        if (selectedItem.text)
+          updateNewTicket({
+            ...newTicket,
+            companyAssociation: { id: selectedItem.id, name: selectedItem.text }
+          });
     }
   };
 
   render() {
-    const { ticket, menuType, classes, info, canEdit } = this.props;
-    if (!ticket) return <div />;
+    const {
+      ticket: fullTicket,
+      newTicket,
+      isNew,
+      menuType,
+      classes,
+      info,
+      canEdit
+    } = this.props;
+    if (!isNew && !fullTicket) return <div />;
+    const ticket = !isNew && fullTicket ? fullTicket : newTicket;
 
-    const { createdBy, assignee, products } = ticket;
-    const { users, menuElement, isModalOpen, modalType } = this.state;
+    let { createdBy, createdFor, assignee, products } = ticket;
+    const {
+      users,
+      companies,
+      menuElement,
+      isModalOpen,
+      modalType
+    } = this.state;
     const { categories, statuses, issueTypes } = info;
     const gluuProducts = info.products;
 
@@ -219,12 +289,15 @@ class TicketDetailSideBarItem extends Component<Props, State> {
       | TicketIssueType
       | { id: number; name: string; slug: string }
     > = [];
+    if (isNew && createdFor) createdBy = { ...createdFor };
     switch (menuType) {
       case MenuType.Creator:
-        infoText = `${createdBy.firstName} ${createdBy.otherNames} ${
-          createdBy.lastName
-        }`;
-        avatar = createdBy.avatar;
+        infoText = createdBy
+          ? `${createdBy.firstName} ${createdBy.otherNames} ${createdBy.lastName}`
+          : "";
+        avatar = createdBy ? createdBy.avatar : "";
+        if (isNew) {
+        }
         title = "Created By";
         break;
       case MenuType.Assignee:
@@ -274,6 +347,11 @@ class TicketDetailSideBarItem extends Component<Props, State> {
         title = "OS Version";
         infoText = `${ticket.os} ${ticket.osVersion}`;
         break;
+      case MenuType.CompanyAssociation:
+        title = "Organization";
+        infoText = ticket.companyAssociation
+          ? ticket.companyAssociation.name
+          : "";
     }
 
     const InputProps = {
@@ -376,6 +454,13 @@ class TicketDetailSideBarItem extends Component<Props, State> {
                   updateQueryFunction={this.searchCreators}
                   selectFunction={this.updateTicketCreator}
                 />
+              ) : menuType === MenuType.CompanyAssociation ? (
+                <Autocomplete
+                  InputProps={InputProps}
+                  suggestions={companies}
+                  updateQueryFunction={this.searchCompanies}
+                  selectFunction={this.updateTicket}
+                />
               ) : (
                 <div>
                   {chipMenuItems.map(chipMenuItem => (
@@ -418,5 +503,7 @@ class TicketDetailSideBarItem extends Component<Props, State> {
 }
 
 export default withTicketDetail(
-  withInfo(withUser(withStyles(styles)(TicketDetailSideBarItem)))
+  withCreateTicket(
+    withInfo(withUser(withStyles(styles)(TicketDetailSideBarItem)))
+  )
 );

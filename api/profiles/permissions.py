@@ -42,7 +42,7 @@ class CompanyCustomPermission(permissions.BasePermission):
 
         staff_permission = False
 
-        if request.user.is_staff:
+        if request.user.is_gluu_staff:
             staff_role = UserRole.objects.get(name='staff')
             staff_permission = request.method in permissions.SAFE_METHODS or\
                 staff_role.has_permission(

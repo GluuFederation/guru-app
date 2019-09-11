@@ -21,6 +21,7 @@ import SignupRedirect from "./pages/auth/SignupRedirect";
 
 import TicketList from "./pages/TicketList";
 import TicketDetail from "./pages/TicketDetail";
+import CreateTicket from "./pages/CreateTicket";
 import Dashboard from "./pages/Dashboard";
 export const paths = {
   // auth urls
@@ -79,6 +80,7 @@ const routes: Array<RouteType> = [
     path: paths.TEAM_DETAILS,
     component: Dashboard
   },
+
   // tickets
   {
     path: paths.TICKET_LIST,
@@ -87,6 +89,10 @@ const routes: Array<RouteType> = [
   {
     path: paths.TICKET_DETAIL,
     component: TicketDetail
+  },
+  {
+    path: paths.CREATE_TICKET,
+    component: CreateTicket
   },
 
   // errors
