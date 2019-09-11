@@ -9,7 +9,7 @@ import Modal from '@material-ui/core/Modal';
 import CrossIcon from '../../assets/images/cross_icon.png';
 import { green } from '@material-ui/core/colors';
 import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox';
-
+import Box from '@material-ui/core/Box';
 const styles = (theme: Theme) =>
     createStyles({
         btnNotificationSet: {
@@ -33,20 +33,6 @@ const styles = (theme: Theme) =>
             left: '25%',
             top: '5%',
         },
-        titleCheck: {
-            fontSize: 14,
-            fontWeight: 600,
-            marginTop: 15,
-            color: '#232323',
-            fontFamily: '"Lato", sans-serif',
-        },
-        subtitleCheck: {
-            fontSize: 12,
-            fontWeight: 500,
-            marginTop: 15,
-            color: '#232323',
-            fontFamily: '"Lato", sans-serif',
-        },
         crossIcon: {
             width: 15,
             height: 15,
@@ -68,20 +54,7 @@ const styles = (theme: Theme) =>
         paper: {
             marginRight: theme.spacing(2),
         },
-        notificationPopupTit: {
-            fontSize: 22,
-            fontWeight: 500,
-            marginTop: 10,
-            color: '#232323',
-            fontFamily: '"Lato", sans-serif',
-        },
-        notificationPopupDes: {
-            fontSize: 12,
-            fontWeight: 500,
-            marginTop: 10,
-            color: '#232323',
-            fontFamily: '"Lato", sans-serif',
-        },
+
     });
 const GreenCheckbox = withStyles({
     root: {
@@ -118,163 +91,163 @@ class ManageNotificationPopover extends Component<Props, State> {
             <div>
                 <Button onClick={this.handleOpenTeamPro} variant="outlined" size="medium" className={classes.btnNotificationSet}>
                     Manage Notification Settings
-                                </Button>
-
-                {/* //////////////  Popup Moded Code Start //////// */}
-
+                </Button>
                 <Modal open={this.state.openTeamPro} onClose={this.handleCloseTeamPro}>
-                    <div style={{ width: '50%' }} className={classes.paperNotifModel}>
+                    <Box style={{ width: '50%' }} className={classes.paperNotifModel}>
 
-                        <div>
+                        <Box>
                             <img alt="Avatar" src={CrossIcon} className={classes.crossIcon} onClick={this.handleCloseTeamPro} />
-                            <Typography className={classes.notificationPopupTit}>Notification Settings</Typography>
-                        </div>
+                            <Typography variant="h6" align="left">Notification Settings</Typography>
+                        </Box>
 
                         <form>
-                            <div>
-                                <hr style={{ backgroundColor: '#ffffff', height: 0.1, width: '100%', marginBottom: 10, }} />
-                                <Typography className={classes.notificationPopupDes}>Notification Setting for new tickets only</Typography>
+                            <Box>
+                                <hr />
+                                <Typography variant="body2" align="left">Notification Setting for new tickets only</Typography>
 
-                                <div style={{ marginBottom: 0, marginTop: 4, }}>
+                                <Box mt={2} mb={2}>
                                     <GreenCheckbox
                                         style={{ marginBottom: 5, marginRight: 8, width: 15, height: 15 }}
                                         // onChange={handleChangeCheckBox('A')}
                                         value="A"
                                     />
-                                    <span className={classes.titleCheck}>All new tickets</span>
-                                </div>
-                                <hr style={{ backgroundColor: '#ffffff', height: 0.1, width: '100%', marginBottom: 10, }} />
-                                <Typography className={classes.notificationPopupDes}>Notification setting for new tickets and tickets update (answer, status changes etc )</Typography>
+                                    <Typography variant="subtitle1" align="left" display="inline">All new tickets</Typography>
+                                </Box>
+                                <hr />
+                                <Typography variant="caption" align="left">Notification setting for new tickets and tickets update (answer, status changes etc )</Typography>
 
                                 <Grid style={{ marginBottom: 20 }} container>
 
                                     <Grid item xs={6}>
-                                        <div style={{ marginBottom: 15, marginTop: 20, }}>
+                                        <Box style={{ marginBottom: 15, marginTop: 20, }}>
                                             <GreenCheckbox
                                                 style={{ marginBottom: 5, marginRight: 8, width: 15, height: 15 }}
                                                 // onChange={handleChangeCheckBox('A')}
                                                 value="A"
                                             />
-                                            <span className={classes.titleCheck}>All tickets types</span>
-                                        </div>
+                                            <Typography variant="subtitle1" align="left" display="inline">All tickets types</Typography>
+                                        </Box>
 
-                                        <div style={{ marginLeft: 15, marginRight: 15 }}>
-                                            <div style={{ marginBottom: 10, marginTop: 10, }}>
+                                        <Box style={{ marginLeft: 15, marginRight: 15 }}>
+                                            <Box style={{ marginBottom: 10, marginTop: 10, }}>
                                                 <GreenCheckbox
                                                     style={{ marginBottom: 5, marginRight: 8, width: 15, height: 15 }}
-                                                    // onChange={handleChangeCheckBox('A')}
+                                                    //   onChange={handleChangeCheckBox('A')}
                                                     value="A"
                                                 />
-                                                <span className={classes.subtitleCheck}>Production Outage</span>
-                                            </div>
-                                            <div style={{ marginBottom: 10, marginTop: 10, }}>
+                                                <Typography variant="body2" align="left" display="inline">Production Outage</Typography>
+                                            </Box>
+                                            <Box style={{ marginBottom: 10, marginTop: 10, }}>
                                                 <GreenCheckbox
                                                     style={{ marginBottom: 5, marginRight: 8, width: 15, height: 15 }}
-                                                    // onChange={handleChangeCheckBox('A')}
+                                                    //   onChange={handleChangeCheckBox('A')}
                                                     value="A"
                                                 />
-                                                <span className={classes.subtitleCheck}>Production Impaired</span>
-                                            </div>
-                                            <div style={{ marginBottom: 10, marginTop: 10, }}>
+                                                <Typography variant="body2" align="left" display="inline">Production Impaired</Typography>
+                                            </Box>
+                                            <Box style={{ marginBottom: 10, marginTop: 10, }}>
                                                 <GreenCheckbox
                                                     style={{ marginBottom: 5, marginRight: 8, width: 15, height: 15 }}
-                                                    // onChange={handleChangeCheckBox('A')}
+                                                    //   onChange={handleChangeCheckBox('A')}
                                                     value="A"
                                                 />
-                                                <span className={classes.subtitleCheck}>Pre-Production Issues</span>
-                                            </div>
-                                            <div style={{ marginBottom: 10, marginTop: 10, }}>
+                                                <Typography variant="body2" align="left" display="inline">Pre-Production Issues</Typography>
+                                            </Box>
+                                            <Box style={{ marginBottom: 10, marginTop: 10, }}>
                                                 <GreenCheckbox
                                                     style={{ marginBottom: 5, marginRight: 8, width: 15, height: 15 }}
-                                                    // onChange={handleChangeCheckBox('A')}
+                                                    //   onChange={handleChangeCheckBox('A')}
                                                     value="A"
                                                 />
-                                                <span className={classes.subtitleCheck}>Minor Issues</span>
-                                            </div>
-                                            <div style={{ marginBottom: 10, marginTop: 10, }}>
+                                                <Typography variant="body2" align="left" display="inline">Minor Issues</Typography>
+                                            </Box>
+                                            <Box style={{ marginBottom: 10, marginTop: 10, }}>
                                                 <GreenCheckbox
                                                     style={{ marginBottom: 5, marginRight: 8, width: 15, height: 15 }}
-                                                    // onChange={handleChangeCheckBox('A')}
+                                                    //   onChange={handleChangeCheckBox('A')}
                                                     value="A"
                                                 />
-                                                <span className={classes.subtitleCheck}>New Development Issues</span>
-                                            </div>
-                                        </div>
+                                                <Typography variant="body2" align="left" display="inline">New Development Issues</Typography>
+                                            </Box>
+                                        </Box>
 
                                     </Grid>
 
                                     <Grid item xs={6}>
-                                        <div style={{ marginBottom: 15, marginTop: 20, }}>
+                                        <Box style={{ marginBottom: 15, marginTop: 20, }}>
                                             <GreenCheckbox
                                                 style={{ marginBottom: 5, marginRight: 8, width: 15, height: 15 }}
                                                 // onChange={handleChangeCheckBox('A')}
                                                 value="A"
                                             />
-                                            <span className={classes.titleCheck}>All categories</span>
-                                        </div>
+                                            <Typography variant="subtitle1" align="left" display="inline">All categories</Typography>
+                                        </Box>
 
-                                        <div style={{ marginLeft: 15, marginRight: 15 }}>
-                                            <div style={{ marginBottom: 10, marginTop: 10, }}>
+                                        <Box style={{ marginLeft: 15, marginRight: 15 }}>
+                                            <Box style={{ marginBottom: 10, marginTop: 10, }}>
                                                 <GreenCheckbox
                                                     style={{ marginBottom: 5, marginRight: 8, width: 15, height: 15 }}
-                                                    // onChange={handleChangeCheckBox('A')}
+                                                    //   onChange={handleChangeCheckBox('A')}
                                                     value="A"
                                                 />
-                                                <span className={classes.subtitleCheck}>Production Outage</span>
-                                            </div>
-                                            <div style={{ marginBottom: 10, marginTop: 10, }}>
+                                                <Typography variant="body2" align="left" display="inline">Production Outage</Typography>
+                                            </Box>
+                                            <Box style={{ marginBottom: 10, marginTop: 10, }}>
                                                 <GreenCheckbox
                                                     style={{ marginBottom: 5, marginRight: 8, width: 15, height: 15 }}
-                                                    // onChange={handleChangeCheckBox('A')}
+                                                    //   onChange={handleChangeCheckBox('A')}
                                                     value="A"
                                                 />
-                                                <span className={classes.subtitleCheck}>Production Impaired</span>
-                                            </div>
-                                            <div style={{ marginBottom: 10, marginTop: 10, }}>
+                                                <Typography variant="body2" align="left" display="inline">Production Impaired</Typography>
+                                            </Box>
+                                            <Box style={{ marginBottom: 10, marginTop: 10, }}>
                                                 <GreenCheckbox
                                                     style={{ marginBottom: 5, marginRight: 8, width: 15, height: 15 }}
-                                                    // onChange={handleChangeCheckBox('A')}
+                                                    //   onChange={handleChangeCheckBox('A')}
                                                     value="A"
                                                 />
-                                                <span className={classes.subtitleCheck}>Pre-Production Issues</span>
-                                            </div>
-                                            <div style={{ marginBottom: 10, marginTop: 10, }}>
+                                                <Typography variant="body2" align="left" display="inline">Pre-Production Issues</Typography>
+                                            </Box>
+                                            <Box style={{ marginBottom: 10, marginTop: 10, }}>
                                                 <GreenCheckbox
                                                     style={{ marginBottom: 5, marginRight: 8, width: 15, height: 15 }}
-                                                    // onChange={handleChangeCheckBox('A')}
+                                                    //   onChange={handleChangeCheckBox('A')}
                                                     value="A"
                                                 />
-                                                <span className={classes.subtitleCheck}>Minor Issues</span>
-                                            </div>
-                                            <div style={{ marginBottom: 10, marginTop: 10, }}>
+                                                <Typography variant="body2" align="left" display="inline">Minor Issues</Typography>
+                                            </Box>
+                                            <Box style={{ marginBottom: 10, marginTop: 10, }}>
                                                 <GreenCheckbox
                                                     style={{ marginBottom: 5, marginRight: 8, width: 15, height: 15 }}
-                                                    // onChange={handleChangeCheckBox('A')}
+                                                    //   onChange={handleChangeCheckBox('A')}
                                                     value="A"
                                                 />
-                                                <span className={classes.subtitleCheck}>New Development Issues</span>
-                                            </div>
-                                        </div>
+                                                <Typography variant="body2" align="left" display="inline">New Development Issues</Typography>
+                                            </Box>
+                                        </Box>
 
                                     </Grid>
 
                                 </Grid>
-                                <hr style={{ backgroundColor: '#ffffff', height: 0.1, width: '100%', marginBottom: 10, }} />
-                                <span className={classes.subtitleCheck}>Receive the newsletter : </span>
-                                <select
-                                    style={{ width: '40%', height: 40 }}
-                                    className={classes.selectType}>
-                                    <option value="Choose a Company">Never</option>
-                                    <option value="consulting ">Receive</option>
-                                </select>
+                                <hr />
 
-                            </div>
+                                <Grid container>
+                                    <Grid item xs={3}>
+                                        <Box mt={1}><Typography variant="body2" align="left">Receive the newsletter : </Typography></Box>
+                                    </Grid>
+                                    <Grid item xs={9}>
+                                        <select
+                                            style={{ width: '40%', height: 40 }}
+                                            className={classes.selectType}>
+                                            <option value="Choose a Company">Never</option>
+                                            <option value="consulting ">Receive</option>
+                                        </select>
+                                    </Grid>
+                                </Grid>
+                            </Box>
                         </form>
-                    </div>
+                    </Box>
                 </Modal>
-
-
-
             </div>
 
         );
