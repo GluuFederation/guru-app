@@ -119,8 +119,8 @@ class TicketSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         created_by = self.context.get('created_by', None)
-        created_for_id = self.context.get('created_for', '')
-        company_id = self.context.get('company_association', '')
+        created_for_id = self.context.get('created_for', {}).get('id', '')
+        company_id = self.context.get('company_association', {}).get('id', '')
         validated_data.pop('status')
         products = validated_data.pop('ticketproduct_set', [])
 
@@ -129,7 +129,7 @@ class TicketSerializer(serializers.ModelSerializer):
 
         if company_id:
             company_association = get_object_or_404(m.Company, pk=company_id)
-            if not created_by.is_superuser and created_by.is_staff:
+            if not created_by.is_superuser and created_by.is_gluu_staff:
                 staff_role = UserRole.objects.get(name='staff')
                 if not staff_role.has_permission(
                     app_name='tickets',
@@ -140,7 +140,7 @@ class TicketSerializer(serializers.ModelSerializer):
                         'You do not have permission to perform this action.'
                     )
 
-            if not created_by.is_staff:
+            if not created_by.is_gluu_staff:
                 membership = created_by.membership_set.filter(
                     company=company_association
                 ).first()

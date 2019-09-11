@@ -70,7 +70,7 @@ class TicketDetail extends Component<Props, State> {
     super(props);
     this.state = {
       isModalOpen: false,
-      isLoading: false
+      isLoading: true
     };
   }
 

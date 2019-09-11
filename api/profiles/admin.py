@@ -31,7 +31,11 @@ class GluuUserAdmin(UserAdmin):
                 )
             }
         ),
-        ('Permissions', {'fields': ('is_staff', 'is_verified')}),
+        ('Permissions', {
+            'fields': (
+                'is_staff', 'is_verified', 'is_superuser', 'user_permissions'
+            )
+        }),
         (
             'Additional Info',
             {'fields': ('is_active', 'created_on', 'idp_uuid', 'id_token')}

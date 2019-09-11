@@ -39,7 +39,7 @@ const styles = (theme: Theme) =>
 
 interface ExternalProps {
   createdBy: ShortUser;
-  createdFor?: ShortUser;
+  createdFor?: ShortUser | null;
 }
 
 type Props = ExternalProps & WithStyles<typeof styles> & RouteComponentProps;

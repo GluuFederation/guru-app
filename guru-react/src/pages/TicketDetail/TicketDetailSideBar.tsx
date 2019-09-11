@@ -114,14 +114,16 @@ class TicketSideBar extends Component<Props, State> {
     return (
       <div className={classes.root}>
         <Grid container spacing={1}>
-          {menuTypes.map(key => (
-            <TicketDetailSideBarItem
-              key={key}
-              menuType={key}
-              ticket={ticket}
-              canEdit={canEdit}
-            />
-          ))}
+          {menuTypes
+            .filter(menuType => menuType !== MenuType.CompanyAssociation)
+            .map(key => (
+              <TicketDetailSideBarItem
+                key={key}
+                menuType={key}
+                ticket={ticket}
+                canEdit={canEdit}
+              />
+            ))}
           <Grid item xs={12}>
             <Card classes={{ root: classes.notificationArea }} elevation={0}>
               <CardContent>

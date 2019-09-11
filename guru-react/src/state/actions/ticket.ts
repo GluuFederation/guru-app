@@ -3,29 +3,34 @@ import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
 
 import actions from "./constants";
-import { Company, ShortUser } from "../types/profiles";
+import { ShortUser, ShortCompany } from "../types/profiles";
 import { TicketIssueType, TicketCategory } from "../types/info";
 import { TicketProduct, Ticket } from "../types/tickets";
 import { CreateTicketState } from "../types/state";
 
 export interface SetTicketCompanyAction {
   type: string;
-  companyAssociation: Company;
+  companyAssociation: ShortCompany;
+}
+
+export interface SetTicketStepAction {
+  type: string;
+  step: number;
 }
 
 export interface SetTicketCreatorAction {
   type: string;
-  creator: ShortUser;
+  createdFor: ShortUser;
 }
 
 export interface SetTicketIssueTypeAction {
   type: string;
-  issueType: TicketIssueType;
+  issueType: number;
 }
 
 export interface SetTicketCategoryAction {
   type: string;
-  category: TicketCategory;
+  category: number;
 }
 
 export interface SetTicketGluuServerAction {
@@ -77,7 +82,13 @@ export interface ClearTicketEntryAction {
   type: string;
 }
 
+export interface UpdateNewTicketAction {
+  type: string;
+  ticket: CreateTicketState;
+}
+
 export type CreateTicketAction =
+  | SetTicketStepAction
   | SetTicketCompanyAction
   | SetTicketCreatorAction
   | SetTicketIssueTypeAction
@@ -91,31 +102,44 @@ export type CreateTicketAction =
   | SetTicketTitleAction
   | SetTicketBodyAction
   | SetTicketPrivacyAction
-  | ClearTicketEntryAction;
+  | ClearTicketEntryAction
+  | UpdateNewTicketAction;
+
+export const setTicketStep = (step: number): SetTicketStepAction => ({
+  type: actions.SET_TICKET_CREATE_STEP,
+  step
+});
+
+export const updateNewTicket = (
+  ticket: CreateTicketState
+): UpdateNewTicketAction => ({
+  type: actions.UPDATE_NEW_TICKET,
+  ticket
+});
 
 export const setTicketCompany = (
-  companyAssociation: Company
+  companyAssociation: ShortCompany
 ): SetTicketCompanyAction => ({
   type: actions.SET_TICKET_CREATE_COMPANY,
   companyAssociation
 });
 
 export const setTicketCreator = (
-  creator: ShortUser
+  createdFor: ShortUser
 ): SetTicketCreatorAction => ({
   type: actions.SET_TICKET_CREATE_CREATOR,
-  creator
+  createdFor
 });
 
 export const setTicketIssueType = (
-  issueType: TicketIssueType
+  issueType: number
 ): SetTicketIssueTypeAction => ({
   type: actions.SET_TICKET_CREATE_ISSUE_TYPE,
   issueType
 });
 
 export const setTicketCategory = (
-  category: TicketCategory
+  category: number
 ): SetTicketCategoryAction => ({
   type: actions.SET_TICKET_CREATE_CATEGORY,
   category
@@ -185,7 +209,12 @@ export const clearTicketEntry = (): ClearTicketEntryAction => ({
 export const createTicket = (ticket: CreateTicketState) => {
   return async (): Promise<Ticket> => {
     const URL = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/`;
-    const data = { ticket: { ...ticket, createdFor: ticket.creator } };
+    const data: any = { ticket: { ...ticket } };
+    Object.keys(data).forEach(key => {
+      if (!data[key]) {
+        data[key] = undefined;
+      }
+    });
     return axios.post(URL, { ...data }).then(response => {
       const results = response.data.results;
       return Promise.resolve(results);

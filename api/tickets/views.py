@@ -50,6 +50,8 @@ class TicketViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         serializer_data = request.data.get('ticket', {})
+        ticket_status = im.TicketStatus.objects.get(slug='new').id
+        serializer_data['status'] = ticket_status
 
         context = {
             'created_by': request.user,

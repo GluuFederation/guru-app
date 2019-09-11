@@ -5,13 +5,16 @@ import { CreateTicketState } from "../types/state";
 const initialState: CreateTicketState = {
   step: 1,
   companyAssociation: null,
-  creator: null,
-  issueType: null,
-  category: null,
+  createdBy: null,
+  createdFor: null,
+  assignee: null,
+  issueType: NaN,
+  category: NaN,
+  status: NaN,
   gluuServer: "",
   os: "",
   osVersion: "",
-  hasProducts: false,
+  hasProducts: undefined,
   products: [],
   title: "",
   body: "",
@@ -23,13 +26,17 @@ const ticketReducer = (
   action: ticketActions.CreateTicketAction
 ): CreateTicketState => {
   switch (action.type) {
+    case actions.SET_TICKET_CREATE_STEP:
+      const step = (action as ticketActions.SetTicketStepAction).step;
+      return { ...state, step };
     case actions.SET_TICKET_CREATE_COMPANY:
       const companyAssociation = (action as ticketActions.SetTicketCompanyAction)
         .companyAssociation;
       return { ...state, companyAssociation };
     case actions.SET_TICKET_CREATE_CREATOR:
-      const creator = (action as ticketActions.SetTicketCreatorAction).creator;
-      return { ...state, creator };
+      const createdFor = (action as ticketActions.SetTicketCreatorAction)
+        .createdFor;
+      return { ...state, createdFor };
     case actions.SET_TICKET_CREATE_ISSUE_TYPE:
       const issueType = (action as ticketActions.SetTicketIssueTypeAction)
         .issueType;
@@ -52,6 +59,7 @@ const ticketReducer = (
     case actions.SET_TICKET_CREATE_HAS_PRODUCTS:
       const hasProducts = (action as ticketActions.SetTicketHasProductsAction)
         .hasProducts;
+      console.log(hasProducts);
       return { ...state, hasProducts };
     case actions.ADD_TICKET_CREATE_PRODUCT:
       const product = (action as ticketActions.AddTicketProductAction).product;
@@ -79,6 +87,9 @@ const ticketReducer = (
       const isPrivate = (action as ticketActions.SetTicketPrivacyAction)
         .isPrivate;
       return { ...state, isPrivate };
+    case actions.UPDATE_NEW_TICKET:
+      const ticket = (action as ticketActions.UpdateNewTicketAction).ticket;
+      return { ...state, ...ticket };
     case actions.CLEAR_TICKET_ENTRY:
       return { ...initialState };
     default:

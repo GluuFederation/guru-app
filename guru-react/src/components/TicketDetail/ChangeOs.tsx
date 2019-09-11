@@ -13,6 +13,10 @@ import {
   withTicketDetail,
   WithTicketDetailProps
 } from "../../state/hocs/tickets";
+import {
+  withCreateTicket,
+  WithCreateTicketProps
+} from "../../state/hocs/ticket";
 import { colors } from "../../theme";
 
 const styles = (theme: Theme) =>
@@ -32,6 +36,7 @@ interface ExternalProps {
 }
 
 type Props = ExternalProps &
+  WithCreateTicketProps &
   WithTicketDetailProps &
   WithStyles<typeof styles> &
   RouteComponentProps;
@@ -125,4 +130,6 @@ class ChangeOs extends Component<Props, State> {
   }
 }
 
-export default withTicketDetail(withRouter(withStyles(styles)(ChangeOs)));
+export default withCreateTicket(
+  withTicketDetail(withRouter(withStyles(styles)(ChangeOs)))
+);

@@ -1,0 +1,85 @@
+import React, { Component } from "react";
+import axios from "axios";
+
+import { withStyles, WithStyles } from "@material-ui/styles";
+import { createStyles, Theme } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+
+import { colors } from "../../theme";
+import { WithUserProps, withUser } from "../../state/hocs/profiles";
+import {
+  WithCreateTicketProps,
+  withCreateTicket
+} from "../../state/hocs/ticket";
+import { WithInfoProps, withInfo } from "../../state/hocs/info";
+import { withRouter, RouteComponentProps } from "react-router-dom";
+
+const styles = (theme: Theme) =>
+  createStyles({
+    root: {
+      backgroundColor: colors.MAIN_BACKGROUND,
+      padding: "5em"
+    }
+  });
+
+type Props = WithUserProps &
+  WithCreateTicketProps &
+  WithInfoProps &
+  RouteComponentProps &
+  WithStyles<typeof styles>;
+
+interface State {
+  isLoading: boolean;
+}
+
+class Step4 extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      isLoading: false
+    };
+  }
+
+  setVersion = (gluuServer: string) => () => {
+    const { setCreateTicketGluuServer } = this.props;
+    if (gluuServer) {
+      setCreateTicketGluuServer(gluuServer);
+    }
+  };
+
+  render() {
+    const { classes, newTicket, info } = this.props;
+    const gluuServerProduct = info.products.find(item => item.id === 1);
+    if (!gluuServerProduct) return <div>Skip</div>;
+
+    return (
+      <div className={classes.root}>
+        <Grid container>
+          <Grid item xs={12} md={10}>
+            <p>What version of Gluu Server do you use?</p>
+          </Grid>
+          <Grid item xs={12} md={10}>
+            <Grid container spacing={2}>
+              {gluuServerProduct.version.map(item => {
+                return (
+                  <Grid item md={4} key={item}>
+                    <Card onClick={this.setVersion(item)}>
+                      <CardContent>{item}</CardContent>
+                    </Card>
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </Grid>
+        </Grid>
+      </div>
+    );
+  }
+}
+
+export default withRouter(
+  withInfo(withCreateTicket(withUser(withStyles(styles)(Step4))))
+);
