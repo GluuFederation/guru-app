@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 from rest_framework.exceptions import PermissionDenied
 from drf_haystack.serializers import HaystackSerializer
@@ -6,7 +7,9 @@ from drf_haystack.serializers import HighlighterMixin
 
 from tickets.search_indexes import TicketIndex
 from tickets import models as m
-from info.models import GluuProduct, TicketStatus
+from info.models import (
+    GluuProduct, TicketStatus, TicketCategory, TicketIssueType
+)
 from profiles.models import UserRole, User
 from profiles.serializers import ShortUserSerializer, ShortCompanySerializer
 
@@ -37,7 +40,7 @@ class TicketProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = m.TicketProduct
         fields = (
-            'product', 'version', 'os', 'os_version'
+            'id', 'product', 'version', 'os', 'os_version'
         )
 
     def validate(self, data):
@@ -52,21 +55,38 @@ class TicketProductSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('Invalid OS Value')
         return data
 
+    def create(self, validated_data):
+        ticket = self.context.get('ticket', None)
+        ticket.updated_by = self.context['updated_by']
+        ticket.save()
+
+        return m.TicketProduct.objects.create(
+            ticket=ticket,
+            **validated_data
+        )
+
+    def update(self, instance, validated_data):
+        for (key, value) in validated_data.items():
+            setattr(instance, key, value)
+
+        instance.ticket.updated_by = self.context['updated_by']
+        instance.ticket.save()
+
+        instance.save()
+        return instance
+
 
 class TicketSerializer(serializers.ModelSerializer):
     created_by = ShortUserSerializer(read_only=True)
     created_for = ShortUserSerializer(read_only=True)
     assignee = ShortUserSerializer(read_only=True)
     updated_by = ShortUserSerializer(read_only=True)
-    voters = ShortUserSerializer(many=True, required=False)
-    subscribers = ShortUserSerializer(many=True, required=False)
+    voters = ShortUserSerializer(many=True, read_only=True)
+    subscribers = ShortUserSerializer(many=True, read_only=True)
     company_association = ShortCompanySerializer(read_only=True)
     products = TicketProductSerializer(
-        source='ticketproduct_set', many=True, required=False
+        source='ticketproduct_set', many=True, read_only=True
     )
-    # created_on = serializers.DateTimeField(
-    #     format='%d %a %Y at %I:%M %p GMT', read_only=True
-    # )
 
     class Meta:
         model = m.Ticket
@@ -75,7 +95,7 @@ class TicketSerializer(serializers.ModelSerializer):
             'updated_by', 'assignee', 'category', 'status', 'issue_type',
             'gluu_server', 'os', 'os_version', 'response_no', 'products',
             'voters', 'subscribers', 'company_association', 'created_on',
-            'updated_on', 'response_number'
+            'updated_on', 'response_number', 'is_private'
         ]
         extra_kwargs = {
             'slug': {'required': False},
@@ -85,22 +105,22 @@ class TicketSerializer(serializers.ModelSerializer):
             'os': {'required': True}
         }
 
-    def validate_gluu_server(self, value):
-        server = GluuProduct.objects.get(name='Gluu Server')
-        if value not in server.version:
-            raise serializers.ValidationError('Invalid Gluu Server Value')
-        return value
+    # def validate_gluu_server(self, value):
+    #     server = GluuProduct.objects.get(name='Gluu Server')
+    #     if value not in server.version:
+    #         raise serializers.ValidationError('Invalid Gluu Server Value')
+    #     return value
 
-    def validate_os(self, value):
-        server = GluuProduct.objects.get(name='Gluu Server')
-        if value not in server.os:
-            raise serializers.ValidationError('Invalid OS Value')
-        return value
+    # def validate_os(self, value):
+    #     server = GluuProduct.objects.get(name='Gluu Server')
+    #     if value not in server.os:
+    #         raise serializers.ValidationError('Invalid OS Value')
+    #     return value
 
     def create(self, validated_data):
         created_by = self.context.get('created_by', None)
-        created_for_id = self.context.get('created_for', '')
-        company_id = self.context.get('company_association', '')
+        created_for_id = self.context.get('created_for', {}).get('id', '')
+        company_id = self.context.get('company_association', {}).get('id', '')
         validated_data.pop('status')
         products = validated_data.pop('ticketproduct_set', [])
 
@@ -109,7 +129,7 @@ class TicketSerializer(serializers.ModelSerializer):
 
         if company_id:
             company_association = get_object_or_404(m.Company, pk=company_id)
-            if not created_by.is_superuser and created_by.is_staff:
+            if not created_by.is_superuser and created_by.is_gluu_staff:
                 staff_role = UserRole.objects.get(name='staff')
                 if not staff_role.has_permission(
                     app_name='tickets',
@@ -120,7 +140,7 @@ class TicketSerializer(serializers.ModelSerializer):
                         'You do not have permission to perform this action.'
                     )
 
-            if not created_by.is_staff:
+            if not created_by.is_gluu_staff:
                 membership = created_by.membership_set.filter(
                     company=company_association
                 ).first()
@@ -177,6 +197,14 @@ class TicketSerializer(serializers.ModelSerializer):
             except User.DoesNotExist:
                 raise serializers.ValidationError('Such user does not exist')
 
+        creator_id = self.context.get('creator_id', None)
+        if creator_id is not None:
+            try:
+                creator = User.objects.get(pk=creator_id)
+                instance.created_by = creator
+            except User.DoesNotExist:
+                raise serializers.ValidationError('Such user does not exist')
+
         instance.updated_by = self.context.get('updated_by', None)
 
         instance.save()
@@ -192,9 +220,6 @@ class TicketHistorySerializer(serializers.ModelSerializer):
 
 class AnswerSerializer(serializers.ModelSerializer):
     created_by = ShortUserSerializer(read_only=True)
-    created_on = serializers.DateTimeField(
-        format='%d %a %Y at %I:%M %p GMT', read_only=True
-    )
 
     class Meta:
         model = m.Answer
@@ -208,42 +233,6 @@ class AnswerSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         ticket = self.context.get('ticket', None)
         created_by = self.context.get('created_by', None)
-
-        if not created_by.is_superuser and created_by.is_staff:
-            staff_role = UserRole.objects.get(name='staff')
-            if not staff_role.has_permission(
-                app_name='tickets',
-                model_name='Answer',
-                action='create'
-            ):
-                raise PermissionDenied(
-                    'You do not have permission to perform this action.'
-                )
-        if not created_by.is_staff:
-            if ticket.company_association is None:
-                if created_by != ticket.created_by:
-                    raise PermissionDenied(
-                        'You do not have permission to perform this action.'
-                    )
-            else:
-                membership = created_by.membership_set.filter(
-                    company=ticket.company_association
-                ).first()
-
-                if membership is None or membership.role is None:
-                    raise PermissionDenied(
-                        'You do not have permission to perform this action.'
-                    )
-
-                if not membership.role.has_permission(
-                    app_name='tickets',
-                    model_name='Answer',
-                    action='create'
-                ):
-                    raise PermissionDenied(
-                        'You do not have permission to perform this action.'
-                    )
-
         return m.Answer.objects.create(
             ticket=ticket,
             created_by=created_by,

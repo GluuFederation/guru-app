@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from billing import constants as bc
+
 
 class Configuration(models.Model):
 
@@ -48,3 +50,87 @@ class Configuration(models.Model):
     def delete(self, *args, **kwargs):
         """Make it impossible to delete object"""
         pass
+
+
+class CrmAccount(models.Model):
+    crm_id = models.CharField(
+        _('crm id'),
+        max_length=150,
+        unique=True
+    )
+    name = models.CharField(
+        _('name'),
+        max_length=150
+    )
+    address = models.ForeignKey(
+        'profiles.Address',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
+    website = models.URLField(
+        _('website'),
+        blank=True
+    )
+    plan = models.CharField(
+        _('support plan'),
+        max_length=25,
+        choices=bc.GURU_PLAN_CHOICES,
+        default=bc.COMMUNITY
+    )
+
+    def __str__(self):
+        return '{} - {}'.format(
+            self.name, self.crm_id
+        )
+
+
+class CrmContact(models.Model):
+    crm_id = models.CharField(
+        _('crm id'),
+        max_length=150,
+        unique=True
+    )
+    account = models.ForeignKey(
+        CrmAccount,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
+    first_name = models.CharField(
+        _('crm id'),
+        max_length=150
+    )
+    last_name = models.CharField(
+        _('crm id'),
+        max_length=150
+    )
+    address = models.ForeignKey(
+        'profiles.Address',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
+
+    def __str__(self):
+        return '{} {} - {}'.format(
+            self.first_name, self.last_name,
+            self.crm_id
+        )
+
+
+class CrmEmail(models.Model):
+    contact = models.ForeignKey(
+        CrmContact,
+        on_delete=models.CASCADE,
+        related_name='emails'
+    )
+    email = models.EmailField(
+        _('crm id'),
+        unique=True
+    )
+
+    def __str__(self):
+        return '{} - {}'.format(
+            self.email, str(self.contact)
+        )

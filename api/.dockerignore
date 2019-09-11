@@ -5,3 +5,4 @@ __pycache__/
 .env
 whoosh_index/
 media/
+local_data/

@@ -9,6 +9,8 @@ import { OutlinedInputProps } from "@material-ui/core/OutlinedInput";
 export interface Suggestion {
   id: number;
   text: string;
+  image?: string;
+  color?: string;
 }
 
 interface ExternalProps {
@@ -16,6 +18,7 @@ interface ExternalProps {
   updateQueryFunction?: (query: string) => void;
   selectFunction?: (selectedItem: Suggestion) => void;
   suggestions: Array<Suggestion>;
+  isAlwaysOpen?: boolean;
 }
 
 type Props = ExternalProps;
@@ -55,7 +58,7 @@ class Autocomplete extends Component<Props, State> {
   };
 
   render() {
-    const { InputProps, suggestions } = this.props;
+    const { InputProps, suggestions, isAlwaysOpen } = this.props;
     const { searchQuery, selectedItem } = this.state;
 
     return (
@@ -84,7 +87,7 @@ class Autocomplete extends Component<Props, State> {
                 }}
                 inputProps={{ ...inputProps }}
               />
-              {isOpen ? (
+              {isOpen || isAlwaysOpen ? (
                 <Paper>
                   {suggestions.map(suggestion => (
                     <MenuItem

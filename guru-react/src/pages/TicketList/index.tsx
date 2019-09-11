@@ -13,6 +13,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
+import Chip from "@material-ui/core/Chip";
 import { colors } from "../../theme";
 
 import Page from "../../components/Page";
@@ -20,7 +21,6 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import Autocomplete, { Suggestion } from "../../components/Autocomplete";
 import { withTicketList, WithTicketListProps } from "../../state/hocs/tickets";
-import { withUser, WithUserProps } from "../../state/hocs/profiles";
 import { withInfo, WithInfoProps } from "../../state/hocs/info";
 import { Company, ShortUser } from "../../state/types/profiles";
 import {
@@ -34,8 +34,9 @@ import {
   TicketSearchResult
 } from "../../state/types/tickets";
 import TicketNav from "./TicketNav";
-import TicketSidebar from "./TicketSidebar";
+import TicketListSidebar from "./TicketListSidebar";
 import TicketListItem from "./TicketListItem";
+import AllFilters from "./AllFilters";
 
 import { ReactComponent as SearchImg } from "../../assets/images/search.svg";
 
@@ -86,7 +87,6 @@ const styles = (theme: Theme) =>
 type Props = WithStyles<typeof styles> &
   RouteComponentProps &
   WithTicketListProps &
-  WithUserProps &
   WithInfoProps;
 
 interface State {
@@ -101,7 +101,7 @@ class Home extends Component<Props, State> {
     super(props);
     this.state = {
       isLoading: false,
-      isTicketsLoading: false,
+      isTicketsLoading: true,
       autocompleteResults: [],
       searchQuery: ""
     };
@@ -162,10 +162,10 @@ class Home extends Component<Props, State> {
     }
   };
 
-  setPage = ({ selected }: { selected: number }) => () => {
+  setPage = ({ selected }: { selected: number }) => {
     const { setFilterPage, fetchTickets } = this.props;
     if (!isNaN(selected)) {
-      setFilterPage(selected);
+      setFilterPage(selected + 1);
       this.setTicketsLoading(true);
       fetchTickets(true).then(() => {
         this.setTicketsLoading(false);
@@ -314,7 +314,7 @@ class Home extends Component<Props, State> {
   };
 
   render() {
-    const { user, classes, tickets, filters } = this.props;
+    const { classes, tickets, filters } = this.props;
     const { isTicketsLoading, autocompleteResults } = this.state;
     const InputProps = {
       endAdornment: (
@@ -327,6 +327,7 @@ class Home extends Component<Props, State> {
       onChange: this.handleSearchQueryChange,
       placeholder: "Type the keyword"
     };
+
     return (
       <Page>
         <Navbar />
@@ -335,7 +336,7 @@ class Home extends Component<Props, State> {
           <Grid container spacing={2}>
             <Hidden smDown>
               <Grid item xs={12} md={4} lg={3} xl={2}>
-                <TicketSidebar setTicketsLoading={this.setTicketsLoading} />
+                <TicketListSidebar setTicketsLoading={this.setTicketsLoading} />
               </Grid>
             </Hidden>
 
@@ -369,6 +370,9 @@ class Home extends Component<Props, State> {
                       </TextField>
                     </Grid>
                   </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                  <AllFilters setTicketsLoading={this.setTicketsLoading} />
                 </Grid>
                 {isTicketsLoading ? (
                   <div className={classes.loading}>
@@ -431,6 +435,4 @@ class Home extends Component<Props, State> {
   }
 }
 
-export default withInfo(
-  withUser(withTicketList(withRouter(withStyles(styles)(Home))))
-);
+export default withInfo(withTicketList(withRouter(withStyles(styles)(Home))));

@@ -3,6 +3,8 @@ import json
 from django.apps import apps
 from django.utils import timezone
 
+from billing import constants as c
+
 
 def load_old_data(filename):
     data = []
@@ -35,18 +37,44 @@ def load_old_data(filename):
             fields = item.get('fields', {})
             name = fields.get('name', '')
             created_on = fields.get('created', timezone.now())
+            plan = fields.get('support_plan', '').lower()
+            entitlements = fields.get('entitlements', '')
+            support_hours = 0
+            named_contacts = 0
+            review_hours = 0
+            try:
+                entitlements = json.loads(entitlements)
+                support_hours = entitlements.get('support_hours', 0)
+                named_contacts = entitlements.get('named_contacts', 0)
+                review_hours = entitlements.get('review_hours', 0)
+            except ValueError:
+                pass
+            except KeyError:
+                pass
+            except AttributeError:
+                pass
+
             if not name:
                 continue
 
             try:
                 company = company_model.objects.get(name=name)
                 company.created_on = created_on
+                company.plan = plan
+                company.review_hours = review_hours
+                company.named_contacts = named_contacts
+                company.support_hours = support_hours
                 company.save()
             except company_model.DoesNotExist:
                 company = company_model.objects.create(
                     name=name,
-                    created_on=created_on
+                    created_on=created_on,
+                    plan=plan,
+                    support_hours=support_hours,
+                    named_contacts=named_contacts,
+                    review_hours=review_hours
                 )
+
             companies[str(item.get('pk'))] = str(company.id)
 
         if model == 'profiles.userprofile':
@@ -107,7 +135,7 @@ def load_old_data(filename):
 
         if model == 'tickets.ticket':
             fields = item.get('fields', {})
-            old_cat = fields.get('category', '')
+            old_cat = fields.get('ticket_category', '')
             new_cat = ''
             if old_cat == 'OUTAGE':
                 new_cat = 'outages'
@@ -139,12 +167,7 @@ def load_old_data(filename):
             category = category_model.objects.get(slug=new_cat)
 
             old_status = fields.get('status', '')
-            new_status = ''
-            if old_status in ['new', 'assigned', 'inprogress', 'pending']:
-                new_status = old_status
-            elif old_status == 'closed':
-                new_status = 'close'
-            status = status_model.objects.get(slug=new_status)
+            status = status_model.objects.get(slug=old_status)
 
             old_issue = fields.get('issue_type', '')
             new_issue = ''

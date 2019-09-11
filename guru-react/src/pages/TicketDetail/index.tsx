@@ -1,219 +1,277 @@
 import React, { Component } from "react";
-import { WithUserProps, withUser } from "../../state/hocs/profiles";
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
+
 import { withStyles, WithStyles } from "@material-ui/styles";
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-import { createStyles, Theme } from '@material-ui/core/styles';
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import { createStyles, Theme } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import Breadcrumbs from "@material-ui/core/Breadcrumbs";
+import Link from "@material-ui/core/Link";
+import Button from "@material-ui/core/Button";
+import Lock from "@material-ui/icons/Lock";
+import LockOpen from "@material-ui/icons/LockOpen";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Box from "@material-ui/core/Box";
+import Divider from "@material-ui/core/Divider";
+import Modal from "@material-ui/core/Modal";
+
+import { colors } from "../../theme";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
-import Grid from '@material-ui/core/Grid';
-import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import Link from '@material-ui/core/Link';
-import Button from '@material-ui/core/Button';
-import Lock from '@material-ui/icons/Lock';
-//components
-import SideBarPanel from "../../components/TicketDetail/SideBarPanel";
-import TicketCard from "../../components/TicketDetail/TicketCard";
-import TicketUserInfo from "../../components/TicketDetail/TicketUserInfo";
-import TicketHistory from "../../components/TicketDetail/TicketHistory";
-import ResponseUserInfo from "../../components/TicketDetail/ResponseUserInfo";
-import ResponseCard from "../../components/TicketDetail/ResponseCard";
-import ResponsePost from "../../components/TicketDetail/ResponsePost";
-import EditTicket from "../../components/TicketDetail/EditTicket";
+import Page from "../../components/Page";
+import { WithUserProps, withUser } from "../../state/hocs/profiles";
+import {
+  WithTicketDetailProps,
+  withTicketDetail
+} from "../../state/hocs/tickets";
+import { withRouter, RouteComponentProps } from "react-router-dom";
+import TicketCard from "./TicketCard";
+import TicketUserInfo from "./TicketUserInfo";
+import ResponseCard from "./ResponseCard";
+import SideBar from "./TicketDetailSideBar";
+import EditTicket from "./EditTicket";
+import TicketHistoryListItem from "./TicketHistoryListItem";
+import ResponsePost from "./ResponsePost";
+import { paths } from "../../routes";
+import ErrorPage from "../error/ErrorPage";
 
-const styles = ((theme: Theme) =>
+import "easymde/dist/easymde.min.css";
+
+const styles = (theme: Theme) =>
   createStyles({
     root: {
-      flexGrow: 1,
+      flexGrow: 1
     },
-    ContainerAlign: {
-      width: '80%',
-      margin: '0 auto',
-      marginTop: -4,
-      marginBottom: 54,
+    privacyButton: {
+      borderColor: colors.MAIN_COLOR,
+      color: colors.MAIN_COLOR
     },
+    privacyIcon: {
+      height: ".795em"
+    },
+    editButton: {
+      backgroundColor: colors.LIGHT_BUTTON
+    }
+  });
 
-    textGreen: {
-      color: '#7BC073',
-      fontFamily: '"Lato", sans-serif',
-      fontWeight: 600,
-      fontSize: 12
-    },
-    textGray: {
-      color: '#B3B3B3',
-      fontFamily: '"Lato", sans-serif',
-      fontWeight: 500,
-      fontSize: 14
-    },
-    contentContainer: {
-      marginTop: 10,
-      marginBottom: 10,
-    },
-    titleBar: {
-      color: '#3E3E3E',
-      fontFamily: '"Lato", sans-serif',
-      fontWeight: 500,
-      fontSize: 24,
-      textAlign: 'left',
-      left: 0
-    },
-    titleRespons: {
-      color: '#3E3E3E',
-      fontFamily: '"Lato", sans-serif',
-      fontWeight: 500,
-      fontSize: 24,
-      textAlign: 'left',
-      left: 0
-    },
-    gridContainer: {
-      marginTop: 20,
-      marginBottom: 20,
-    },
-    button: {
-      width: 3,
-      height: 30,
-      fontFamily: '"Lato", sans-serif',
-      fontWeight: 500,
-      color: '#ABABAB',
-      marginLeft: 5,
-      marginRight: 5,
-      marginTop: 10,
-    },
-    buttonLock: {
-      width: '5%',
-      height: 30,
-      fontFamily: '"Lato", sans-serif',
-      fontWeight: 500,
-      color: '#ABABAB',
-      marginLeft: 5,
-      marginRight: 5,
-      marginTop: 10,
-      borderRadius: 2,
-      float: 'right',
-    },
-
-    buttonTxt: {
-      color: '#08AC20',
-      width: 20,
-      height: 20,
-      justifyContent: 'center',
-      alignItems: 'center'
-    },
-    input: {
-      display: 'none'
-    },
-    GridThreeRight: {
-    },
-
-  })
-);
-
-type Props = WithUserProps & RouteComponentProps & WithStyles<typeof styles>;
+type Props = WithUserProps &
+  WithTicketDetailProps &
+  RouteComponentProps &
+  WithStyles<typeof styles>;
 
 interface State {
-  openAdd: boolean;
+  isModalOpen: boolean;
+  isLoading: boolean;
 }
 
-class TciketDetail extends Component<Props, State>{
-  state = {
-    openAdd: false,
+class TicketDetail extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      isModalOpen: false,
+      isLoading: true
+    };
+  }
+
+  openModal = () => {
+    this.setState({ isModalOpen: true });
   };
 
-  handleOpenAdd = () => {
-    this.setState({ openAdd: true });
+  closeModal = () => {
+    this.setState({ isModalOpen: false });
   };
 
-  handleCloseAdd = () => {
-    this.setState({ openAdd: false });
+  togglePrivacy = () => {
+    const { ticket, updateTicket } = this.props;
+    if (ticket) {
+      updateTicket({ ...ticket, isPrivate: !ticket.isPrivate });
+    }
   };
+
+  componentDidMount() {
+    const slug = (this.props.match.params as any).slug;
+    this.setState({ isLoading: true });
+    this.props.fetchTicket(slug).finally(() => {
+      this.setState({ isLoading: false });
+    });
+  }
 
   render() {
+    const { classes, ticket, ticketHistory, answers, user } = this.props;
+    const { isLoading, isModalOpen } = this.state;
 
-    const { classes } = this.props;
+    if (isLoading) {
+      return (
+        <Page>
+          <Navbar />
+          <div className="app-body">
+            <div className={classes.root}>
+              <CircularProgress />
+            </div>
+          </div>
+          <Footer />
+        </Page>
+      );
+    }
+
+    const slug = (this.props.match.params as any).slug;
+
+    if (!ticket) {
+      return (
+        <ErrorPage
+          errorTitle="Ticket not found"
+          errorMessage={`The ticket"${slug}" could not be found.`}
+          errorActionText="View all tickets"
+          errorAction={paths.TICKET_LIST}
+        />
+      );
+    }
+
+    const isCommunity = user
+      ? user.role
+        ? user.role.name === "community"
+        : true
+      : true;
+    const isUserCompany = user
+      ? user.company
+        ? !!ticket.companyAssociation &&
+          user.company.id === ticket.companyAssociation.id
+        : false
+      : false;
+    const canEdit = isUserCompany && !isCommunity && !!user;
+
     return (
-
-      <div style={{ backgroundColor: 'white' }} className="TicketDetail">
+      <Page>
         <Navbar />
-        <Container className={classes.ContainerAlign} fixed>
-          <Grid className={classes.contentContainer} container>
-            <Grid item={true} md={12} xs={12} sm={12}>
-              <Breadcrumbs aria-label="Breadcrumb">
-                <Link className={classes.textGray} href="">
-                  Dashboard
-							</Link>
-                <Link className={classes.textGreen} href="">
-                  Tickets
-							</Link>
-                <Typography className={classes.textGray}>#5234</Typography>
-              </Breadcrumbs>
-            </Grid>
-          </Grid>
-
-
-          <Grid container spacing={3}>
-
-            <Grid container item={true} md={9} xs={12} sm={12}>
-              <Grid className={classes.gridContainer} item={true} md={9} xs={12} sm={12}>
-                <Typography className={classes.titleBar}>
-                  502 Gateway Error - Failed to load configuration from LDAP - Gluu Docker Multi-node #5234
-              </Typography>
+        <div className="app-body">
+          <Container fixed>
+            <Grid container>
+              <Grid item>
+                <Box mt={6}>
+                  <Breadcrumbs>
+                    <Link component={RouterLink} to={paths.NOTIFICATIONS}>
+                      Dashboard
+                    </Link>
+                    <Link component={RouterLink} to={paths.TICKET_LIST}>
+                      Tickets
+                    </Link>
+                    <Typography>#{ticket.id}</Typography>
+                  </Breadcrumbs>
+                </Box>
               </Grid>
+              <Grid item>
+                <Grid container justify="flex-end" alignContent="flex-end">
+                  <Grid item md={9}>
+                    <Box mt={2} mb={8}>
+                      <Grid container>
+                        <Grid item sm={9}>
+                          <Typography variant="h5">
+                            {ticket.title} #{ticket.id}
+                          </Typography>
+                        </Grid>
+                        {canEdit ? (
+                          <Grid item sm={3}>
+                            <Button
+                              variant="outlined"
+                              classes={{ root: classes.privacyButton }}
+                              onClick={this.togglePrivacy}
+                            >
+                              {ticket.isPrivate ? (
+                                <Lock
+                                  height="10"
+                                  classes={{ root: classes.privacyIcon }}
+                                />
+                              ) : (
+                                <LockOpen
+                                  height="10"
+                                  classes={{ root: classes.privacyIcon }}
+                                />
+                              )}
+                            </Button>
+                            &emsp;
+                            <Button
+                              variant="outlined"
+                              classes={{ root: classes.editButton }}
+                              onClick={this.openModal}
+                            >
+                              <small>Edit</small>
+                            </Button>
+                          </Grid>
+                        ) : null}
+                      </Grid>
+                    </Box>
+                    <Grid container>
+                      <Grid item md={2}>
+                        <Box mr={3}>
+                          <TicketUserInfo
+                            createdBy={ticket.createdBy}
+                            createdFor={ticket.createdFor}
+                          />
+                        </Box>
+                      </Grid>
+                      <Grid item md={10}>
+                        <TicketCard ticket={ticket} />
+                        {ticketHistory.map(item => (
+                          <TicketHistoryListItem
+                            key={item.id}
+                            historyItem={item}
+                          />
+                        ))}
+                      </Grid>
+                    </Grid>
+                    <Grid container>
+                      <Grid item xs={12}>
+                        <Box mt={6} mb={4}>
+                          <Typography>
+                            {answers.length} Response
+                            {answers.length === 1 ? "" : "s"}
+                          </Typography>
+                          <Divider />
+                        </Box>
+                      </Grid>
+                    </Grid>
+                    {answers.map(answer => (
+                      <Grid key={answer.id} container spacing={8}>
+                        <Grid item md={2}>
+                          <TicketUserInfo createdBy={answer.createdBy} />
+                        </Grid>
+                        <Grid item md={10}>
+                          <ResponseCard answer={answer} slug={ticket.slug} />
+                        </Grid>
+                      </Grid>
+                    ))}
+                    {canEdit ? (
+                      <Grid container spacing={8}>
+                        <Grid item xs={12}>
+                          <ResponsePost />
+                        </Grid>
+                      </Grid>
+                    ) : null}
+                  </Grid>
 
-              <Grid className={classes.gridContainer} item={true} md={3} xs={12} sm={12}>
-                <EditTicket></EditTicket>
-                <Button variant="outlined" className={classes.buttonLock}>
-                  <Lock className={classes.buttonTxt} />
-                </Button>
-
-              </Grid>
-              <Grid className={classes.gridContainer} item={true} md={2} xs={12} sm={12}>
-                <TicketUserInfo></TicketUserInfo>
-              </Grid>
-
-              <Grid className={classes.gridContainer} item={true} md={10} xs={12} sm={12}>
-                <TicketCard></TicketCard>
-                <TicketHistory></TicketHistory>
-              </Grid>
-
-              <Grid className={classes.contentContainer} container>
-                <Grid item={true} md={12} xs={12} sm={12}>
-                  <Typography className={classes.titleRespons}>3 Responses</Typography>
+                  <Grid item md={3}>
+                    <SideBar ticket={ticket} />
+                  </Grid>
                 </Grid>
               </Grid>
-
-              <Grid className={classes.contentContainer} container>
-                <Grid item={true} md={12} xs={12} sm={12}>
-                  <hr style={{ color: "#F1F1F1", backgroundColor: "#F1F1F1", height: 1, marginTop: -10, }} />
-                </Grid>
-              </Grid>
-
-              <Grid className={classes.gridContainer} item={true} md={2} xs={12} sm={12}>
-                <ResponseUserInfo></ResponseUserInfo>
-              </Grid>
-
-
-              <Grid className={classes.gridContainer} item={true} md={10} xs={12} sm={12}>
-                <ResponseCard></ResponseCard>
-              </Grid>
-
-              <Grid className={classes.gridContainer} item={true} md={12} xs={12} sm={12}>
-                <ResponsePost></ResponsePost>
-              </Grid>
             </Grid>
-            <Grid className={classes.GridThreeRight} container item={true} md={3} xs={12} sm={12}>
-              <div>
-                <SideBarPanel></SideBarPanel>
+
+            <Modal open={isModalOpen} onClose={this.closeModal}>
+              <div className="modal-super-container">
+                <div className="modal-container">
+                  <EditTicket closeModal={this.closeModal} />
+                </div>
               </div>
-            </Grid>
-
-          </Grid>
-
-        </Container>
-        <Footer></Footer>
-      </div>
+            </Modal>
+          </Container>
+          <Footer />
+        </div>
+      </Page>
     );
-  };
-};
+  }
+}
 
-export default withRouter(withUser(withStyles(styles)(TciketDetail)));
+export default withRouter(
+  withTicketDetail(withUser(withStyles(styles)(TicketDetail)))
+);

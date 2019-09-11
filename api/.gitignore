@@ -95,3 +95,4 @@ db.sqlite3
 .vscode/
 .env
 whoosh_index/
+local_data/

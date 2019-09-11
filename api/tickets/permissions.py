@@ -16,7 +16,7 @@ class TicketCustomPermission(permissions.BasePermission):
         action = 'retrieve'\
             if request.method in permissions.SAFE_METHODS else view.action
 
-        if request.user.is_staff:
+        if request.user.is_gluu_staff:
             staff_role = UserRole.objects.get(name='staff')
             return staff_role.has_permission(
                 app_name='tickets',
@@ -42,26 +42,26 @@ class TicketCustomPermission(permissions.BasePermission):
             )
 
 
-class AnswerCustomPermission(permissions.BasePermission):
+class TicketItemCustomPermission(permissions.BasePermission):
+    item_model = 'Answer'
+
     def has_permission(self, request, view):
         return request.method in permissions.SAFE_METHODS or\
             request.user.is_authenticated
 
     def has_object_permission(self, request, view, obj):
+        item_model = self.item_model
         if request.user.is_superuser:
             return True
 
-        if request.user.is_staff:
+        if request.user.is_gluu_staff:
             staff_role = UserRole.objects.get(name='staff')
-            model_name = 'Ticket' if view.action == 'retrieve' else 'Answer'
+            model_name = 'Ticket' if view.action == 'retrieve' else item_model
             return staff_role.has_permission(
                 app_name='tickets',
                 model_name=model_name,
                 action=view.action
             )
-            membership = request.user.membership_set.filter(
-                company=obj.ticket.company_association
-            ).first()
 
         if obj.ticket.company_association is None:
             return request.method in permissions.SAFE_METHODS or\
@@ -73,7 +73,7 @@ class AnswerCustomPermission(permissions.BasePermission):
                 company=obj.ticket.company_association
             ).first()
 
-        model_name = 'Ticket' if view.action == 'retrieve' else 'Answer'
+        model_name = 'Ticket' if view.action == 'retrieve' else item_model
 
         return membership and membership.role and\
             membership.role.has_permission(
@@ -81,6 +81,14 @@ class AnswerCustomPermission(permissions.BasePermission):
                 model_name=model_name,
                 action=view.action
             )
+
+
+class AnswerCustomPermission(TicketItemCustomPermission):
+    pass
+
+
+class TicketProductCustomPermission(TicketItemCustomPermission):
+    item_model = 'TicketProduct'
 
 
 class TicketAccessPermission(permissions.BasePermission):
@@ -96,7 +104,7 @@ class TicketAccessPermission(permissions.BasePermission):
         if request.user.is_superuser:
             return True
 
-        if request.user.is_staff:
+        if request.user.is_gluu_staff:
             staff_role = UserRole.objects.get(name='staff')
             return staff_role.has_permission(
                 app_name='tickets',

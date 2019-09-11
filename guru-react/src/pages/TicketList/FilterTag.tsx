@@ -25,7 +25,8 @@ export enum FilterType {
   Category,
   Product,
   IssueType,
-  Status
+  Status,
+  Query
 }
 
 export interface Tag {
@@ -56,6 +57,7 @@ class TicketNav extends Component<Props> {
       removeFilterIssueType,
       removeFilterProduct,
       removeFilterStatus,
+      setFilterQuery,
       fetchTickets,
       setTicketsLoading
     } = this.props;
@@ -81,6 +83,9 @@ class TicketNav extends Component<Props> {
         break;
       case FilterType.Status:
         removeFilterStatus(tag.id);
+        break;
+      case FilterType.Query:
+        setFilterQuery("");
         break;
     }
     setTicketsLoading(true);

@@ -26,14 +26,14 @@ import Team from "./pages/Dashboard/TeamPage";
 import Partner from "./pages/Dashboard/PartnersPage";
 import Customer from "./pages/Dashboard/CustomerPage";
 import Admin from "./pages/Dashboard/AdminPage";
+import CreateTicket from "./pages/CreateTicket";
 export const paths = {
-
   // auth urls
   HOMEPAGE: "/",
   SELECT_PLAN: "/auth/select-plan",
   LOGIN: "/auth/login",
   SIGNUP: "/auth/signup",
-  LOGIN_CALLBACK: "/auth/login-callbaclist?ordering=+recent&offset=0&limit=10k",
+  LOGIN_CALLBACK: "/auth/login-callback",
 
   // tickets urls
   TICKET_LIST: "/tickets/list",
@@ -41,7 +41,7 @@ export const paths = {
   getCreateTicketPath: (step: number) => `/tickets/create/${step}`,
   TICKET_DETAIL: "/tickets/:slug",
   getTicketDetailPath: (slug: string) => `/tickets/${slug}`,
-  
+
   // notifications
   NOTIFICATIONS: "/dashboard/notifications",
 
@@ -52,10 +52,10 @@ export const paths = {
   TEAM_DETAILS: "/dashboard/team",
 
   //partner
-  PARTNER:"/dashboard/partner",
+  PARTNER: "/dashboard/partner",
 
   //customer
-  CUSTOMER:"/dashboard/customer",
+  CUSTOMER: "/dashboard/customer",
 
   //admin
   ADMIN: "/dashboard/admin",
@@ -90,25 +90,26 @@ const routes: Array<RouteType> = [
     component: SignupRedirect
   },
   {
-    path:paths.TEAM_DETAILS,
-    component:Team
+    path: paths.TEAM_DETAILS,
+    component: Team
   },
   {
-    path:paths.NOTIFICATIONS,
-    component:Notification
+    path: paths.NOTIFICATIONS,
+    component: Notification
   },
   {
-    path:paths.PARTNER,
-    component:Partner
+    path: paths.PARTNER,
+    component: Partner
   },
   {
-    path:paths.CUSTOMER,
-    component:Customer
+    path: paths.CUSTOMER,
+    component: Customer
   },
   {
-    path:paths.ADMIN,
-    component:Admin
+    path: paths.ADMIN,
+    component: Admin
   },
+
   // tickets
   {
     path: paths.TICKET_LIST,
@@ -117,6 +118,10 @@ const routes: Array<RouteType> = [
   {
     path: paths.TICKET_DETAIL,
     component: TicketDetail
+  },
+  {
+    path: paths.CREATE_TICKET,
+    component: CreateTicket
   },
 
   // errors

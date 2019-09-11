@@ -1,6 +1,6 @@
 import { RouteComponentProps } from "react-router-dom";
 
-import { Company, ShortUser, User, TeamMember } from "./profiles";
+import { Company, ShortUser, User, TeamMember, ShortCompany } from "./profiles";
 import {
   TicketCategory,
   GluuProduct,
@@ -12,7 +12,7 @@ import {
 import {
   Ticket,
   TicketFilterOrder,
-  TicketHistory,
+  TicketHistoryItem,
   Answer,
   TicketProduct
 } from "./tickets";
@@ -47,7 +47,7 @@ export interface TicketsFilterState {
 
 export interface TicketDetailState {
   ticket: Ticket | null;
-  ticketHistory: Array<TicketHistory>;
+  ticketHistory: Array<TicketHistoryItem>;
   answers: Array<Answer>;
 }
 
@@ -59,18 +59,21 @@ export interface TicketsState {
 
 export interface CreateTicketState {
   step: number;
-  companyAssociation: Company | null;
-  creator: ShortUser | null;
-  issueType: TicketIssueType | null;
-  category: TicketCategory | null;
+  hasProducts?: boolean;
+  title: string;
+  body: string;
+  createdBy: ShortUser | null;
+  createdFor: ShortUser | null;
+  assignee: null;
+  isPrivate: boolean;
+  category: number;
+  status: number;
+  issueType: number;
   gluuServer: string;
   os: string;
   osVersion: string;
-  hasProducts: boolean;
+  companyAssociation: ShortCompany | null;
   products: Array<TicketProduct>;
-  title: string;
-  body: string;
-  isPrivate: boolean;
 }
 
 export interface AppNotificationsState {

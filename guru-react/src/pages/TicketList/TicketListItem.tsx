@@ -23,6 +23,7 @@ import {
   minorIssueType
 } from "../../state/preloaded/info";
 import { withInfo, WithInfoProps } from "../../state/hocs/info";
+import { TicketIssueType } from "../../state/types/info";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -83,10 +84,10 @@ class TicketNav extends Component<Props> {
     );
     const category = tempCategory ? tempCategory : otherCategory;
 
-    const tempIssueType = info.issueTypes.find(
+    const issueType = info.issueTypes.find(
       item => item.id === ticket.issueType
     );
-    const issueType = tempIssueType ? tempIssueType : minorIssueType;
+
     return (
       <div className={classes.root} onClick={this.goToTicket}>
         <Grid container alignItems="center">
@@ -109,7 +110,7 @@ class TicketNav extends Component<Props> {
               </Grid>
               <Grid item>
                 <div>
-                  <small>{owner.companyName}</small>
+                  <small>{owner.company ? owner.company.name : ""}</small>
                 </div>
               </Grid>
               <Grid item>
@@ -119,12 +120,18 @@ class TicketNav extends Component<Props> {
           </Grid>
           <Grid item md={6} lg={8} className={classes.ticket}>
             <div>
-              <Chip label={status.name} className={getChipClass(status)} />
+              <Chip label={status.name} className={getChipClass(status.slug)} />
+              {issueType ? (
+                <Chip
+                  label={issueType.name}
+                  className={getChipClass(issueType.slug)}
+                />
+              ) : null}
+
               <Chip
-                label={issueType.name}
-                className={getChipClass(issueType)}
+                label={category.name}
+                className={getChipClass(category.slug)}
               />
-              <Chip label={category.name} className={getChipClass(category)} />
             </div>
             <Typography variant="h6">{ticket.title}</Typography>
             <div>

@@ -35,6 +35,7 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 
 import { WithUserProps, withUser } from "../state/hocs/profiles";
+import { withProfiles, WithProfilesProps } from "../state/hocs/profiles";
 import { paths } from "../routes";
 import NavLink from "./NavLink";
 
@@ -81,7 +82,10 @@ const styles = (theme: Theme) =>
     }
   });
 
-type Props = WithUserProps & RouteComponentProps & WithStyles<typeof styles>;
+type Props = WithUserProps &
+  RouteComponentProps &
+  WithStyles<typeof styles> &
+  WithProfilesProps;
 
 interface State {
   isDrawerOpen: boolean;
@@ -118,6 +122,19 @@ class Navbar extends Component<Props, State> {
 
   navigateTo = (path: string) => () => {
     this.props.history.push(path);
+  };
+
+  login = () => {
+    this.props
+      .getLoginUrl()
+      .then(url => {
+        window.location.href = url;
+      })
+      .catch(() => {
+        this.props.history.push(paths.ERROR_PAGE, {
+          errorTitle: "Unable to Log you in"
+        });
+      });
   };
 
   logout = () => {
@@ -178,6 +195,7 @@ class Navbar extends Component<Props, State> {
                       color="primary"
                       classes={{ root: classes.button }}
                       variant="outlined"
+                      onClick={this.navigateTo(paths.getCreateTicketPath(NaN))}
                     >
                       + Add Ticket
                     </Button>
@@ -225,31 +243,31 @@ class Navbar extends Component<Props, State> {
                       onClose={this.closeUserMenu}
                       classes={{ paper: classes.menuPaper }}
                     >
-                      <MenuItem onClick={this.navigateTo(paths.HOMEPAGE)}>
+                      <MenuItem onClick={this.navigateTo(paths.TEAM_DETAILS)}>
                         <ListItemIcon>
                           <NotificationsNoneIcon />
                         </ListItemIcon>
                         Notifications
                       </MenuItem>
-                      <MenuItem onClick={this.navigateTo(paths.HOMEPAGE)}>
+                      <MenuItem onClick={this.navigateTo(paths.TEAM_DETAILS)}>
                         <ListItemIcon>
                           <PersonIcon />
                         </ListItemIcon>
                         Profile
                       </MenuItem>
-                      <MenuItem onClick={this.navigateTo(paths.HOMEPAGE)}>
+                      <MenuItem onClick={this.navigateTo(paths.TEAM_DETAILS)}>
                         <ListItemIcon>
                           <PeopleOutlineIcon />
                         </ListItemIcon>
                         Team
                       </MenuItem>
-                      <MenuItem onClick={this.navigateTo(paths.HOMEPAGE)}>
+                      <MenuItem onClick={this.navigateTo(paths.TEAM_DETAILS)}>
                         <ListItemIcon>
                           <DomainIcon />
                         </ListItemIcon>
                         Partners
                       </MenuItem>
-                      <MenuItem onClick={this.navigateTo(paths.HOMEPAGE)}>
+                      <MenuItem onClick={this.navigateTo(paths.TEAM_DETAILS)}>
                         <ListItemIcon>
                           <CreditCardIcon />
                         </ListItemIcon>
@@ -280,7 +298,7 @@ class Navbar extends Component<Props, State> {
                       color="primary"
                       classes={{ root: classes.button }}
                       variant="outlined"
-                      onClick={this.navigateTo(paths.LOGIN)}
+                      onClick={this.login}
                     >
                       Login
                     </Button>
@@ -393,4 +411,4 @@ class Navbar extends Component<Props, State> {
   }
 }
 
-export default withRouter(withUser(withStyles(styles)(Navbar)));
+export default withRouter(withProfiles(withUser(withStyles(styles)(Navbar))));

@@ -50,6 +50,8 @@ class TicketViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         serializer_data = request.data.get('ticket', {})
+        ticket_status = im.TicketStatus.objects.get(slug='new').id
+        serializer_data['status'] = ticket_status
 
         context = {
             'created_by': request.user,
@@ -295,6 +297,28 @@ class TicketViewSet(viewsets.ModelViewSet):
             status=status.HTTP_200_OK
         )
 
+    @action(detail=True, methods=['POST'], url_path='set-creator')
+    def set_creator(self, request, slug=None):
+        serializer_instance = self.get_object()
+        serializer_data = request.data.get('ticket', {})
+        context = {
+            'creator_id': serializer_data.pop('creator', None),
+            'updated_by': request.user
+        }
+        serializer = self.serializer_class(
+            serializer_instance,
+            data=serializer_data,
+            context=context,
+            partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(
+            {'results': serializer.data},
+            status=status.HTTP_200_OK
+        )
+
     @action(detail=True, methods=['POST'])
     def vote(self, request, slug=None):
         ticket = self.get_object()
@@ -439,6 +463,53 @@ class AnswerViewSet(viewsets.ModelViewSet):
 
         return Response(
             {'results': 'Successfully uploaded'},
+            status=status.HTTP_200_OK
+        )
+
+
+class TicketProductViewSet(viewsets.ModelViewSet):
+    serializer_class = s.TicketProductSerializer
+    queryset = m.TicketProduct.objects.all()
+    permission_classes = (p.TicketProductCustomPermission,)
+
+    def create(self, request, ticket_slug=None, *args, **kwargs):
+        serializer_data = request.data.get('product', {})
+        ticket = get_object_or_404(
+            m.Ticket, is_deleted=False, slug=ticket_slug
+        )
+        context = {
+            'updated_by': request.user,
+            'ticket': ticket
+        }
+        serializer = self.serializer_class(
+            data=serializer_data,
+            context=context
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(
+            {'results': serializer.data},
+            status=status.HTTP_201_CREATED
+        )
+
+    def update(self, request, ticket_slug=None, pk=None):
+        serializer_instance = self.get_object()
+        serializer_data = request.data.get('product', {})
+        context = {
+            'updated_by': request.user
+        }
+        serializer = self.serializer_class(
+            serializer_instance,
+            data=serializer_data,
+            context=context,
+            partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(
+            {'results': serializer.data},
             status=status.HTTP_200_OK
         )
 

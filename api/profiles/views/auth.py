@@ -25,6 +25,8 @@ from oxd import exceptions as e
 from billing import models as bm
 from billing import utils as bu
 from suitecrm import interface as i
+from suitecrm import models as sm
+from info import models as im
 
 
 class GetLoginUrlAPIView(APIView):
@@ -173,17 +175,36 @@ class LoginCallbackAPIView(APIView):
             request, access_token=access_token, id_token=id_token
         )
         if user is not None:
-            has_account = user.get_account()
+            company = user.company
+            if not company:
+                domain = user.email
+                email_parts = user.email.split('@')
 
-            if not has_account:
-                account_id = i.get_account_by_email(user.email)
-                if account_id:
-                    bu.set_account_from_id(user, account_id)
-                else:
-                    bm.Account.objects.create(
+                if len(email_parts) > 1:
+                    domain = email_parts[1]
+
+                companies = m.Company.objects.filter(
+                    website__icontains=domain
+                )
+                if companies.count() == 1:
+                    membership, created = m.Membership.objects.get_or_create(
                         user=user,
-                        name=user.full_name,
-                        is_auto=True
+                        company=companies[0]
+                    )
+                    if created:
+                        membership.role = im.UserRole.objects.get(name='user')
+                    membership.is_primary = True
+                    membership.save()
+
+                else:
+                    company = m.Company.objects.create(
+                        name=user.email
+                    )
+                    m.Membership.objects.create(
+                        user=user,
+                        company=company,
+                        role=im.UserRole.objects.get(name='admin'),
+                        is_primary=True
                     )
 
             user_serializer = s.UserSerializer(user)

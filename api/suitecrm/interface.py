@@ -207,7 +207,11 @@ def get_all_accounts_by_page(page_number, page_size=500):
     params = {
         'page[size]': page_size,
         'page[number]': page_number,
-        'fields[Accounts]': 'name,website'
+        'fields[Accounts]': (
+            'name,website,billing_address_street,billing_address_street_2,'
+            'billing_address_city,billing_address_state,support_plan_c,'
+            'billing_address_postalcode,billing_address_country'
+        )
     }
     url = (
         '{0}/Api/V8/module/Accounts/'
@@ -220,6 +224,35 @@ def get_all_accounts_by_page(page_number, page_size=500):
 
     raise e.SuiteCrmError(
         'Error getting accounts from CRM\n' + r.text
+    )
+
+
+def get_all_contacts_by_page(page_number, page_size=500):
+    config = models.Configuration.load()
+    host = config.host
+
+    headers = get_auth_headers()
+    params = {
+        'page[size]': page_size,
+        'page[number]': page_number,
+        'fields[Contacts]': (
+            'first_name,last_name,primary_address_street,'
+            'primary_address_street_2,primary_address_city,'
+            'primary_address_state,primary_address_postalcode,'
+            'primary_address_country,account_id,email1,email2,email'
+        )
+    }
+    url = (
+        '{0}/Api/V8/module/Contacts/'
+    ).format(host)
+
+    r = requests.get(url, params=params, headers=headers)
+
+    if r.status_code == 200:
+        return r.json()
+
+    raise e.SuiteCrmError(
+        'Error getting contacts from CRM\n' + r.text
     )
 
 

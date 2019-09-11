@@ -265,12 +265,16 @@ class TicketSidebar extends Component<Props, State> {
     const { classes, user, info, filters, setTicketsLoading } = this.props;
     const { companies, users } = this.state;
     const { statuses, categories, issueTypes, products } = info;
-    let isStaff = user
+    const isStaff = user
       ? user.role
         ? user.role.name === "staff"
         : false
       : false;
-    isStaff = isStaff ? isStaff : !!user;
+    const isCommunity = user
+      ? user.role
+        ? user.role.name === "community"
+        : true
+      : true;
 
     return (
       <div className={classes.root}>
@@ -435,42 +439,45 @@ class TicketSidebar extends Component<Props, State> {
                 ))}
               </TextField>
             </div>
-            <div className={classes.inputSet}>
-              <div>
-                <span>Issue Type:</span>
+            {isCommunity ? null : (
+              <div className={classes.inputSet}>
+                <div>
+                  <span>Issue Type:</span>
+                </div>
+                <div>
+                  {filters.issueTypes.map(issueType => (
+                    <FilterTag
+                      key={issueType.id}
+                      tag={{
+                        ...issueType,
+                        text: issueType.name,
+                        type: FilterType.IssueType
+                      }}
+                      setTicketsLoading={setTicketsLoading}
+                    />
+                  ))}
+                </div>
+                <TextField
+                  select
+                  fullWidth
+                  variant="outlined"
+                  margin="dense"
+                  value={
+                    filters.issueTypes.length
+                      ? filters.issueTypes[filters.issueTypes.length - 1].name
+                      : ""
+                  }
+                  onChange={this.setIssueType}
+                >
+                  {issueTypes.map(issueType => (
+                    <MenuItem key={issueType.id} value={issueType.id}>
+                      {issueType.name}
+                    </MenuItem>
+                  ))}
+                </TextField>
               </div>
-              <div>
-                {filters.issueTypes.map(issueType => (
-                  <FilterTag
-                    key={issueType.id}
-                    tag={{
-                      ...issueType,
-                      text: issueType.name,
-                      type: FilterType.IssueType
-                    }}
-                    setTicketsLoading={setTicketsLoading}
-                  />
-                ))}
-              </div>
-              <TextField
-                select
-                fullWidth
-                variant="outlined"
-                margin="dense"
-                value={
-                  filters.issueTypes.length
-                    ? filters.issueTypes[filters.issueTypes.length - 1].name
-                    : ""
-                }
-                onChange={this.setIssueType}
-              >
-                {issueTypes.map(issueType => (
-                  <MenuItem key={issueType.id} value={issueType.id}>
-                    {issueType.name}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </div>
+            )}
+
             <div className={classes.inputSet}>
               <div>
                 <span>Status:</span>

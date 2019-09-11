@@ -52,10 +52,6 @@ class Home extends Component<Props, State> {
     };
   }
 
-  componentDidMount() {
-    this.props.fetchInfo();
-  }
-
   searchTickets = (q: string) => {
     const url = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/search/`;
     const params = { q };

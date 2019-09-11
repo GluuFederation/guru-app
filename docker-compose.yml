@@ -14,15 +14,6 @@ services:
     secrets:
       - postgres-password
       - postgres-user
-  guru-vue:
-    image: guru-vue
-    command: /bin/sh -c 'npm run serve'
-    volumes:
-      - ./guru-vue/src:/app/src
-      - ./guru-vue/package.json:/app/package.json
-      - ./guru-vue/public:/app/public
-    ports:
-      - "8080:8080"
   guru-react:
     image: guru-react
     command: /bin/sh -c 'yarn start'

@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import UserOne from '../../assets/images/user_one.png';
 import UserTwo from '../../assets/images/user_two.jpg';
-import VerifyIcon from '../../assets/images/verify_icon.png';
+import VerifyIcon from '../../assets/images/verified.svg';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';

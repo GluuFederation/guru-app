@@ -3,10 +3,10 @@ import { UserRole } from "./info";
 export enum GuruPlan {
   Community = "community",
   Core = "core",
-  VipBasic = "vip-basic",
-  VipStandard = "vip-standard",
-  VipPremium = "vip-premium",
-  VipEnterprise = "vip-enterprise",
+  VipBasic = "basic",
+  VipStandard = "standard",
+  VipPremium = "premium",
+  VipEnterprise = "enterprise",
   Partner = "partner"
 }
 
@@ -27,15 +27,20 @@ export interface Address {
   lastUpdate: string;
 }
 
+export interface ShortCompany {
+  id: number;
+  name: string;
+}
+
 export interface ShortUser {
   id: number;
   firstName: string;
   lastName: string;
   otherNames: string;
-  companyName: string;
+  company?: ShortCompany;
   email: string;
   role: UserRole | null;
-  account?: Account;
+  plan?: GuruPlan;
   avatar: string;
 }
 

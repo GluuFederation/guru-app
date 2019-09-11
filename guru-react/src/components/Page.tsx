@@ -4,8 +4,9 @@ import axios from "axios";
 
 import { paths } from "../routes";
 import { WithProfilesProps, withProfiles } from "../state/hocs/profiles";
+import { withInfo, WithInfoProps } from "../state/hocs/info";
 
-type Props = WithProfilesProps & RouteComponentProps;
+type Props = WithInfoProps & WithProfilesProps & RouteComponentProps;
 
 class Page extends React.Component<Props> {
   initAuth = () => {
@@ -16,6 +17,7 @@ class Page extends React.Component<Props> {
     const openPaths: Array<string> = [
       paths.HOMEPAGE,
       paths.TICKET_LIST,
+      paths.TICKET_DETAIL,
       paths.ERROR_PAGE,
       paths.LOGIN,
       paths.LOGIN_CALLBACK,
@@ -43,6 +45,7 @@ class Page extends React.Component<Props> {
 
   componentDidMount() {
     this.initAuth();
+    this.props.fetchInfo();
   }
 
   render() {
@@ -50,4 +53,4 @@ class Page extends React.Component<Props> {
   }
 }
 
-export default withRouter(withProfiles(Page));
+export default withRouter(withProfiles(withInfo(Page)));

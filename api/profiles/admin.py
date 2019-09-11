@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import Group
 from django.contrib.auth.forms import UserCreationForm
 
-from profiles.models import User, Company, Invitation, Membership
+from profiles.models import User, Company, Invitation, Membership, Address
 
 
 class GluuUserCreationForm(UserCreationForm):
@@ -31,7 +31,11 @@ class GluuUserAdmin(UserAdmin):
                 )
             }
         ),
-        ('Permissions', {'fields': ('is_staff', 'is_verified')}),
+        ('Permissions', {
+            'fields': (
+                'is_staff', 'is_verified', 'is_superuser', 'user_permissions'
+            )
+        }),
         (
             'Additional Info',
             {'fields': ('is_active', 'created_on', 'idp_uuid', 'id_token')}
@@ -71,4 +75,5 @@ class MembershipAdmin(admin.ModelAdmin):
     )
 
 
+admin.site.register(Address)
 admin.site.unregister(Group)

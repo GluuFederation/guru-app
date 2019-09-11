@@ -15,6 +15,10 @@ body {
   padding-right: 1em;
 }
 
+.chip {
+  margin: auto;
+}
+
 .chip.light-blue {
   background-color: rgba(31, 191, 221, 0.15);
   color: #1fbfdd;
@@ -48,6 +52,37 @@ body {
 .chip.blue {
   background-color: rgba(120, 110, 255, 0.15);
   color: #786eff;
+}
+
+.chip.gluu {
+  background-color: #00b572;
+  color: #fff;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.modal-super-container {
+  position: relative;
+  text-align: center;
+  top: 10vh;
+  max-height: 80vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-width: 90%;
+  margin: auto;
+}
+
+.modal-super-container:focus {
+  outline: none;
+}
+
+.modal-container {
+  display: inline-block;
+  margin: auto;
+  text-align: left;
+  max-width: 100%;
 }
 
 @media only screen and (max-width: 600px) {

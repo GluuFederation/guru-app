@@ -1,5 +1,5 @@
 import { GluuProduct } from "./info";
-import { ShortUser, Company } from "./profiles";
+import { ShortUser, ShortCompany } from "./profiles";
 
 export enum TicketFilterOrder {
   MostRecent = "+recent",
@@ -10,7 +10,7 @@ export enum TicketFilterOrder {
 
 export interface TicketProduct {
   id: number;
-  product: GluuProduct;
+  product: number;
   version: string;
   os: string;
   osVersion: string;
@@ -22,9 +22,10 @@ export interface Ticket {
   title: string;
   body: string;
   createdBy: ShortUser;
-  createdFor: ShortUser;
-  updatedBy: ShortUser;
-  assignee: ShortUser;
+  createdFor: ShortUser | null;
+  updatedBy: ShortUser | null;
+  assignee: ShortUser | null;
+  isPrivate: boolean;
   category: number;
   status: number;
   issueType: number;
@@ -33,7 +34,7 @@ export interface Ticket {
   osVersion: string;
   voters: Array<ShortUser>;
   subscribers: Array<ShortUser>;
-  companyAssociation: Company;
+  companyAssociation: ShortCompany;
   products: Array<TicketProduct>;
   createdOn: string;
   updatedOn: string;
@@ -46,11 +47,30 @@ export interface TicketSearchResult {
   title: string;
 }
 
-export interface TicketHistory {
+export enum HistoryChangedField {
+  Title = "title",
+  Category = "category",
+  Status = "status",
+  IssueType = "issue type",
+  GluuServer = "gluu server",
+  Os = "os",
+  OsVersion = "os version",
+  Body = "body",
+  CreatedBy = "creator",
+  Assignee = "assignee",
+  Privacy = "privacy",
+  Products = "products",
+  Comment = "comment",
+  EditComment = "edit comment"
+}
+
+export interface TicketHistoryItem {
   id: number;
   ticket: number;
+  createdOn: string;
   changedBy: ShortUser;
-  changedField: string;
+  affectedUser?: ShortUser;
+  changedField: HistoryChangedField;
   beforeValue: string;
   afterValue: string;
 }

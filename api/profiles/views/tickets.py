@@ -6,6 +6,7 @@ from rest_framework import status
 
 from profiles import serializers as s
 from profiles import models as m
+from info.models import UserRole
 
 
 class UserAccessList(APIView):
@@ -17,7 +18,7 @@ class UserAccessList(APIView):
         if not user.is_authenticated:
             return m.User.objects.none()
 
-        if user.is_staff:
+        if user.is_gluu_staff:
             return m.User.objects.all()
 
         companies = user.company_set.values_list('id')
@@ -64,7 +65,7 @@ class CompanyAccessList(APIView):
         if not user.is_authenticated:
             return m.Company.objects.none()
 
-        if user.is_staff:
+        if user.is_staff or user.is_gluu_staff:
             return m.Company.objects.all()
 
         return user.company_set.all()

@@ -55,7 +55,6 @@ export const unassigned: ShortUser = {
   firstName: "Unassigned",
   lastName: "",
   otherNames: "",
-  companyName: "",
   email: "",
   role: null,
   avatar: ""
@@ -66,7 +65,6 @@ export const assigned: ShortUser = {
   firstName: "Assigned",
   lastName: "",
   otherNames: "",
-  companyName: "",
   email: "",
   role: null,
   avatar: ""
