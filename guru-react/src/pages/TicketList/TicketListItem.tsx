@@ -17,7 +17,6 @@ import { colors } from "../../theme";
 import { getChipClass } from "../../utils/chipStyles";
 import { paths } from "../../routes";
 import { Ticket } from "../../state/types/tickets";
-import { ShortUser } from "../../state/types/profiles";
 import {
   closedStatus,
   otherCategory,
@@ -25,7 +24,7 @@ import {
 } from "../../state/preloaded/info";
 import { withInfo, WithInfoProps } from "../../state/hocs/info";
 import { TicketIssueType } from "../../state/types/info";
-
+import axios from "axios";
 const styles = (theme: Theme) =>
   createStyles({
     root: {
@@ -59,8 +58,8 @@ const styles = (theme: Theme) =>
       fontSize: ".9em"
     },
     selectType: {
-      fontSize:"12px",
-      fontWeight:600
+      fontSize: "12px",
+      fontWeight: 600
     },
 
   });
@@ -92,7 +91,14 @@ class TicketNav extends Component<Props, State> {
     this.setState({
       staffValue: event.target.value as number
     });
-    setTicketAssignee(this.props.ticket.slug,this.state.staffValue);
+    let ticketSlug = this.props.ticket.slug;
+    const URL = `${
+      process.env.REACT_APP_API_BASE
+      }/api/v1/tickets/${ticketSlug}/assign/`;
+    const data = { ticket: { assignee: this.state.staffValue } };
+    return axios.post(URL, { ...data }).then(response => {
+        console.log(response.data);
+    });
   };
   render() {
     const { classes, ticket, info, staff } = this.props;
