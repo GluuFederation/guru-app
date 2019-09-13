@@ -7,9 +7,10 @@ import { Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import InputAdornment from "@material-ui/core/InputAdornment";
-
+import Button from "@material-ui/core/Button/";
 import { colors } from "../../theme";
-
+import { paths } from "../../routes";
+import { getSearchString } from "../../utils/filterQueries";
 import Page from "../../components/Page";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
@@ -42,14 +43,19 @@ type SearchSuggestion = TicketSearchResult & Suggestion;
 
 interface State {
   searchResults: Array<SearchSuggestion>;
+  searchQuery : string;
 }
 
 class Home extends Component<Props, State> {
+  private Ref: React.RefObject<Autocomplete>;
   constructor(props: Props) {
     super(props);
     this.state = {
-      searchResults: []
+      searchResults: [],
+      searchQuery : ""
     };
+    this.Ref = React.createRef();
+
   }
 
   searchTickets = (q: string) => {
@@ -68,7 +74,17 @@ class Home extends Component<Props, State> {
     });
   };
 
+  handleClick = () => {
+    let searchQuery = this.Ref.current ? this.Ref.current.state.searchQuery : '';
+    this.props.history.push(
+      `${paths.TICKET_LIST}${getSearchString({
+        query: searchQuery
+      })}`
+    );
+  }
+
   render() {
+    console.log(this.Ref);
     const { classes, info } = this.props;
     const { searchResults } = this.state;
     const { categories } = info;
@@ -76,7 +92,9 @@ class Home extends Component<Props, State> {
     const InputProps = {
       startAdornment: (
         <InputAdornment position="start">
-          <SearchImg />
+          <Button onClick={this.handleClick}>
+            <SearchImg />
+          </Button>
         </InputAdornment>
       ),
       classes: { notchedOutline: classes.searchInput }
@@ -100,6 +118,7 @@ class Home extends Component<Props, State> {
                     suggestions={searchResults}
                     InputProps={InputProps}
                     updateQueryFunction={this.searchTickets}
+                    ref = {this.Ref}
                   />
                 </Typography>
               </Grid>

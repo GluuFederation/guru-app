@@ -93,6 +93,7 @@ interface State {
   isLoading: boolean;
   isTicketsLoading: boolean;
   autocompleteResults: Array<Suggestion>;
+  staffName: Array<String>;
 }
 
 class Home extends Component<Props, State> {
@@ -102,7 +103,8 @@ class Home extends Component<Props, State> {
     this.state = {
       isLoading: false,
       isTicketsLoading: true,
-      autocompleteResults: []
+      autocompleteResults: [],
+      staffName: []
     };
 
     this.Ref = React.createRef();
@@ -110,6 +112,7 @@ class Home extends Component<Props, State> {
 
   componentDidMount() {
     this.syncStateWithPath();
+    this.staffMembers();
   }
 
   searchTickets = (q: string) => {
@@ -125,6 +128,15 @@ class Home extends Component<Props, State> {
           }))
           .slice(0, 5)
       });
+    });
+  };
+
+  staffMembers = () => {
+    const url = `${process.env.REACT_APP_API_BASE}/api/v1/users/staffs/`;
+    axios.get(url).then(response => {
+      this.setState({
+        staffName:response.data.results
+      })
     });
   };
 
@@ -214,7 +226,7 @@ class Home extends Component<Props, State> {
 
     const startDate = searchParams.get("start");
     const endDate = searchParams.get("end");
-    const query = searchParams.get("query");
+    const query = searchParams.get("q");
     const order = searchParams.get("order");
     const pageItemsStr = searchParams.get("limit");
     const pageStr = searchParams.get("offset");
@@ -321,8 +333,6 @@ class Home extends Component<Props, State> {
   };
 
   render() {
-    // if(this.Ref.current)
-    //   console.log(this.Ref.current.state);
     const { classes, tickets, filters } = this.props;
     const { isTicketsLoading, autocompleteResults } = this.state;
     const InputProps = {
@@ -392,7 +402,7 @@ class Home extends Component<Props, State> {
                     <React.Fragment>
                       {tickets.map(ticket => (
                         <Grid item xs={12} key={ticket.id}>
-                          <TicketListItem ticket={ticket} />
+                          <TicketListItem ticket={ticket} staff={this.state.staffName}  />
                         </Grid>
                       ))}
                     </React.Fragment>
