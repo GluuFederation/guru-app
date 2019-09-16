@@ -1,0 +1,26 @@
+version: 1
+
+update_configs:
+  - package_manager: "python"
+    directory: "/api"
+    update_schedule: "live"
+    default_reviewers:
+      - pharingee
+      - willow9886
+      - ashtexsolutions
+
+  - package_manager: "javascript"
+    directory: "/guru-react"
+    update_schedule: "live"
+    default_reviewers:
+      - pharingee
+      - willow9886
+      - ashtexsolutions
+
+  - package_manager: "javascript"
+    directory: "/users-vue"
+    update_schedule: "live"
+    default_reviewers:
+      - pharingee
+      - willow9886
+      - ashtexsolutions
