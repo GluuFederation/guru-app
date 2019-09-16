@@ -1,0 +1,7 @@
+/devops/ @pharingee
+/nginx/ @pharingee
+/api/ @pharingee @ashtexsolutions
+/guru-react/ @pharingee @ashtexsolutions
+/users-vue/  @pharingee @ashtexsolutions
+
+**/*CODEOWNERS* @GluuFederation/customer-facing-apps
