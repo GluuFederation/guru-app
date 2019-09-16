@@ -192,11 +192,17 @@ class TicketDetailSideBarItem extends Component<Props, State> {
     this.setState({ menuElement: null });
   };
 
-  updateTicket = (selectedItem: {
-    id: number;
-    slug?: string;
-    text?: string;
-  }) => () => {
+  updateTicketCompany = (selectedItem: Suggestion) => {
+    const { newTicket, updateNewTicket } = this.props;
+    if (selectedItem.text)
+      updateNewTicket({
+        ...newTicket,
+        companyAssociation: { id: selectedItem.id, name: selectedItem.text }
+      });
+    this.setState({ menuElement: null });
+  };
+
+  updateTicket = (selectedItem: { id: number; slug?: string }) => () => {
     const {
       ticket,
       newTicket,
@@ -229,13 +235,6 @@ class TicketDetailSideBarItem extends Component<Props, State> {
           this.setState({ menuElement: null });
         }
         break;
-      case MenuType.CompanyAssociation:
-        console.log(selectedItem);
-        if (selectedItem.text)
-          updateNewTicket({
-            ...newTicket,
-            companyAssociation: { id: selectedItem.id, name: selectedItem.text }
-          });
     }
   };
 
@@ -459,7 +458,7 @@ class TicketDetailSideBarItem extends Component<Props, State> {
                   InputProps={InputProps}
                   suggestions={companies}
                   updateQueryFunction={this.searchCompanies}
-                  selectFunction={this.updateTicket}
+                  selectFunction={this.updateTicketCompany}
                 />
               ) : (
                 <div>
