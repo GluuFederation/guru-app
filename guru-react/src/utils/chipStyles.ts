@@ -1,15 +1,15 @@
 export const getChipClass = (slug: string): string => {
   switch (slug) {
     case "production-outage":
-      return "chip gray";
+      return "chip red";
     case "production-impaired":
-      return "chip blue";
-    case "pre-production-issue":
       return "chip purple";
+    case "pre-production-issue":
+      return "chip blue";
     case "minor-issue":
       return "chip green";
     case "new-development-issue":
-      return "chip red";
+      return "chip gray";
     case "new":
       return "chip light-blue";
     case "in-progress":
@@ -24,4 +24,32 @@ export const getChipClass = (slug: string): string => {
       return "chip light-blue";
   }
   return "chip gray";
+};
+
+export const getCardClass = (slug: string): string => {
+  switch (slug) {
+    case "production-outage":
+      return "card red";
+    case "production-impaired":
+      return "card purple";
+    case "pre-production-issue":
+      return "card blue";
+    case "minor-issue":
+      return "card green";
+    case "new-development-issue":
+      return "card gray";
+    case "new":
+      return "card light-blue";
+    case "in-progress":
+      return "card green";
+    case "assigned":
+      return "card gray";
+    case "pending":
+      return "card yellow";
+    case "closed":
+      return "card red";
+    case "community":
+      return "card light-blue";
+  }
+  return "card gray";
 };

@@ -54,6 +54,41 @@ body {
   color: #786eff;
 }
 
+.card.light-blue {
+  background-color: #fff;
+  color: #1fbfdd;
+}
+
+.card.green {
+  background-color: #fff;
+  color: #41cc22;
+}
+
+.card.gray {
+  background-color: #fff;
+  color: #4a4a4a;
+}
+
+.card.yellow {
+  background-color: #fff;
+  color: #ffbc16;
+}
+
+.card.red {
+  background-color: #fff;
+  color: #ff591c;
+}
+
+.card.purple {
+  background-color: #fff;
+  color: #b736ff;
+}
+
+.card.blue {
+  background-color: #fff;
+  color: #786eff;
+}
+
 .chip.gluu {
   background-color: #00b572;
   color: #fff;

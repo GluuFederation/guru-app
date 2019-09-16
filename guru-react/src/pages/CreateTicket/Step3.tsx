@@ -15,12 +15,21 @@ import {
 } from "../../state/hocs/ticket";
 import { WithInfoProps, withInfo } from "../../state/hocs/info";
 import { withRouter, RouteComponentProps } from "react-router-dom";
+import { getCardClass } from "../../utils/chipStyles";
 
 const styles = (theme: Theme) =>
   createStyles({
     root: {
       backgroundColor: colors.MAIN_BACKGROUND,
       padding: "5em"
+    },
+    isSelected: {
+      backgroundColor: colors.MAIN_COLOR,
+      color: colors.MAIN_BACKGROUND
+    },
+    issueText: {
+      minHeight: "2.5em",
+      wordWrap: "break-word"
     }
   });
 
@@ -55,6 +64,7 @@ class CreateTicket extends Component<Props, State> {
     const issueType = info.issueTypes.find(
       item => item.id === newTicket.issueType
     );
+    console.log(issueType);
 
     return (
       <div className={classes.root}>
@@ -65,9 +75,20 @@ class CreateTicket extends Component<Props, State> {
           <Grid item xs={12} md={10}>
             <Grid container spacing={2}>
               {info.issueTypes.map(item => (
-                <Grid item md={4} key={item.id}>
-                  <Card onClick={this.setIssueType(item.id)}>
-                    <CardContent>{item.name}</CardContent>
+                <Grid item xs={12} md={6} lg={4} key={item.id}>
+                  <Card
+                    onClick={this.setIssueType(item.id)}
+                    classes={{
+                      root: issueType
+                        ? issueType.slug === item.slug
+                          ? classes.isSelected
+                          : getCardClass(item.slug)
+                        : getCardClass(item.slug)
+                    }}
+                  >
+                    <CardContent classes={{ root: classes.issueText }}>
+                      {item.name}
+                    </CardContent>
                   </Card>
                 </Grid>
               ))}

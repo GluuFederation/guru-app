@@ -9,7 +9,22 @@ export const colors = {
   DARK_TEXT: "#181F1C",
   LIGHTER_TEXT: "#6f757b",
   VERY_LIGHT_TEXT: "#EFF1F4",
-  LIGHT_BORDER: "#e3e7ea"
+  LIGHT_BORDER: "#e3e7ea",
+
+  LIGHT_BLUE_BG: "rgba(31, 191, 221, 0.15)",
+  LIGHT_BLUE: "#1fbfdd",
+  GREEN_BG: "rgba(65, 204, 34, 0.15)",
+  GREEN: "#41cc22",
+  GRAY_BG: "rgba(0, 0, 0, 0.15)",
+  GRAY: "#4a4a4a",
+  YELLOW_BG: "rgba(255, 188, 22, 0.15)",
+  YELLOW: "#ffbc16",
+  RED_BG: "rgba(255, 89, 28, 0.15)",
+  RED: "#ff591c",
+  PURPLE_BG: "rgba(183, 54, 255, 0.15)",
+  PURPLE: "#b736ff",
+  BLUE_BG: "rgba(120, 110, 255, 0.15)",
+  BLUE: "#786eff"
 };
 
 const muiTheme = createMuiTheme({
