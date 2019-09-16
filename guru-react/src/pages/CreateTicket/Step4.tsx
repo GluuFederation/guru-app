@@ -23,6 +23,21 @@ const styles = (theme: Theme) =>
     root: {
       backgroundColor: colors.MAIN_BACKGROUND,
       padding: "5em"
+    },
+    categoryText: {
+      textAlign: "center"
+    },
+    categoryIcon: {
+      textAlign: "center",
+      marginTop: "1em"
+    },
+    isSelected: {
+      color: colors.MAIN_BACKGROUND,
+      backgroundColor: colors.MAIN_COLOR,
+      "& g": {
+        fill: colors.MAIN_BACKGROUND,
+        path: colors.MAIN_BACKGROUND
+      }
     }
   });
 
@@ -69,12 +84,22 @@ class Step4 extends Component<Props, State> {
               {info.categories.map(item => {
                 const Icon = getCategoryComponentFromSlug(item.slug);
                 return (
-                  <Grid item md={4} key={item.id}>
-                    <Card onClick={this.setCategory(item.id)}>
-                      <CardMedia>
+                  <Grid item xs={12} md={6} lg={4} key={item.id}>
+                    <Card
+                      onClick={this.setCategory(item.id)}
+                      classes={{
+                        root:
+                          category && category.slug === item.slug
+                            ? classes.isSelected
+                            : ""
+                      }}
+                    >
+                      <CardMedia classes={{ root: classes.categoryIcon }}>
                         <Icon></Icon>
                       </CardMedia>
-                      <CardContent>{item.name}</CardContent>
+                      <CardContent classes={{ root: classes.categoryText }}>
+                        {item.name}
+                      </CardContent>
                     </Card>
                   </Grid>
                 );
