@@ -5,6 +5,38 @@ Version bump module
 
 import argparse
 import json
+import os
+
+
+BASE_DIR = os.path.dirname(
+    os.path.dirname(os.path.realpath(__file__))
+)
+
+
+def validate_bump_type(bump_type):
+    """
+    Validate bump type
+
+    :param bump_type: Bump type
+    """
+    if bump_type not in ['patch', 'minor', 'major']:
+        raise Exception(
+            "Invalid bump type. Only 'patch', 'minor', 'major'"
+            " are valid bump types"
+        )
+
+
+def validate_app(app):
+    """
+    Validate app names
+
+    :param app: App name
+    """
+    if app not in ['guru-api', 'guru-nginx', 'guru-react', 'users-vue']:
+        raise Exception(
+            "Invalid image. Only 'guru-api', 'guru-react', 'users-vue'"
+            " and 'guru-nginx' are valid app name"
+        )
 
 
 def bump_version(version, bump_type):
@@ -14,6 +46,7 @@ def bump_version(version, bump_type):
     :param version: string containing version number
     :param bump_type: one of 'patch', 'minor' and 'major'
     """
+    validate_bump_type(bump_type)
     version_parts = [int(x) for x in version.split('.')]
     if len(version_parts) is not 3:
         raise ValueError(
@@ -37,27 +70,43 @@ def bump_version(version, bump_type):
             [
                 str(version_parts[0]),
                 str(version_parts[1] + 1),
-                str(version_parts[2]),
+                '0',
             ]
         )
 
     return '.'.join(
         [
             str(version_parts[0] + 1),
-            str(version_parts[1]),
-            str(version_parts[2]),
+            '0',
+            '0',
         ]
     )
 
 
-def bump(filename, bump_type='patch', file_type='v'):
+def bump(app, bump_type='patch'):
     """
     Read file contents for bumping
 
-    :params filename: Name of file
-    :params bump_type: one of 'patch', 'minor' and 'major'
-    :params file_type: one of 'v' and 'js'
+    :param app: Name of app
+    :param bump_type: one of 'patch', 'minor' and 'major'
+    :param file_type: one of 'v' and 'js'
     """
+    validate_bump_type(bump_type)
+    validate_app(app)
+    app_file_map = {
+        'guru-api': os.path.join(BASE_DIR, 'api', 'VERSION'),
+        'guru-nginx': os.path.join(BASE_DIR, 'nginx', 'VERSION'),
+        'guru-react': os.path.join(BASE_DIR, 'guru-react', 'package.json'),
+        'users-vue': os.path.join(BASE_DIR, 'users-vue', 'package.json'),
+    }
+    app_type_map = {
+        'guru-api': 'v',
+        'guru-nginx': 'v',
+        'guru-react': 'js',
+        'users-vue': 'js',
+    }
+    file_type = app_type_map[app]
+    filename = app_file_map[app]
     contents = ''
     with open(filename, 'r') as read_file:
         contents = read_file.read()
@@ -70,7 +119,7 @@ def bump(filename, bump_type='patch', file_type='v'):
         version = content_json['version']
         bumped_version = bump_version(version, bump_type)
         content_json['version'] = bumped_version
-        contents = json.dumps(content_json)
+        contents = json.dumps(content_json, indent=2)
 
     with open(filename, 'w+') as write_file:
         write_file.write(contents)
@@ -78,16 +127,11 @@ def bump(filename, bump_type='patch', file_type='v'):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('filename', help='File name to bump')
+    parser.add_argument('app', help='App name to bump')
     parser.add_argument(
         '--bumper',
         help="Bump type. One of 'patch', 'minor' and 'major'",
         default='patch'
     )
-    parser.add_argument(
-        '--type',
-        help="File type. One of 'v', and 'js'",
-        default='v'
-    )
     args = parser.parse_args()
-    bump(args.filename, args.bumper, args.type)
+    bump(args.app, args.bumper)
