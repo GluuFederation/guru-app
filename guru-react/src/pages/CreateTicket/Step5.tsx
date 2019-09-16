@@ -22,6 +22,10 @@ const styles = (theme: Theme) =>
     root: {
       backgroundColor: colors.MAIN_BACKGROUND,
       padding: "5em"
+    },
+    isSelected: {
+      color: colors.MAIN_BACKGROUND,
+      backgroundColor: colors.MAIN_COLOR
     }
   });
 
@@ -54,6 +58,7 @@ class Step4 extends Component<Props, State> {
     const { classes, newTicket, info } = this.props;
     const gluuServerProduct = info.products.find(item => item.id === 1);
     if (!gluuServerProduct) return <div>Skip</div>;
+    const gluuServer = newTicket.gluuServer;
 
     return (
       <div className={classes.root}>
@@ -66,7 +71,12 @@ class Step4 extends Component<Props, State> {
               {gluuServerProduct.version.map(item => {
                 return (
                   <Grid item md={4} key={item}>
-                    <Card onClick={this.setVersion(item)}>
+                    <Card
+                      onClick={this.setVersion(item)}
+                      classes={{
+                        root: gluuServer === item ? classes.isSelected : ""
+                      }}
+                    >
                       <CardContent>{item}</CardContent>
                     </Card>
                   </Grid>
