@@ -244,11 +244,11 @@
         },
         "ipython": {
             "hashes": [
-                "sha256:1d3a1692921e932751bc1a1f7bb96dc38671eeefdc66ed33ee4cbc57e92a410e",
-                "sha256:537cd0176ff6abd06ef3e23f2d0c4c2c8a4d9277b7451544c6cbf56d1c79a83d"
+                "sha256:c4ab005921641e40a68e405e286e7a1fcc464497e14d81b6914b4fd95e5dee9b",
+                "sha256:dd76831f065f17bddd7eaa5c781f5ea32de5ef217592cf019e34043b56895aa1"
             ],
             "index": "pypi",
-            "version": "==7.7.0"
+            "version": "==7.8.0"
         },
         "ipython-genutils": {
             "hashes": [
@@ -535,11 +535,11 @@
         },
         "twilio": {
             "hashes": [
-                "sha256:1c0f7606231bd5fb5b111acf5cb0cce2daa4e527f169053ff99331351f4535cd",
-                "sha256:866b26dc4029a778030e9a5892aeeef1ca8c134e5230c226bb055ca3e5eb9eb6"
+                "sha256:b319894aefe2342f9c62a4797a94a509995a32c6760d83c24e3ba649855e8eae",
+                "sha256:bd116c9c78136294a1f7ded1686029cc00719955dda868ea25aad9dd88f939fd"
             ],
             "index": "pypi",
-            "version": "==6.29.3"
+            "version": "==6.30.0"
         },
         "typed-ast": {
             "hashes": [
