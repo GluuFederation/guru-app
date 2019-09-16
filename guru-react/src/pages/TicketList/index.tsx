@@ -93,18 +93,19 @@ interface State {
   isLoading: boolean;
   isTicketsLoading: boolean;
   autocompleteResults: Array<Suggestion>;
-  searchQuery: string;
 }
 
 class Home extends Component<Props, State> {
+  private Ref: React.RefObject<Autocomplete>;
   constructor(props: Props) {
     super(props);
     this.state = {
       isLoading: false,
       isTicketsLoading: true,
-      autocompleteResults: [],
-      searchQuery: ""
+      autocompleteResults: []
     };
+
+    this.Ref = React.createRef();
   }
 
   componentDidMount() {
@@ -137,7 +138,7 @@ class Home extends Component<Props, State> {
   };
 
   handleSearchButton = () => {
-    const { searchQuery } = this.state;
+    let searchQuery = this.Ref.current ? this.Ref.current.state.searchQuery : '';
     const { setFilterQuery, fetchTickets } = this.props;
     setFilterQuery(searchQuery);
     this.setTicketsLoading(true);
@@ -145,11 +146,17 @@ class Home extends Component<Props, State> {
       this.setTicketsLoading(false);
     });
   };
-
-  handleSearchQueryChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    this.setState({ searchQuery: event.target.value as string });
+  handleSearchOnSubmit = (event: React.KeyboardEvent<any>) => {
+    if (event.key == "Enter") {
+      let searchQuery = this.Ref.current ? this.Ref.current.state.searchQuery : '';
+      const { setFilterQuery, fetchTickets } = this.props;
+      setFilterQuery(searchQuery);
+      this.setTicketsLoading(true);
+      fetchTickets(true).then(() => {
+        this.setTicketsLoading(false);
+      });
+    }
   };
-
   setPageItems = (event: React.ChangeEvent<{ value: unknown }>) => {
     const { setFilterPageItems, fetchTickets } = this.props;
     const pageItems = parseInt(event.target.value as string, 10);
@@ -186,7 +193,7 @@ class Home extends Component<Props, State> {
   syncStateWithPath = () => {
     const url = `${
       process.env.REACT_APP_API_BASE
-    }/api/v1/tickets/get-params-data/`;
+      }/api/v1/tickets/get-params-data/`;
     const searchParams = new URLSearchParams(this.props.location.search);
     const companies = searchParams.get("companies");
     const creators = searchParams.get("creators");
@@ -295,10 +302,10 @@ class Home extends Component<Props, State> {
           order === TicketFilterOrder.LeastRecent
             ? TicketFilterOrder.LeastRecent
             : order === TicketFilterOrder.UserAZ
-            ? TicketFilterOrder.UserAZ
-            : order === TicketFilterOrder.UserZA
-            ? TicketFilterOrder.UserZA
-            : TicketFilterOrder.MostRecent
+              ? TicketFilterOrder.UserAZ
+              : order === TicketFilterOrder.UserZA
+                ? TicketFilterOrder.UserZA
+                : TicketFilterOrder.MostRecent
         );
       }
 
@@ -314,6 +321,8 @@ class Home extends Component<Props, State> {
   };
 
   render() {
+    // if(this.Ref.current)
+    //   console.log(this.Ref.current.state);
     const { classes, tickets, filters } = this.props;
     const { isTicketsLoading, autocompleteResults } = this.state;
     const InputProps = {
@@ -324,7 +333,7 @@ class Home extends Component<Props, State> {
           </Button>
         </InputAdornment>
       ),
-      onChange: this.handleSearchQueryChange,
+      onKeyPress: this.handleSearchOnSubmit,
       placeholder: "Type the keyword"
     };
 
@@ -348,6 +357,7 @@ class Home extends Component<Props, State> {
                     updateQueryFunction={this.searchTickets}
                     selectFunction={this.setSearchQuery}
                     InputProps={InputProps}
+                    ref={this.Ref}
                   />
                 </Grid>
                 <Grid item xs={12} lg={6}>
@@ -379,14 +389,14 @@ class Home extends Component<Props, State> {
                     <CircularProgress />
                   </div>
                 ) : (
-                  <React.Fragment>
-                    {tickets.map(ticket => (
-                      <Grid item xs={12} key={ticket.id}>
-                        <TicketListItem ticket={ticket} />
-                      </Grid>
-                    ))}
-                  </React.Fragment>
-                )}
+                    <React.Fragment>
+                      {tickets.map(ticket => (
+                        <Grid item xs={12} key={ticket.id}>
+                          <TicketListItem ticket={ticket} />
+                        </Grid>
+                      ))}
+                    </React.Fragment>
+                  )}
               </Grid>
               <Grid container>
                 <Grid item>

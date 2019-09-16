@@ -44,10 +44,9 @@ class Autocomplete extends Component<Props, State> {
       if (updateQueryFunction) updateQueryFunction(searchQuery);
     });
   };
-
   handleChange = (item: Suggestion) => {
     // let selectedItems = [...this.state.selectedItems];
-    // selectedItems = selectedItems.filter(
+    // selectedItems = selectedItems.how to test/use GLUU on Amazon Web Services (AWS) - Classic Load Balancerfilter(
     //   selectedItem => item.id !== selectedItem.id
     // );
     // selectedItems.push(item);
@@ -68,8 +67,8 @@ class Autocomplete extends Component<Props, State> {
         onChange={this.handleChange}
       >
         {({ getInputProps, getItemProps, isOpen, highlightedIndex }) => {
-          const { onBlur, onFocus, onChange, ...inputProps } = getInputProps({
-            onChange: this.changeSearchQuery
+          const { onBlur, onFocus, onChange,...inputProps } = getInputProps({
+            onChange: this.changeSearchQuery,
           });
           return (
             <div>
@@ -77,15 +76,15 @@ class Autocomplete extends Component<Props, State> {
                 variant="outlined"
                 margin="dense"
                 placeholder="Search or ask a question"
-                fullWidth
+                fullWidth 
                 InputProps={{
                   ...InputProps,
                   ...getInputProps(),
                   onChange,
                   onBlur,
-                  onFocus
+                  onFocus,
+                  
                 }}
-                inputProps={{ ...inputProps }}
               />
               {isOpen || isAlwaysOpen ? (
                 <Paper>
