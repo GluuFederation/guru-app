@@ -19,6 +19,7 @@ interface ExternalProps {
   selectFunction?: (selectedItem: Suggestion) => void;
   suggestions: Array<Suggestion>;
   isAlwaysOpen?: boolean;
+  value?: string;
 }
 
 type Props = ExternalProps;
@@ -32,7 +33,7 @@ class Autocomplete extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      searchQuery: "",
+      searchQuery: props.value ? props.value : "",
       selectedItem: null
     };
   }
@@ -45,11 +46,6 @@ class Autocomplete extends Component<Props, State> {
     });
   };
   handleChange = (item: Suggestion) => {
-    // let selectedItems = [...this.state.selectedItems];
-    // selectedItems = selectedItems.how to test/use GLUU on Amazon Web Services (AWS) - Classic Load Balancerfilter(
-    //   selectedItem => item.id !== selectedItem.id
-    // );
-    // selectedItems.push(item);
     this.setState({ searchQuery: item.text, selectedItem: { ...item } }, () => {
       const { selectFunction } = this.props;
       if (selectFunction) selectFunction(item);
@@ -57,7 +53,7 @@ class Autocomplete extends Component<Props, State> {
   };
 
   render() {
-    const { InputProps, suggestions, isAlwaysOpen } = this.props;
+    const { InputProps, suggestions, isAlwaysOpen, value } = this.props;
     const { searchQuery, selectedItem } = this.state;
 
     return (
@@ -67,24 +63,25 @@ class Autocomplete extends Component<Props, State> {
         onChange={this.handleChange}
       >
         {({ getInputProps, getItemProps, isOpen, highlightedIndex }) => {
-          const { onBlur, onFocus, onChange,...inputProps } = getInputProps({
-            onChange: this.changeSearchQuery,
+          const { onBlur, onFocus, onChange, ...inputProps } = getInputProps({
+            onChange: this.changeSearchQuery
           });
           return (
             <div>
               <TextField
                 variant="outlined"
                 margin="dense"
+                value={"Hello"}
                 placeholder="Search or ask a question"
-                fullWidth 
+                fullWidth
                 InputProps={{
                   ...InputProps,
                   ...getInputProps(),
                   onChange,
                   onBlur,
-                  onFocus,
-                  
+                  onFocus
                 }}
+                inputProps={{ ...inputProps }}
               />
               {isOpen || isAlwaysOpen ? (
                 <Paper>

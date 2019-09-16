@@ -74,12 +74,12 @@ class CreateTicket extends Component<Props, State> {
   render() {
     const { classes, newTicket, user } = this.props;
     const { isLoading, companies } = this.state;
+    const value = newTicket.companyAssociation
+      ? newTicket.companyAssociation.name
+      : "";
 
     const InputProps = {
-      placeholder: "Search company...",
-      value: newTicket.companyAssociation
-        ? newTicket.companyAssociation.name
-        : ""
+      placeholder: "Search company..."
     };
 
     return (
@@ -94,6 +94,7 @@ class CreateTicket extends Component<Props, State> {
               suggestions={companies}
               updateQueryFunction={this.searchCompanies}
               selectFunction={this.setCompany}
+              value={value}
             />
           </Grid>
         </Grid>

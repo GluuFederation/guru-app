@@ -53,32 +53,25 @@ export const paths = {
 
   //partner
 
-  PARTNERS : "/partners",
+  PARTNERS: "/partners",
 
   //customer
 
-  CUSTOMERS : "/customers",
+  CUSTOMERS: "/customers",
 
-  //billing 
+  //billing
 
-  BILLING : "/billing",
+  BILLING: "/billing",
 
   //account_settings
 
-  ACCOUNT_SETTING : "/account_setting",
-
-  //Admin
-
-  ADMIN : "/admin_user",
-
-  //partner
-  PARTNER: "/dashboard/partner",
+  ACCOUNT_SETTING: "/account_setting",
 
   //customer
-  CUSTOMER: "/dashboard/customer",
+  CUSTOMER: "/customer",
 
   //admin
-  ADMIN: "/dashboard/admin",
+  ADMIN: "/admin",
 
   // errors
   ERROR_PAGE: "/error-page"
@@ -118,7 +111,7 @@ const routes: Array<RouteType> = [
     component: Notification
   },
   {
-    path: paths.PARTNER,
+    path: paths.PARTNERS,
     component: Partner
   },
   {

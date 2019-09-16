@@ -9,8 +9,8 @@ import Modal from '@material-ui/core/Modal';
 import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import BellIcon from '../../assets/images/bell_icon.png';
-import NextArrow from '../../assets/images/next_arrow.png';
+import BellIcon from '../../assets/images/user_one.png';
+import NextArrow from '../../assets/images/user_one.png';
 import Box from '@material-ui/core/Box';
 const styles = (theme: Theme) =>
     createStyles({

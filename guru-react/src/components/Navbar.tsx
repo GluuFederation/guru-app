@@ -243,13 +243,13 @@ class Navbar extends Component<Props, State> {
                       onClose={this.closeUserMenu}
                       classes={{ paper: classes.menuPaper }}
                     >
-                      <MenuItem onClick={this.navigateTo(paths.TEAM_DETAILS)}>
+                      <MenuItem onClick={this.navigateTo(paths.NOTIFICATIONS)}>
                         <ListItemIcon>
                           <NotificationsNoneIcon />
                         </ListItemIcon>
                         Notifications
                       </MenuItem>
-                      <MenuItem onClick={this.navigateTo(paths.TEAM_DETAILS)}>
+                      <MenuItem onClick={this.navigateTo(paths.PROFILE)}>
                         <ListItemIcon>
                           <PersonIcon />
                         </ListItemIcon>
@@ -261,13 +261,13 @@ class Navbar extends Component<Props, State> {
                         </ListItemIcon>
                         Team
                       </MenuItem>
-                      <MenuItem onClick={this.navigateTo(paths.TEAM_DETAILS)}>
+                      <MenuItem onClick={this.navigateTo(paths.PARTNERS)}>
                         <ListItemIcon>
                           <DomainIcon />
                         </ListItemIcon>
                         Partners
                       </MenuItem>
-                      <MenuItem onClick={this.navigateTo(paths.TEAM_DETAILS)}>
+                      <MenuItem onClick={this.navigateTo(paths.BILLING)}>
                         <ListItemIcon>
                           <CreditCardIcon />
                         </ListItemIcon>
@@ -347,31 +347,37 @@ class Navbar extends Component<Props, State> {
                 </List>
                 <Divider />
                 <List>
-                  <ListItem button>
+                  <ListItem
+                    button
+                    onClick={this.navigateTo(paths.NOTIFICATIONS)}
+                  >
                     <ListItemIcon>
                       <NotificationsNoneIcon />
                     </ListItemIcon>
                     <ListItemText primary="Notifications" />
                   </ListItem>
-                  <ListItem button>
+                  <ListItem button onClick={this.navigateTo(paths.PROFILE)}>
                     <ListItemIcon>
                       <PersonIcon />
                     </ListItemIcon>
                     <ListItemText primary="Profile" />
                   </ListItem>
-                  <ListItem button>
+                  <ListItem
+                    button
+                    onClick={this.navigateTo(paths.TEAM_DETAILS)}
+                  >
                     <ListItemIcon>
                       <PeopleOutlineIcon />
                     </ListItemIcon>
                     <ListItemText primary="Team" />
                   </ListItem>
-                  <ListItem button>
+                  <ListItem button onClick={this.navigateTo(paths.PARTNERS)}>
                     <ListItemIcon>
                       <DomainIcon />
                     </ListItemIcon>
                     <ListItemText primary="Partners" />
                   </ListItem>
-                  <ListItem button>
+                  <ListItem button onClick={this.navigateTo(paths.BILLING)}>
                     <ListItemIcon>
                       <CreditCardIcon />
                     </ListItemIcon>
