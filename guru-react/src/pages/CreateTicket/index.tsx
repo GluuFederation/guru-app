@@ -165,7 +165,6 @@ class CreateTicket extends Component<Props, State> {
                 {companyAssociation ? (
                   <TicketDetailSideBarItem
                     menuType={MenuType.CompanyAssociation}
-                    ticket={newTicket}
                     canEdit={true}
                     isNew={true}
                   />
@@ -173,7 +172,6 @@ class CreateTicket extends Component<Props, State> {
                 {createdFor ? (
                   <TicketDetailSideBarItem
                     menuType={MenuType.Creator}
-                    ticket={newTicket}
                     canEdit={true}
                     isNew={true}
                   />
@@ -181,7 +179,6 @@ class CreateTicket extends Component<Props, State> {
                 {issueType ? (
                   <TicketDetailSideBarItem
                     menuType={MenuType.IssueType}
-                    ticket={newTicket}
                     canEdit={true}
                     isNew={true}
                   />
@@ -189,7 +186,6 @@ class CreateTicket extends Component<Props, State> {
                 {category ? (
                   <TicketDetailSideBarItem
                     menuType={MenuType.Category}
-                    ticket={newTicket}
                     canEdit={true}
                     isNew={true}
                   />
@@ -197,7 +193,6 @@ class CreateTicket extends Component<Props, State> {
                 {gluuServer ? (
                   <TicketDetailSideBarItem
                     menuType={MenuType.GluuServer}
-                    ticket={newTicket}
                     canEdit={true}
                     isNew={true}
                   />
@@ -205,7 +200,6 @@ class CreateTicket extends Component<Props, State> {
                 {os ? (
                   <TicketDetailSideBarItem
                     menuType={MenuType.Os}
-                    ticket={newTicket}
                     canEdit={true}
                     isNew={true}
                   />
@@ -213,7 +207,6 @@ class CreateTicket extends Component<Props, State> {
                 {hasProducts ? (
                   <TicketDetailSideBarItem
                     menuType={MenuType.Products}
-                    ticket={newTicket}
                     canEdit={true}
                     isNew={true}
                   />
@@ -221,7 +214,6 @@ class CreateTicket extends Component<Props, State> {
                 {step === 9 ? (
                   <TicketDetailSideBarItem
                     menuType={MenuType.NewProduct}
-                    ticket={newTicket}
                     canEdit={true}
                     isNew={true}
                   />
@@ -243,7 +235,7 @@ class CreateTicket extends Component<Props, State> {
                     <Button onClick={this.cancel}>Cancel</Button>
                   </Grid>
                 </Grid>
-              ) : (
+              ) : step !== 7 ? (
                 <Grid container>
                   <Grid item>
                     <Button onClick={this.back}>Back</Button>
@@ -257,7 +249,7 @@ class CreateTicket extends Component<Props, State> {
                     </Button>
                   </Grid>
                 </Grid>
-              )}
+              ) : null}
             </Box>
           </Container>
           <Footer />

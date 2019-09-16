@@ -14,6 +14,10 @@ import {
   withTicketDetail,
   WithTicketDetailProps
 } from "../../state/hocs/tickets";
+import {
+  withCreateTicket,
+  WithCreateTicketProps
+} from "../../state/hocs/ticket";
 import { withInfo, WithInfoProps } from "../../state/hocs/info";
 import { colors } from "../../theme";
 import { TicketProduct } from "../../state/types/tickets";
@@ -33,11 +37,13 @@ const styles = (theme: Theme) =>
 interface ExternalProps {
   product?: TicketProduct;
   closeModal: () => void;
+  isNew?: boolean;
 }
 
 type Props = ExternalProps &
   WithInfoProps &
   WithTicketDetailProps &
+  WithCreateTicketProps &
   WithStyles<typeof styles> &
   RouteComponentProps;
 
@@ -104,8 +110,22 @@ class ChangeProduct extends Component<Props, State> {
 
   saveProduct = () => {
     const { product: gluuProduct, version, osVersion, os } = this.state;
-    const { product, ticket, closeModal } = this.props;
-    if (!ticket) return;
+    const {
+      product,
+      ticket: fullTicket,
+      newTicket,
+      isNew,
+      closeModal,
+      updateTicketProduct,
+      createTicketProduct,
+      addCreateTicketProduct,
+      removeCreateTicketProduct
+    } = this.props;
+    if (!isNew && !fullTicket) {
+      closeModal();
+      return;
+    }
+    const ticket = !isNew && fullTicket ? fullTicket : newTicket;
 
     let invalidFields = [];
     if (!gluuProduct) invalidFields.push("product");
@@ -121,29 +141,25 @@ class ChangeProduct extends Component<Props, State> {
     }
 
     if (product && gluuProduct) {
-      this.props
-        .updateTicketProduct(ticket.slug, {
-          ...product,
-          product: gluuProduct,
-          version,
-          osVersion,
-          os
-        })
-        .then(() => {
-          closeModal();
-        });
+      updateTicketProduct(ticket.slug, {
+        ...product,
+        product: gluuProduct,
+        version,
+        osVersion,
+        os
+      }).then(() => {
+        closeModal();
+      });
     } else if (gluuProduct) {
-      this.props
-        .createTicketProduct(ticket.slug, {
-          id: NaN,
-          product: gluuProduct,
-          version,
-          osVersion,
-          os
-        })
-        .then(() => {
-          closeModal();
-        });
+      createTicketProduct(ticket.slug, {
+        id: NaN,
+        product: gluuProduct,
+        version,
+        osVersion,
+        os
+      }).then(() => {
+        closeModal();
+      });
     }
   };
 
@@ -256,5 +272,5 @@ class ChangeProduct extends Component<Props, State> {
 }
 
 export default withTicketDetail(
-  withInfo(withRouter(withStyles(styles)(ChangeProduct)))
+  withCreateTicket(withInfo(withRouter(withStyles(styles)(ChangeProduct))))
 );

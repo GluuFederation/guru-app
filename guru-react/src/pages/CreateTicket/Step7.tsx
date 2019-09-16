@@ -15,12 +15,19 @@ import {
 } from "../../state/hocs/ticket";
 import { WithInfoProps, withInfo } from "../../state/hocs/info";
 import { withRouter, RouteComponentProps } from "react-router-dom";
+import { paths } from "../../routes";
 
 const styles = (theme: Theme) =>
   createStyles({
     root: {
       backgroundColor: colors.MAIN_BACKGROUND,
       padding: "5em"
+    },
+    card: {
+      "&:hover": {
+        color: colors.MAIN_BACKGROUND,
+        backgroundColor: colors.MAIN_COLOR
+      }
     }
   });
 
@@ -43,8 +50,19 @@ class Step7 extends Component<Props, State> {
   }
 
   setHasProducts = (hasProducts: boolean) => () => {
-    const { setCreateTicketHasProducts } = this.props;
+    const {
+      setCreateTicketHasProducts,
+      setCreateTicketStep,
+      history
+    } = this.props;
     setCreateTicketHasProducts(hasProducts);
+    if (hasProducts) {
+      setCreateTicketStep(8);
+      history.push(paths.getCreateTicketPath(8));
+    } else {
+      setCreateTicketStep(9);
+      history.push(paths.getCreateTicketPath(9));
+    }
   };
 
   render() {
@@ -59,12 +77,18 @@ class Step7 extends Component<Props, State> {
           <Grid item xs={12} md={10}>
             <Grid container spacing={2}>
               <Grid item md={6}>
-                <Card onClick={this.setHasProducts(false)}>
+                <Card
+                  onClick={this.setHasProducts(false)}
+                  classes={{ root: classes.card }}
+                >
                   <CardContent>No</CardContent>
                 </Card>
               </Grid>
               <Grid item md={6}>
-                <Card onClick={this.setHasProducts(true)}>
+                <Card
+                  onClick={this.setHasProducts(true)}
+                  classes={{ root: classes.card }}
+                >
                   <CardContent>Yes</CardContent>
                 </Card>
               </Grid>

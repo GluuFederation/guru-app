@@ -4,6 +4,7 @@ import { CreateTicketState } from "../types/state";
 
 const initialState: CreateTicketState = {
   step: 1,
+  slug: "",
   companyAssociation: null,
   createdBy: null,
   createdFor: null,

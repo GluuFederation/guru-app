@@ -60,6 +60,7 @@ export interface TicketsState {
 export interface CreateTicketState {
   step: number;
   hasProducts?: boolean;
+  slug: string;
   title: string;
   body: string;
   createdBy: ShortUser | null;
