@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { withStyles, WithStyles } from "@material-ui/styles";
 import { createStyles, Theme } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
@@ -99,28 +100,28 @@ class DashboardSideMenu extends Component<Props> {
                     <Box>
                         <MenuList>
                             <MenuItem className={classes.menuSidebar}>
-                                <a className={classes.anchorMenu} href="/dashboard/notifications"><Typography variant="subtitle1" align="left">Notification</Typography></a>
+                                <a className={classes.anchorMenu} href="/notifications"><Typography variant="subtitle1" align="left">Notification</Typography></a>
                             </MenuItem>
                             <MenuItem className={classes.menuSidebar}>
-                                <a className={classes.anchorMenu} href="/dashboard/profile"><Typography variant="subtitle1" align="left">Profile</Typography></a>
+                                <a className={classes.anchorMenu} href="/profile"><Typography variant="subtitle1" align="left">Profile</Typography></a>
                             </MenuItem>
                             <MenuItem className={classes.menuSidebar}>
-                                <a className={classes.anchorMenu} href="/dashboard/team"><Typography variant="subtitle1" align="left">Team</Typography></a>
+                                <a className={classes.anchorMenu} href="/team"><Typography variant="subtitle1" align="left">Team</Typography></a>
                             </MenuItem>
                             <MenuItem className={classes.menuSidebar}>
-                                <a className={classes.anchorMenu} href="/dashboard/partner"><Typography variant="subtitle1" align="left">Partners</Typography></a>
+                                <a className={classes.anchorMenu} href="/partners"><Typography variant="subtitle1" align="left">Partners</Typography></a>
                             </MenuItem>
                             <MenuItem className={classes.menuSidebar}>
-                                <a className={classes.anchorMenu} href="/dashboard/customer"><Typography variant="subtitle1" align="left">Customers</Typography></a>
+                                <a className={classes.anchorMenu} href="/customer"><Typography variant="subtitle1" align="left">Customers</Typography></a>
                             </MenuItem>
                             <MenuItem className={classes.menuSidebar}>
-                                <a className={classes.anchorMenu} href="/dashboard/billing"><Typography variant="subtitle1" align="left">Billing</Typography></a>
+                                <a className={classes.anchorMenu} href="/billing"><Typography variant="subtitle1" align="left">Billing</Typography></a>
                             </MenuItem>
                             <MenuItem className={classes.menuSidebar}>
-                                <a className={classes.anchorMenu} href="/dashboard/account-setting"><Typography variant="subtitle1" align="left">Account Security</Typography></a>
+                                <a className={classes.anchorMenu} href="/account-setting"><Typography variant="subtitle1" align="left">Account Security</Typography></a>
                             </MenuItem>
                             <MenuItem className={classes.menuSidebar}>
-                                <a className={classes.anchorMenu} href="/dashboard/admin"><Typography variant="subtitle1" align="left">Admin</Typography></a>
+                                <a className={classes.anchorMenu} href="/admin"><Typography variant="subtitle1" align="left">Admin</Typography></a>
                             </MenuItem>
                         </MenuList>
                     </Box>
@@ -135,4 +136,4 @@ class DashboardSideMenu extends Component<Props> {
     }
 }
 
-export default withRouter(withStyles(styles)(DashboardSideMenu));
+export default withRouter(connect()(withStyles(styles)(DashboardSideMenu)));
