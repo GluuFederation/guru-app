@@ -1,18 +1,18 @@
 import React, { Component } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import moment from "moment";
-
+import { connect } from 'react-redux';
 import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import Chip from "@material-ui/core/Chip";
-
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 import ChatBubbleOutline from "@material-ui/icons/ChatBubbleOutline";
 import PersonOutline from "@material-ui/icons/PersonOutline";
 import ThumbUpOutlined from "@material-ui/icons/ThumbUpOutlined";
-
 import { colors } from "../../theme";
 import { getChipClass } from "../../utils/chipStyles";
 import { paths } from "../../routes";
@@ -24,6 +24,7 @@ import {
 } from "../../state/preloaded/info";
 import { withInfo, WithInfoProps } from "../../state/hocs/info";
 import { TicketIssueType } from "../../state/types/info";
+import axios from "axios";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -56,11 +57,21 @@ const styles = (theme: Theme) =>
     },
     ticketActivity: {
       fontSize: ".9em"
-    }
+    },
+    selectType: {
+      fontSize: "12px",
+      fontWeight: 600
+    },
+
   });
 
 interface ExternalProps {
   ticket: Ticket;
+  staff: any;
+}
+
+interface State {
+  staffValue: number;
 }
 
 type Props = WithStyles<typeof styles> &
@@ -68,17 +79,35 @@ type Props = WithStyles<typeof styles> &
   WithInfoProps &
   ExternalProps;
 
-class TicketNav extends Component<Props> {
+class TicketNav extends Component<Props, State> {
   goToTicket = () => {
     this.props.history.push(paths.getTicketDetailPath(this.props.ticket.slug));
   };
+
+  state = {
+    staffValue: this.props.ticket.assignee ? this.props.ticket.assignee.id : 0 
+  };
+
+  handleChange(event: React.ChangeEvent<{ value: unknown }>) {
+    this.setState({
+      staffValue: event.target.value as number
+    });
+    let ticketSlug = this.props.ticket.slug;
+    const URL = `${
+      process.env.REACT_APP_API_BASE
+      }/api/v1/tickets/${ticketSlug}/assign/`;
+    const data = { ticket: { assignee: this.state.staffValue } };
+    return axios.post(URL, { ...data }).then(response => {
+        console.log(response.data);
+    });
+  };
   render() {
-    const { classes, ticket, info } = this.props;
+    const { classes, ticket, info, staff } = this.props;
     const owner = ticket.createdFor ? ticket.createdFor : ticket.createdBy;
 
     const tempStatus = info.statuses.find(item => item.id === ticket.status);
     const status = tempStatus ? tempStatus : closedStatus;
-
+    
     const tempCategory = info.categories.find(
       item => item.id === ticket.category
     );
@@ -89,7 +118,7 @@ class TicketNav extends Component<Props> {
     );
 
     return (
-      <div className={classes.root} onClick={this.goToTicket}>
+      <div className={classes.root}>
         <Grid container alignItems="center">
           <Grid item md={3} lg={2} className={classes.owner}>
             <Grid
@@ -118,7 +147,7 @@ class TicketNav extends Component<Props> {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item md={6} lg={8} className={classes.ticket}>
+          <Grid item md={6} lg={7} className={classes.ticket} onClick={this.goToTicket}>
             <div>
               <Chip label={status.name} className={getChipClass(status.slug)} />
               {issueType ? (
@@ -153,7 +182,7 @@ class TicketNav extends Component<Props> {
               </span>
             </div>
           </Grid>
-          <Grid item md={3} lg={2}>
+          <Grid item md={3} lg={3}>
             <Grid
               container
               justify="center"
@@ -188,8 +217,17 @@ class TicketNav extends Component<Props> {
                       <PersonOutline />
                     </Grid>
                     <Grid item xs={9} className={classes.ticketActivity}>
-                      {ticket.assignee.firstName} {ticket.assignee.otherNames}{" "}
-                      {ticket.assignee.lastName}
+                      <Select
+                        className={classes.selectType}
+                        value={this.state.staffValue}
+                        onChange={this.handleChange.bind(this)}
+                      >
+                        {staff.map((staf: any) => (
+                          <MenuItem value={staf.id}>
+                            {staf.firstName + " " + staf.lastName}
+                          </MenuItem>
+                        ))}
+                      </Select>
                     </Grid>
                   </Grid>
                 </Grid>
@@ -202,4 +240,4 @@ class TicketNav extends Component<Props> {
   }
 }
 
-export default withInfo(withRouter(withStyles(styles)(TicketNav)));
+export default withInfo(withRouter(connect()(withStyles(styles)(TicketNav))));

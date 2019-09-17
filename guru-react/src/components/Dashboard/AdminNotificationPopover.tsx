@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
+import { connect } from 'react-redux';
 import { withStyles, WithStyles } from "@material-ui/styles";
 import { createStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -9,8 +10,8 @@ import Modal from '@material-ui/core/Modal';
 import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import BellIcon from '../../assets/images/user_one.png';
-import NextArrow from '../../assets/images/user_one.png';
+import BellIcon from '../../assets/images/bell_icon.png';
+import NextArrow from '../../assets/images/next_arrow.png';
 import Box from '@material-ui/core/Box';
 const styles = (theme: Theme) =>
     createStyles({
@@ -257,4 +258,4 @@ class AdminNotificationPopover extends Component<Props, State> {
     }
 }
 
-export default withRouter(withStyles(styles)(AdminNotificationPopover));
+export default withRouter(connect()(withStyles(styles)(AdminNotificationPopover)));

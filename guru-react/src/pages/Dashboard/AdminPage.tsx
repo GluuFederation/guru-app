@@ -2,13 +2,14 @@ import React, { Component } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { withStyles, WithStyles } from "@material-ui/styles";
 import { createStyles, Theme } from "@material-ui/core/styles";
+import { connect } from 'react-redux';
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
-import GraphIcon from "../../assets/images/user_one.png";
-import PersonIcon from "../../assets/images/user_one.png";
-import NextArrow from "../../assets/images/user_one.png";
+import GraphIcon from "../../assets/images/graph_icon.png";
+import PersonIcon from "../../assets/images/person_icon.png";
+import NextArrow from "../../assets/images/next_arrow.png";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import Navbar from "../../components/Navbar";
@@ -146,4 +147,4 @@ class AdminPage extends Component<Props> {
   }
 }
 
-export default withRouter(withStyles(styles)(AdminPage));
+export default withRouter(connect()(withStyles(styles)(AdminPage)));

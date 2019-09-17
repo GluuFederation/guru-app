@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { withStyles, WithStyles } from "@material-ui/styles";
+import { connect } from 'react-redux';
 import { createStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Modal from '@material-ui/core/Modal';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import NextArrow from '../../assets/images/user_one.png';
-import GroupIcon from '../../assets/images/user_one.png';
+import NextArrow from '../../assets/images/next_arrow.png';
+import GroupIcon from '../../assets/images/group_icon.png';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -408,4 +409,4 @@ class AdminUserRolePopover extends Component<Props, State> {
     }
 }
 
-export default withRouter(withStyles(styles)(AdminUserRolePopover));
+export default withRouter(connect()(withStyles(styles)(AdminUserRolePopover)));
