@@ -83,7 +83,7 @@ class Home extends Component<Props, State> {
     );
   }
   handleSubmit = (event: React.KeyboardEvent<any>) => {
-    if (event.key == "Enter") {
+    if (event.key === "Enter") {
       let searchQuery = this.Ref.current ? this.Ref.current.state.searchQuery : '';
       this.props.history.push(
         `${paths.TICKET_LIST}${getSearchString({
