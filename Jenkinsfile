@@ -13,7 +13,7 @@ def getCommitInfo = {
 
 def notifyRocket(colour, buildStatus, gitCommitAuthor, stageName, gitCommitMessage) {
   // call the global slackSend method in Jenkins
-  slackSend(color: colour, message: "*${buildStatus}* on ${GIT_BRANCH} [build ${BUILD_DISPLAY_NAME}] \n*Author:* ${gitCommitAuthor} \n*Stage:* ${stageName} \n*Commit Hash* \n${GIT_COMMIT} \n*Commit Message* \n${gitCommitMessage}", channel: "guru-git")
+  rocketSend(color: colour, message: "*${buildStatus}* on ${GIT_BRANCH} [build ${BUILD_DISPLAY_NAME}] \n*Author:* ${gitCommitAuthor} \n*Stage:* ${stageName} \n*Commit Hash* \n${GIT_COMMIT} \n*Commit Message* \n${gitCommitMessage}", channel: "guru-git")
 }
 
 
@@ -27,7 +27,7 @@ pipeline {
     CI = true
   }
   stages {
-    stage('Build images') {
+    stage('Build and Test images') {
       when {
         expression { env.BRANCH_NAME != 'master' }
       }
