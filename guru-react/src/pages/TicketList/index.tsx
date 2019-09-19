@@ -153,6 +153,7 @@ class Home extends Component<Props, State> {
     let searchQuery = this.Ref.current ? this.Ref.current.state.searchQuery : '';
     const { setFilterQuery, fetchTickets } = this.props;
     setFilterQuery(searchQuery);
+    this.setState({autocompleteResults: []});
     this.setTicketsLoading(true);
     fetchTickets(true).then(() => {
       this.setTicketsLoading(false);
@@ -163,6 +164,7 @@ class Home extends Component<Props, State> {
       let searchQuery = this.Ref.current ? this.Ref.current.state.searchQuery : '';
       const { setFilterQuery, fetchTickets } = this.props;
       setFilterQuery(searchQuery);
+      this.setState({autocompleteResults: []});
       this.setTicketsLoading(true);
       fetchTickets(true).then(() => {
         this.setTicketsLoading(false);
