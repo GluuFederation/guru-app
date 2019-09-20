@@ -29,7 +29,7 @@ class ShortCompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = m.Company
         fields = (
-            'id', 'name'
+            'id', 'name','plan'
         )
 
 
@@ -80,7 +80,7 @@ class ShortCompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = m.Company
         fields = (
-            'id', 'name', 'address', 'admin_user'
+            'id', 'name', 'address', 'admin_user','plan'
         )
 
 

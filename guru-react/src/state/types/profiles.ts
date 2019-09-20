@@ -30,6 +30,7 @@ export interface Address {
 export interface ShortCompany {
   id: number;
   name: string;
+  plan?: GuruPlan;
 }
 
 export interface ShortUser {
