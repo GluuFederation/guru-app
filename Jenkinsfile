@@ -64,7 +64,6 @@ pipeline {
       }
 
       steps {
-        stageName = env.STAGE_NAME
         sh './devops/remote-deploy.sh'
       }
       post {
