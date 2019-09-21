@@ -40,8 +40,14 @@ pipeline {
       }
 
       steps {
-        stageName = env.STAGE_NAME
         sh './devops/local-build.sh'
+      }
+      post {
+        always {
+          script {
+            stageName = env.STAGE_NAME
+          }
+        }
       }
     }
 
@@ -60,6 +66,13 @@ pipeline {
       steps {
         stageName = env.STAGE_NAME
         sh './devops/remote-deploy.sh'
+      }
+      post {
+        always {
+          script {
+            stageName = env.STAGE_NAME
+          }
+        }
       }
     }
   }
