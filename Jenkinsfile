@@ -31,7 +31,6 @@ pipeline {
       when {
         expression { env.BRANCH_NAME != 'master' }
       }
-      stageName = env.STAGE_NAME
       agent {
         docker {
           image "${dockerImage}"
@@ -41,6 +40,7 @@ pipeline {
       }
 
       steps {
+        stageName = env.STAGE_NAME
         sh './devops/local-build.sh'
       }
     }
@@ -49,7 +49,6 @@ pipeline {
       when {
         expression { env.BRANCH_NAME == 'master' }
       }
-      stageName = env.STAGE_NAME
       agent {
         docker {
           image "${dockerImage}"
@@ -59,6 +58,7 @@ pipeline {
       }
 
       steps {
+        stageName = env.STAGE_NAME
         sh './devops/remote-deploy.sh'
       }
     }
