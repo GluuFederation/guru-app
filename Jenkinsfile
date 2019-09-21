@@ -11,7 +11,7 @@ def getCommitInfo = {
   gitCommitMessage = sh(returnStdout: true, script: "git log -1 --pretty=%B").trim()
 }
 
-def notifyRocket(colour, buildStatus, gitCommitAuthor, stageName, gitCommitMessage) {
+def notifyRocket(buildStatus, gitCommitAuthor, stageName, gitCommitMessage) {
   // call the global slackSend method in Jenkins
   rocketSend(message: "*${buildStatus}* on ${GIT_BRANCH} [build ${BUILD_DISPLAY_NAME}] \n*Author:* ${gitCommitAuthor} \n*Stage:* ${stageName} \n*Commit Hash* \n${GIT_COMMIT} \n*Commit Message* \n${gitCommitMessage}", channel: "guru-git")
 }
@@ -65,25 +65,26 @@ pipeline {
     aborted {
       script {
         getCommitInfo()
-        notifyRocket('danger', 'Aborted', gitCommitAuthor, stageName, gitCommitMessage)
+        notifyRocket('Aborted', gitCommitAuthor, stageName, gitCommitMessage)
       }
     }
     failure {
       script {
         getCommitInfo()
-        notifyRocket('danger', 'Failed', gitCommitAuthor, stageName, gitCommitMessage)
+        sh "Git env are ${gitCommitAuthor} ${stageName} ${gitCommitMessage} ${GIT_BRANCH} ${env.STAGE_NAME}"
+        notifyRocket('Failed', gitCommitAuthor, env.STAGE_NAME, gitCommitMessage)
       }
     }
     success {
       script {
         getCommitInfo()
-        notifyRocket('good', 'Success', gitCommitAuthor, stageName, gitCommitMessage)
+        notifyRocket('Success', gitCommitAuthor, stageName, gitCommitMessage)
       }
     }
     unstable {
       script {
         getCommitInfo()
-        notifyRocket('danger', 'Unstable', gitCommitAuthor, stageName, gitCommitMessage)
+        notifyRocket('Unstable', gitCommitAuthor, stageName, gitCommitMessage)
       }
     }
   }
