@@ -13,7 +13,7 @@ def getCommitInfo = {
 
 def notifyRocket(colour, buildStatus, gitCommitAuthor, stageName, gitCommitMessage) {
   // call the global slackSend method in Jenkins
-  rocketSend message: "*${buildStatus}* on ${GIT_BRANCH} [build ${BUILD_DISPLAY_NAME}] \n*Author:* ${gitCommitAuthor} \n*Stage:* ${stageName} \n*Commit Hash* \n${GIT_COMMIT} \n*Commit Message* \n${gitCommitMessage}", channel: "guru-git"
+  rocketSend(message: "*${buildStatus}* on ${GIT_BRANCH} [build ${BUILD_DISPLAY_NAME}] \n*Author:* ${gitCommitAuthor} \n*Stage:* ${stageName} \n*Commit Hash* \n${GIT_COMMIT} \n*Commit Message* \n${gitCommitMessage}", channel: "guru-git")
 }
 
 
@@ -64,21 +64,25 @@ pipeline {
   post {
     aborted {
       script {
+        getCommitInfo()
         notifyRocket('danger', 'Aborted', gitCommitAuthor, stageName, gitCommitMessage, slackChannel)
       }
     }
     failure {
       script {
+        getCommitInfo()
         notifyRocket('danger', 'Failed', gitCommitAuthor, stageName, gitCommitMessage, slackChannel)
       }
     }
     success {
       script {
+        getCommitInfo()
         notifyRocket('good', 'Success', gitCommitAuthor, stageName, gitCommitMessage, slackChannel)
       }
     }
     unstable {
       script {
+        getCommitInfo()
         notifyRocket('danger', 'Unstable', gitCommitAuthor, stageName, gitCommitMessage, slackChannel)
       }
     }
