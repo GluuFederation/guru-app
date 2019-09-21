@@ -64,30 +64,22 @@ pipeline {
   post {
     aborted {
       script {
-        if (GIT_BRANCH == 'latest') {
-          notifyRocket('danger', 'Aborted', gitCommitAuthor, stageName, gitCommitMessage, slackChannel)
-        }
+        notifyRocket('danger', 'Aborted', gitCommitAuthor, stageName, gitCommitMessage, slackChannel)
       }
     }
     failure {
       script {
-        if (GIT_BRANCH == 'latest') {
-          notifyRocket('danger', 'Failed', gitCommitAuthor, stageName, gitCommitMessage, slackChannel)
-        }
+        notifyRocket('danger', 'Failed', gitCommitAuthor, stageName, gitCommitMessage, slackChannel)
       }
     }
     success {
       script {
-        if (GIT_BRANCH == 'latest') {
-          notifyRocket('good', 'Success', gitCommitAuthor, stageName, gitCommitMessage, slackChannel)
-        }
+        notifyRocket('good', 'Success', gitCommitAuthor, stageName, gitCommitMessage, slackChannel)
       }
     }
     unstable {
       script {
-        if (GIT_BRANCH == 'latest') {
-          notifyRocket('danger', 'Unstable', gitCommitAuthor, stageName, gitCommitMessage, slackChannel)
-        }
+        notifyRocket('danger', 'Unstable', gitCommitAuthor, stageName, gitCommitMessage, slackChannel)
       }
     }
   }
