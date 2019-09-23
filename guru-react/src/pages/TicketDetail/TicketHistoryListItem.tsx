@@ -104,11 +104,18 @@ class TicketDetail extends Component<Props> {
       <div>
         <Grid className={classes.gridHistory}>
           <Avatar className={classes.iconBg}>{icon}</Avatar>
-          <Avatar
+          { actor.avatar ? 
+            <Avatar
             alt="Avatar"
             src={actor.avatar}
             className={classes.avatarSmall}
-          />
+          />:
+          <Avatar
+            alt="Avatar"
+            className={classes.avatarSmall}
+          >{actor.firstName? actor.firstName.charAt(0):""}</Avatar>
+          }
+          
           <Typography className={classes.textUser}>
             {actor.firstName} {actor.otherNames} {actor.lastName} {text} {time}
           </Typography>

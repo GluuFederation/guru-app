@@ -282,6 +282,7 @@ class TicketDetailSideBarItem extends Component<Props, State> {
     let infoText = "";
     let title = "";
     let avatar = "";
+    let firstChar = "";
     let chipMenuItems: Array<
       | TicketCategory
       | TicketStatus
@@ -295,6 +296,7 @@ class TicketDetailSideBarItem extends Component<Props, State> {
           ? `${createdBy.firstName} ${createdBy.otherNames} ${createdBy.lastName}`
           : "";
         avatar = createdBy ? createdBy.avatar : "";
+        firstChar = createdBy ? createdBy.firstName.charAt(0) : "";
         if (isNew) {
         }
         title = "Created By";
@@ -304,6 +306,7 @@ class TicketDetailSideBarItem extends Component<Props, State> {
           ? `${assignee.firstName} ${assignee.otherNames} ${assignee.lastName}`
           : "Unassigned";
         avatar = assignee ? assignee.avatar : "";
+        firstChar = assignee ? assignee.firstName.charAt(0) : "";
         title = "Assignee";
         break;
       case MenuType.Category:
@@ -357,7 +360,6 @@ class TicketDetailSideBarItem extends Component<Props, State> {
       classes: { root: classes.autoCompleteInput },
       placeholder: "Search name..."
     };
-
     return (
       <Grid item xs={12}>
         {menuType === MenuType.NewProduct ? (
@@ -405,7 +407,10 @@ class TicketDetailSideBarItem extends Component<Props, State> {
                   menuType === MenuType.Assignee ? (
                     <React.Fragment>
                       <Grid item xs={3}>
-                        <Avatar src={avatar} />
+                        { avatar ? <Avatar src={avatar} /> :
+                          <Avatar>{firstChar}</Avatar> 
+                        }
+                        
                       </Grid>
                       <Grid item xs={7}>
                         {infoText}

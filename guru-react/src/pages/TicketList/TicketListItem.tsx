@@ -131,7 +131,11 @@ class TicketNav extends Component<Props, State> {
               alignItems="center"
             >
               <Grid item>
-                <Avatar src={owner.avatar} className={classes.avatar} />
+                { owner.avatar ?
+                  <Avatar alt="Image" src={owner.avatar} className={classes.avatar} ></Avatar>
+                  : <Avatar alt="Image" className={classes.avatar} >{owner.firstName.charAt(0)}</Avatar>
+                }
+                
               </Grid>
               <Grid item>
                 <div>

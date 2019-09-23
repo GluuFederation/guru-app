@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
-
+import { connect } from 'react-redux';
 import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -51,7 +51,11 @@ class TicketDetail extends Component<Props> {
 
     return (
       <div style={{ textAlign: "center" }}>
-        <Avatar alt="Avatar" src={user.avatar} className={classes.avatarBig} />
+        { user.avatar ?
+          <Avatar alt="Avatar" src={user.avatar} className={classes.avatarBig} /> :
+          <Avatar alt="Avatar" className={classes.avatarBig}>{user.firstName.charAt(0)}</Avatar>
+        }
+        
         {user.role ? (
           <div>
             <Chip
@@ -90,4 +94,4 @@ class TicketDetail extends Component<Props> {
   }
 }
 
-export default withRouter(withStyles(styles)(TicketDetail));
+export default withRouter(connect()(withStyles(styles)(TicketDetail)));
