@@ -133,14 +133,18 @@ class TicketDetail extends Component<Props, State> {
         ? user.role.name === "community"
         : true
       : true;
+    const isStaff = user
+      ? user.role
+        ? user.role.name === "staff"
+        : false
+      : false;
     const isUserCompany = user
       ? user.company
         ? !!ticket.companyAssociation &&
-          user.company.id === ticket.companyAssociation.id
+        user.company.id === ticket.companyAssociation.id
         : false
       : false;
-    const canEdit = isUserCompany && !isCommunity && !!user;
-
+    const canEdit = isUserCompany && !isCommunity && !!user || isStaff && !!user;
     return (
       <Page>
         <Navbar />
@@ -183,11 +187,11 @@ class TicketDetail extends Component<Props, State> {
                                   classes={{ root: classes.privacyIcon }}
                                 />
                               ) : (
-                                <LockOpen
-                                  height="10"
-                                  classes={{ root: classes.privacyIcon }}
-                                />
-                              )}
+                                  <LockOpen
+                                    height="10"
+                                    classes={{ root: classes.privacyIcon }}
+                                  />
+                                )}
                             </Button>
                             &emsp;
                             <Button
@@ -211,7 +215,7 @@ class TicketDetail extends Component<Props, State> {
                         </Box>
                       </Grid>
                       <Grid item md={10}>
-                        <TicketCard ticket={ticket} />
+                        <TicketCard ticket={ticket} slug={ticket.slug} />
                         {ticketHistory.map(item => (
                           <TicketHistoryListItem
                             key={item.id}

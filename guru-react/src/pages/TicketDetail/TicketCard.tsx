@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import moment from "moment-timezone";
 import ReactMarkdown from "react-markdown";
-
+import { connect } from 'react-redux';
 import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
 import ThumbUpAlt from "@material-ui/icons/ThumbUpAlt";
@@ -27,6 +27,7 @@ const styles = (theme: Theme) =>
   });
 
 interface ExternalProps {
+  slug: string;
   ticket: Ticket;
 }
 
@@ -71,9 +72,15 @@ class TicketDetail extends Component<Props, State> {
       changeTicketVote(ticket.slug, !this.isVoted());
     }
   };
-
+  copyLink = () => {
+    const url = `${window.location.protocol}//${
+      window.location.hostname
+    }/tickets/${this.props.slug}`;
+    navigator.clipboard.writeText(url);
+    this.closeTicketMenu();
+  };
   render() {
-    const { classes, ticket } = this.props;
+    const { classes, ticket, slug } = this.props;
     const { ticketMenuElement } = this.state;
 
     return (
@@ -102,7 +109,7 @@ class TicketDetail extends Component<Props, State> {
           open={Boolean(ticketMenuElement)}
           onClose={this.closeTicketMenu}
         >
-          <MenuItem>Copy Link</MenuItem>
+          <MenuItem onClick={this.copyLink}>Copy Link</MenuItem>
           <MenuItem>Open new ticket</MenuItem>
           <MenuItem>Delete</MenuItem>
         </Menu>
@@ -116,5 +123,5 @@ class TicketDetail extends Component<Props, State> {
 }
 
 export default withTicketDetail(
-  withUser(withRouter(withStyles(styles)(TicketDetail)))
+  withUser(withRouter(connect()(withStyles(styles)(TicketDetail))))
 );
