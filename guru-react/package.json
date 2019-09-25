@@ -34,7 +34,7 @@
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
     "typescript": "3.6.3",
-    "utility-types": "^3.7.0"
+    "utility-types": "^3.8.0"
   },
   "scripts": {
     "start": "react-scripts start",
