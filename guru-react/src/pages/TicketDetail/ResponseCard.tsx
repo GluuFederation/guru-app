@@ -3,7 +3,7 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 import moment from "moment";
 import ReactMarkdown from "react-markdown";
 import Modal from "@material-ui/core/Modal";
-
+import { paths } from "../../routes";
 import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
@@ -13,7 +13,7 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import IconButton from "@material-ui/core/IconButton";
 import MoreHoriIcon from "@material-ui/icons/MoreHoriz";
-
+import { connect } from 'react-redux';
 import { Answer } from "../../state/types/tickets";
 import DeleteConfirmation from "../../components/TicketDetail/DeleteConfirmation";
 
@@ -68,7 +68,9 @@ class TicketDetail extends Component<Props, State> {
     navigator.clipboard.writeText(url);
     this.closeResponseMenu();
   };
-
+  navigateTo = (path: string) => () => {
+    this.props.history.push(path);
+  };
   render() {
     const { classes, answer, slug } = this.props;
     const { responseMenuElement, isModalOpen } = this.state;
@@ -95,7 +97,7 @@ class TicketDetail extends Component<Props, State> {
           onClose={this.closeResponseMenu}
         >
           <MenuItem onClick={this.copyLink}>Copy Link</MenuItem>
-          <MenuItem>Open new ticket</MenuItem>
+          <MenuItem onClick={this.navigateTo(paths.getCreateTicketPath(NaN))}>Open new ticket</MenuItem>
           <MenuItem onClick={this.openModal}>Delete</MenuItem>
         </Menu>
         <CardContent>
@@ -121,4 +123,4 @@ class TicketDetail extends Component<Props, State> {
   }
 }
 
-export default withRouter(withStyles(styles)(TicketDetail));
+export default withRouter(connect()(withStyles(styles)(TicketDetail)));
