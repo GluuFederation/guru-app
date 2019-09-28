@@ -136,13 +136,11 @@ def test_image(image, version=None):
 
     if image == 'guru-api':
         command_args = [
-            'docker', 'run', '-ti', '--env-file',
-            '{}/secrets/api-test.env'.format(BASE_DIR), image_tag,
-            'python', 'manage.py', 'test'
+            'docker', 'run', image_tag, 'python', 'manage.py', 'test'
         ]
     elif image in ['guru-react', 'users-vue']:
         command_args = [
-            'docker', 'run', '-ti', '-e', 'CI=true', image_tag, 'npm',
+            'docker', 'run', '-e', 'CI=true', image_tag, 'npm',
             'test', '--no-watch'
         ]
     else:
