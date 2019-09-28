@@ -112,6 +112,7 @@ def run_command(command_args):
     process = subprocess.run(
         command_args,
         encoding='utf8',
+        env=os.environ.copy(),
         check=True
     )
     logging.info(process.stdout)
