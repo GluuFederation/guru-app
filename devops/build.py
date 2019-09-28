@@ -94,17 +94,20 @@ def has_image_changed(image, build_args, environment=None):
     if image == 'guru-nginx':
         image_name = '{}-{}'.format(image, environment)
 
-    process = run_command([
-        'docker', 'inspect', '--format', '{{.Id}}', image_name
-    ])
-    first_id = process.stdout
-    process = run_command(build_args)
-    second_id = process.stdout
+    try:
+        process = run_command([
+            'docker', 'inspect', '--format', '{{.Id}}', image_name
+        ])
+        first_id = process.stdout
+        process = run_command(build_args)
+        second_id = process.stdout
 
-    if first_id == second_id:
+        if first_id == second_id:
+            return False
+
+        return True
+    except subprocess.CalledProcessError:
         return False
-
-    return True
 
 
 def run_command(command_args):
