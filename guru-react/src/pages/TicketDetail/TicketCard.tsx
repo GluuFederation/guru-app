@@ -116,5 +116,5 @@ class TicketDetail extends Component<Props, State> {
 }
 
 export default withTicketDetail(
-  withUser(withRouter(withStyles(styles)(TicketDetail)))
+  withUser(withStyles(styles)(withRouter(TicketDetail)))
 );

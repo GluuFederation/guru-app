@@ -90,4 +90,4 @@ class TicketDetail extends Component<Props> {
   }
 }
 
-export default withRouter(withStyles(styles)(TicketDetail));
+export default withStyles(styles)(withRouter(TicketDetail));

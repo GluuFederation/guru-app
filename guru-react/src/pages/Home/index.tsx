@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import axios from "axios";
-import { connect } from 'react-redux';
 import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -55,7 +54,6 @@ class Home extends Component<Props, State> {
       searchQuery: ""
     };
     this.Ref = React.createRef();
-
   }
 
   searchTickets = (q: string) => {
@@ -75,23 +73,27 @@ class Home extends Component<Props, State> {
   };
 
   handleClick = () => {
-    let searchQuery = this.Ref.current ? this.Ref.current.state.searchQuery : '';
+    let searchQuery = this.Ref.current
+      ? this.Ref.current.state.searchQuery
+      : "";
     this.props.history.push(
       `${paths.TICKET_LIST}${getSearchString({
         query: searchQuery
       })}`
     );
-  }
+  };
   handleSubmit = (event: React.KeyboardEvent<any>) => {
     if (event.key === "Enter") {
-      let searchQuery = this.Ref.current ? this.Ref.current.state.searchQuery : '';
+      let searchQuery = this.Ref.current
+        ? this.Ref.current.state.searchQuery
+        : "";
       this.props.history.push(
         `${paths.TICKET_LIST}${getSearchString({
           query: searchQuery
         })}`
       );
     }
-  }
+  };
 
   render() {
     const { classes, info } = this.props;
@@ -158,4 +160,4 @@ class Home extends Component<Props, State> {
   }
 }
 
-export default withInfo(withRouter(connect()(withStyles(styles)(Home))));
+export default withInfo(withStyles(styles)(withRouter(Home)));

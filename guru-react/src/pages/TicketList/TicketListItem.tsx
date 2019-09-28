@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import moment from "moment";
-import { connect } from 'react-redux';
 import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -61,8 +60,7 @@ const styles = (theme: Theme) =>
     selectType: {
       fontSize: "12px",
       fontWeight: 600
-    },
-
+    }
   });
 
 interface ExternalProps {
@@ -85,7 +83,7 @@ class TicketNav extends Component<Props, State> {
   };
 
   state = {
-    staffValue: this.props.ticket.assignee ? this.props.ticket.assignee.id : 0 
+    staffValue: this.props.ticket.assignee ? this.props.ticket.assignee.id : 0
   };
 
   handleChange(event: React.ChangeEvent<{ value: unknown }>) {
@@ -93,21 +91,19 @@ class TicketNav extends Component<Props, State> {
       staffValue: event.target.value as number
     });
     let ticketSlug = this.props.ticket.slug;
-    const URL = `${
-      process.env.REACT_APP_API_BASE
-      }/api/v1/tickets/${ticketSlug}/assign/`;
+    const URL = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/${ticketSlug}/assign/`;
     const data = { ticket: { assignee: this.state.staffValue } };
     return axios.post(URL, { ...data }).then(response => {
-        console.log(response.data);
+      console.log(response.data);
     });
-  };
+  }
   render() {
     const { classes, ticket, info, staff } = this.props;
     const owner = ticket.createdFor ? ticket.createdFor : ticket.createdBy;
 
     const tempStatus = info.statuses.find(item => item.id === ticket.status);
     const status = tempStatus ? tempStatus : closedStatus;
-    
+
     const tempCategory = info.categories.find(
       item => item.id === ticket.category
     );
@@ -147,7 +143,13 @@ class TicketNav extends Component<Props, State> {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item md={6} lg={7} className={classes.ticket} onClick={this.goToTicket}>
+          <Grid
+            item
+            md={6}
+            lg={7}
+            className={classes.ticket}
+            onClick={this.goToTicket}
+          >
             <div>
               <Chip label={status.name} className={getChipClass(status.slug)} />
               {issueType ? (
@@ -174,9 +176,7 @@ class TicketNav extends Component<Props, State> {
                 <em>
                   {moment(ticket.updatedOn).fromNow()}{" "}
                   {ticket.updatedBy
-                    ? ` by ${ticket.updatedBy.firstName} ${
-                        ticket.updatedBy.lastName
-                      }`
+                    ? ` by ${ticket.updatedBy.firstName} ${ticket.updatedBy.lastName}`
                     : ""}
                 </em>
               </span>
@@ -240,4 +240,4 @@ class TicketNav extends Component<Props, State> {
   }
 }
 
-export default withInfo(withRouter(connect()(withStyles(styles)(TicketNav))));
+export default withInfo(withStyles(styles)(withRouter(TicketNav)));

@@ -272,5 +272,5 @@ class ChangeProduct extends Component<Props, State> {
 }
 
 export default withTicketDetail(
-  withCreateTicket(withInfo(withRouter(withStyles(styles)(ChangeProduct))))
+  withCreateTicket(withInfo(withStyles(styles)(withRouter(ChangeProduct))))
 );

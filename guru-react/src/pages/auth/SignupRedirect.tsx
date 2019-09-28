@@ -55,4 +55,4 @@ class SignupRedirect extends Component<Props> {
   }
 }
 
-export default withProfiles(withRouter(withStyles(styles)(SignupRedirect)));
+export default withProfiles(withStyles(styles)(withRouter(SignupRedirect)));

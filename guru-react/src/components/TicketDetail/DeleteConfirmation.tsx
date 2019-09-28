@@ -76,5 +76,5 @@ class DeleteConfirmation extends Component<Props> {
 }
 
 export default withTicketDetail(
-  withRouter(withStyles(styles)(DeleteConfirmation))
+  withStyles(styles)(withRouter(DeleteConfirmation))
 );

@@ -81,4 +81,4 @@ class LoginCallback extends Component<Props> {
   }
 }
 
-export default withProfiles(withRouter(withStyles(styles)(LoginCallback)));
+export default withProfiles(withStyles(styles)(withRouter(LoginCallback)));

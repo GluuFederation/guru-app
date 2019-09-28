@@ -62,9 +62,7 @@ class TicketDetail extends Component<Props, State> {
   };
 
   copyLink = () => {
-    const url = `${window.location.protocol}//${
-      window.location.hostname
-    }/tickets/${this.props.slug}`;
+    const url = `${window.location.protocol}//${window.location.hostname}/tickets/${this.props.slug}`;
     navigator.clipboard.writeText(url);
     this.closeResponseMenu();
   };
@@ -121,4 +119,4 @@ class TicketDetail extends Component<Props, State> {
   }
 }
 
-export default withRouter(withStyles(styles)(TicketDetail));
+export default withStyles(styles)(withRouter(TicketDetail));
