@@ -11,9 +11,9 @@ def getCommitInfo = {
   gitCommitMessage = sh(returnStdout: true, script: "git log -1 --pretty=%B").trim()
 }
 
-def notifyRocket(buildStatus, gitCommitAuthor, stageName, gitCommitMessage) {
+def notifyRocket(color, buildStatus, gitCommitAuthor, stageName, gitCommitMessage) {
   // call the global slackSend method in Jenkins
-  rocketSend channel: "guru-git", message: "*${buildStatus}* on ${GIT_BRANCH} [build ${BUILD_DISPLAY_NAME}] \n*Author:* ${gitCommitAuthor} \n*Stage:* ${stageName} \n*Commit Hash* \n${GIT_COMMIT} \n*Commit Message* \n${gitCommitMessage}"
+  rocketSend channel: "guru_git", message: "*${buildStatus}* on ${GIT_BRANCH} [build ${BUILD_DISPLAY_NAME}] \n*Author:* ${gitCommitAuthor} \n*Stage:* ${stageName} \n*Commit Hash* \n${GIT_COMMIT} \n*Commit Message* \n${gitCommitMessage}"
 }
 
 
