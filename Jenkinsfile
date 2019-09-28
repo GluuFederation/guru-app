@@ -1,7 +1,6 @@
 def dockerImage = "gluufederation/guru-jenkins"
 
 def nodeName
-def slackChannel = "#si_repo-psammead"
 def stageName = "Unknown"
 def gitCommitAuthor = "Unknown"
 def gitCommitMessage = "Unknown"
@@ -106,4 +105,5 @@ pipeline {
       }
     }
   }
+}
 }

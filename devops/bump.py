@@ -21,8 +21,10 @@ def validate_bump_type(bump_type):
     """
     if bump_type not in ['patch', 'minor', 'major']:
         raise Exception(
-            "Invalid bump type. Only 'patch', 'minor', 'major'"
-            " are valid bump types"
+            (
+                "{} is an invalid bump type. Only 'patch', 'minor', 'major'"
+                " are valid bump types"
+            ).format(bump_type)
         )
 
 
@@ -34,8 +36,10 @@ def validate_app(app):
     """
     if app not in ['guru-api', 'guru-nginx', 'guru-react', 'users-vue']:
         raise Exception(
-            "Invalid image. Only 'guru-api', 'guru-react', 'users-vue'"
-            " and 'guru-nginx' are valid app name"
+            (
+                "{} is an invalid app name. Only 'guru-api', 'guru-react', "
+                "'users-vue' and 'guru-nginx' are valid app names"
+            ).format(app)
         )
 
 

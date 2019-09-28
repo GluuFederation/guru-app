@@ -26,8 +26,10 @@ def validate_image(image):
     """
     if image not in ['guru-api', 'guru-nginx', 'guru-react', 'users-vue']:
         raise Exception(
-            "Invalid image. Only 'guru-api', 'guru-react', 'users-vue'"
-            " and 'guru-nginx' are valid images"
+            (
+                "{} is an invalid image. Only 'guru-api', 'guru-react', "
+                "'users-vue' and 'guru-nginx' are valid images"
+            ).format(image)
         )
 
 
@@ -39,8 +41,10 @@ def validate_environment(environment):
     """
     if environment not in ['dev', 'stage', 'prod']:
         raise Exception(
-            "Invalid environment. Only 'dev', 'stage' and 'prod' are valid"
-            " environments"
+            (
+                "{} is an invalid environment. Only 'dev', 'stage' and 'prod'"
+                "are valid environments"
+            ).format(environment)
         )
 
 
@@ -112,7 +116,6 @@ def run_command(command_args):
     process = subprocess.run(
         command_args,
         encoding='utf8',
-        env=os.environ.copy(),
         check=True
     )
     logging.info(process.stdout)
@@ -223,15 +226,15 @@ def deploy_containers(image, environment, version=None):
         run_command(['cp', 'docker-compose.yml', 'docker-compose.yml.deploy'])
 
     run_command([
-        'scp', '-P', '22222', '-i', '$GURU_ENV',
-        'docker-compose.yml.deploy',
+        'scp', '-P', '22222', '-i', os.environ.get('GURU_ENV'),
+        '-oStrictHostKeyChecking=no', 'docker-compose.yml.deploy',
         'gluu@{}:/home/gluu/app/docker-compose.yml'.format(
             env_url_map[environment]
         )
     ])
     run_command([
-        'ssh', '-p', '22222',
-        '-i', '$GURU_ENV',
+        'ssh', '-p', '22222', '-oStrictHostKeyChecking=no',
+        '-i', os.environ.get('GURU_ENV'),
         'gluu@{}'.format(
             env_url_map[environment]
         ),
