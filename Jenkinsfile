@@ -79,25 +79,25 @@ pipeline {
     aborted {
       script {
         getCommitInfo()
-        notifyRocket('Aborted', gitCommitAuthor, stageName, gitCommitMessage)
+        notifyRocket('danger', 'Aborted', gitCommitAuthor, stageName, gitCommitMessage)
       }
     }
     failure {
       script {
         getCommitInfo()
-        notifyRocket('Failed', gitCommitAuthor, stageName, gitCommitMessage)
+        notifyRocket('danger', 'Failed', gitCommitAuthor, stageName, gitCommitMessage)
       }
     }
     success {
       script {
         getCommitInfo()
-        notifyRocket('Success', gitCommitAuthor, stageName, gitCommitMessage)
+        notifyRocket('good', 'Success', gitCommitAuthor, stageName, gitCommitMessage)
       }
     }
     unstable {
       script {
         getCommitInfo()
-        notifyRocket('Unstable', gitCommitAuthor, stageName, gitCommitMessage)
+        notifyRocket('danger', 'Unstable', gitCommitAuthor, stageName, gitCommitMessage)
       }
     }
   }
