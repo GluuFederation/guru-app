@@ -222,13 +222,15 @@ def deploy_containers(image, environment, version=None):
         run_command(['cp', 'docker-compose.yml', 'docker-compose.yml.deploy'])
 
     run_command([
-        'scp', '-P', '22222', 'docker-compose.yml.deploy',
+        'scp', '-P', '22222', '-i', '$GURU_ENV',
+        'docker-compose.yml.deploy',
         'gluu@{}:/home/gluu/app/docker-compose.yml'.format(
             env_url_map[environment]
         )
     ])
     run_command([
         'ssh', '-p', '22222',
+        '-i', '$GURU_ENV',
         'gluu@{}'.format(
             env_url_map[environment]
         ),
