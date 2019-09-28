@@ -65,7 +65,7 @@ pipeline {
 
       steps {
         withCredentials([string(credentialsId: 'docker-login', variable: 'DOCKER_PASS')]) {
-          sh 'echo $DOCKER_PASS | docker login --pasword-stdin -u pharingee'
+          sh 'echo $DOCKER_PASS | docker login --password-stdin -u pharingee'
           sh './devops/remote-deploy.sh'
         }
       }
