@@ -15,7 +15,7 @@
     "moment-timezone": "^0.5.23",
     "usa-states": "^0.0.5",
     "vue": "^2.6.10",
-    "vue-awesome": "^3.5.1",
+    "vue-awesome": "^3.5.4",
     "vue-axios": "^2.1.4",
     "vue-error-page": "^1.1.7",
     "vue-js-modal": "^1.3.28",
