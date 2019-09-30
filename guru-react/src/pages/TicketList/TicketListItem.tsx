@@ -24,6 +24,7 @@ import {
 import { withInfo, WithInfoProps } from "../../state/hocs/info";
 import { TicketIssueType } from "../../state/types/info";
 import axios from "axios";
+import { fontStyle } from "@material-ui/system";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -61,6 +62,7 @@ const styles = (theme: Theme) =>
       fontSize: "12px",
       fontWeight: 600
     }
+
   });
 
 interface ExternalProps {
@@ -90,11 +92,12 @@ class TicketNav extends Component<Props, State> {
     this.setState({
       staffValue: event.target.value as number
     });
+    let assignee_id =  event.target.value as number;
     let ticketSlug = this.props.ticket.slug;
     const URL = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/${ticketSlug}/assign/`;
-    const data = { ticket: { assignee: this.state.staffValue } };
+    const data = { ticket: { assignee:  assignee_id} };
     return axios.post(URL, { ...data }).then(response => {
-      console.log(response.data);
+    
     });
   }
   render() {
@@ -124,7 +127,11 @@ class TicketNav extends Component<Props, State> {
               alignItems="center"
             >
               <Grid item>
-                <Avatar src={owner.avatar} className={classes.avatar} />
+                { owner.avatar ?
+                  <Avatar alt="Image" src={owner.avatar} className={classes.avatar} ></Avatar>
+                  : <Avatar alt="Image" className={classes.avatar} >{owner.firstName.charAt(0)}</Avatar>
+                }
+                
               </Grid>
               <Grid item>
                 <div>
@@ -139,7 +146,7 @@ class TicketNav extends Component<Props, State> {
                 </div>
               </Grid>
               <Grid item>
-                <div>{owner.role ? owner.role.name : ""}</div>
+                <div style={{textTransform:'capitalize'}}>{owner.company ? owner.company.plan : ""}</div>
               </Grid>
             </Grid>
           </Grid>
@@ -210,7 +217,7 @@ class TicketNav extends Component<Props, State> {
                   </Grid>
                 </Grid>
               </Grid>
-              {ticket.assignee ? (
+              {/* {ticket.assignee ? ( */}
                 <Grid item xs={12}>
                   <Grid container justify="center" spacing={2}>
                     <Grid item xs={3}>
@@ -231,7 +238,7 @@ class TicketNav extends Component<Props, State> {
                     </Grid>
                   </Grid>
                 </Grid>
-              ) : null}
+               {/* ) : null} */}
             </Grid>
           </Grid>
         </Grid>

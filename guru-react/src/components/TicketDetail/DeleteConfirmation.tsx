@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
-
 import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -52,6 +51,7 @@ class DeleteConfirmation extends Component<Props> {
       } else {
         deleteTicket(slug).then(() => {
           closeModal();
+          this.props.history.push('/dashboard');
         });
       }
     }

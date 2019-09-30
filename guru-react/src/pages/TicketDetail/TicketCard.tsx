@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import moment from "moment-timezone";
 import ReactMarkdown from "react-markdown";
-
 import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
+import { paths } from "../../routes";
 import ThumbUpAlt from "@material-ui/icons/ThumbUpAlt";
 import MoreHoriz from "@material-ui/icons/MoreHoriz";
 import Card from "@material-ui/core/Card";
@@ -13,12 +13,13 @@ import CardHeader from "@material-ui/core/CardHeader";
 import IconButton from "@material-ui/core/IconButton";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-
+import DeleteConfirmation from "../../components/TicketDetail/DeleteConfirmation";
 import { Ticket } from "../../state/types/tickets";
 import {
   withTicketDetail,
   WithTicketDetailProps
 } from "../../state/hocs/tickets";
+import Modal from "@material-ui/core/Modal";
 import { withUser, WithUserProps } from "../../state/hocs/profiles";
 
 const styles = (theme: Theme) =>
@@ -27,6 +28,7 @@ const styles = (theme: Theme) =>
   });
 
 interface ExternalProps {
+  slug: string;
   ticket: Ticket;
 }
 
@@ -38,6 +40,7 @@ type Props = WithUserProps &
 
 interface State {
   ticketMenuElement: HTMLElement | null;
+  isModalOpen : boolean
 }
 
 class TicketDetail extends Component<Props, State> {
@@ -45,7 +48,8 @@ class TicketDetail extends Component<Props, State> {
     super(props);
 
     this.state = {
-      ticketMenuElement: null
+      ticketMenuElement: null,
+      isModalOpen: false
     };
   }
 
@@ -55,6 +59,15 @@ class TicketDetail extends Component<Props, State> {
 
   openTicketMenu = (event: React.MouseEvent<HTMLElement>) => {
     this.setState({ ticketMenuElement: event.currentTarget });
+  };
+
+  openModal = () => {
+    this.setState({ isModalOpen: true });
+    this.closeTicketMenu();
+  };
+
+  closeModal = () => {
+    this.setState({ isModalOpen: false });
   };
 
   isVoted = () => {
@@ -71,9 +84,18 @@ class TicketDetail extends Component<Props, State> {
       changeTicketVote(ticket.slug, !this.isVoted());
     }
   };
-
+  copyLink = () => {
+    const url = `${window.location.protocol}//${
+      window.location.hostname
+    }/tickets/${this.props.slug}`;
+    navigator.clipboard.writeText(url);
+    this.closeTicketMenu();
+  };
+  navigateTo = (path: string) => () => {
+    this.props.history.push(path);
+  };
   render() {
-    const { classes, ticket } = this.props;
+    const { classes, ticket, slug } = this.props;
     const { ticketMenuElement } = this.state;
 
     return (
@@ -102,13 +124,27 @@ class TicketDetail extends Component<Props, State> {
           open={Boolean(ticketMenuElement)}
           onClose={this.closeTicketMenu}
         >
-          <MenuItem>Copy Link</MenuItem>
-          <MenuItem>Open new ticket</MenuItem>
-          <MenuItem>Delete</MenuItem>
+          <MenuItem onClick={this.copyLink}>Copy Link</MenuItem>
+          <MenuItem onClick={this.navigateTo(paths.getCreateTicketPath(NaN))} >Open new ticket</MenuItem>
+          <MenuItem onClick={this.openModal}>Delete</MenuItem>
         </Menu>
 
         <CardContent>
           <ReactMarkdown source={ticket.body} />
+          <Modal
+            aria-labelledby="delete-confirmation-modal"
+            open={this.state.isModalOpen}
+            onClose={this.closeModal}
+          >
+            <div className="modal-super-container">
+              <div className="modal-container">
+                <DeleteConfirmation
+                  closeModal={this.closeModal}
+                  slug={slug}
+                />
+              </div>
+            </div>
+          </Modal>
         </CardContent>
       </Card>
     );

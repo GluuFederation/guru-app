@@ -99,7 +99,7 @@ class TicketSideBar extends Component<Props, State> {
           user.company.id === ticket.companyAssociation.id
         : false
       : false;
-    const canEdit = isUserCompany && !isCommunity && !!user;
+    const canEdit = isUserCompany && !isCommunity && !!user || isStaff && !!user;
 
     if (isCommunity) {
       menuTypes = menuTypes.filter(
