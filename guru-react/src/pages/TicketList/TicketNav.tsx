@@ -261,5 +261,5 @@ class TicketNav extends Component<Props, State> {
 }
 
 export default withTicketList(
-  withUser(withRouter(withStyles(styles)(TicketNav)))
+  withUser(withStyles(styles)(withRouter(TicketNav)))
 );

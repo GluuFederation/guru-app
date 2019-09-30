@@ -217,5 +217,5 @@ class ResponsePost extends Component<Props, State> {
 }
 
 export default withTicketDetail(
-  withInfo(withRouter(withStyles(styles)(ResponsePost)))
+  withInfo(withStyles(styles)(withRouter(ResponsePost)))
 );

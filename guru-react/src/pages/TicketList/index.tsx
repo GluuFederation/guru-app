@@ -3,7 +3,7 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 import axios from "axios";
 import moment from "moment";
 import ReactPaginate from "react-paginate";
-import { connect } from 'react-redux';
+
 import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -96,7 +96,7 @@ interface State {
   staffName: Array<String>;
 }
 
-class Home extends Component<Props, State> {
+class TicketList extends Component<Props, State> {
   private Ref: React.RefObject<Autocomplete>;
   constructor(props: Props) {
     super(props);
@@ -135,8 +135,8 @@ class Home extends Component<Props, State> {
     const url = `${process.env.REACT_APP_API_BASE}/api/v1/users/staffs/`;
     axios.get(url).then(response => {
       this.setState({
-        staffName:response.data.results
-      })
+        staffName: response.data.results
+      });
     });
   };
 
@@ -150,10 +150,12 @@ class Home extends Component<Props, State> {
   };
 
   handleSearchButton = () => {
-    let searchQuery = this.Ref.current ? this.Ref.current.state.searchQuery : '';
+    let searchQuery = this.Ref.current
+      ? this.Ref.current.state.searchQuery
+      : "";
     const { setFilterQuery, fetchTickets } = this.props;
     setFilterQuery(searchQuery);
-    this.setState({autocompleteResults: []});
+    this.setState({ autocompleteResults: [] });
     this.setTicketsLoading(true);
     fetchTickets(true).then(() => {
       this.setTicketsLoading(false);
@@ -161,10 +163,12 @@ class Home extends Component<Props, State> {
   };
   handleSearchOnSubmit = (event: React.KeyboardEvent<any>) => {
     if (event.key == "Enter") {
-      let searchQuery = this.Ref.current ? this.Ref.current.state.searchQuery : '';
+      let searchQuery = this.Ref.current
+        ? this.Ref.current.state.searchQuery
+        : "";
       const { setFilterQuery, fetchTickets } = this.props;
       setFilterQuery(searchQuery);
-      this.setState({autocompleteResults: []});
+      this.setState({ autocompleteResults: [] });
       this.setTicketsLoading(true);
       fetchTickets(true).then(() => {
         this.setTicketsLoading(false);
@@ -205,9 +209,7 @@ class Home extends Component<Props, State> {
   };
 
   syncStateWithPath = () => {
-    const url = `${
-      process.env.REACT_APP_API_BASE
-      }/api/v1/tickets/get-params-data/`;
+    const url = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/get-params-data/`;
     const searchParams = new URLSearchParams(this.props.location.search);
     const companies = searchParams.get("companies");
     const creators = searchParams.get("creators");
@@ -316,10 +318,10 @@ class Home extends Component<Props, State> {
           order === TicketFilterOrder.LeastRecent
             ? TicketFilterOrder.LeastRecent
             : order === TicketFilterOrder.UserAZ
-              ? TicketFilterOrder.UserAZ
-              : order === TicketFilterOrder.UserZA
-                ? TicketFilterOrder.UserZA
-                : TicketFilterOrder.MostRecent
+            ? TicketFilterOrder.UserAZ
+            : order === TicketFilterOrder.UserZA
+            ? TicketFilterOrder.UserZA
+            : TicketFilterOrder.MostRecent
         );
       }
 
@@ -401,14 +403,17 @@ class Home extends Component<Props, State> {
                     <CircularProgress />
                   </div>
                 ) : (
-                    <React.Fragment>
-                      {tickets.map(ticket => (
-                        <Grid item xs={12} key={ticket.id}>
-                          <TicketListItem ticket={ticket} staff={this.state.staffName}  />
-                        </Grid>
-                      ))}
-                    </React.Fragment>
-                  )}
+                  <React.Fragment>
+                    {tickets.map(ticket => (
+                      <Grid item xs={12} key={ticket.id}>
+                        <TicketListItem
+                          ticket={ticket}
+                          staff={this.state.staffName}
+                        />
+                      </Grid>
+                    ))}
+                  </React.Fragment>
+                )}
               </Grid>
               <Grid container>
                 <Grid item>
@@ -457,4 +462,6 @@ class Home extends Component<Props, State> {
   }
 }
 
-export default withInfo(withTicketList(withRouter(connect()(withStyles(styles)(Home)))));
+export default withInfo(
+  withTicketList(withStyles(styles)(withRouter(TicketList)))
+);

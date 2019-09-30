@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
-import { connect } from 'react-redux';
 import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -77,5 +76,5 @@ class DeleteConfirmation extends Component<Props> {
 }
 
 export default withTicketDetail(
-  withRouter(connect()(withStyles(styles)(DeleteConfirmation)))
+  withStyles(styles)(withRouter(DeleteConfirmation))
 );

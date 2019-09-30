@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
-import { connect } from 'react-redux';
 import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -94,4 +93,4 @@ class TicketDetail extends Component<Props> {
   }
 }
 
-export default withRouter(connect()(withStyles(styles)(TicketDetail)));
+export default withStyles(styles)(withRouter(TicketDetail));

@@ -131,5 +131,5 @@ class ChangeOs extends Component<Props, State> {
 }
 
 export default withCreateTicket(
-  withTicketDetail(withRouter(withStyles(styles)(ChangeOs)))
+  withTicketDetail(withStyles(styles)(withRouter(ChangeOs)))
 );

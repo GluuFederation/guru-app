@@ -99,4 +99,4 @@ class ErrorPage extends Component<Props> {
   }
 }
 
-export default withRouter(withStyles(styles)(ErrorPage));
+export default withStyles(styles)(withRouter(ErrorPage));

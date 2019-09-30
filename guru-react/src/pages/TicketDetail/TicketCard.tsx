@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import moment from "moment-timezone";
 import ReactMarkdown from "react-markdown";
-import { connect } from 'react-redux';
 import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
 import { paths } from "../../routes";
@@ -153,5 +152,5 @@ class TicketDetail extends Component<Props, State> {
 }
 
 export default withTicketDetail(
-  withUser(withRouter(connect()(withStyles(styles)(TicketDetail))))
+  withUser(withStyles(styles)(withRouter(TicketDetail)))
 );

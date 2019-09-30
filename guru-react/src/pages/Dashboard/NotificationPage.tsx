@@ -53,7 +53,7 @@ const styles = (theme: Theme) =>
             fontWeight: 500,
             fontFamily: '"Lato", sans-serif',
         },
-    
+
         paper: {
             marginRight: theme.spacing(2),
         },
@@ -134,7 +134,7 @@ class NotificationPage extends Component<Props, State> {
                                                 <Typography variant="h5" align="left">Notifications</Typography>
                                             </Grid>
                                             <Grid item xs={4}>
-                                             <ManageNotificationPopover></ManageNotificationPopover>   
+                                             <ManageNotificationPopover></ManageNotificationPopover>
                                             </Grid>
 
                                             <Tabs
@@ -216,7 +216,7 @@ class NotificationPage extends Component<Props, State> {
                                                             </Paper>
                                                         </Paper>
 
-                                                        
+
                                                         <Grid container>
                                                             <Grid item xs={8}>
                                                                 <Box mt={2} mb={2}><Typography variant="body2" align="left" color="textPrimary">Nasir<Typography variant="caption" align="left" color="textSecondary"> Created a ticket</Typography></Typography></Box>
@@ -225,7 +225,7 @@ class NotificationPage extends Component<Props, State> {
                                                                 <Box mt={2} mb={2}><Typography variant="body2" align="right" color="textSecondary">Jan18, 2018</Typography></Box>
                                                             </Grid>
                                                         </Grid>
-                                                        
+
                                                         <Paper style={{padding: 10, width: '100%', backgroundColor: '#f7f7f7' }} className={classes.paper}>
                                                             <Typography variant="subtitle1" align="left" color="textPrimary">Java Update - Cert Error w/OpenDJ</Typography>
                                                             <Typography variant="caption" align="left" color="textPrimary">Hello,</Typography>
@@ -248,4 +248,4 @@ class NotificationPage extends Component<Props, State> {
     }
 }
 
-export default withRouter(withStyles(styles)(NotificationPage));
+export default withStyles(styles)(withRouter(NotificationPage));

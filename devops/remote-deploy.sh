@@ -12,4 +12,4 @@ fi
 $SCRIPTDIR/build.py guru-api --test true --push true --deploy true
 $SCRIPTDIR/build.py guru-react --test true --push true
 $SCRIPTDIR/build.py users-vue --test true --push true
-$SCRIPTDIR/build.py guru-nginx --test true --push true --deploy true --env ENVIRONMENT
+$SCRIPTDIR/build.py guru-nginx --test true --push true --deploy true --env $ENVIRONMENT

@@ -13,7 +13,6 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import IconButton from "@material-ui/core/IconButton";
 import MoreHoriIcon from "@material-ui/icons/MoreHoriz";
-import { connect } from 'react-redux';
 import { Answer } from "../../state/types/tickets";
 import DeleteConfirmation from "../../components/TicketDetail/DeleteConfirmation";
 
@@ -62,9 +61,7 @@ class TicketDetail extends Component<Props, State> {
   };
 
   copyLink = () => {
-    const url = `${window.location.protocol}//${
-      window.location.hostname
-    }/tickets/${this.props.slug}`;
+    const url = `${window.location.protocol}//${window.location.hostname}/tickets/${this.props.slug}`;
     navigator.clipboard.writeText(url);
     this.closeResponseMenu();
   };
@@ -123,4 +120,4 @@ class TicketDetail extends Component<Props, State> {
   }
 }
 
-export default withRouter(connect()(withStyles(styles)(TicketDetail)));
+export default withStyles(styles)(withRouter(TicketDetail));
