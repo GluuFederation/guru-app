@@ -536,11 +536,11 @@
         },
         "twilio": {
             "hashes": [
-                "sha256:15127758a4eef81c7bfacc40a70acf98069ee13f8a848be7a9bb9e2b41b46847",
-                "sha256:a3c1ea72c64e209b642bda559ddbde1cc894de64bf4c17f6267bd3f116ed810f"
+                "sha256:03619d175ac5eb2cc721a697dfd34c215beb6144762d199956d653ad63713b6b",
+                "sha256:6f42c10236baacb89a65160880438feb9630cfe92201f2084df3fd51cad7228a"
             ],
             "index": "pypi",
-            "version": "==6.31.0"
+            "version": "==6.31.1"
         },
         "typed-ast": {
             "hashes": [
