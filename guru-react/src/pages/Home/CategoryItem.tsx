@@ -69,4 +69,4 @@ class CategoryItem extends Component<Props> {
   }
 }
 
-export default withRouter(withStyles(styles)(CategoryItem));
+export default withStyles(styles)(withRouter(CategoryItem));

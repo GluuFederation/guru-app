@@ -177,4 +177,4 @@ class Footer extends Component<Props> {
   }
 }
 
-export default withRouter(withStyles(styles)(Footer));
+export default withStyles(styles)(withRouter(Footer));

@@ -160,4 +160,4 @@ class EditTicket extends Component<Props, State> {
   }
 }
 
-export default withTicketDetail(withRouter(withStyles(styles)(EditTicket)));
+export default withTicketDetail(withStyles(styles)(withRouter(EditTicket)));

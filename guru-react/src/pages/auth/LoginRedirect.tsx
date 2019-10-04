@@ -55,4 +55,4 @@ class LoginRedirect extends Component<Props> {
   }
 }
 
-export default withProfiles(withRouter(withStyles(styles)(LoginRedirect)));
+export default withProfiles(withStyles(styles)(withRouter(LoginRedirect)));

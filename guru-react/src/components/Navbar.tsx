@@ -417,4 +417,4 @@ class Navbar extends Component<Props, State> {
   }
 }
 
-export default withRouter(withProfiles(withUser(withStyles(styles)(Navbar))));
+export default withProfiles(withUser(withStyles(styles)(withRouter(Navbar))));

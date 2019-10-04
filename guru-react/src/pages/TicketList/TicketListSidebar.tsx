@@ -110,9 +110,7 @@ class TicketSidebar extends Component<Props, State> {
   };
 
   searchCompanies = (q: string) => {
-    const url = `${
-      process.env.REACT_APP_API_BASE
-    }/api/v1/access-list/companies/`;
+    const url = `${process.env.REACT_APP_API_BASE}/api/v1/access-list/companies/`;
     const params = { q };
 
     axios.get(url, { params }).then(response => {
@@ -570,5 +568,5 @@ class TicketSidebar extends Component<Props, State> {
 }
 
 export default withTicketList(
-  withInfo(withUser(withRouter(withStyles(styles)(TicketSidebar))))
+  withInfo(withUser(withStyles(styles)(withRouter(TicketSidebar))))
 );
