@@ -55,7 +55,6 @@ class Autocomplete extends Component<Props, State> {
   render() {
     const { InputProps, suggestions, isAlwaysOpen, value } = this.props;
     const { searchQuery, selectedItem } = this.state;
-
     return (
       <Downshift
         itemToString={item => (item ? item.text : "")}
@@ -70,7 +69,7 @@ class Autocomplete extends Component<Props, State> {
             <div>
               <TextField
                 variant="outlined"
-                margin="dense"
+                margin="none"
                 value={"Hello"}
                 placeholder="Search or ask a question"
                 fullWidth

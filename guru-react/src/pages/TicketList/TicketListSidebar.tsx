@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import moment from "moment";
 import axios from "axios";
-
 import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -15,7 +14,7 @@ import {
   MuiPickersUtilsProvider
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-
+import Box from "@material-ui/core/Box";
 // import ExpandMore from "@material-ui/icons/ExpandMore";
 
 import { colors } from "../../theme";
@@ -286,11 +285,11 @@ class TicketSidebar extends Component<Props, State> {
             <Divider />
             {isStaff ? (
               <React.Fragment>
-                <div className={classes.inputSet}>
-                  <div>
+                <Box className={classes.inputSet}>
+                  <Box mb={1}>
                     <span>Company:</span>
-                  </div>
-                  <div>
+                  </Box>
+                  <Box>
                     {filters.companies.map(company => (
                       <FilterTag
                         key={company.id}
@@ -302,7 +301,7 @@ class TicketSidebar extends Component<Props, State> {
                         setTicketsLoading={setTicketsLoading}
                       />
                     ))}
-                  </div>
+                  </Box>
                   <Autocomplete
                     suggestions={companies}
                     updateQueryFunction={this.searchCompanies}
@@ -311,12 +310,12 @@ class TicketSidebar extends Component<Props, State> {
                       placeholder: "Select Company"
                     }}
                   />
-                </div>
-                <div className={classes.inputSet}>
-                  <div>
+                </Box>
+                <Box className={classes.inputSet}>
+                  <Box mb={1}>
                     <span>Created By:</span>
-                  </div>
-                  <div>
+                  </Box>
+                  <Box>
                     {filters.creators.map(creator => (
                       <FilterTag
                         key={creator.id}
@@ -328,7 +327,7 @@ class TicketSidebar extends Component<Props, State> {
                         setTicketsLoading={setTicketsLoading}
                       />
                     ))}
-                  </div>
+                  </Box>
                   <Autocomplete
                     suggestions={users}
                     updateQueryFunction={this.searchCreators}
@@ -337,12 +336,12 @@ class TicketSidebar extends Component<Props, State> {
                       placeholder: "Select Creator"
                     }}
                   />
-                </div>
-                <div className={classes.inputSet}>
-                  <div>
+                </Box>
+                <Box className={classes.inputSet}>
+                  <Box mb={1}>
                     <span>Assigned To:</span>
-                  </div>
-                  <div>
+                  </Box>
+                  <Box>
                     {filters.assignees.map(assignee => (
                       <FilterTag
                         key={assignee.id}
@@ -354,7 +353,7 @@ class TicketSidebar extends Component<Props, State> {
                         setTicketsLoading={setTicketsLoading}
                       />
                     ))}
-                  </div>
+                  </Box>
                   <Autocomplete
                     suggestions={users}
                     updateQueryFunction={this.searchAssignees}
@@ -363,7 +362,7 @@ class TicketSidebar extends Component<Props, State> {
                       placeholder: "Select Assignee"
                     }}
                   />
-                </div>
+                </Box>
               </React.Fragment>
             ) : null}
 

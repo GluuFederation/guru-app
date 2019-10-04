@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import axios from "axios";
 import SimpleMDE from "react-simplemde-editor";
-
 import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -166,7 +165,7 @@ class ResponsePost extends Component<Props, State> {
             <Grid item xs={12}>
               <SimpleMDE value={body} onChange={this.changeBody} />
             </Grid>
-            <Grid item md={6}>
+            <Grid item md={6} xs={12}>
               <p>Assign To</p>
               <Autocomplete
                 InputProps={InputProps}
@@ -175,7 +174,7 @@ class ResponsePost extends Component<Props, State> {
                 selectFunction={this.changeAssignee}
               />
             </Grid>
-            <Grid item md={6}>
+            <Grid item md={6} xs={12}>
               <p>Ticket Status</p>
               <TextField
                 select

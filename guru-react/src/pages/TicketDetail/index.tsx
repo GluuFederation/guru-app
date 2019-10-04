@@ -165,7 +165,7 @@ class TicketDetail extends Component<Props, State> {
                 </Box>
               </Grid>
               <Grid item>
-                <Grid container justify="flex-end" alignContent="flex-end">
+                <Grid spacing={3} container direction="row" justify="flex-end" alignContent="flex-end">
                   <Grid item md={9}>
                     <Box mt={2} mb={8}>
                       <Grid container>
@@ -175,7 +175,7 @@ class TicketDetail extends Component<Props, State> {
                           </Typography>
                         </Grid>
                         {canEdit ? (
-                          <Grid item sm={3}>
+                          <Grid item container align-items-xs-center justify-xs-center  justify="flex-end" alignItems="flex-start" sm={3}>
                             <Button
                               variant="outlined"
                               classes={{ root: classes.privacyButton }}
@@ -254,7 +254,7 @@ class TicketDetail extends Component<Props, State> {
                     ) : null}
                   </Grid>
 
-                  <Grid item md={3}>
+                  <Grid item md={3} xs={12}>
                     <SideBar ticket={ticket} />
                   </Grid>
                 </Grid>
@@ -268,9 +268,11 @@ class TicketDetail extends Component<Props, State> {
                 </div>
               </div>
             </Modal>
+            
           </Container>
-          <Footer />
+          
         </div>
+        <Footer />
       </Page>
     );
   }

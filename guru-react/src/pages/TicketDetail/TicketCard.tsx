@@ -22,10 +22,18 @@ import {
 } from "../../state/hocs/tickets";
 import Modal from "@material-ui/core/Modal";
 import { withUser, WithUserProps } from "../../state/hocs/profiles";
+import { width } from "@material-ui/system";
 
 const styles = (theme: Theme) =>
   createStyles({
-    card: {}
+    ticketContent:{
+      "& img":{
+        width:'100%'
+      },
+      "& pre":{
+        whiteSpace: 'pre-wrap'
+      }
+    }
   });
 
 interface ExternalProps {
@@ -100,7 +108,7 @@ class TicketDetail extends Component<Props, State> {
     const { ticketMenuElement } = this.state;
 
     return (
-      <Card className={classes.card} elevation={0}>
+      <Card elevation={0}>
         <CardHeader
           action={
             <div>
@@ -130,8 +138,8 @@ class TicketDetail extends Component<Props, State> {
           <MenuItem onClick={this.openModal}>Delete</MenuItem>
         </Menu>
 
-        <CardContent>
-          <ReactMarkdown source={ticket.body} />
+        <CardContent  >
+          <ReactMarkdown className={classes.ticketContent} source={ticket.body} />
           <Modal
             aria-labelledby="delete-confirmation-modal"
             open={this.state.isModalOpen}

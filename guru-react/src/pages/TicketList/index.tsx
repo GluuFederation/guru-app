@@ -410,7 +410,7 @@ class Home extends Component<Props, State> {
                     </React.Fragment>
                   )}
               </Grid>
-              <Grid container>
+              <Grid justify="space-between" container>
                 <Grid item>
                   <Grid
                     container
