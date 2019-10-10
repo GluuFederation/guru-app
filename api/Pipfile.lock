@@ -333,11 +333,11 @@
         },
         "phonenumbers": {
             "hashes": [
-                "sha256:4338848b983395cc0b2b4a9a00624005381939c94fd6eb50ca078a636a154503",
-                "sha256:fcd9d155af20dbe9a2ecd84ba6df82501ab358f70388ac78e0b3b2dd9523b275"
+                "sha256:e4a9215fa1197fbbb1300832fa6eef41e4c3ef90103979657274b22454360498",
+                "sha256:f743940907118dacb552da39caf1839632a5cc510157fc468a1f497f36562e1c"
             ],
             "index": "pypi",
-            "version": "==8.10.19"
+            "version": "==8.10.20"
         },
         "pickleshare": {
             "hashes": [
