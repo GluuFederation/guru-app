@@ -21,7 +21,7 @@
     "downshift": "^3.3.4",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.26",
-    "react": "^16.10.1",
+    "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-markdown": "^4.2.2",
     "react-paginate": "^6.3.0",
