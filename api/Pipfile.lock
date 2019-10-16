@@ -197,11 +197,11 @@
         },
         "drf-haystack": {
             "hashes": [
-                "sha256:34c4307a5d09c51dc8ed60ba397e84e7ffc060d33a3c0ecbea475f17fa7a4a44",
-                "sha256:83d4740cbebc9a0df13ee942d8dbf3934a482a180425c3fb909a550805f0476f"
+                "sha256:8a51938ff66301b5a25349b3b2cb745d5c20144887301e319466c980a8995bd7",
+                "sha256:fdc7a10563d3c770c9ce9727385df0058166d6e3310c1d64de8d9b8d8db78e76"
             ],
             "index": "pypi",
-            "version": "==1.8.5"
+            "version": "==1.8.6"
         },
         "drf-nested-routers": {
             "hashes": [
@@ -492,10 +492,10 @@
         },
         "pytz": {
             "hashes": [
-                "sha256:26c0b32e437e54a18161324a2fca3c4b9846b74a8dccddd843113109e1116b32",
-                "sha256:c894d57500a4cd2d5c71114aaab77dbab5eabd9022308ce5ac9bb93a60a6f0c7"
+                "sha256:1c557d7d0e871de1f5ccd5833f60fb2550652da6be2693c1e02300743d21500d",
+                "sha256:b02c06db6cf09c12dd25137e563b31700d3b80fcc4ad23abb7a315f2789819be"
             ],
-            "version": "==2019.2"
+            "version": "==2019.3"
         },
         "requests": {
             "hashes": [
