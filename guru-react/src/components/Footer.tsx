@@ -10,7 +10,6 @@ import { colors } from "../theme";
 
 import { paths } from "../routes";
 import NavLink from "./NavLink";
-
 import Logo from "../assets/images/logo.png";
 import { ReactComponent as GithubLogo } from "../assets/images/github-logo.svg";
 import { ReactComponent as YoutubeLogo } from "../assets/images/youtube-logo.svg";
@@ -21,12 +20,12 @@ import { ReactComponent as LinkedinLogo } from "../assets/images/linkedin-logo.s
 const styles = (theme: Theme) =>
   createStyles({
     root: {
-      flexGrow: 1,
-      position: "absolute",
-      backgroundColor: colors.MAIN_BACKGROUND,
+      position: 'absolute',
       bottom: 0,
       left: 0,
       right: 0,
+      flexGrow: 1,
+      backgroundColor: colors.MAIN_BACKGROUND,
       padding: "2em",
       borderTop: `1px solid ${colors.VERY_LIGHT_TEXT}`
     },

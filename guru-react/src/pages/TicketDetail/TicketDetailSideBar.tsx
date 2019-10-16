@@ -25,7 +25,7 @@ import TicketDetailSideBarItem, {
 const styles = (theme: Theme) =>
   createStyles({
     root: {
-      paddingLeft: "3em"
+      paddingLeft: "0em"
     },
     notificationArea: {
       backgroundColor: colors.TERTIARY_BACKGROUND

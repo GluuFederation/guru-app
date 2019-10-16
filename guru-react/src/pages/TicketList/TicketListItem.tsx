@@ -118,8 +118,8 @@ class TicketNav extends Component<Props, State> {
 
     return (
       <div className={classes.root}>
-        <Grid container alignItems="center">
-          <Grid item md={3} lg={2} className={classes.owner}>
+        <Grid container style={{ padding: 10 }}  alignItems="center">
+          <Grid item md={3} sm={12} xs={12} lg={2} className={classes.owner}>
             <Grid
               container
               justify="center"
@@ -189,17 +189,11 @@ class TicketNav extends Component<Props, State> {
               </span>
             </div>
           </Grid>
-          <Grid item md={3} lg={3}>
-            <Grid
-              container
-              justify="center"
-              alignItems="baseline"
-              direction="column"
-              spacing={1}
-            >
+          <Grid item md={3} xs={12} sm={12} lg={3} container direction="column">
+            <Grid>
               <Grid item xs={12}>
                 <Grid container justify="center" spacing={2}>
-                  <Grid item xs={3}>
+                  <Grid item xs={2}>
                     <ChatBubbleOutline />
                   </Grid>
                   <Grid item xs={9} className={classes.ticketActivity}>
@@ -209,10 +203,10 @@ class TicketNav extends Component<Props, State> {
               </Grid>
               <Grid item xs={12}>
                 <Grid container justify="center" spacing={4}>
-                  <Grid item xs={3}>
+                  <Grid item xs={2} md={2}>
                     <ThumbUpOutlined />
                   </Grid>
-                  <Grid item xs={9} className={classes.ticketActivity}>
+                  <Grid item xs={9} md={9} className={classes.ticketActivity}>
                     {ticket.voters.length} votes
                   </Grid>
                 </Grid>
@@ -220,10 +214,10 @@ class TicketNav extends Component<Props, State> {
               {/* {ticket.assignee ? ( */}
                 <Grid item xs={12}>
                   <Grid container justify="center" spacing={2}>
-                    <Grid item xs={3}>
+                    <Grid item xs={2} md={2}>
                       <PersonOutline />
                     </Grid>
-                    <Grid item xs={9} className={classes.ticketActivity}>
+                    <Grid item xs={9} md={9} className={classes.ticketActivity}>
                       <Select
                         className={classes.selectType}
                         value={this.state.staffValue}

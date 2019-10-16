@@ -26,7 +26,8 @@ const styles = (theme: Theme) =>
     root: {},
     searchHeader: {
       backgroundImage: `url(${HeroImg})`,
-      backgroundSize: "contain",
+      backgroundSize: "cover",
+      backgroundRepeat: 'no-repeat',
       height: "23em",
       marginBottom: "4em"
     },
