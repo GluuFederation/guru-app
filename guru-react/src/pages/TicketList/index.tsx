@@ -97,7 +97,6 @@ interface State {
 }
 
 class TicketList extends Component<Props, State> {
-  private Ref: React.RefObject<Autocomplete>;
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -106,8 +105,6 @@ class TicketList extends Component<Props, State> {
       autocompleteResults: [],
       staffName: []
     };
-
-    this.Ref = React.createRef();
   }
 
   componentDidMount() {
@@ -149,32 +146,6 @@ class TicketList extends Component<Props, State> {
     });
   };
 
-  handleSearchButton = () => {
-    let searchQuery = this.Ref.current
-      ? this.Ref.current.state.searchQuery
-      : "";
-    const { setFilterQuery, fetchTickets } = this.props;
-    setFilterQuery(searchQuery);
-    this.setState({ autocompleteResults: [] });
-    this.setTicketsLoading(true);
-    fetchTickets(true).then(() => {
-      this.setTicketsLoading(false);
-    });
-  };
-  handleSearchOnSubmit = (event: React.KeyboardEvent<any>) => {
-    if (event.key == "Enter") {
-      let searchQuery = this.Ref.current
-        ? this.Ref.current.state.searchQuery
-        : "";
-      const { setFilterQuery, fetchTickets } = this.props;
-      setFilterQuery(searchQuery);
-      this.setState({ autocompleteResults: [] });
-      this.setTicketsLoading(true);
-      fetchTickets(true).then(() => {
-        this.setTicketsLoading(false);
-      });
-    }
-  };
   setPageItems = (event: React.ChangeEvent<{ value: unknown }>) => {
     const { setFilterPageItems, fetchTickets } = this.props;
     const pageItems = parseInt(event.target.value as string, 10);
@@ -342,12 +313,11 @@ class TicketList extends Component<Props, State> {
     const InputProps = {
       endAdornment: (
         <InputAdornment position="end">
-          <Button onClick={this.handleSearchButton}>
+          <Button>
             <SearchImg />
           </Button>
         </InputAdornment>
       ),
-      onKeyPress: this.handleSearchOnSubmit,
       placeholder: "Type the keyword"
     };
 
@@ -371,7 +341,6 @@ class TicketList extends Component<Props, State> {
                     updateQueryFunction={this.searchTickets}
                     selectFunction={this.setSearchQuery}
                     InputProps={InputProps}
-                    ref={this.Ref}
                   />
                 </Grid>
                 <Grid item xs={12} lg={6}>
