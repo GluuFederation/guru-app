@@ -45,11 +45,22 @@ class Autocomplete extends Component<Props, State> {
       if (updateQueryFunction) updateQueryFunction(searchQuery);
     });
   };
+
   handleChange = (item: Suggestion) => {
     this.setState({ searchQuery: item.text, selectedItem: { ...item } }, () => {
       const { selectFunction } = this.props;
       if (selectFunction) selectFunction(item);
     });
+  };
+
+  handleKeyPress = (event: React.KeyboardEvent<any>) => {
+    if (event.key === "Enter") {
+      const { searchQuery } = this.state;
+      const { selectFunction } = this.props;
+      if (searchQuery && selectFunction) {
+        selectFunction({ id: 1, text: searchQuery });
+      }
+    }
   };
 
   render() {
@@ -63,14 +74,14 @@ class Autocomplete extends Component<Props, State> {
       >
         {({ getInputProps, getItemProps, isOpen, highlightedIndex }) => {
           const { onBlur, onFocus, onChange, ...inputProps } = getInputProps({
-            onChange: this.changeSearchQuery
+            onChange: this.changeSearchQuery,
+            onKeyDown: this.handleKeyPress
           });
           return (
             <div>
               <TextField
                 variant="outlined"
                 margin="none"
-                value={"Hello"}
                 placeholder="Search or ask a question"
                 fullWidth
                 InputProps={{
