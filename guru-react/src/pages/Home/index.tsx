@@ -27,7 +27,7 @@ const styles = (theme: Theme) =>
     searchHeader: {
       backgroundImage: `url(${HeroImg})`,
       backgroundSize: "cover",
-      backgroundRepeat: 'no-repeat',
+      backgroundRepeat: "no-repeat",
       height: "23em",
       marginBottom: "4em"
     },
@@ -47,14 +47,12 @@ interface State {
 }
 
 class Home extends Component<Props, State> {
-  private Ref: React.RefObject<Autocomplete>;
   constructor(props: Props) {
     super(props);
     this.state = {
       searchResults: [],
       searchQuery: ""
     };
-    this.Ref = React.createRef();
   }
 
   searchTickets = (q: string) => {
@@ -73,27 +71,9 @@ class Home extends Component<Props, State> {
     });
   };
 
-  handleClick = () => {
-    let searchQuery = this.Ref.current
-      ? this.Ref.current.state.searchQuery
-      : "";
-    this.props.history.push(
-      `${paths.TICKET_LIST}${getSearchString({
-        query: searchQuery
-      })}`
-    );
-  };
-  handleSubmit = (event: React.KeyboardEvent<any>) => {
-    if (event.key === "Enter") {
-      let searchQuery = this.Ref.current
-        ? this.Ref.current.state.searchQuery
-        : "";
-      this.props.history.push(
-        `${paths.TICKET_LIST}${getSearchString({
-          query: searchQuery
-        })}`
-      );
-    }
+  handleSubmit = (selectedItem: Suggestion) => {
+    const query = selectedItem.text;
+    this.props.history.push(`${paths.TICKET_LIST}?q=${query}`);
   };
 
   render() {
@@ -104,13 +84,12 @@ class Home extends Component<Props, State> {
     const InputProps = {
       startAdornment: (
         <InputAdornment position="start">
-          <Button onClick={this.handleClick}>
+          <Button>
             <SearchImg />
           </Button>
         </InputAdornment>
       ),
-      classes: { notchedOutline: classes.searchInput },
-      onKeyPress: this.handleSubmit
+      classes: { notchedOutline: classes.searchInput }
     };
 
     return (
@@ -130,8 +109,8 @@ class Home extends Component<Props, State> {
                   <Autocomplete
                     suggestions={searchResults}
                     InputProps={InputProps}
+                    selectFunction={this.handleSubmit}
                     updateQueryFunction={this.searchTickets}
-                    ref={this.Ref}
                   />
                 </Typography>
               </Grid>
