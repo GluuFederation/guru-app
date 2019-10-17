@@ -5,20 +5,19 @@ import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import Button from "@material-ui/core/Button/";
 import { colors } from "../../theme";
 import { paths } from "../../routes";
-import { getSearchString } from "../../utils/filterQueries";
 import Page from "../../components/Page";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
-import Autocomplete, { Suggestion } from "../../components/Autocomplete";
+import Autocomplete, {
+  Suggestion,
+  SearchButtonOptions
+} from "../../components/Autocomplete";
 import CategoryItem from "./CategoryItem";
 import { withInfo, WithInfoProps } from "../../state/hocs/info";
 
 import HeroImg from "../../assets/images/hero.svg";
-import { ReactComponent as SearchImg } from "../../assets/images/search.svg";
 import { TicketSearchResult } from "../../state/types/tickets";
 
 const styles = (theme: Theme) =>
@@ -82,13 +81,6 @@ class Home extends Component<Props, State> {
     const { categories } = info;
 
     const InputProps = {
-      startAdornment: (
-        <InputAdornment position="start">
-          <Button>
-            <SearchImg />
-          </Button>
-        </InputAdornment>
-      ),
       classes: { notchedOutline: classes.searchInput }
     };
 
@@ -111,6 +103,7 @@ class Home extends Component<Props, State> {
                     InputProps={InputProps}
                     selectFunction={this.handleSubmit}
                     updateQueryFunction={this.searchTickets}
+                    searchButton={SearchButtonOptions.Start}
                   />
                 </Typography>
               </Grid>

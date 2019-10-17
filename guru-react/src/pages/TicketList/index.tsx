@@ -19,7 +19,10 @@ import { colors } from "../../theme";
 import Page from "../../components/Page";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
-import Autocomplete, { Suggestion } from "../../components/Autocomplete";
+import Autocomplete, {
+  Suggestion,
+  SearchButtonOptions
+} from "../../components/Autocomplete";
 import { withTicketList, WithTicketListProps } from "../../state/hocs/tickets";
 import { withInfo, WithInfoProps } from "../../state/hocs/info";
 import { Company, ShortUser } from "../../state/types/profiles";
@@ -311,13 +314,6 @@ class TicketList extends Component<Props, State> {
     const { classes, tickets, filters } = this.props;
     const { isTicketsLoading, autocompleteResults } = this.state;
     const InputProps = {
-      endAdornment: (
-        <InputAdornment position="end">
-          <Button>
-            <SearchImg />
-          </Button>
-        </InputAdornment>
-      ),
       placeholder: "Type the keyword"
     };
 
@@ -341,6 +337,7 @@ class TicketList extends Component<Props, State> {
                     updateQueryFunction={this.searchTickets}
                     selectFunction={this.setSearchQuery}
                     InputProps={InputProps}
+                    searchButton={SearchButtonOptions.End}
                   />
                 </Grid>
                 <Grid item xs={12} lg={6}>
