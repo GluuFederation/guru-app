@@ -1,11 +1,20 @@
 import React, { Component } from "react";
 import Downshift from "downshift";
 
+import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
+import { Theme } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import MenuItem from "@material-ui/core/MenuItem";
 import { OutlinedInputProps } from "@material-ui/core/OutlinedInput";
 
+const styles = (theme: Theme) =>
+  createStyles({
+    dropdown: {
+      position: "absolute",
+      zIndex: 999
+    }
+  });
 export interface Suggestion {
   id: number;
   text: string;
@@ -22,7 +31,7 @@ interface ExternalProps {
   value?: string;
 }
 
-type Props = ExternalProps;
+type Props = ExternalProps & WithStyles<typeof styles>;
 
 interface State {
   searchQuery: string;
@@ -64,7 +73,7 @@ class Autocomplete extends Component<Props, State> {
   };
 
   render() {
-    const { InputProps, suggestions, isAlwaysOpen, value } = this.props;
+    const { InputProps, suggestions, isAlwaysOpen, classes } = this.props;
     const { searchQuery, selectedItem } = this.state;
     return (
       <Downshift
@@ -94,7 +103,7 @@ class Autocomplete extends Component<Props, State> {
                 inputProps={{ ...inputProps }}
               />
               {isOpen || isAlwaysOpen ? (
-                <Paper>
+                <Paper classes={{ root: classes.dropdown }}>
                   {suggestions.map(suggestion => (
                     <MenuItem
                       {...getItemProps({
@@ -118,4 +127,4 @@ class Autocomplete extends Component<Props, State> {
   }
 }
 
-export default Autocomplete;
+export default withStyles(styles)(Autocomplete);
