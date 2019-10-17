@@ -376,7 +376,7 @@ class TicketList extends Component<Props, State> {
                     {tickets.map(ticket => (
                       <Grid item xs={12} key={ticket.id}>
                         <TicketListItem
-                          ticket={ticket}
+                          shortTicket={ticket}
                           staff={this.state.staffName}
                         />
                       </Grid>
