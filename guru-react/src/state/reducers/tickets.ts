@@ -375,6 +375,27 @@ const ticketsReducer = (
         ...state,
         ticketDetail: { ...state.ticketDetail, ticketHistory }
       };
+    case actions.SET_TICKET_LIST_ITEM_ASSIGNEE:
+      const itemAssigneeAction = action as ticketsActions.SetTicketListItemAssigneeAction;
+      const itemAssignee = itemAssigneeAction.assignee;
+      const ticketSlug = itemAssigneeAction.ticketSlug;
+      const foundTicketIndex = state.tickets.findIndex(
+        item => item.slug === ticketSlug
+      );
+      console.log("we", foundTicketIndex);
+      if (foundTicketIndex >= 0) {
+        let changedTickets = [...state.tickets];
+        changedTickets[foundTicketIndex] = {
+          ...changedTickets[foundTicketIndex],
+          assignee: itemAssignee
+        };
+        console.log(changedTickets, state.tickets);
+        return {
+          ...state,
+          tickets: [...changedTickets]
+        };
+      }
+      return state;
     case actions.CLEAR_ALL_FILTERS:
       return { ...state, filters: { ...initialFilters } };
     default:

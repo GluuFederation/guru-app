@@ -119,7 +119,11 @@ export interface WithTicketDetailState {
 export interface WithTicketDetailDispatch {
   fetchTicket: (ticketSlug: string) => Promise<Ticket>;
   changeTicketVote: (ticketSlug: string, vote: boolean) => Promise<Ticket>;
-  setTicketAssignee: (ticketSlug: string, assignee: number) => Promise<Ticket>;
+  setTicketAssignee: (
+    ticketSlug: string,
+    assignee: number,
+    fromList?: boolean
+  ) => Promise<Ticket>;
   setTicketCreator: (ticketSlug: string, creator: number) => Promise<Ticket>;
   updateTicket: (ticket: Ticket) => Promise<Ticket>;
   changeTicketSubscription: (
@@ -154,7 +158,7 @@ export const withTicketList = <P extends WithTicketListProps>(
 ) => {
   class WithInfo extends Component<WithTicketListProps> {
     render() {
-      return <WrappedComponent {...this.props as P} />;
+      return <WrappedComponent {...(this.props as P)} />;
     }
   }
 
@@ -216,7 +220,7 @@ export const withTicketDetail = <P extends WithTicketDetailProps>(
 ) => {
   class WithInfo extends Component<WithTicketDetailProps> {
     render() {
-      return <WrappedComponent {...this.props as P} />;
+      return <WrappedComponent {...(this.props as P)} />;
     }
   }
 
@@ -230,8 +234,11 @@ export const withTicketDetail = <P extends WithTicketDetailProps>(
       fetchTicket: (ticketSlug: string) => dispatch(fetchTicket(ticketSlug)),
       changeTicketVote: (ticketSlug: string, vote: boolean) =>
         dispatch(changeTicketVote(ticketSlug, vote)),
-      setTicketAssignee: (ticketSlug: string, assignee: number) =>
-        dispatch(setTicketAssignee(ticketSlug, assignee)),
+      setTicketAssignee: (
+        ticketSlug: string,
+        assignee: number,
+        fromList?: boolean
+      ) => dispatch(setTicketAssignee(ticketSlug, assignee, fromList)),
       setTicketCreator: (ticketSlug: string, creator: number) =>
         dispatch(setTicketCreator(ticketSlug, creator)),
       updateTicket: (ticket: Ticket) => dispatch(updateTicket(ticket)),

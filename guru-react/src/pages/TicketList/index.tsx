@@ -19,7 +19,10 @@ import { colors } from "../../theme";
 import Page from "../../components/Page";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
-import Autocomplete, { Suggestion } from "../../components/Autocomplete";
+import Autocomplete, {
+  Suggestion,
+  SearchButtonOptions
+} from "../../components/Autocomplete";
 import { withTicketList, WithTicketListProps } from "../../state/hocs/tickets";
 import { withInfo, WithInfoProps } from "../../state/hocs/info";
 import { Company, ShortUser } from "../../state/types/profiles";
@@ -97,7 +100,6 @@ interface State {
 }
 
 class TicketList extends Component<Props, State> {
-  private Ref: React.RefObject<Autocomplete>;
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -106,8 +108,6 @@ class TicketList extends Component<Props, State> {
       autocompleteResults: [],
       staffName: []
     };
-
-    this.Ref = React.createRef();
   }
 
   componentDidMount() {
@@ -149,32 +149,6 @@ class TicketList extends Component<Props, State> {
     });
   };
 
-  handleSearchButton = () => {
-    let searchQuery = this.Ref.current
-      ? this.Ref.current.state.searchQuery
-      : "";
-    const { setFilterQuery, fetchTickets } = this.props;
-    setFilterQuery(searchQuery);
-    this.setState({ autocompleteResults: [] });
-    this.setTicketsLoading(true);
-    fetchTickets(true).then(() => {
-      this.setTicketsLoading(false);
-    });
-  };
-  handleSearchOnSubmit = (event: React.KeyboardEvent<any>) => {
-    if (event.key == "Enter") {
-      let searchQuery = this.Ref.current
-        ? this.Ref.current.state.searchQuery
-        : "";
-      const { setFilterQuery, fetchTickets } = this.props;
-      setFilterQuery(searchQuery);
-      this.setState({ autocompleteResults: [] });
-      this.setTicketsLoading(true);
-      fetchTickets(true).then(() => {
-        this.setTicketsLoading(false);
-      });
-    }
-  };
   setPageItems = (event: React.ChangeEvent<{ value: unknown }>) => {
     const { setFilterPageItems, fetchTickets } = this.props;
     const pageItems = parseInt(event.target.value as string, 10);
@@ -340,14 +314,6 @@ class TicketList extends Component<Props, State> {
     const { classes, tickets, filters } = this.props;
     const { isTicketsLoading, autocompleteResults } = this.state;
     const InputProps = {
-      endAdornment: (
-        <InputAdornment position="end">
-          <Button onClick={this.handleSearchButton}>
-            <SearchImg />
-          </Button>
-        </InputAdornment>
-      ),
-      onKeyPress: this.handleSearchOnSubmit,
       placeholder: "Type the keyword"
     };
 
@@ -371,7 +337,7 @@ class TicketList extends Component<Props, State> {
                     updateQueryFunction={this.searchTickets}
                     selectFunction={this.setSearchQuery}
                     InputProps={InputProps}
-                    ref={this.Ref}
+                    searchButton={SearchButtonOptions.End}
                   />
                 </Grid>
                 <Grid item xs={12} lg={6}>
@@ -407,7 +373,7 @@ class TicketList extends Component<Props, State> {
                     {tickets.map(ticket => (
                       <Grid item xs={12} key={ticket.id}>
                         <TicketListItem
-                          ticket={ticket}
+                          shortTicket={ticket}
                           staff={this.state.staffName}
                         />
                       </Grid>

@@ -1,16 +1,35 @@
-import React, { Component } from "react";
+import React, { Component, ReactNode } from "react";
 import Downshift from "downshift";
 
+import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
+import { Theme } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import MenuItem from "@material-ui/core/MenuItem";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import Button from "@material-ui/core/Button";
 import { OutlinedInputProps } from "@material-ui/core/OutlinedInput";
 
+import { ReactComponent as SearchImg } from "../assets/images/search.svg";
+
+const styles = (theme: Theme) =>
+  createStyles({
+    dropdown: {
+      position: "absolute",
+      zIndex: 999
+    }
+  });
 export interface Suggestion {
   id: number;
   text: string;
   image?: string;
   color?: string;
+}
+
+export enum SearchButtonOptions {
+  Hide,
+  Start,
+  End
 }
 
 interface ExternalProps {
@@ -20,9 +39,10 @@ interface ExternalProps {
   suggestions: Array<Suggestion>;
   isAlwaysOpen?: boolean;
   value?: string;
+  searchButton?: SearchButtonOptions;
 }
 
-type Props = ExternalProps;
+type Props = ExternalProps & WithStyles<typeof styles>;
 
 interface State {
   searchQuery: string;
@@ -45,6 +65,7 @@ class Autocomplete extends Component<Props, State> {
       if (updateQueryFunction) updateQueryFunction(searchQuery);
     });
   };
+
   handleChange = (item: Suggestion) => {
     this.setState({ searchQuery: item.text, selectedItem: { ...item } }, () => {
       const { selectFunction } = this.props;
@@ -52,9 +73,53 @@ class Autocomplete extends Component<Props, State> {
     });
   };
 
+  handleKeyPress = (event: React.KeyboardEvent<any>) => {
+    if (event.key === "Enter") {
+      const { searchQuery } = this.state;
+      const { selectFunction } = this.props;
+      if (searchQuery && selectFunction) {
+        selectFunction({ id: 1, text: searchQuery });
+      }
+    }
+  };
+
+  handleButton = () => {
+    const { selectFunction } = this.props;
+    const { searchQuery } = this.state;
+    if (selectFunction && searchQuery)
+      selectFunction({ id: 1, text: searchQuery });
+  };
+
   render() {
-    const { InputProps, suggestions, isAlwaysOpen, value } = this.props;
+    const { suggestions, isAlwaysOpen, classes, searchButton } = this.props;
+    let { InputProps } = this.props;
     const { searchQuery, selectedItem } = this.state;
+    if (searchButton) {
+      switch (searchButton) {
+        case SearchButtonOptions.Start:
+          const startAdornment = (
+            <InputAdornment position="start">
+              <Button onClick={this.handleButton}>
+                <SearchImg />
+              </Button>
+            </InputAdornment>
+          );
+          if (InputProps) InputProps.startAdornment = startAdornment;
+          else InputProps = { startAdornment };
+          break;
+        case SearchButtonOptions.End:
+          const endAdornment = (
+            <InputAdornment position="end">
+              <Button onClick={this.handleButton}>
+                <SearchImg />
+              </Button>
+            </InputAdornment>
+          );
+          if (InputProps) InputProps.endAdornment = endAdornment;
+          else InputProps = { endAdornment };
+          break;
+      }
+    }
     return (
       <Downshift
         itemToString={item => (item ? item.text : "")}
@@ -63,14 +128,14 @@ class Autocomplete extends Component<Props, State> {
       >
         {({ getInputProps, getItemProps, isOpen, highlightedIndex }) => {
           const { onBlur, onFocus, onChange, ...inputProps } = getInputProps({
-            onChange: this.changeSearchQuery
+            onChange: this.changeSearchQuery,
+            onKeyDown: this.handleKeyPress
           });
           return (
             <div>
               <TextField
                 variant="outlined"
                 margin="none"
-                value={"Hello"}
                 placeholder="Search or ask a question"
                 fullWidth
                 InputProps={{
@@ -83,7 +148,7 @@ class Autocomplete extends Component<Props, State> {
                 inputProps={{ ...inputProps }}
               />
               {isOpen || isAlwaysOpen ? (
-                <Paper>
+                <Paper classes={{ root: classes.dropdown }}>
                   {suggestions.map(suggestion => (
                     <MenuItem
                       {...getItemProps({
@@ -107,4 +172,4 @@ class Autocomplete extends Component<Props, State> {
   }
 }
 
-export default Autocomplete;
+export default withStyles(styles)(Autocomplete);
