@@ -92,12 +92,12 @@ class TicketNav extends Component<Props, State> {
     this.setState({
       staffValue: event.target.value as number
     });
-    let assignee_id =  event.target.value as number;
+    let assignee_id = event.target.value as number;
     let ticketSlug = this.props.ticket.slug;
     const URL = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/${ticketSlug}/assign/`;
-    const data = { ticket: { assignee:  assignee_id} };
+    const data = { ticket: { assignee: assignee_id } };
     return axios.post(URL, { ...data }).then(response => {
-    
+
     });
   }
   render() {
@@ -118,7 +118,7 @@ class TicketNav extends Component<Props, State> {
 
     return (
       <div className={classes.root}>
-        <Grid container style={{ padding: 10 }}  alignItems="center">
+        <Grid container style={{ padding: 10 }} alignItems="center">
           <Grid item md={3} sm={12} xs={12} lg={2} className={classes.owner}>
             <Grid
               container
@@ -127,11 +127,11 @@ class TicketNav extends Component<Props, State> {
               alignItems="center"
             >
               <Grid item>
-                { owner.avatar ?
+                {owner.avatar ?
                   <Avatar alt="Image" src={owner.avatar} className={classes.avatar} ></Avatar>
                   : <Avatar alt="Image" className={classes.avatar} >{owner.firstName.charAt(0)}</Avatar>
                 }
-                
+
               </Grid>
               <Grid item>
                 <div>
@@ -146,7 +146,7 @@ class TicketNav extends Component<Props, State> {
                 </div>
               </Grid>
               <Grid item>
-                <div style={{textTransform:'capitalize'}}>{owner.company ? owner.company.plan : ""}</div>
+                <div style={{ textTransform: 'capitalize' }}>{owner.company ? owner.company.plan : ""}</div>
               </Grid>
             </Grid>
           </Grid>
@@ -212,27 +212,27 @@ class TicketNav extends Component<Props, State> {
                 </Grid>
               </Grid>
               {/* {ticket.assignee ? ( */}
-                <Grid item xs={12}>
-                  <Grid container justify="center" spacing={2}>
-                    <Grid item xs={2} md={2}>
-                      <PersonOutline />
-                    </Grid>
-                    <Grid item xs={9} md={9} className={classes.ticketActivity}>
-                      <Select
-                        className={classes.selectType}
-                        value={this.state.staffValue}
-                        onChange={this.handleChange.bind(this)}
-                      >
-                        {staff.map((staf: any) => (
-                          <MenuItem value={staf.id}>
-                            {staf.firstName + " " + staf.lastName}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </Grid>
+              <Grid item xs={12}>
+                <Grid container justify="center" spacing={2}>
+                  <Grid item xs={2} md={2}>
+                    <PersonOutline />
+                  </Grid>
+                  <Grid item xs={9} md={9} className={classes.ticketActivity}>
+                    <Select
+                      className={classes.selectType}
+                      value={this.state.staffValue}
+                      onChange={this.handleChange.bind(this)}
+                    >
+                      {staff.map((staf: any) => (
+                        <MenuItem value={staf.id}>
+                          {staf.firstName + " " + staf.lastName}
+                        </MenuItem>
+                      ))}
+                    </Select>
                   </Grid>
                 </Grid>
-               {/* ) : null} */}
+              </Grid>
+              {/* ) : null} */}
             </Grid>
           </Grid>
         </Grid>
