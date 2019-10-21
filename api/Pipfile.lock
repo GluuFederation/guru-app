@@ -334,11 +334,11 @@
         },
         "phonenumbers": {
             "hashes": [
-                "sha256:e4a9215fa1197fbbb1300832fa6eef41e4c3ef90103979657274b22454360498",
-                "sha256:f743940907118dacb552da39caf1839632a5cc510157fc468a1f497f36562e1c"
+                "sha256:162301aa2ce7c1a7196d7b5b084e3263a0a5f55e3129fe2429f2a115c3ef16c3",
+                "sha256:e9544b24e06efbba08defb45ca1823648282162f7502cc7794482ffdde941f30"
             ],
             "index": "pypi",
-            "version": "==8.10.20"
+            "version": "==8.10.21"
         },
         "pickleshare": {
             "hashes": [
