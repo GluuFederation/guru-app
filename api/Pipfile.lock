@@ -470,15 +470,6 @@
             ],
             "version": "==0.6"
         },
-        "pysocks": {
-            "hashes": [
-                "sha256:08e69f092cc6dbe92a0fdd16eeb9b9ffbc13cadfe5ca4c7bd92ffb078b293299",
-                "sha256:2725bd0a9925919b9b51739eea5f9e2bae91e83288108a9ad338b2e3a4435ee5",
-                "sha256:3f8804571ebe159c380ac6de37643bb4685970655d3bba243530d6558b799aa0"
-            ],
-            "markers": "python_version >= '3.0'",
-            "version": "==1.7.1"
-        },
         "python-dateutil": {
             "hashes": [
                 "sha256:7e6584c74aeed623791615e26efd690f29817a27c73085b78e4bad02493df2fb",
@@ -505,7 +496,6 @@
                 "sha256:11e007a8a2aa0323f5a921e9e6a2d7e4e67d9877e85773fba9ba6419025cbeb4",
                 "sha256:9cf5292fcd0f598c671cfc1e0d7d1a7f13bb8085e9a590f48c010551dc6c4b31"
             ],
-            "markers": "python_version >= '3.0'",
             "version": "==2.22.0"
         },
         "six": {
@@ -538,11 +528,10 @@
         },
         "twilio": {
             "hashes": [
-                "sha256:03619d175ac5eb2cc721a697dfd34c215beb6144762d199956d653ad63713b6b",
-                "sha256:6f42c10236baacb89a65160880438feb9630cfe92201f2084df3fd51cad7228a"
+                "sha256:e78a2006b9449fb9fad5050537e0998c181c7d3a62eaa9eed434e59dbaf58324"
             ],
             "index": "pypi",
-            "version": "==6.31.1"
+            "version": "==6.32.0"
         },
         "typed-ast": {
             "hashes": [
