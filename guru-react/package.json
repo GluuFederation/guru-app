@@ -20,7 +20,7 @@
     "date-fns": "^2.5.1",
     "downshift": "^3.3.5",
     "moment": "^2.24.0",
-    "moment-timezone": "^0.5.26",
+    "moment-timezone": "^0.5.27",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-markdown": "^4.2.2",
