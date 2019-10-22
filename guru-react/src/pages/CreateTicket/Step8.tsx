@@ -97,7 +97,7 @@ class Step8 extends Component<Props, State> {
       updateNewTicket({
         ...newTicket,
         products: [
-          ...newTicket.products.filter(item => item.id !== NaN),
+          ...newTicket.products.filter(item => item.id && item.id !== NaN),
           { ...this.state, id: NaN }
         ]
       });

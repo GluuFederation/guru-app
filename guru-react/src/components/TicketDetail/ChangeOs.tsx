@@ -33,6 +33,7 @@ const styles = (theme: Theme) =>
 
 interface ExternalProps {
   closeModal: () => void;
+  isNew?: boolean;
 }
 
 type Props = ExternalProps &
@@ -50,10 +51,13 @@ class ChangeOs extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    const ticket = props.ticket;
+    const { ticket, isNew, newTicket } = props;
     let os = "";
     let osVersion = "";
-    if (ticket) {
+    if (isNew) {
+      os = newTicket.os;
+      osVersion = newTicket.osVersion;
+    } else if (ticket) {
       os = ticket.os;
       osVersion = ticket.osVersion;
     }
@@ -72,12 +76,25 @@ class ChangeOs extends Component<Props, State> {
   };
 
   updateTicket = () => {
-    const { ticket, closeModal, updateTicket } = this.props;
+    const {
+      ticket,
+      closeModal,
+      updateTicket,
+      setCreateTicketOsVersion,
+      setCreateTicketOs,
+      isNew
+    } = this.props;
     const { os, osVersion } = this.state;
-    if (ticket && os && osVersion) {
-      updateTicket({ ...ticket, os, osVersion }).then(() => {
+    if (os && osVersion) {
+      if (isNew) {
+        setCreateTicketOs(os);
+        setCreateTicketOsVersion(osVersion);
         closeModal();
-      });
+      } else if (ticket) {
+        updateTicket({ ...ticket, os, osVersion }).then(() => {
+          closeModal();
+        });
+      }
     }
   };
 
