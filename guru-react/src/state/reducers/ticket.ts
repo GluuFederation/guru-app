@@ -72,11 +72,12 @@ const ticketReducer = (
         ]
       };
     case actions.REMOVE_TICKET_CREATE_PRODUCT:
-      const productR = (action as ticketActions.RemoveTicketProductAction)
-        .product;
+      const index = (action as ticketActions.RemoveTicketProductAction).index;
       return {
         ...state,
-        products: [...state.products.filter(item => item.id !== productR.id)]
+        products: [
+          ...state.products.filter((item, itemIndex) => itemIndex !== index)
+        ]
       };
     case actions.SET_TICKET_CREATE_TITLE:
       const title = (action as ticketActions.SetTicketTitleAction).title;
