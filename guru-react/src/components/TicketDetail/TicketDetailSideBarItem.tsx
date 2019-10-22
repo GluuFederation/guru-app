@@ -501,7 +501,7 @@ class TicketDetailSideBarItem extends Component<Props, State> {
             <div className="modal-super-container">
               <div className="modal-container">
                 {modalType === ModalType.Os ? (
-                  <ChangeOs closeModal={this.closeModal} />
+                  <ChangeOs closeModal={this.closeModal} isNew={isNew} />
                 ) : (
                   <ChangeProduct
                     closeModal={this.closeModal}
