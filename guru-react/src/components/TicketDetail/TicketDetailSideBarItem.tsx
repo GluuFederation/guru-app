@@ -230,11 +230,14 @@ class TicketDetailSideBarItem extends Component<Props, State> {
         this.setState({ menuElement: null });
         break;
       case MenuType.GluuServer:
-        if (selectedItem.slug && ticket) {
-          this.props.updateTicket({
-            ...ticket,
-            [menuType]: selectedItem.slug
-          });
+        if (selectedItem.slug) {
+          if (isNew)
+            updateNewTicket({ ...newTicket, [menuType]: selectedItem.slug });
+          else if (ticket)
+            updateTicket({
+              ...ticket,
+              [menuType]: selectedItem.slug
+            });
           this.setState({ menuElement: null });
         }
         break;
