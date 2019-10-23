@@ -4,6 +4,9 @@ update_configs:
   - package_manager: "python"
     directory: "/api"
     update_schedule: "live"
+    allowed_updates:
+      - match:
+          update_type: "security"
     default_reviewers:
       - pharingee
       - willow9886
@@ -12,6 +15,9 @@ update_configs:
   - package_manager: "javascript"
     directory: "/guru-react"
     update_schedule: "live"
+    allowed_updates:
+      - match:
+          update_type: "security"
     default_reviewers:
       - pharingee
       - willow9886
@@ -20,6 +26,9 @@ update_configs:
   - package_manager: "javascript"
     directory: "/users-vue"
     update_schedule: "live"
+    allowed_updates:
+      - match:
+          update_type: "security"
     default_reviewers:
       - pharingee
       - willow9886

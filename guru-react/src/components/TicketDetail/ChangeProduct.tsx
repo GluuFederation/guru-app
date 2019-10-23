@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
+import Link from "@material-ui/core/Link";
 import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -20,7 +22,8 @@ import {
 } from "../../state/hocs/ticket";
 import { withInfo, WithInfoProps } from "../../state/hocs/info";
 import { colors } from "../../theme";
-import { TicketProduct } from "../../state/types/tickets";
+import { TicketProduct, Ticket } from "../../state/types/tickets";
+import { CreateTicketState } from "../../state/types/state";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -37,7 +40,7 @@ const styles = (theme: Theme) =>
 interface ExternalProps {
   product?: TicketProduct;
   closeModal: () => void;
-  isNew?: boolean;
+  index?: number;
 }
 
 type Props = ExternalProps &
@@ -108,24 +111,45 @@ class ChangeProduct extends Component<Props, State> {
     this.setState({ os });
   };
 
+  removeProduct = (event: React.MouseEvent) => {
+    event.preventDefault();
+    const {
+      deleteTicketProduct,
+      removeCreateTicketProduct,
+      product,
+      index,
+      closeModal
+    } = this.props;
+    const ticket = this.getTicket();
+    if (product) {
+      if (index) removeCreateTicketProduct(index);
+      else if (ticket) deleteTicketProduct(ticket.slug, product);
+    }
+    closeModal();
+  };
+
+  getTicket = (): CreateTicketState | Ticket | undefined => {
+    const { index, ticket, newTicket, closeModal } = this.props;
+    if (!index && !ticket) {
+      closeModal();
+      return;
+    }
+    return !index && ticket ? ticket : newTicket;
+  };
+
   saveProduct = () => {
     const { product: gluuProduct, version, osVersion, os } = this.state;
     const {
       product,
-      ticket: fullTicket,
-      newTicket,
-      isNew,
       closeModal,
       updateTicketProduct,
       createTicketProduct,
       addCreateTicketProduct,
-      removeCreateTicketProduct
+      removeCreateTicketProduct,
+      index
     } = this.props;
-    if (!isNew && !fullTicket) {
-      closeModal();
-      return;
-    }
-    const ticket = !isNew && fullTicket ? fullTicket : newTicket;
+    const ticket = this.getTicket();
+    if (!ticket) return;
 
     let invalidFields = [];
     if (!gluuProduct) invalidFields.push("product");
@@ -140,24 +164,25 @@ class ChangeProduct extends Component<Props, State> {
       return;
     }
 
-    if (product && gluuProduct) {
-      updateTicketProduct(ticket.slug, {
-        ...product,
-        product: gluuProduct,
-        version,
-        osVersion,
-        os
-      }).then(() => {
+    const updatedProduct: TicketProduct = {
+      ...product,
+      id: product ? product.id : NaN,
+      product: gluuProduct as number,
+      version,
+      osVersion,
+      os
+    };
+
+    if (index !== undefined) {
+      if (!isNaN(index)) removeCreateTicketProduct(index);
+      addCreateTicketProduct(updatedProduct);
+      closeModal();
+    } else if (product && gluuProduct) {
+      updateTicketProduct(ticket.slug, updatedProduct).then(() => {
         closeModal();
       });
     } else if (gluuProduct) {
-      createTicketProduct(ticket.slug, {
-        id: NaN,
-        product: gluuProduct,
-        version,
-        osVersion,
-        os
-      }).then(() => {
+      createTicketProduct(ticket.slug, updatedProduct).then(() => {
         closeModal();
       });
     }
@@ -265,6 +290,11 @@ class ChangeProduct extends Component<Props, State> {
           </Button>{" "}
           &emsp;
           <Button onClick={closeModal}>Cancel</Button>
+        </Box>
+        <Box mt={4}>
+          <Link onClick={this.removeProduct}>
+            <small>Remove Product</small>
+          </Link>
         </Box>
       </div>
     );
