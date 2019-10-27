@@ -28,14 +28,14 @@ export const colors = {
 };
 
 const muiTheme = createMuiTheme({
-  // spacing: 12,
   palette: {
     primary: {
       main: colors.MAIN_COLOR
     }
   },
   typography: {
-    fontFamily: '"Lato", sans-serif'
+    fontFamily: '"Lato", sans-serif',
+    fontSize: 10
   },
   overrides: {
     MuiTypography: {
