@@ -47,6 +47,9 @@ const styles = (theme: Theme) =>
       marginLeft: "1em",
       width: "12em"
     },
+    autoCompletePaper: {
+      maxHeight: "none"
+    },
     titleText: {
       color: colors.LIGHTER_TEXT
     }
@@ -460,6 +463,7 @@ class TicketDetailSideBarItem extends Component<Props, State> {
               variant="menu"
               open={Boolean(menuElement)}
               onClose={this.closeMenu}
+              classes={{ paper: classes.autoCompletePaper }}
             >
               {menuType === MenuType.Creator ||
               menuType === MenuType.Assignee ? (
