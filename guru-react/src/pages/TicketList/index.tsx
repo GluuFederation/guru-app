@@ -338,6 +338,7 @@ class TicketList extends Component<Props, State> {
                     selectFunction={this.setSearchQuery}
                     InputProps={InputProps}
                     searchButton={SearchButtonOptions.End}
+                    isAbsolute={true}
                   />
                 </Grid>
                 <Grid item xs={12} lg={6}>
