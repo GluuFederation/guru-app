@@ -299,11 +299,7 @@ class CustomerPage extends Component<Props> {
                             </TableCell>
 
                             <TableCell>
-                              <Typography align="right">
-                                <a href="#" className={classes.anchorTag}>
-                                  Remove
-                                </a>
-                              </Typography>
+                              <Typography align="right">Remove</Typography>
                             </TableCell>
                           </TableRow>
                           <TableRow style={{ width: "100%" }}>
@@ -323,11 +319,7 @@ class CustomerPage extends Component<Props> {
                             </TableCell>
 
                             <TableCell>
-                              <Typography align="right">
-                                <a href="#" className={classes.anchorTag}>
-                                  Remove
-                                </a>
-                              </Typography>
+                              <Typography align="right">Remove</Typography>
                             </TableCell>
                           </TableRow>
                         </TableBody>
@@ -385,9 +377,7 @@ class CustomerPage extends Component<Props> {
                       You don't have any assigned user for this company
                     </Typography>
                     <Typography variant="body1" align="center">
-                      <a href="#" className={classes.anchorTag}>
-                        Add New User
-                      </a>
+                      Add New User
                     </Typography>
                   </Box>
                 </Paper>
