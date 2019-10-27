@@ -38,6 +38,11 @@ const muiTheme = createMuiTheme({
     fontFamily: '"Lato", sans-serif'
   },
   overrides: {
+    MuiTypography: {
+      root: {
+        wordBreak: "normal"
+      }
+    },
     MuiCardHeader: {
       root: {
         backgroundColor: colors.SECONDARY_BACKGROUND,

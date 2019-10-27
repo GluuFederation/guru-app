@@ -28,7 +28,11 @@ const styles = (theme: Theme) =>
       backgroundSize: "cover",
       backgroundRepeat: "no-repeat",
       height: "23em",
-      marginBottom: "4em"
+      marginBottom: "4em",
+      [theme.breakpoints.down("xs")]: {
+        height: "10em",
+        backgroundImage: "none"
+      }
     },
     searchInput: {
       border: "none",
