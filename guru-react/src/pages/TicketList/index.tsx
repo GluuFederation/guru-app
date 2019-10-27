@@ -9,11 +9,8 @@ import { Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Hidden from "@material-ui/core/Hidden";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
-import Chip from "@material-ui/core/Chip";
 import { colors } from "../../theme";
 
 import Page from "../../components/Page";
@@ -40,8 +37,6 @@ import TicketNav from "./TicketNav";
 import TicketListSidebar from "./TicketListSidebar";
 import TicketListItem from "./TicketListItem";
 import AllFilters from "./AllFilters";
-
-import { ReactComponent as SearchImg } from "../../assets/images/search.svg";
 
 const styles = (theme: Theme) =>
   createStyles({

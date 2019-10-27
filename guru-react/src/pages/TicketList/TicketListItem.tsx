@@ -16,19 +16,12 @@ import { colors } from "../../theme";
 import { getChipClass } from "../../utils/chipStyles";
 import { paths } from "../../routes";
 import { Ticket } from "../../state/types/tickets";
-import {
-  closedStatus,
-  otherCategory,
-  minorIssueType
-} from "../../state/preloaded/info";
+import { closedStatus, otherCategory } from "../../state/preloaded/info";
 import { withInfo, WithInfoProps } from "../../state/hocs/info";
 import {
   withTicketDetail,
   WithTicketDetailProps
 } from "../../state/hocs/tickets";
-import { TicketIssueType } from "../../state/types/info";
-import axios from "axios";
-import { fontStyle } from "@material-ui/system";
 
 const styles = (theme: Theme) =>
   createStyles({

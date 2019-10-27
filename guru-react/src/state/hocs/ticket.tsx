@@ -4,13 +4,7 @@ import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
 
 import { CreateTicketState, AppState } from "../types/state";
-import {
-  TeamMember,
-  Company,
-  User,
-  ShortUser,
-  ShortCompany
-} from "../types/profiles";
+import { ShortUser, ShortCompany } from "../types/profiles";
 import {
   SetTicketCompanyAction,
   SetTicketBodyAction,
@@ -46,7 +40,6 @@ import {
   createTicket,
   clearTicketEntry
 } from "../actions/ticket";
-import { TicketIssueType, TicketCategory } from "../types/info";
 import { TicketProduct, Ticket } from "../types/tickets";
 
 export interface WithCreateTicketState {

@@ -1,4 +1,3 @@
-import { GluuProduct } from "./info";
 import { ShortUser, ShortCompany } from "./profiles";
 
 export enum TicketFilterOrder {

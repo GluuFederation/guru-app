@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import axios from "axios";
 
 import { withStyles, WithStyles } from "@material-ui/styles";
 import { createStyles, Theme } from "@material-ui/core/styles";
@@ -97,7 +96,7 @@ class Step8 extends Component<Props, State> {
       updateNewTicket({
         ...newTicket,
         products: [
-          ...newTicket.products.filter(item => item.id && item.id !== NaN),
+          ...newTicket.products.filter(item => item.id && isNaN(item.id)),
           { ...this.state, id: NaN }
         ]
       });

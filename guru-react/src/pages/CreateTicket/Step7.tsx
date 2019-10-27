@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import axios from "axios";
 
 import { withStyles, WithStyles } from "@material-ui/styles";
 import { createStyles, Theme } from "@material-ui/core/styles";

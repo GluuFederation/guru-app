@@ -1,10 +1,7 @@
 import axios from "axios";
-import { ThunkDispatch } from "redux-thunk";
-import { AnyAction } from "redux";
 
 import actions from "./constants";
 import { ShortUser, ShortCompany } from "../types/profiles";
-import { TicketIssueType, TicketCategory } from "../types/info";
 import { TicketProduct, Ticket } from "../types/tickets";
 import { CreateTicketState } from "../types/state";
 

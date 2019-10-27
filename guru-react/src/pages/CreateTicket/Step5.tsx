@@ -1,12 +1,10 @@
 import React, { Component } from "react";
-import axios from "axios";
 
 import { withStyles, WithStyles } from "@material-ui/styles";
 import { createStyles, Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
 
 import { colors } from "../../theme";
 import { WithUserProps, withUser } from "../../state/hocs/profiles";
