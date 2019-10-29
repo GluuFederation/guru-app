@@ -43,8 +43,14 @@ const styles = (theme: Theme) =>
     root: {
       flexGrow: 1,
       backgroundColor: "inherit",
-      padding: "4em 4em 10em 4em",
-      wordWrap: "break-word"
+      padding: "3rem 8rem 8rem 8rem",
+      wordWrap: "break-word",
+      [theme.breakpoints.down("md")]: {
+        padding: "3rem 4rem 8rem 4rem"
+      },
+      [theme.breakpoints.down("xs")]: {
+        padding: "3rem 1rem 30rem 1rem"
+      }
     },
     ticketCount: {
       marginTop: "1.5em"
@@ -317,7 +323,7 @@ class TicketList extends Component<Props, State> {
         <Navbar />
         <TicketNav setTicketsLoading={this.setTicketsLoading} />
         <div className={`app-body ${classes.root}`}>
-          <Grid container spacing={2}>
+          <Grid container spacing={4}>
             <Hidden smDown>
               <Grid item xs={12} md={4} lg={3} xl={2}>
                 <TicketListSidebar setTicketsLoading={this.setTicketsLoading} />
@@ -365,16 +371,18 @@ class TicketList extends Component<Props, State> {
                     <CircularProgress />
                   </div>
                 ) : (
-                  <React.Fragment>
-                    {tickets.map(ticket => (
-                      <Grid item xs={12} key={ticket.id}>
-                        <TicketListItem
-                          shortTicket={ticket}
-                          staff={this.state.staffName}
-                        />
-                      </Grid>
-                    ))}
-                  </React.Fragment>
+                  <Grid item xs={12}>
+                    <Grid container spacing={2}>
+                      {tickets.map(ticket => (
+                        <Grid item xs={12} key={ticket.id}>
+                          <TicketListItem
+                            shortTicket={ticket}
+                            staff={this.state.staffName}
+                          />
+                        </Grid>
+                      ))}
+                    </Grid>
+                  </Grid>
                 )}
               </Grid>
               <Grid justify="space-between" container>

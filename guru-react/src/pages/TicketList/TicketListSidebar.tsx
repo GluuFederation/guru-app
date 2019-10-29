@@ -6,7 +6,6 @@ import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import {
@@ -30,16 +29,25 @@ const styles = (theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
-      backgroundColor: colors.MAIN_BACKGROUND,
-      paddingLeft: "1em",
-      paddingRight: "1em"
+      backgroundColor: colors.MAIN_BACKGROUND
+      // paddingLeft: "1rem",
+      // paddingRight: "1rem"
     },
     caretIcon: {
-      marginBottom: "-.2em",
-      height: ".8em"
+      marginBottom: "-.2rem",
+      height: ".8rem"
     },
     inputSet: {
-      marginTop: ".8em"
+      marginTop: ".8rem"
+    },
+    sideGrid: {
+      paddingLeft: "1.5rem",
+      paddingRight: "1.5rem"
+    },
+    topSideGrid: {
+      borderBottom: `1px solid ${colors.VERY_LIGHT_TEXT}`,
+      paddingTop: "1.5em",
+      paddingBottom: "1em"
     }
   });
 
@@ -275,12 +283,15 @@ class TicketSidebar extends Component<Props, State> {
 
     return (
       <div className={classes.root}>
-        <Grid container spacing={1}>
-          <Grid item xs={12}>
-            <br />
-            <Typography variant="h6">Advanced Filter</Typography>
-            <br />
-            <Divider />
+        <Grid container spacing={0}>
+          <Grid
+            item
+            xs={12}
+            classes={{ root: `${classes.sideGrid} ${classes.topSideGrid}` }}
+          >
+            <Typography variant="h5">Advanced filter</Typography>
+          </Grid>
+          <Grid item xs={12} classes={{ root: classes.sideGrid }}>
             {isStaff ? (
               <React.Fragment>
                 <Box className={classes.inputSet}>

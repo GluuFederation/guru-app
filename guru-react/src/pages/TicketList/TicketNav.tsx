@@ -24,8 +24,8 @@ const styles = (theme: Theme) =>
     root: {
       flexGrow: 1,
       backgroundColor: colors.MAIN_BACKGROUND,
-      paddingLeft: "6rem",
-      paddingRight: "6rem",
+      paddingLeft: "8rem",
+      paddingRight: "8rem",
       [theme.breakpoints.down("sm")]: {
         paddingLeft: "1rem",
         paddingRight: "1rem"

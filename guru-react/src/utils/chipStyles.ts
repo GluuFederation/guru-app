@@ -5,11 +5,11 @@ export const getChipClass = (slug: string): string => {
     case "production-impaired":
       return "chip purple";
     case "pre-production-issue":
-      return "chip blue";
+      return "chip light-blue";
     case "minor-issue":
       return "chip green";
     case "new-development-issue":
-      return "chip gray";
+      return "chip orange";
     case "new":
       return "chip light-blue";
     case "in-progress":

@@ -15,7 +15,10 @@ const styles = (theme: Theme) =>
       paddingTop: ".5em",
       display: "inline-block"
     },
-    chip: {}
+    chip: {
+      fontSize: ".9rem",
+      borderRadius: ".2rem"
+    }
   });
 
 export enum FilterType {

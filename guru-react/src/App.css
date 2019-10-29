@@ -21,38 +21,38 @@ body {
 }
 
 .chip.light-blue {
-  background-color: rgba(31, 191, 221, 0.15);
-  color: #1fbfdd;
+  background-color: #18c0dd;
+  color: #fff;
 }
 
 .chip.green {
-  background-color: rgba(65, 204, 34, 0.15);
-  color: #41cc22;
+  background-color: #59c608;
+  color: #fff;
 }
 
 .chip.gray {
-  background-color: rgba(0, 0, 0, 0.15);
-  color: #4a4a4a;
+  background-color: #3f3f3f;
+  color: #fff;
 }
 
 .chip.yellow {
-  background-color: rgba(255, 188, 22, 0.15);
-  color: #ffbc16;
+  background-color: #ffbd0f;
+  color: #fff;
 }
 
 .chip.red {
-  background-color: rgba(255, 89, 28, 0.15);
-  color: #ff591c;
+  background-color: #ff384d;
+  color: #fff;
 }
 
 .chip.purple {
-  background-color: rgba(183, 54, 255, 0.15);
-  color: #b736ff;
+  background-color: #b833ff;
+  color: #fff;
 }
 
-.chip.blue {
-  background-color: rgba(120, 110, 255, 0.15);
-  color: #786eff;
+.chip.orange {
+  background-color: #fe5915;
+  color: #fff;
 }
 
 .card.light-blue {
