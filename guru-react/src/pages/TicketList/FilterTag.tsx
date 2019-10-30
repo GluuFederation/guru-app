@@ -7,6 +7,7 @@ import Chip from "@material-ui/core/Chip";
 
 import { withUser, WithUserProps } from "../../state/hocs/profiles";
 import { withTicketList, WithTicketListProps } from "../../state/hocs/tickets";
+import { formatChipText } from "../../utils/chipStyles";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -107,7 +108,7 @@ class TicketNav extends Component<Props> {
     return (
       <div className={classes.root}>
         <Chip
-          label={tag.text}
+          label={formatChipText(tag.text)}
           className={classes.chip}
           color="primary"
           onDelete={this.removeTag}

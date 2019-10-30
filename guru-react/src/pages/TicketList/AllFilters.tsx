@@ -46,7 +46,7 @@ class ChangeOs extends Component<Props, State> {
       filters.query;
     return (
       <div className={classes.root}>
-        {tickets.length} results found. &emsp;
+        {filters.totalCount} results found. &emsp;
         {filters.companies.map(company => (
           <FilterTag
             key={company.id}
