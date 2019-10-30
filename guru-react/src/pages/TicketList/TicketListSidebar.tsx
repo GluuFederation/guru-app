@@ -14,7 +14,7 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import Box from "@material-ui/core/Box";
-// import ExpandMore from "@material-ui/icons/ExpandMore";
+import Hidden from "@material-ui/core/Hidden";
 
 import { colors } from "../../theme";
 import { withUser, WithUserProps } from "../../state/hocs/profiles";
@@ -24,6 +24,7 @@ import { ShortUser, Company } from "../../state/types/profiles";
 import { emptyUser } from "../../state/preloaded/profiles";
 import Autocomplete, { Suggestion } from "../../components/Autocomplete";
 import FilterTag, { FilterType } from "./FilterTag";
+import { TicketFilterOrder } from "../../state/types/tickets";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -260,6 +261,16 @@ class TicketSidebar extends Component<Props, State> {
       dateString = date.format("YYYY-MM-DD");
     }
     setFilterEndDate(dateString);
+    setTicketsLoading(true);
+    fetchTickets(true).then(() => {
+      setTicketsLoading(false);
+    });
+  };
+
+  setOrder = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const { setFilterOrder, fetchTickets, setTicketsLoading } = this.props;
+    const order = event.target.value as TicketFilterOrder;
+    setFilterOrder(order);
     setTicketsLoading(true);
     fetchTickets(true).then(() => {
       setTicketsLoading(false);
@@ -522,6 +533,27 @@ class TicketSidebar extends Component<Props, State> {
                 ))}
               </TextField>
             </div>
+            <Hidden smDown>
+              <div className={classes.inputSet}>
+                <div>
+                  <span>Order by:</span>
+                </div>
+                <TextField
+                  select
+                  variant="outlined"
+                  margin="dense"
+                  value={filters.order ? filters.order : ""}
+                  onChange={this.setOrder}
+                >
+                  <MenuItem value={TicketFilterOrder.MostRecent}>
+                    Most recent
+                  </MenuItem>
+                  <MenuItem value={TicketFilterOrder.LeastRecent}>
+                    Least recent
+                  </MenuItem>
+                </TextField>
+              </div>
+            </Hidden>
             <div className={classes.inputSet}>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <div>
@@ -533,6 +565,7 @@ class TicketSidebar extends Component<Props, State> {
                   </span>
                 </div>
                 <KeyboardDatePicker
+                  fullWidth
                   margin="dense"
                   value={
                     moment(filters.startDate).isValid()
@@ -554,6 +587,7 @@ class TicketSidebar extends Component<Props, State> {
                   </span>
                 </div>
                 <KeyboardDatePicker
+                  fullWidth
                   margin="dense"
                   value={
                     moment(filters.endDate).isValid()
