@@ -31,8 +31,6 @@ const styles = (theme: Theme) =>
     root: {
       flexGrow: 1,
       backgroundColor: colors.MAIN_BACKGROUND
-      // paddingLeft: "1rem",
-      // paddingRight: "1rem"
     },
     caretIcon: {
       marginBottom: "-.2rem",
