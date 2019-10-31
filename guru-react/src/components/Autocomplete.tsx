@@ -15,8 +15,7 @@ import { ReactComponent as SearchImg } from "../assets/images/search.svg";
 const styles = (theme: Theme) =>
   createStyles({
     dropdown: {
-      position: "absolute",
-      zIndex: 999
+      position: "absolute"
     }
   });
 export interface Suggestion {
@@ -40,6 +39,7 @@ interface ExternalProps {
   isAlwaysOpen?: boolean;
   value?: string;
   searchButton?: SearchButtonOptions;
+  isAbsolute?: boolean;
 }
 
 type Props = ExternalProps & WithStyles<typeof styles>;
@@ -91,7 +91,13 @@ class Autocomplete extends Component<Props, State> {
   };
 
   render() {
-    const { suggestions, isAlwaysOpen, classes, searchButton } = this.props;
+    const {
+      suggestions,
+      isAlwaysOpen,
+      classes,
+      searchButton,
+      isAbsolute
+    } = this.props;
     let { InputProps } = this.props;
     const { searchQuery, selectedItem } = this.state;
     if (searchButton) {
@@ -148,7 +154,7 @@ class Autocomplete extends Component<Props, State> {
                 inputProps={{ ...inputProps }}
               />
               {isOpen || isAlwaysOpen ? (
-                <Paper classes={{ root: classes.dropdown }}>
+                <Paper classes={isAbsolute ? { root: classes.dropdown } : {}}>
                   {suggestions.map(suggestion => (
                     <MenuItem
                       {...getItemProps({

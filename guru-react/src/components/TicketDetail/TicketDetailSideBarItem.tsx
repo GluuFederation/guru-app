@@ -47,6 +47,9 @@ const styles = (theme: Theme) =>
       marginLeft: "1em",
       width: "12em"
     },
+    autoCompletePaper: {
+      maxHeight: "none"
+    },
     titleText: {
       color: colors.LIGHTER_TEXT
     }
