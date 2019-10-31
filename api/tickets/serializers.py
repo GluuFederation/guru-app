@@ -80,6 +80,7 @@ class TicketSerializer(serializers.ModelSerializer):
     created_by = ShortUserSerializer(read_only=True)
     created_for = ShortUserSerializer(read_only=True)
     assignee = ShortUserSerializer(read_only=True)
+    slug = serializers.ReadOnlyField()
     updated_by = ShortUserSerializer(read_only=True)
     voters = ShortUserSerializer(many=True, read_only=True)
     subscribers = ShortUserSerializer(many=True, read_only=True)

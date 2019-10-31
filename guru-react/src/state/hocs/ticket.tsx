@@ -68,9 +68,7 @@ export interface WithCreateTicketDispatch {
     hasProducts: boolean
   ) => SetTicketHasProductsAction;
   addCreateTicketProduct: (product: TicketProduct) => AddTicketProductAction;
-  removeCreateTicketProduct: (
-    product: TicketProduct
-  ) => RemoveTicketProductAction;
+  removeCreateTicketProduct: (index: number) => RemoveTicketProductAction;
   setCreateTicketTitle: (title: string) => SetTicketTitleAction;
   setCreateTicketBody: (body: string) => SetTicketBodyAction;
   setCreateTicketPrivacy: (isPrivate: boolean) => SetTicketPrivacyAction;
@@ -114,8 +112,8 @@ export const withCreateTicket = <P extends WithCreateTicketProps>(
         dispatch(setTicketHasProducts(hasProducts)),
       addCreateTicketProduct: (product: TicketProduct) =>
         dispatch(addTicketProduct(product)),
-      removeCreateTicketProduct: (product: TicketProduct) =>
-        dispatch(removeTicketProduct(product)),
+      removeCreateTicketProduct: (index: number) =>
+        dispatch(removeTicketProduct(index)),
       setCreateTicketTitle: (title: string) => dispatch(setTicketTitle(title)),
       setCreateTicketBody: (body: string) => dispatch(setTicketBody(body)),
       setCreateTicketPrivacy: (isPrivate: boolean) =>

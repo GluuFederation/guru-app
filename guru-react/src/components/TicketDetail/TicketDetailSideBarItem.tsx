@@ -90,6 +90,7 @@ interface State {
   isModalOpen: boolean;
   modalType: ModalType;
   product?: TicketProduct;
+  index?: number;
 }
 
 class TicketDetailSideBarItem extends Component<Props, State> {
@@ -121,11 +122,12 @@ class TicketDetailSideBarItem extends Component<Props, State> {
     }
   };
 
-  openProductMenu = (product: TicketProduct) => () => {
+  openProductMenu = (product: TicketProduct, index?: number) => () => {
     this.setState({
       isModalOpen: true,
       modalType: ModalType.Product,
-      product
+      product,
+      index
     });
   };
 
@@ -133,7 +135,8 @@ class TicketDetailSideBarItem extends Component<Props, State> {
     this.setState({
       isModalOpen: true,
       modalType: ModalType.Product,
-      product: undefined
+      product: undefined,
+      index: NaN
     });
   };
 
@@ -242,11 +245,14 @@ class TicketDetailSideBarItem extends Component<Props, State> {
         this.setState({ menuElement: null });
         break;
       case MenuType.GluuServer:
-        if (selectedItem.slug && ticket) {
-          this.props.updateTicket({
-            ...ticket,
-            [menuType]: selectedItem.slug
-          });
+        if (selectedItem.slug) {
+          if (isNew)
+            updateNewTicket({ ...newTicket, [menuType]: selectedItem.slug });
+          else if (ticket)
+            updateTicket({
+              ...ticket,
+              [menuType]: selectedItem.slug
+            });
           this.setState({ menuElement: null });
         }
         break;
@@ -516,20 +522,20 @@ class TicketDetailSideBarItem extends Component<Props, State> {
           )}
 
         {menuType === MenuType.Os ||
-          menuType === MenuType.Products ||
-          menuType === MenuType.NewProduct ? (
-            <Modal open={isModalOpen} onClose={this.closeModal}>
-              <div className="modal-super-container">
-                <div className="modal-container">
-                  {modalType === ModalType.Os ? (
-                    <ChangeOs closeModal={this.closeModal} />
-                  ) : (
-                      <ChangeProduct
-                        closeModal={this.closeModal}
-                        product={this.state.product}
-                      />
-                    )}
-                </div>
+        menuType === MenuType.Products ||
+        menuType === MenuType.NewProduct ? (
+          <Modal open={isModalOpen} onClose={this.closeModal}>
+            <div className="modal-super-container">
+              <div className="modal-container">
+                {modalType === ModalType.Os ? (
+                  <ChangeOs closeModal={this.closeModal} isNew={isNew} />
+                ) : (
+                  <ChangeProduct
+                    closeModal={this.closeModal}
+                    product={this.state.product}
+                    index={this.state.index}
+                  />
+                )}
               </div>
             </Modal>
           ) : null}

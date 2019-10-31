@@ -60,7 +60,7 @@ export interface AddTicketProductAction {
 
 export interface RemoveTicketProductAction {
   type: string;
-  product: TicketProduct;
+  index: number;
 }
 
 export interface SetTicketTitleAction {
@@ -179,10 +179,10 @@ export const addTicketProduct = (
 });
 
 export const removeTicketProduct = (
-  product: TicketProduct
+  index: number
 ): RemoveTicketProductAction => ({
   type: actions.REMOVE_TICKET_CREATE_PRODUCT,
-  product
+  index
 });
 
 export const setTicketTitle = (title: string): SetTicketTitleAction => ({

@@ -22,6 +22,10 @@ import {
   minorIssueType
 } from "../../state/preloaded/info";
 import { withInfo, WithInfoProps } from "../../state/hocs/info";
+import {
+  withTicketDetail,
+  WithTicketDetailProps
+} from "../../state/hocs/tickets";
 import { TicketIssueType } from "../../state/types/info";
 import axios from "axios";
 import { fontStyle } from "@material-ui/system";
@@ -62,58 +66,48 @@ const styles = (theme: Theme) =>
       fontSize: "12px",
       fontWeight: 600
     }
-
   });
 
 interface ExternalProps {
-  ticket: Ticket;
+  shortTicket: Ticket;
   staff: any;
-}
-
-interface State {
-  staffValue: number;
 }
 
 type Props = WithStyles<typeof styles> &
   RouteComponentProps &
   WithInfoProps &
+  WithTicketDetailProps &
   ExternalProps;
 
-class TicketNav extends Component<Props, State> {
+class TicketNav extends Component<Props> {
   goToTicket = () => {
-    this.props.history.push(paths.getTicketDetailPath(this.props.ticket.slug));
-  };
-
-  state = {
-    staffValue: this.props.ticket.assignee ? this.props.ticket.assignee.id : 0
+    this.props.history.push(
+      paths.getTicketDetailPath(this.props.shortTicket.slug)
+    );
   };
 
   handleChange(event: React.ChangeEvent<{ value: unknown }>) {
-    this.setState({
-      staffValue: event.target.value as number
-    });
-    let assignee_id = event.target.value as number;
-    let ticketSlug = this.props.ticket.slug;
-    const URL = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/${ticketSlug}/assign/`;
-    const data = { ticket: { assignee: assignee_id } };
-    return axios.post(URL, { ...data }).then(response => {
-
-    });
+    const { shortTicket, setTicketAssignee } = this.props;
+    setTicketAssignee(shortTicket.slug, event.target.value as number, true);
   }
   render() {
-    const { classes, ticket, info, staff } = this.props;
-    const owner = ticket.createdFor ? ticket.createdFor : ticket.createdBy;
+    const { classes, shortTicket, info, staff } = this.props;
+    const owner = shortTicket.createdFor
+      ? shortTicket.createdFor
+      : shortTicket.createdBy;
 
-    const tempStatus = info.statuses.find(item => item.id === ticket.status);
+    const tempStatus = info.statuses.find(
+      item => item.id === shortTicket.status
+    );
     const status = tempStatus ? tempStatus : closedStatus;
 
     const tempCategory = info.categories.find(
-      item => item.id === ticket.category
+      item => item.id === shortTicket.category
     );
     const category = tempCategory ? tempCategory : otherCategory;
 
     const issueType = info.issueTypes.find(
-      item => item.id === ticket.issueType
+      item => item.id === shortTicket.issueType
     );
 
     return (
@@ -127,11 +121,17 @@ class TicketNav extends Component<Props, State> {
               alignItems="center"
             >
               <Grid item>
-                {owner.avatar ?
-                  <Avatar alt="Image" src={owner.avatar} className={classes.avatar} ></Avatar>
-                  : <Avatar alt="Image" className={classes.avatar} >{owner.firstName.charAt(0)}</Avatar>
-                }
-
+                {owner.avatar ? (
+                  <Avatar
+                    alt="Image"
+                    src={owner.avatar}
+                    className={classes.avatar}
+                  ></Avatar>
+                ) : (
+                  <Avatar alt="Image" className={classes.avatar}>
+                    {owner.firstName.charAt(0)}
+                  </Avatar>
+                )}
               </Grid>
               <Grid item>
                 <div>
@@ -146,7 +146,9 @@ class TicketNav extends Component<Props, State> {
                 </div>
               </Grid>
               <Grid item>
-                <div style={{ textTransform: 'capitalize' }}>{owner.company ? owner.company.plan : ""}</div>
+                <div style={{ textTransform: "capitalize" }}>
+                  {owner.company ? owner.company.plan : ""}
+                </div>
               </Grid>
             </Grid>
           </Grid>
@@ -171,19 +173,19 @@ class TicketNav extends Component<Props, State> {
                 className={getChipClass(category.slug)}
               />
             </div>
-            <Typography variant="h6">{ticket.title}</Typography>
+            <Typography variant="h6">{shortTicket.title}</Typography>
             <div>
-              <span className={classes.ticketId}># {ticket.id}</span>&emsp;
+              <span className={classes.ticketId}># {shortTicket.id}</span>&emsp;
               <span className={classes.ticketMeta}>
-                Created: <em>{moment(ticket.createdOn).format("ll")}</em>
+                Created: <em>{moment(shortTicket.createdOn).format("ll")}</em>
               </span>
               &emsp;
               <span className={classes.ticketMeta}>
                 Last updated:{" "}
                 <em>
-                  {moment(ticket.updatedOn).fromNow()}{" "}
-                  {ticket.updatedBy
-                    ? ` by ${ticket.updatedBy.firstName} ${ticket.updatedBy.lastName}`
+                  {moment(shortTicket.updatedOn).fromNow()}{" "}
+                  {shortTicket.updatedBy
+                    ? ` by ${shortTicket.updatedBy.firstName} ${shortTicket.updatedBy.lastName}`
                     : ""}
                 </em>
               </span>
@@ -197,7 +199,7 @@ class TicketNav extends Component<Props, State> {
                     <ChatBubbleOutline />
                   </Grid>
                   <Grid item xs={9} className={classes.ticketActivity}>
-                    {ticket.responseNumber} responses
+                    {shortTicket.responseNumber} responses
                   </Grid>
                 </Grid>
               </Grid>
@@ -207,11 +209,10 @@ class TicketNav extends Component<Props, State> {
                     <ThumbUpOutlined />
                   </Grid>
                   <Grid item xs={9} md={9} className={classes.ticketActivity}>
-                    {ticket.voters.length} votes
+                    {shortTicket.voters.length} votes
                   </Grid>
                 </Grid>
               </Grid>
-              {/* {ticket.assignee ? ( */}
               <Grid item xs={12}>
                 <Grid container justify="center" spacing={2}>
                   <Grid item xs={2} md={2}>
@@ -220,19 +221,20 @@ class TicketNav extends Component<Props, State> {
                   <Grid item xs={9} md={9} className={classes.ticketActivity}>
                     <Select
                       className={classes.selectType}
-                      value={this.state.staffValue}
+                      value={
+                        shortTicket.assignee ? shortTicket.assignee.id : ""
+                      }
                       onChange={this.handleChange.bind(this)}
                     >
-                      {staff.map((staf: any) => (
-                        <MenuItem value={staf.id}>
-                          {staf.firstName + " " + staf.lastName}
+                      {staff.map((staff: any) => (
+                        <MenuItem value={staff.id} key={staff.id}>
+                          {staff.firstName + " " + staff.lastName}
                         </MenuItem>
                       ))}
                     </Select>
                   </Grid>
                 </Grid>
               </Grid>
-              {/* ) : null} */}
             </Grid>
           </Grid>
         </Grid>
@@ -241,4 +243,6 @@ class TicketNav extends Component<Props, State> {
   }
 }
 
-export default withInfo(withStyles(styles)(withRouter(TicketNav)));
+export default withTicketDetail(
+  withInfo(withStyles(styles)(withRouter(TicketNav)))
+);

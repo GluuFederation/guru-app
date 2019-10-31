@@ -179,6 +179,12 @@ export interface ResetTicketsStateAction {
   type: string;
 }
 
+export interface SetTicketListItemAssigneeAction {
+  type: string;
+  ticketSlug: string;
+  assignee: ShortUser;
+}
+
 export type TicketsAction =
   | AddFilterCompanyAction
   | AddFilterAssigneeAction
@@ -211,7 +217,8 @@ export type TicketsAction =
   | AddTicketProductAction
   | RemoveTicketProductAction
   | SetTicketHistoryAction
-  | ResetTicketsStateAction;
+  | ResetTicketsStateAction
+  | SetTicketListItemAssigneeAction;
 
 export const addFilterCompany = (company: Company): AddFilterCompanyAction => ({
   type: actions.ADD_FILTER_COMPANY,
@@ -410,6 +417,15 @@ export const setTicketHistory = (
   history
 });
 
+export const setTicketListItemAssignee = (
+  ticketSlug: string,
+  assignee: ShortUser
+): SetTicketListItemAssigneeAction => ({
+  type: actions.SET_TICKET_LIST_ITEM_ASSIGNEE,
+  ticketSlug,
+  assignee
+});
+
 export const resetTicketsState = (): ResetTicketsStateAction => ({
   type: actions.RESET_TICKETS_STATE
 });
@@ -464,15 +480,9 @@ export const fetchTicket = (ticketSlug: string) => {
   return async (
     dispatch: ThunkDispatch<{}, {}, AnyAction>
   ): Promise<Ticket> => {
-    const ticketUrl = `${
-      process.env.REACT_APP_API_BASE
-    }/api/v1/tickets/${ticketSlug}/`;
-    const answersUrl = `${
-      process.env.REACT_APP_API_BASE
-    }/api/v1/tickets/${ticketSlug}/answers/`;
-    const historyUrl = `${
-      process.env.REACT_APP_API_BASE
-    }/api/v1/tickets/${ticketSlug}/history/`;
+    const ticketUrl = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/${ticketSlug}/`;
+    const answersUrl = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/${ticketSlug}/answers/`;
+    const historyUrl = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/${ticketSlug}/history/`;
 
     return Promise.all([
       axios.get(ticketUrl),
@@ -504,9 +514,7 @@ export const changeTicketVote = (ticketSlug: string, vote: boolean) => {
   return async (
     dispatch: ThunkDispatch<{}, {}, AnyAction>
   ): Promise<Ticket> => {
-    const URL = `${
-      process.env.REACT_APP_API_BASE
-    }/api/v1/tickets/${ticketSlug}/vote/`;
+    const URL = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/${ticketSlug}/vote/`;
     return axios.post(URL, { vote }).then(response => {
       const results = response.data.results;
       dispatch(setTicket(results));
@@ -515,17 +523,23 @@ export const changeTicketVote = (ticketSlug: string, vote: boolean) => {
   };
 };
 
-export const setTicketAssignee = (ticketSlug: string, assignee: number) => {
+export const setTicketAssignee = (
+  ticketSlug: string,
+  assignee: number,
+  fromList?: boolean
+) => {
   return async (
     dispatch: ThunkDispatch<{}, {}, AnyAction>
   ): Promise<Ticket> => {
-    const URL = `${
-      process.env.REACT_APP_API_BASE
-    }/api/v1/tickets/${ticketSlug}/assign/`;
+    const URL = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/${ticketSlug}/assign/`;
     const data = { ticket: { assignee } };
     return axios.post(URL, { ...data }).then(response => {
       const results = response.data.results;
-      dispatch(setTicket(results));
+      if (fromList) {
+        dispatch(setTicketListItemAssignee(ticketSlug, results.assignee));
+      } else {
+        dispatch(setTicket(results));
+      }
       return Promise.resolve(results);
     });
   };
@@ -535,9 +549,7 @@ export const setTicketCreator = (ticketSlug: string, creator: number) => {
   return async (
     dispatch: ThunkDispatch<{}, {}, AnyAction>
   ): Promise<Ticket> => {
-    const URL = `${
-      process.env.REACT_APP_API_BASE
-    }/api/v1/tickets/${ticketSlug}/set-creator/`;
+    const URL = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/${ticketSlug}/set-creator/`;
     const data = { ticket: { creator } };
     return axios.post(URL, { ...data }).then(response => {
       const results = response.data.results;
@@ -551,9 +563,7 @@ export const updateTicket = (ticket: Ticket) => {
   return async (
     dispatch: ThunkDispatch<{}, {}, AnyAction>
   ): Promise<Ticket> => {
-    const URL = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/${
-      ticket.slug
-    }/`;
+    const URL = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/${ticket.slug}/`;
     return axios.put(URL, { ticket }).then(response => {
       const results = response.data.results;
       dispatch(setTicket(results));
@@ -569,9 +579,7 @@ export const changeTicketSubscription = (
   return async (
     dispatch: ThunkDispatch<{}, {}, AnyAction>
   ): Promise<Ticket> => {
-    const URL = `${
-      process.env.REACT_APP_API_BASE
-    }/api/v1/tickets/${tickerSlug}/subscribe/`;
+    const URL = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/${tickerSlug}/subscribe/`;
     return axios.post(URL, { subscribe }).then(response => {
       const results = response.data.results;
       dispatch(setTicket(results));
@@ -584,9 +592,7 @@ export const createTicketAnswer = (ticketSlug: string, body: string) => {
   return async (
     dispatch: ThunkDispatch<{}, {}, AnyAction>
   ): Promise<Answer> => {
-    const URL = `${
-      process.env.REACT_APP_API_BASE
-    }/api/v1/tickets/${ticketSlug}/answers/`;
+    const URL = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/${ticketSlug}/answers/`;
     return axios.post(URL, { answer: { body } }).then(response => {
       const results = response.data.results;
       dispatch(addTicketAnswer(results));
@@ -599,9 +605,7 @@ export const updateTicketAnswer = (ticketSlug: string, answer: Answer) => {
   return async (
     dispatch: ThunkDispatch<{}, {}, AnyAction>
   ): Promise<Answer> => {
-    const URL = `${
-      process.env.REACT_APP_API_BASE
-    }/api/v1/tickets/${ticketSlug}/answers/${answer.id}/`;
+    const URL = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/${ticketSlug}/answers/${answer.id}/`;
     return axios.put(URL, { answer }).then(response => {
       const results = response.data.results;
       dispatch(removeTicketAnswer(answer));
@@ -615,9 +619,7 @@ export const deleteTicketAnswer = (ticketSlug: string, answer: Answer) => {
   return async (
     dispatch: ThunkDispatch<{}, {}, AnyAction>
   ): Promise<Answer> => {
-    const URL = `${
-      process.env.REACT_APP_API_BASE
-    }/api/v1/tickets/${ticketSlug}/answers/${answer.id}/`;
+    const URL = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/${ticketSlug}/answers/${answer.id}/`;
     return axios.delete(URL).then(response => {
       dispatch(removeTicketAnswer(answer));
       return Promise.resolve(answer);
@@ -632,9 +634,7 @@ export const createTicketProduct = (
   return async (
     dispatch: ThunkDispatch<{}, {}, AnyAction>
   ): Promise<TicketProduct> => {
-    const URL = `${
-      process.env.REACT_APP_API_BASE
-    }/api/v1/tickets/${ticketSlug}/products/`;
+    const URL = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/${ticketSlug}/products/`;
     return axios.post(URL, { product }).then(response => {
       const results = response.data.results;
       dispatch(addTicketProduct(results));
@@ -650,9 +650,7 @@ export const updateTicketProduct = (
   return async (
     dispatch: ThunkDispatch<{}, {}, AnyAction>
   ): Promise<TicketProduct> => {
-    const URL = `${
-      process.env.REACT_APP_API_BASE
-    }/api/v1/tickets/${ticketSlug}/products/${product.id}/`;
+    const URL = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/${ticketSlug}/products/${product.id}/`;
     return axios.put(URL, { product }).then(response => {
       const results = response.data.results;
       dispatch(removeTicketProduct(product));
@@ -669,9 +667,7 @@ export const deleteTicketProduct = (
   return async (
     dispatch: ThunkDispatch<{}, {}, AnyAction>
   ): Promise<TicketProduct> => {
-    const URL = `${
-      process.env.REACT_APP_API_BASE
-    }/api/v1/tickets/${ticketSlug}/products/${product.id}/`;
+    const URL = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/${ticketSlug}/products/${product.id}/`;
     return axios.delete(URL).then(() => {
       dispatch(removeTicketProduct(product));
       return Promise.resolve(product);
@@ -683,9 +679,7 @@ export const deleteTicket = (ticketSlug: string) => {
   return async (
     dispatch: ThunkDispatch<{}, {}, AnyAction>
   ): Promise<boolean> => {
-    const URL = `${
-      process.env.REACT_APP_API_BASE
-    }/api/v1/tickets/${ticketSlug}/`;
+    const URL = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/${ticketSlug}/`;
     return axios.delete(URL).then(() => {
       dispatch(clearTicket());
       return Promise.resolve(true);
