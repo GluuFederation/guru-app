@@ -28,16 +28,21 @@ export const colors = {
 };
 
 const muiTheme = createMuiTheme({
-  // spacing: 12,
   palette: {
     primary: {
       main: colors.MAIN_COLOR
     }
   },
   typography: {
-    fontFamily: '"Lato", sans-serif'
+    fontFamily: '"Lato", sans-serif',
+    fontSize: 10
   },
   overrides: {
+    MuiTypography: {
+      root: {
+        wordBreak: "normal"
+      }
+    },
     MuiCardHeader: {
       root: {
         backgroundColor: colors.SECONDARY_BACKGROUND,
@@ -54,10 +59,15 @@ const muiTheme = createMuiTheme({
       input: {
         backgroundColor: "#fff",
         borderRadius: ".1em",
-        height: "1.5em"
+        height: "1.5rem",
+        fontSize: "0.9rem"
       },
       root: {
-        backgroundColor: "#fff"
+        backgroundColor: "#fff",
+        "&$focused": {
+          outlineWidth: "1px",
+          borderWidth: "1px"
+        }
       }
     },
     MuiOutlinedInput: {
@@ -91,11 +101,12 @@ const muiTheme = createMuiTheme({
         }
       },
       root: {
+        fontSize: ".8rem",
         height: "inherit",
         paddingTop: ".3em",
         paddingBottom: ".3em",
         marginRight: ".5em",
-        borderRadius: "none",
+        borderRadius: ".2rem",
         marginBottom: ".8em"
       }
     },

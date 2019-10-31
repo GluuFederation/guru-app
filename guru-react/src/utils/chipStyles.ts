@@ -5,11 +5,11 @@ export const getChipClass = (slug: string): string => {
     case "production-impaired":
       return "chip purple";
     case "pre-production-issue":
-      return "chip blue";
+      return "chip light-blue";
     case "minor-issue":
       return "chip green";
     case "new-development-issue":
-      return "chip gray";
+      return "chip orange";
     case "new":
       return "chip light-blue";
     case "in-progress":
@@ -52,4 +52,11 @@ export const getCardClass = (slug: string): string => {
       return "card light-blue";
   }
   return "card gray";
+};
+
+export const formatChipText = (text: string): string => {
+  if (text.length > 20) {
+    return `${text.substring(0, 20)}...`;
+  }
+  return text;
 };

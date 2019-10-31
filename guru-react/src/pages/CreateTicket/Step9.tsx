@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import axios from "axios";
 import SimpleMDE from "react-simplemde-editor";
 
 import { withStyles, WithStyles } from "@material-ui/styles";

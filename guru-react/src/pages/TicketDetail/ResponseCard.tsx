@@ -69,7 +69,7 @@ class TicketDetail extends Component<Props, State> {
     this.props.history.push(path);
   };
   render() {
-    const { classes, answer, slug } = this.props;
+    const { answer, slug } = this.props;
     const { responseMenuElement, isModalOpen } = this.state;
     const createdOn = `${moment(answer.createdOn).format("ll")} at ${moment(
       answer.createdOn
@@ -94,7 +94,9 @@ class TicketDetail extends Component<Props, State> {
           onClose={this.closeResponseMenu}
         >
           <MenuItem onClick={this.copyLink}>Copy Link</MenuItem>
-          <MenuItem onClick={this.navigateTo(paths.getCreateTicketPath(NaN))}>Open new ticket</MenuItem>
+          <MenuItem onClick={this.navigateTo(paths.getCreateTicketPath(NaN))}>
+            Open new ticket
+          </MenuItem>
           <MenuItem onClick={this.openModal}>Delete</MenuItem>
         </Menu>
         <CardContent>

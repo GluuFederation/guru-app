@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { withRouter, RouteComponentProps } from "react-router-dom";
 import moment from "moment";
 
 import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
@@ -96,6 +95,7 @@ class TicketDetail extends Component<Props> {
       case HistoryChangedField.EditComment:
         text = "edited a comment";
         icon = <Comment />;
+        break;
       default:
         text = "updated the ticket";
     }
@@ -104,18 +104,18 @@ class TicketDetail extends Component<Props> {
       <div>
         <Grid className={classes.gridHistory}>
           <Avatar className={classes.iconBg}>{icon}</Avatar>
-          { actor.avatar ? 
+          {actor.avatar ? (
             <Avatar
-            alt="Avatar"
-            src={actor.avatar}
-            className={classes.avatarSmall}
-          />:
-          <Avatar
-            alt="Avatar"
-            className={classes.avatarSmall}
-          >{actor.firstName? actor.firstName.charAt(0):""}</Avatar>
-          }
-          
+              alt="Avatar"
+              src={actor.avatar}
+              className={classes.avatarSmall}
+            />
+          ) : (
+            <Avatar alt="Avatar" className={classes.avatarSmall}>
+              {actor.firstName ? actor.firstName.charAt(0) : ""}
+            </Avatar>
+          )}
+
           <Typography className={classes.textUser}>
             {actor.firstName} {actor.otherNames} {actor.lastName} {text} {time}
           </Typography>

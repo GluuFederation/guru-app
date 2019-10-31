@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
-import { Link as RouterLink } from "react-router-dom";
 
 import Link from "@material-ui/core/Link";
 import { withStyles, WithStyles, createStyles } from "@material-ui/styles";

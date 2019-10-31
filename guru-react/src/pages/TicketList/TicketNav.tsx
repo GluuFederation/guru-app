@@ -24,12 +24,16 @@ const styles = (theme: Theme) =>
     root: {
       flexGrow: 1,
       backgroundColor: colors.MAIN_BACKGROUND,
-      paddingLeft: "4em",
-      paddingRight: "4em"
+      paddingLeft: "8rem",
+      paddingRight: "8rem",
+      [theme.breakpoints.down("sm")]: {
+        paddingLeft: "1rem",
+        paddingRight: "1rem"
+      }
     },
     navLink: {
-      paddingTop: "1em",
-      paddingBottom: "1em",
+      paddingTop: "1rem",
+      paddingBottom: "1rem",
       display: "inline-block"
     },
     menuPaper: {

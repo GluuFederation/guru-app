@@ -141,10 +141,10 @@ class TicketDetail extends Component<Props, State> {
     const isUserCompany = user
       ? user.company
         ? !!ticket.companyAssociation &&
-        user.company.id === ticket.companyAssociation.id
+          user.company.id === ticket.companyAssociation.id
         : false
       : false;
-    const canEdit = isUserCompany && !isCommunity && !!user || isStaff && !!user;
+    const canEdit = (isUserCompany && !isCommunity) || isStaff;
     return (
       <Page>
         <Navbar />
@@ -165,7 +165,13 @@ class TicketDetail extends Component<Props, State> {
                 </Box>
               </Grid>
               <Grid item>
-                <Grid spacing={3} container direction="row" justify="flex-end" alignContent="flex-end">
+                <Grid
+                  spacing={3}
+                  container
+                  direction="row"
+                  justify="flex-end"
+                  alignContent="flex-end"
+                >
                   <Grid item md={9}>
                     <Box mt={2} mb={8}>
                       <Grid container>
@@ -175,7 +181,15 @@ class TicketDetail extends Component<Props, State> {
                           </Typography>
                         </Grid>
                         {canEdit ? (
-                          <Grid item container align-items-xs-center justify-xs-center  justify="flex-end" alignItems="flex-start" sm={3}>
+                          <Grid
+                            item
+                            container
+                            align-items-xs-center
+                            justify-xs-center
+                            justify="flex-end"
+                            alignItems="flex-start"
+                            sm={3}
+                          >
                             <Button
                               variant="outlined"
                               classes={{ root: classes.privacyButton }}
@@ -187,11 +201,11 @@ class TicketDetail extends Component<Props, State> {
                                   classes={{ root: classes.privacyIcon }}
                                 />
                               ) : (
-                                  <LockOpen
-                                    height="10"
-                                    classes={{ root: classes.privacyIcon }}
-                                  />
-                                )}
+                                <LockOpen
+                                  height="10"
+                                  classes={{ root: classes.privacyIcon }}
+                                />
+                              )}
                             </Button>
                             &emsp;
                             <Button
@@ -268,9 +282,7 @@ class TicketDetail extends Component<Props, State> {
                 </div>
               </div>
             </Modal>
-            
           </Container>
-          
         </div>
         <Footer />
       </Page>

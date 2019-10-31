@@ -9,11 +9,12 @@ import { Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Hidden from "@material-ui/core/Hidden";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
-import Chip from "@material-ui/core/Chip";
+import FilterList from "@material-ui/icons/FilterList";
+import Modal from "@material-ui/core/Modal";
+import Button from "@material-ui/core/Button";
+
 import { colors } from "../../theme";
 
 import Page from "../../components/Page";
@@ -41,15 +42,19 @@ import TicketListSidebar from "./TicketListSidebar";
 import TicketListItem from "./TicketListItem";
 import AllFilters from "./AllFilters";
 
-import { ReactComponent as SearchImg } from "../../assets/images/search.svg";
-
 const styles = (theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
       backgroundColor: "inherit",
-      padding: "4em 4em 10em 4em",
-      wordWrap: "break-word"
+      padding: "3rem 8rem 8rem 8rem",
+      wordWrap: "break-word",
+      [theme.breakpoints.down("md")]: {
+        padding: "3rem 4rem 8rem 4rem"
+      },
+      [theme.breakpoints.down("xs")]: {
+        padding: "3rem 1rem 30rem 1rem"
+      }
     },
     ticketCount: {
       marginTop: "1.5em"
@@ -58,6 +63,33 @@ const styles = (theme: Theme) =>
       textAlign: "center",
       width: "100%",
       margin: "5em"
+    },
+    filterList: {
+      height: "2rem"
+    },
+    modalContainer: {
+      bottom: 0,
+      left: 0,
+      right: 0,
+      backgroundColor: colors.MAIN_BACKGROUND,
+      height: "90vh",
+      marginTop: "10vh"
+    },
+    modalScrollContainer: {
+      maxHeight: "73vh",
+      overflowY: "scroll",
+      overflowX: "hidden"
+    },
+    applyButton: {
+      color: colors.MAIN_BACKGROUND,
+      backgroundColor: colors.MAIN_COLOR,
+      fontSize: "1rem"
+    },
+    clearButton: {
+      fontSize: ".8rem"
+    },
+    modalButtonContainer: {
+      padding: "1rem"
     },
     paginationContainer: {
       marginTop: "2em",
@@ -93,6 +125,7 @@ type Props = WithStyles<typeof styles> &
   WithInfoProps;
 
 interface State {
+  isModalOpen: boolean;
   isLoading: boolean;
   isTicketsLoading: boolean;
   autocompleteResults: Array<Suggestion>;
@@ -103,6 +136,7 @@ class TicketList extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
+      isModalOpen: false,
       isLoading: false,
       isTicketsLoading: true,
       autocompleteResults: [],
@@ -114,6 +148,25 @@ class TicketList extends Component<Props, State> {
     this.syncStateWithPath();
     this.staffMembers();
   }
+
+  openModal = () => {
+    this.setState({ isModalOpen: true });
+  };
+
+  closeModal = () => {
+    this.setState({ isModalOpen: false });
+  };
+
+  clearAll = () => {
+    const { clearAllFilters, fetchTickets } = this.props;
+    clearAllFilters();
+    this.closeModal();
+    this.setTicketsLoading(true);
+
+    fetchTickets(true).then(() => {
+      this.setTicketsLoading(false);
+    });
+  };
 
   searchTickets = (q: string) => {
     const url = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/search/`;
@@ -312,7 +365,7 @@ class TicketList extends Component<Props, State> {
 
   render() {
     const { classes, tickets, filters } = this.props;
-    const { isTicketsLoading, autocompleteResults } = this.state;
+    const { isTicketsLoading, autocompleteResults, isModalOpen } = this.state;
     const InputProps = {
       placeholder: "Type the keyword"
     };
@@ -322,7 +375,7 @@ class TicketList extends Component<Props, State> {
         <Navbar />
         <TicketNav setTicketsLoading={this.setTicketsLoading} />
         <div className={`app-body ${classes.root}`}>
-          <Grid container spacing={2}>
+          <Grid container spacing={4}>
             <Hidden smDown>
               <Grid item xs={12} md={4} lg={3} xl={2}>
                 <TicketListSidebar setTicketsLoading={this.setTicketsLoading} />
@@ -331,7 +384,7 @@ class TicketList extends Component<Props, State> {
 
             <Grid item xs={12} md={8} lg={9} xl={10}>
               <Grid container spacing={1}>
-                <Grid item xs={12} lg={6}>
+                <Grid item xs={10} md={6}>
                   <Autocomplete
                     suggestions={autocompleteResults}
                     updateQueryFunction={this.searchTickets}
@@ -341,27 +394,39 @@ class TicketList extends Component<Props, State> {
                     isAbsolute={true}
                   />
                 </Grid>
-                <Grid item xs={12} lg={6}>
-                  <Grid container justify="flex-end" alignItems="center">
-                    <Grid item>Order by: &emsp;</Grid>
-                    <Grid item>
-                      <TextField
-                        select
-                        variant="outlined"
-                        margin="dense"
-                        value={filters.order ? filters.order : ""}
-                        onChange={this.setOrder}
-                      >
-                        <MenuItem value={TicketFilterOrder.MostRecent}>
-                          Most recent
-                        </MenuItem>
-                        <MenuItem value={TicketFilterOrder.LeastRecent}>
-                          Least recent
-                        </MenuItem>
-                      </TextField>
+                <Hidden mdUp>
+                  <Grid item xs={2}>
+                    <FilterList
+                      fontSize="large"
+                      className={classes.filterList}
+                      onClick={this.openModal}
+                    />
+                  </Grid>
+                </Hidden>
+                <Hidden smDown>
+                  <Grid item md={6}>
+                    <Grid container justify="flex-end" alignItems="center">
+                      <Grid item>Order by: &emsp;</Grid>
+                      <Grid item>
+                        <TextField
+                          select
+                          variant="outlined"
+                          margin="dense"
+                          value={filters.order ? filters.order : ""}
+                          onChange={this.setOrder}
+                        >
+                          <MenuItem value={TicketFilterOrder.MostRecent}>
+                            Most recent
+                          </MenuItem>
+                          <MenuItem value={TicketFilterOrder.LeastRecent}>
+                            Least recent
+                          </MenuItem>
+                        </TextField>
+                      </Grid>
                     </Grid>
                   </Grid>
-                </Grid>
+                </Hidden>
+
                 <Grid item xs={12}>
                   <AllFilters setTicketsLoading={this.setTicketsLoading} />
                 </Grid>
@@ -370,16 +435,18 @@ class TicketList extends Component<Props, State> {
                     <CircularProgress />
                   </div>
                 ) : (
-                  <React.Fragment>
-                    {tickets.map(ticket => (
-                      <Grid item xs={12} key={ticket.id}>
-                        <TicketListItem
-                          shortTicket={ticket}
-                          staff={this.state.staffName}
-                        />
-                      </Grid>
-                    ))}
-                  </React.Fragment>
+                  <Grid item xs={12}>
+                    <Grid container spacing={2}>
+                      {tickets.map(ticket => (
+                        <Grid item xs={12} key={ticket.id}>
+                          <TicketListItem
+                            shortTicket={ticket}
+                            staff={this.state.staffName}
+                          />
+                        </Grid>
+                      ))}
+                    </Grid>
+                  </Grid>
                 )}
               </Grid>
               <Grid justify="space-between" container>
@@ -422,6 +489,31 @@ class TicketList extends Component<Props, State> {
               </Grid>
             </Grid>
           </Grid>
+          <Modal open={isModalOpen} onClose={this.closeModal}>
+            <div className={classes.modalContainer}>
+              <div className={classes.modalScrollContainer}>
+                <TicketListSidebar
+                  setTicketsLoading={this.setTicketsLoading}
+                ></TicketListSidebar>
+              </div>
+              <div className={classes.modalButtonContainer}>
+                <Button
+                  classes={{ root: classes.applyButton }}
+                  fullWidth
+                  onClick={this.closeModal}
+                >
+                  Apply filters
+                </Button>
+                <Button
+                  classes={{ root: classes.clearButton }}
+                  fullWidth
+                  onClick={this.clearAll}
+                >
+                  Clear filters
+                </Button>
+              </div>
+            </div>
+          </Modal>
         </div>
         <Footer />
       </Page>
