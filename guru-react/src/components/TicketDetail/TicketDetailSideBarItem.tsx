@@ -159,6 +159,21 @@ class TicketDetailSideBarItem extends Component<Props, State> {
     });
   };
 
+  searchAssignee = (q: string) => {
+    const url = `${process.env.REACT_APP_API_BASE}/api/v1/users/staffs/`;
+    const params = { q };
+
+    axios.get(url, { params }).then(response => {
+      this.setState({
+        users: response.data.results
+          .map((result: ShortUser) => ({
+            ...result,
+            text: `${result.firstName} ${result.lastName}`
+          }))
+      });
+    });
+  };
+
   searchCompanies = (q: string) => {
     const url = `${process.env.REACT_APP_API_BASE}/api/v1/access-list/companies/`;
     const params = { q };
@@ -380,123 +395,134 @@ class TicketDetailSideBarItem extends Component<Props, State> {
             ) : null}
           </React.Fragment>
         ) : (
-          <React.Fragment>
-            <Grid container spacing={1} alignItems="center">
-              <Grid item xs={12}>
-                <small className={classes.titleText}>{title}</small>
-              </Grid>
-              {menuType === MenuType.Products ? (
-                <React.Fragment>
-                  {products.map((ticketProduct, index) => {
-                    const gluuProduct = gluuProducts.find(
-                      item => item.id === ticketProduct.product
-                    );
-                    if (!gluuProduct) return <span key={ticketProduct.id} />;
-                    const productIndex = isNew ? index : undefined;
-                    return (
-                      <React.Fragment key={ticketProduct.id}>
-                        <Grid item xs={10}>
-                          {gluuProduct.name} {ticketProduct.version}
-                        </Grid>
-                        <Grid item xs={2}>
-                          {canEdit ? (
-                            <IconButton
-                              onClick={this.openProductMenu(
-                                ticketProduct,
-                                productIndex
-                              )}
-                            >
-                              <EditIcon />
-                            </IconButton>
-                          ) : null}
-                        </Grid>
-                      </React.Fragment>
-                    );
-                  })}
-                </React.Fragment>
-              ) : (
-                <React.Fragment>
-                  {menuType === MenuType.Creator ||
-                  menuType === MenuType.Assignee ? (
+            <React.Fragment>
+              <Grid container spacing={1} alignItems="center">
+                <Grid item xs={12}>
+                  <small className={classes.titleText}>{title}</small>
+                </Grid>
+                {menuType === MenuType.Products ? (
+                  <React.Fragment>
+                    {products.map(ticketProduct => {
+                      const gluuProduct = gluuProducts.find(
+                        item => item.id === ticketProduct.product
+                      );
+                      if (!gluuProduct) return <span key={ticketProduct.id} />;
+                      return (
+                        <React.Fragment key={ticketProduct.id}>
+                          <Grid item xs={10}>
+                            {gluuProduct.name} {ticketProduct.version}
+                          </Grid>
+                          <Grid item xs={2}>
+                            {canEdit ? (
+                              <IconButton
+                                onClick={this.openProductMenu(ticketProduct)}
+                              >
+                                <EditIcon />
+                              </IconButton>
+                            ) : null}
+                          </Grid>
+                        </React.Fragment>
+                      );
+                    })}
+                  </React.Fragment>
+                ) : (
                     <React.Fragment>
-                      <Grid item xs={3}>
-                        {avatar ? (
-                          <Avatar src={avatar} />
-                        ) : (
-                          <Avatar>{firstChar}</Avatar>
-                        )}
-                      </Grid>
-                      <Grid item xs={7}>
-                        {infoText}
+                      {menuType === MenuType.Creator ? (
+                        <React.Fragment>
+                          <Grid item xs={3}>
+                            {avatar ? <Avatar src={avatar} /> :
+                              <Avatar>{firstChar}</Avatar>
+                            }
+
+                          </Grid>
+                          <Grid item xs={7}>
+                            {infoText}
+                          </Grid>
+                        </React.Fragment>
+                      ) : menuType === MenuType.Assignee ? (
+                        <React.Fragment>
+                          <Grid item xs={3}>
+                            {avatar ? <Avatar src={avatar} /> :
+                              <Avatar>{firstChar}</Avatar>
+                            }
+
+                          </Grid>
+                          <Grid item xs={7}>
+                            {infoText}
+                          </Grid>
+                        </React.Fragment>
+                      ) : menuType === MenuType.Status ||
+                        menuType === MenuType.IssueType ? (
+                              <Grid item xs={10}>
+                                {showChip ? (
+                                  <Chip
+                                    label={chipName}
+                                    className={getChipClass(chipSlug)}
+                                  />
+                                ) : (
+                                    <span />
+                                  )}
+                              </Grid>
+                            ) : (
+                              <Grid item xs={10}>
+                                {infoText}
+                              </Grid>
+                            )}
+                      <Grid item xs={2}>
+                        {canEdit ? (
+                          <IconButton onClick={this.openMenu}>
+                            <EditIcon />
+                          </IconButton>
+                        ) : null}
                       </Grid>
                     </React.Fragment>
-                  ) : menuType === MenuType.Status ||
-                    menuType === MenuType.IssueType ? (
-                    <Grid item xs={10}>
-                      {showChip ? (
-                        <Chip
-                          label={chipName}
-                          className={getChipClass(chipSlug)}
-                        />
-                      ) : (
-                        <span />
-                      )}
-                    </Grid>
-                  ) : (
-                    <Grid item xs={10}>
-                      {infoText}
-                    </Grid>
                   )}
-                  <Grid item xs={2}>
-                    {canEdit ? (
-                      <IconButton onClick={this.openMenu}>
-                        <EditIcon />
-                      </IconButton>
-                    ) : null}
-                  </Grid>
-                </React.Fragment>
-              )}
-            </Grid>
-            <Menu
-              id="creator-menu"
-              anchorEl={menuElement}
-              variant="menu"
-              open={Boolean(menuElement)}
-              onClose={this.closeMenu}
-              classes={{ paper: classes.autoCompletePaper }}
-            >
-              {menuType === MenuType.Creator ||
-              menuType === MenuType.Assignee ? (
-                <Autocomplete
-                  InputProps={InputProps}
-                  suggestions={users}
-                  updateQueryFunction={this.searchCreators}
-                  selectFunction={this.updateTicketCreator}
-                />
-              ) : menuType === MenuType.CompanyAssociation ? (
-                <Autocomplete
-                  InputProps={InputProps}
-                  suggestions={companies}
-                  updateQueryFunction={this.searchCompanies}
-                  selectFunction={this.updateTicketCompany}
-                />
-              ) : (
-                <div>
-                  {chipMenuItems.map(chipMenuItem => (
-                    <MenuItem
-                      key={chipMenuItem.id}
-                      value={chipMenuItem.id}
-                      onClick={this.updateTicket(chipMenuItem)}
-                    >
-                      {chipMenuItem.name}
-                    </MenuItem>
-                  ))}
-                </div>
-              )}
-            </Menu>
-            <Divider />
-          </React.Fragment>
-        )}
+              </Grid>
+              <Menu
+                id="creator-menu"
+                anchorEl={menuElement}
+                variant="menu"
+                open={Boolean(menuElement)}
+                onClose={this.closeMenu}
+              >
+                {menuType === MenuType.Creator ? (
+                  <Autocomplete
+                    InputProps={InputProps}
+                    suggestions={users}
+                    updateQueryFunction={this.searchCreators}
+                    selectFunction={this.updateTicketCreator}
+                  />
+                ) : menuType === MenuType.Assignee ? (
+                  <Autocomplete
+                    InputProps={InputProps}
+                    suggestions={users}
+                    updateQueryFunction={this.searchAssignee}
+                    selectFunction={this.updateTicketAssignee}
+                  />
+                ) : menuType === MenuType.CompanyAssociation ? (
+                  <Autocomplete
+                    InputProps={InputProps}
+                    suggestions={companies}
+                    updateQueryFunction={this.searchCompanies}
+                    selectFunction={this.updateTicketCompany}
+                  />
+                ) : (
+                        <div>
+                          {chipMenuItems.map(chipMenuItem => (
+                            <MenuItem
+                              key={chipMenuItem.id}
+                              value={chipMenuItem.id}
+                              onClick={this.updateTicket(chipMenuItem)}
+                            >
+                              {chipMenuItem.name}
+                            </MenuItem>
+                          ))}
+                        </div>
+                      )}
+              </Menu>
+              <Divider />
+            </React.Fragment>
+          )}
 
         {menuType === MenuType.Os ||
         menuType === MenuType.Products ||
@@ -514,9 +540,8 @@ class TicketDetailSideBarItem extends Component<Props, State> {
                   />
                 )}
               </div>
-            </div>
-          </Modal>
-        ) : null}
+            </Modal>
+          ) : null}
       </Grid>
     );
   }
