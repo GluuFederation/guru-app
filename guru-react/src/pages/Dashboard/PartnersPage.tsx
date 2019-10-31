@@ -116,7 +116,10 @@ class PartnersPage extends Component<Props> {
                       <Typography variant="body2" align="left">
                         Give a partner company access to your company access.
                         View all of the certified Gluu services Partners on your{" "}
-                        <a style={{ color: "#00b372" }} href="#">
+                        <a
+                          style={{ color: "#00b372" }}
+                          href="https://www.gluu.org"
+                        >
                           website
                         </a>
                       </Typography>

@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import axios from "axios";
-
 import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
@@ -99,7 +97,7 @@ class TicketSideBar extends Component<Props, State> {
           user.company.id === ticket.companyAssociation.id
         : false
       : false;
-    const canEdit = isUserCompany && !isCommunity && !!user || isStaff && !!user;
+    const canEdit = (isUserCompany && !isCommunity) || isStaff;
 
     if (isCommunity) {
       menuTypes = menuTypes.filter(

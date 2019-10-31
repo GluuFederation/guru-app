@@ -7,6 +7,7 @@ import Chip from "@material-ui/core/Chip";
 
 import { withUser, WithUserProps } from "../../state/hocs/profiles";
 import { withTicketList, WithTicketListProps } from "../../state/hocs/tickets";
+import { formatChipText } from "../../utils/chipStyles";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -15,7 +16,10 @@ const styles = (theme: Theme) =>
       paddingTop: ".5em",
       display: "inline-block"
     },
-    chip: {}
+    chip: {
+      fontSize: ".9rem",
+      borderRadius: ".2rem"
+    }
   });
 
 export enum FilterType {
@@ -104,7 +108,7 @@ class TicketNav extends Component<Props> {
     return (
       <div className={classes.root}>
         <Chip
-          label={tag.text}
+          label={formatChipText(tag.text)}
           className={classes.chip}
           color="primary"
           onDelete={this.removeTag}

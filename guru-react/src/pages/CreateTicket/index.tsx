@@ -1,20 +1,12 @@
 import React, { Component } from "react";
-import { Link as RouterLink } from "react-router-dom";
 
 import { withStyles, WithStyles } from "@material-ui/styles";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import { createStyles, Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import Breadcrumbs from "@material-ui/core/Breadcrumbs";
-import Link from "@material-ui/core/Link";
 import Button from "@material-ui/core/Button";
-import Lock from "@material-ui/icons/Lock";
-import LockOpen from "@material-ui/icons/LockOpen";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import Box from "@material-ui/core/Box";
-import Divider from "@material-ui/core/Divider";
-import Modal from "@material-ui/core/Modal";
 
 import { colors } from "../../theme";
 import Navbar from "../../components/Navbar";
@@ -109,8 +101,7 @@ class CreateTicket extends Component<Props, State> {
   };
 
   render() {
-    const { classes, newTicket, user } = this.props;
-    const { isLoading } = this.state;
+    const { classes, newTicket } = this.props;
     const {
       step,
       companyAssociation,
@@ -121,12 +112,6 @@ class CreateTicket extends Component<Props, State> {
       gluuServer,
       hasProducts
     } = newTicket;
-
-    const isCommunity = user
-      ? user.role
-        ? user.role.name === "community"
-        : true
-      : true;
 
     return (
       <Page>

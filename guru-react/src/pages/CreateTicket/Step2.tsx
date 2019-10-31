@@ -14,7 +14,7 @@ import {
 import { WithInfoProps, withInfo } from "../../state/hocs/info";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import Autocomplete, { Suggestion } from "../../components/Autocomplete";
-import { ShortCompany, ShortUser } from "../../state/types/profiles";
+import { ShortUser } from "../../state/types/profiles";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -73,8 +73,8 @@ class CreateTicket extends Component<Props, State> {
   };
 
   render() {
-    const { classes, newTicket, user } = this.props;
-    const { isLoading, users } = this.state;
+    const { classes, newTicket } = this.props;
+    const { users } = this.state;
     const value = newTicket.createdFor
       ? `${newTicket.createdFor.firstName} ${newTicket.createdFor.otherNames} ${newTicket.createdFor.lastName}`
       : "";
