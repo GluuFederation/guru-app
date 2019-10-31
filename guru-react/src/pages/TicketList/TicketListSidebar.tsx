@@ -99,18 +99,16 @@ class TicketSidebar extends Component<Props, State> {
   };
 
   searchAssignees = (q: string) => {
-    const url = `${process.env.REACT_APP_API_BASE}/api/v1/access-list/users/`;
+    const url = `${process.env.REACT_APP_API_BASE}/api/v1/users/staffs/`;
     const params = { q };
 
     axios.get(url, { params }).then(response => {
       this.setState({
         users: [
-          ...response.data.results
-            .map((result: ShortUser) => ({
-              ...result,
-              text: `${result.firstName} ${result.lastName}`
-            }))
-            .slice(0, 5),
+          ...response.data.results.map((result: ShortUser) => ({
+            ...result,
+            text: `${result.firstName} ${result.lastName}`
+          })),
           { ...emptyUser, id: -1, text: "Assigned" },
           { ...emptyUser, id: -2, text: "Unassigned" }
         ]
