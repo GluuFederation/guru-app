@@ -126,8 +126,8 @@ body {
   body {
     padding-top: 3.5em;
   }
-  .app-body {
-    padding-bottom: 35em 
+  .app-body, .container-body {
+    padding-bottom: 35em !important; 
   }
   div.MuiContainer-root {
     padding: 0;
@@ -142,8 +142,8 @@ body {
 }
 
 @media only screen and (min-width: 601px) and (max-width: 960px) {
-  .app-body {
-    padding-bottom: 28em 
+  .app-body, .container-body {
+    padding-bottom: 28em !important;
   }
   div.MuiContainer-root {
     padding: 0;

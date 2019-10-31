@@ -22,6 +22,9 @@ const styles = (theme: Theme) =>
       fontFamily: '"Lato", sans-serif',
       "&:hover": { color: "#00b372" }
     },
+    paperNotifModelCont: {
+      overflow: 'auto'
+    },
     paperNotifModel: {
       position: "absolute",
       width: "60%",
@@ -30,8 +33,8 @@ const styles = (theme: Theme) =>
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 4),
       outline: "none",
-      left: "25%",
-      top: "5%"
+      left: "15%",
+      top: "5%",
     },
     crossIcon: {
       width: 15,
@@ -95,8 +98,8 @@ class ManageNotificationPopover extends Component<Props, State> {
         >
           Manage Notification Settings
         </Button>
-        <Modal open={this.state.openTeamPro} onClose={this.handleCloseTeamPro}>
-          <Box style={{ width: "50%" }} className={classes.paperNotifModel}>
+        <Modal className={classes.paperNotifModelCont} open={this.state.openTeamPro} onClose={this.handleCloseTeamPro}>
+          <Box className={classes.paperNotifModel}>
             <Box>
               <img
                 alt="Avatar"
