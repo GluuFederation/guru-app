@@ -104,6 +104,7 @@ class Home extends Component<Props, State> {
                     selectFunction={this.handleSubmit}
                     updateQueryFunction={this.searchTickets}
                     searchButton={SearchButtonOptions.Start}
+                    isAbsolute={true}
                   />
                 </Typography>
               </Grid>
