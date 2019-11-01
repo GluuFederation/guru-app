@@ -104,5 +104,10 @@ pipeline {
         notifyRocket('danger', 'Unstable', gitCommitAuthor, stageName, gitCommitMessage)
       }
     }
+    always {
+      script {
+        sh 'docker system prune -f'
+      }
+    }
   }
 }
