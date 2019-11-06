@@ -90,6 +90,8 @@ media/
 CACHE/
 media
 CACHE
+api-media
+api-media/
 
 db.sqlite3
 .vscode/

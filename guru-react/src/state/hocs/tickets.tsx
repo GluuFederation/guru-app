@@ -63,6 +63,8 @@ import {
   setTicketAssignee,
   setTicketCreator,
   updateTicket,
+  uploadTicketFiles,
+  uploadAnswerFiles,
   changeTicketSubscription,
   createTicketAnswer,
   updateTicketAnswer,
@@ -126,6 +128,12 @@ export interface WithTicketDetailDispatch {
   ) => Promise<Ticket>;
   setTicketCreator: (ticketSlug: string, creator: number) => Promise<Ticket>;
   updateTicket: (ticket: Ticket) => Promise<Ticket>;
+  uploadTicketFiles: (ticketSlug: string, data: FormData) => Promise<Ticket>;
+  uploadAnswerFiles: (
+    ticketSlug: string,
+    answer: Answer,
+    data: FormData
+  ) => Promise<Answer>;
   changeTicketSubscription: (
     ticketSlug: string,
     subscribe: boolean
@@ -242,6 +250,10 @@ export const withTicketDetail = <P extends WithTicketDetailProps>(
       setTicketCreator: (ticketSlug: string, creator: number) =>
         dispatch(setTicketCreator(ticketSlug, creator)),
       updateTicket: (ticket: Ticket) => dispatch(updateTicket(ticket)),
+      uploadTicketFiles: (ticketSlug: string, data: FormData) =>
+        dispatch(uploadTicketFiles(ticketSlug, data)),
+      uploadAnswerFiles: (ticketSlug: string, answer: Answer, data: FormData) =>
+        dispatch(uploadAnswerFiles(ticketSlug, answer, data)),
       changeTicketSubscription: (ticketSlug: string, subscribe: boolean) =>
         dispatch(changeTicketSubscription(ticketSlug, subscribe)),
       createTicketAnswer: (ticketSlug: string, body: string) =>

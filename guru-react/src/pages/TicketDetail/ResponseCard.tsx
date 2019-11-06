@@ -15,6 +15,7 @@ import IconButton from "@material-ui/core/IconButton";
 import MoreHoriIcon from "@material-ui/icons/MoreHoriz";
 import { Answer } from "../../state/types/tickets";
 import DeleteConfirmation from "../../components/TicketDetail/DeleteConfirmation";
+import TicketAttachment from "./TicketAttachment";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -101,6 +102,9 @@ class TicketDetail extends Component<Props, State> {
         </Menu>
         <CardContent>
           <ReactMarkdown source={answer.body} />
+          {answer.attachments.map(attachment => (
+            <TicketAttachment document={attachment} />
+          ))}
           <Modal
             aria-labelledby="delete-confirmation-modal"
             open={isModalOpen}

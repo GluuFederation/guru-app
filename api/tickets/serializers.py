@@ -14,6 +14,13 @@ from profiles.models import UserRole, User
 from profiles.serializers import ShortUserSerializer, ShortCompanySerializer
 
 
+class DocumentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = m.Document
+        fields = '__all__'
+
+
 class TicketSearchSerializer(HaystackSerializer):
 
     class Meta:
@@ -88,6 +95,7 @@ class TicketSerializer(serializers.ModelSerializer):
     products = TicketProductSerializer(
         source='ticketproduct_set', many=True, read_only=True
     )
+    attachments = DocumentSerializer(many=True, read_only=True)
 
     class Meta:
         model = m.Ticket
@@ -96,7 +104,7 @@ class TicketSerializer(serializers.ModelSerializer):
             'updated_by', 'assignee', 'category', 'status', 'issue_type',
             'gluu_server', 'os', 'os_version', 'response_no', 'products',
             'voters', 'subscribers', 'company_association', 'created_on',
-            'updated_on', 'response_number', 'is_private'
+            'updated_on', 'response_number', 'is_private', 'attachments'
         ]
         extra_kwargs = {
             'slug': {'required': False},
@@ -221,11 +229,12 @@ class TicketHistorySerializer(serializers.ModelSerializer):
 
 class AnswerSerializer(serializers.ModelSerializer):
     created_by = ShortUserSerializer(read_only=True)
+    attachments = DocumentSerializer(many=True, read_only=True)
 
     class Meta:
         model = m.Answer
         fields = [
-            'id', 'body', 'ticket', 'created_by', 'created_on'
+            'id', 'body', 'ticket', 'created_by', 'created_on', 'attachments'
         ]
         extra_kwargs = {
             'ticket': {'required': False},
@@ -248,10 +257,3 @@ class AnswerSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
-
-
-class DocumentSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = m.Document
-        fields = '__all__'
