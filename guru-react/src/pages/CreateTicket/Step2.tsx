@@ -45,8 +45,14 @@ class CreateTicket extends Component<Props, State> {
   }
 
   searchUsers = (q: string) => {
+    const { newTicket } = this.props;
     const url = `${process.env.REACT_APP_API_BASE}/api/v1/access-list/users/`;
-    const params = { q };
+    const params = {
+      q,
+      company: newTicket.companyAssociation
+        ? newTicket.companyAssociation.id
+        : undefined
+    };
 
     axios.get(url, { params }).then(response => {
       this.setState({

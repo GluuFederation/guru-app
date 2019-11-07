@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import SimpleMDE from "react-simplemde-editor";
+import Dropzone from "react-dropzone";
 
 import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
@@ -44,6 +45,7 @@ interface State {
   body: string;
   isPrivate: boolean;
   errorMessage: string;
+  files: Array<File>;
 }
 
 class EditTicket extends Component<Props, State> {
@@ -64,13 +66,14 @@ class EditTicket extends Component<Props, State> {
       title,
       body,
       isPrivate,
-      errorMessage: ""
+      errorMessage: "",
+      files: []
     };
   }
 
   updateTicket = () => {
-    const { title, body, isPrivate } = this.state;
-    const { ticket, updateTicket, closeModal } = this.props;
+    const { title, body, isPrivate, files } = this.state;
+    const { ticket, updateTicket, closeModal, uploadTicketFiles } = this.props;
     if (!title) {
       this.setState({ errorMessage: "Title is required" });
       return;
@@ -78,6 +81,13 @@ class EditTicket extends Component<Props, State> {
 
     if (ticket) {
       updateTicket({ ...ticket, title, body, isPrivate }).then(() => {
+        if (files.length) {
+          const formData = new FormData();
+          files.forEach((file, index) => {
+            formData.append(`file-${index}`, file);
+          });
+          uploadTicketFiles(ticket.slug, formData);
+        }
         closeModal();
       });
     }
@@ -99,9 +109,13 @@ class EditTicket extends Component<Props, State> {
     this.setState({ body });
   };
 
+  onFileDrop = (files: Array<File>) => {
+    this.setState({ files: [...this.state.files, ...files] });
+  };
+
   render() {
     const { classes, closeModal } = this.props;
-    const { title, body, isPrivate } = this.state;
+    const { title, body, isPrivate, files } = this.state;
 
     return (
       <div className={classes.root}>
@@ -125,6 +139,22 @@ class EditTicket extends Component<Props, State> {
           </Grid>
           <Grid item xs={12}>
             <SimpleMDE value={body} onChange={this.changeBody} />
+            <Dropzone onDrop={this.onFileDrop}>
+              {({ getRootProps, getInputProps }) => (
+                <section>
+                  <div {...getRootProps()}>
+                    <input {...getInputProps()} />
+                    <p>
+                      Drag 'n' drop some files here, or click to select files.{" "}
+                      <br />
+                      {files.map((file, index) => (
+                        <span key={index}>{file.name}</span>
+                      ))}
+                    </p>
+                  </div>
+                </section>
+              )}
+            </Dropzone>
           </Grid>
           <Grid item xs={12}>
             Visibility{" "}

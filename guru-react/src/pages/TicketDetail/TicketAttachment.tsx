@@ -72,13 +72,15 @@ class TicketDetail extends Component<Props> {
 
   render() {
     const { document, classes } = this.props;
-    const fileType = this.getFileExtension(document.file);
-    const fileName = document.file.split("/").slice(-1)[0];
+    const fileType = this.getFileExtension(document.fileUrl);
+    const fileName = document.fileUrl.split("/").slice(-1)[0];
+    const apiHost = process.env.REACT_APP_API_BASE;
+    const fileUrl = `${apiHost}${document.fileUrl}`;
 
     return (
       <div className={classes.root}>
         {fileType == FileType.Image ? (
-          <img src={document.file} alt="" className={classes.image} />
+          <img src={fileUrl} alt="" className={classes.image} />
         ) : (
           ""
         )}
@@ -86,7 +88,7 @@ class TicketDetail extends Component<Props> {
           <a
             className={classes.caption}
             download={fileName}
-            href={document.file}
+            href={fileUrl}
             target="_blank"
           >
             {fileName}

@@ -31,22 +31,26 @@ class UserAccessList(APIView):
 
     def get(self, request):
         q = request.query_params.get('q', '')
+        company_id = request.query_params.get('company')
         users = m.User.objects.none()
 
         if q:
+            queryset = self.get_queryset()
+            if company_id:
+                queryset = queryset.filter(membership__company_id=company_id)
             names = q.split(' ')
             first_name = names[0]
             last_name = ''
             if len(names) > 1:
                 last_name = names[1]
-            queryset = self.get_queryset()
+
             users = queryset.filter(
-                Q(first_name__contains=first_name) |
-                Q(email=q)
+                Q(first_name__icontains=first_name) |
+                Q(email__iexact=q)
             )
 
             if last_name:
-                users = users.filter(last_name=last_name)[:20]
+                users = users.filter(last_name__iexact=last_name)[:20]
 
         serializer = self.serializer_class(
             users, many=True, context={'request': request}
@@ -77,7 +81,7 @@ class CompanyAccessList(APIView):
         if q:
             queryset = self.get_queryset()
             companies = queryset.filter(
-                name__contains=q
+                name__icontains=q
             )
 
         serializer = self.serializer_class(companies, many=True)

@@ -151,6 +151,7 @@ class ResponsePost extends Component<Props, State> {
         });
         uploadAnswerFiles(ticket.slug, answer, formData);
       }
+      this.clearState();
     });
   };
 

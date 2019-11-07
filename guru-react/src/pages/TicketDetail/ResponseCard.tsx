@@ -102,8 +102,8 @@ class TicketDetail extends Component<Props, State> {
         </Menu>
         <CardContent>
           <ReactMarkdown source={answer.body} />
-          {answer.attachments.map(attachment => (
-            <TicketAttachment document={attachment} />
+          {answer.attachments.map((attachment, index) => (
+            <TicketAttachment key={index} document={attachment} />
           ))}
           <Modal
             aria-labelledby="delete-confirmation-modal"

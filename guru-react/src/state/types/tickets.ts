@@ -17,7 +17,7 @@ export interface TicketProduct {
 
 export interface TicketDocument {
   id: number;
-  file: string;
+  fileUrl: string;
 }
 
 export interface Ticket {

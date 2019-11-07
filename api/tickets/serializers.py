@@ -15,10 +15,11 @@ from profiles.serializers import ShortUserSerializer, ShortCompanySerializer
 
 
 class DocumentSerializer(serializers.ModelSerializer):
+    file_url = serializers.ReadOnlyField()
 
     class Meta:
         model = m.Document
-        fields = '__all__'
+        fields = ['id', 'file', 'file_url']
 
 
 class TicketSearchSerializer(HaystackSerializer):
