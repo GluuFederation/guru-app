@@ -14,6 +14,8 @@ import Paper from "@material-ui/core/Paper";
 import Edit from "@material-ui/icons/Edit";
 import Box from "@material-ui/core/Box";
 
+import { WithUserProps, withUser } from "../../state/hocs/profiles";
+
 const styles = (theme: Theme) =>
   createStyles({
     avatarBig: {
@@ -59,11 +61,16 @@ const styles = (theme: Theme) =>
     }
   });
 
-type Props = WithStyles<typeof styles> & RouteComponentProps;
+type Props = WithUserProps & WithStyles<typeof styles> & RouteComponentProps;
 
 class DashboardSideMenu extends Component<Props> {
   render() {
-    const { classes } = this.props;
+    const { classes, user } = this.props;
+    const avatar = user ? user.avatar : "";
+    const firstName = user ? user.firstName : "";
+    const otherNames = user ? user.otherNames : "";
+    const lastName = user ? user.lastName : "";
+    const name = `${firstName} ${otherNames} ${lastName}`;
 
     return (
       <div>
@@ -74,7 +81,7 @@ class DashboardSideMenu extends Component<Props> {
                 <Avatar
                   style={{ marginBottom: -26 }}
                   alt="Avatar"
-                  src={UserOne}
+                  src={avatar}
                   className={classes.avatarBig}
                 />
                 <button className={classes.editImageP}>
@@ -82,7 +89,7 @@ class DashboardSideMenu extends Component<Props> {
                 </button>
               </Box>
               <Typography variant="h6" align="center">
-                Nasir uddin
+                {name}
                 <img
                   alt="Verify Icon"
                   style={{
@@ -94,20 +101,25 @@ class DashboardSideMenu extends Component<Props> {
                   src={VerifyIcon}
                 />
               </Typography>
-              <Typography
-                variant="subtitle1"
-                align="center"
-                color="textSecondary"
-              >
-                Gluu Inc
-              </Typography>
-              <Typography
-                variant="subtitle2"
-                color="textPrimary"
-                align="center"
-              >
-                nasir@gluu.org
-              </Typography>
+              {user && user.company ? (
+                <Typography
+                  variant="subtitle1"
+                  align="center"
+                  color="textSecondary"
+                >
+                  Gluu Inc
+                </Typography>
+              ) : null}
+
+              {user ? (
+                <Typography
+                  variant="subtitle2"
+                  color="textPrimary"
+                  align="center"
+                >
+                  {user.email}
+                </Typography>
+              ) : null}
             </Box>
             <hr />
             <Box p={2}>
@@ -207,4 +219,4 @@ class DashboardSideMenu extends Component<Props> {
   }
 }
 
-export default withStyles(styles)(withRouter(DashboardSideMenu));
+export default withUser(withStyles(styles)(withRouter(DashboardSideMenu)));
