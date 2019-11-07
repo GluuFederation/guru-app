@@ -41,6 +41,12 @@ const muiTheme = createMuiTheme({
     MuiTypography: {
       root: {
         wordBreak: "normal"
+      },
+      body1: {
+        fontSize: ".9rem"
+      },
+      body2: {
+        fontSize: ".9rem"
       }
     },
     MuiCardHeader: {
@@ -88,6 +94,14 @@ const muiTheme = createMuiTheme({
         "&:hover": {
           backgroundColor: colors.SECONDARY_BACKGROUND
         }
+      },
+      root: {
+        fontSize: ".9rem"
+      }
+    },
+    MuiListItemText: {
+      root: {
+        fontSize: "1rem"
       }
     },
     MuiChip: {
@@ -113,6 +127,14 @@ const muiTheme = createMuiTheme({
     MuiButton: {
       root: {
         textTransform: "none"
+      },
+      label: {
+        fontSize: ".9rem"
+      }
+    },
+    MuiMenuItem: {
+      root: {
+        fontSize: ".9rem"
       }
     }
   },
