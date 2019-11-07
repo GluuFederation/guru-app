@@ -172,6 +172,7 @@ class ChangeProduct extends Component<Props, State> {
       os
     };
 
+    console.log(index);
     if (index !== undefined) {
       if (!isNaN(index)) removeCreateTicketProduct(index);
       addCreateTicketProduct(updatedProduct);

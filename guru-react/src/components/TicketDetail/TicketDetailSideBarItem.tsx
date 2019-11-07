@@ -537,7 +537,7 @@ class TicketDetailSideBarItem extends Component<Props, State> {
                   <ChangeProduct
                     closeModal={this.closeModal}
                     product={this.state.product}
-                    index={this.state.index}
+                    index={isNew ? this.state.index : undefined}
                   />
                 )}
               </div>

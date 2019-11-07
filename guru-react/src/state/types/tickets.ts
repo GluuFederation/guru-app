@@ -15,6 +15,11 @@ export interface TicketProduct {
   osVersion: string;
 }
 
+export interface TicketDocument {
+  id: number;
+  fileUrl: string;
+}
+
 export interface Ticket {
   id: number;
   slug: string;
@@ -38,7 +43,7 @@ export interface Ticket {
   createdOn: string;
   updatedOn: string;
   responseNumber: number;
-  attachments: Array<string>;
+  attachments: Array<TicketDocument>;
 }
 
 export interface TicketSearchResult {
@@ -81,5 +86,5 @@ export interface Answer {
   createdBy: ShortUser;
   createdOn: string;
   updatedOn: string;
-  attachments: Array<string>;
+  attachments: Array<TicketDocument>;
 }

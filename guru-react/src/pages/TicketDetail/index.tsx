@@ -181,15 +181,7 @@ class TicketDetail extends Component<Props, State> {
                           </Typography>
                         </Grid>
                         {canEdit ? (
-                          <Grid
-                            item
-                            container
-                            align-items-xs-center
-                            justify-xs-center
-                            justify="flex-end"
-                            alignItems="flex-start"
-                            sm={3}
-                          >
+                          <Grid item container sm={3}>
                             <Button
                               variant="outlined"
                               classes={{ root: classes.privacyButton }}

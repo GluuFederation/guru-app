@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import SimpleMDE from "react-simplemde-editor";
+import Dropzone from "react-dropzone";
 
 import { withStyles, WithStyles } from "@material-ui/styles";
 import { createStyles, Theme } from "@material-ui/core/styles";
@@ -26,21 +27,28 @@ const styles = (theme: Theme) =>
     }
   });
 
+interface ExternalProps {
+  onFileDrop: (acceptedFiles: Array<File>) => void;
+}
+
 type Props = WithUserProps &
   WithCreateTicketProps &
   WithInfoProps &
+  ExternalProps &
   RouteComponentProps &
   WithStyles<typeof styles>;
 
 interface State {
   isLoading: boolean;
+  files: Array<File>;
 }
 
 class Step9 extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      isLoading: false
+      isLoading: false,
+      files: []
     };
   }
 
@@ -57,8 +65,14 @@ class Step9 extends Component<Props, State> {
     this.props.setCreateTicketTitle(event.target.value);
   };
 
+  onFileDrop = (acceptedFiles: Array<File>) => {
+    this.props.onFileDrop(acceptedFiles);
+    this.setState({ files: [...acceptedFiles, ...this.state.files] });
+  };
+
   render() {
     const { classes, newTicket } = this.props;
+    const { files } = this.state;
     const { body, title, isPrivate } = newTicket;
 
     return (
@@ -82,6 +96,22 @@ class Step9 extends Component<Props, State> {
           </Grid>
           <Grid item xs={12}>
             <SimpleMDE value={body} onChange={this.props.setCreateTicketBody} />
+            <Dropzone onDrop={this.onFileDrop}>
+              {({ getRootProps, getInputProps }) => (
+                <section>
+                  <div {...getRootProps()}>
+                    <input {...getInputProps()} />
+                    <p>
+                      Drag 'n' drop some files here, or click to select files.{" "}
+                      <br />
+                      {files.map((file, index) => (
+                        <span key={index}>{file.name}</span>
+                      ))}
+                    </p>
+                  </div>
+                </section>
+              )}
+            </Dropzone>
           </Grid>
           <Grid item xs={12}>
             Visibility{" "}

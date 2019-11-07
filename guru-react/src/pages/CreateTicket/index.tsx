@@ -17,6 +17,10 @@ import {
   WithCreateTicketProps,
   withCreateTicket
 } from "../../state/hocs/ticket";
+import {
+  WithTicketDetailProps,
+  withTicketDetail
+} from "../../state/hocs/tickets";
 import { WithInfoProps, withInfo } from "../../state/hocs/info";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import Step1 from "./Step1";
@@ -51,19 +55,22 @@ const styles = (theme: Theme) =>
 
 type Props = WithUserProps &
   WithCreateTicketProps &
+  WithTicketDetailProps &
   WithInfoProps &
   RouteComponentProps &
   WithStyles<typeof styles>;
 
 interface State {
   isLoading: boolean;
+  files: Array<File>;
 }
 
 class CreateTicket extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      isLoading: true
+      isLoading: true,
+      files: []
     };
   }
 
@@ -89,8 +96,23 @@ class CreateTicket extends Component<Props, State> {
   };
 
   createTicket = () => {
-    const { createTicket, clearTicketEntry, newTicket, history } = this.props;
+    const {
+      createTicket,
+      clearTicketEntry,
+      newTicket,
+      history,
+      uploadTicketFiles
+    } = this.props;
+    const { files } = this.state;
     createTicket(newTicket).then(ticket => {
+      if (files.length) {
+        const formData = new FormData();
+        files.forEach((file, index) => {
+          formData.append(`file-${index}`, file);
+        });
+        console.log(files, formData);
+        uploadTicketFiles(ticket.slug, formData);
+      }
       clearTicketEntry();
       history.push(paths.getTicketDetailPath(ticket.slug));
     });
@@ -98,6 +120,11 @@ class CreateTicket extends Component<Props, State> {
 
   cancel = () => {
     this.props.clearTicketEntry();
+  };
+
+  onFileDrop = (files: Array<File>) => {
+    this.setState({ files: [...this.state.files, ...files] });
+    console.log(files);
   };
 
   render() {
@@ -143,7 +170,7 @@ class CreateTicket extends Component<Props, State> {
                 ) : step === 8 ? (
                   <Step8 />
                 ) : step === 9 ? (
-                  <Step9 />
+                  <Step9 onFileDrop={this.onFileDrop} />
                 ) : null}
               </Grid>
               <Grid item md={3}>
@@ -245,5 +272,9 @@ class CreateTicket extends Component<Props, State> {
 }
 
 export default withRouter(
-  withInfo(withCreateTicket(withUser(withStyles(styles)(CreateTicket))))
+  withInfo(
+    withCreateTicket(
+      withTicketDetail(withUser(withStyles(styles)(CreateTicket)))
+    )
+  )
 );

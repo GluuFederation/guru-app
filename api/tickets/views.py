@@ -452,6 +452,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
     def upload(self, request, ticket_slug=None, pk=None):
         obj = self.get_object()
         files = list(request.FILES.values())
+        # print(files)
         for f in files:
             serializer = s.DocumentSerializer(data={"file": f})
             serializer.is_valid(raise_exception=True)
@@ -461,8 +462,9 @@ class AnswerViewSet(viewsets.ModelViewSet):
                 answer=obj
             )
 
+        serializer = self.serializer_class(obj)
         return Response(
-            {'results': 'Successfully uploaded'},
+            {'results': serializer.data, 'detail': 'Successfully uploaded'},
             status=status.HTTP_200_OK
         )
 

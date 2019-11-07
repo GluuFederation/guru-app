@@ -572,6 +572,19 @@ export const updateTicket = (ticket: Ticket) => {
   };
 };
 
+export const uploadTicketFiles = (ticketSlug: string, data: FormData) => {
+  return async (
+    dispatch: ThunkDispatch<{}, {}, AnyAction>
+  ): Promise<Ticket> => {
+    const URL = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/${ticketSlug}/upload/`;
+    return axios.put(URL, data).then(response => {
+      const results = response.data.results;
+      dispatch(setTicket(results));
+      return Promise.resolve(results);
+    });
+  };
+};
+
 export const changeTicketSubscription = (
   tickerSlug: string,
   subscribe: boolean
@@ -607,6 +620,24 @@ export const updateTicketAnswer = (ticketSlug: string, answer: Answer) => {
   ): Promise<Answer> => {
     const URL = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/${ticketSlug}/answers/${answer.id}/`;
     return axios.put(URL, { answer }).then(response => {
+      const results = response.data.results;
+      dispatch(removeTicketAnswer(answer));
+      dispatch(addTicketAnswer(results));
+      return Promise.resolve(results);
+    });
+  };
+};
+
+export const uploadAnswerFiles = (
+  ticketSlug: string,
+  answer: Answer,
+  data: FormData
+) => {
+  return async (
+    dispatch: ThunkDispatch<{}, {}, AnyAction>
+  ): Promise<Answer> => {
+    const URL = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/${ticketSlug}/answers/${answer.id}/upload/`;
+    return axios.put(URL, data).then(response => {
       const results = response.data.results;
       dispatch(removeTicketAnswer(answer));
       dispatch(addTicketAnswer(results));
