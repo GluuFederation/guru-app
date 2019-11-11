@@ -21,16 +21,16 @@ import {
 } from "../../state/hocs/tickets";
 import Modal from "@material-ui/core/Modal";
 import { withUser, WithUserProps } from "../../state/hocs/profiles";
-import { width } from "@material-ui/system";
+import TicketAttachment from "./TicketAttachment";
 
 const styles = (theme: Theme) =>
   createStyles({
-    ticketContent:{
-      "& img":{
-        width:'100%'
+    ticketContent: {
+      "& img": {
+        width: "100%"
       },
-      "& pre":{
-        whiteSpace: 'pre-wrap'
+      "& pre": {
+        whiteSpace: "pre-wrap"
       }
     }
   });
@@ -48,7 +48,7 @@ type Props = WithUserProps &
 
 interface State {
   ticketMenuElement: HTMLElement | null;
-  isModalOpen : boolean
+  isModalOpen: boolean;
 }
 
 class TicketDetail extends Component<Props, State> {
@@ -93,9 +93,7 @@ class TicketDetail extends Component<Props, State> {
     }
   };
   copyLink = () => {
-    const url = `${window.location.protocol}//${
-      window.location.hostname
-    }/tickets/${this.props.slug}`;
+    const url = `${window.location.protocol}//${window.location.hostname}/tickets/${this.props.slug}`;
     navigator.clipboard.writeText(url);
     this.closeTicketMenu();
   };
@@ -133,12 +131,20 @@ class TicketDetail extends Component<Props, State> {
           onClose={this.closeTicketMenu}
         >
           <MenuItem onClick={this.copyLink}>Copy Link</MenuItem>
-          <MenuItem onClick={this.navigateTo(paths.getCreateTicketPath(NaN))} >Open new ticket</MenuItem>
+          <MenuItem onClick={this.navigateTo(paths.getCreateTicketPath(NaN))}>
+            Open new ticket
+          </MenuItem>
           <MenuItem onClick={this.openModal}>Delete</MenuItem>
         </Menu>
 
-        <CardContent  >
-          <ReactMarkdown className={classes.ticketContent} source={ticket.body} />
+        <CardContent>
+          <ReactMarkdown
+            className={classes.ticketContent}
+            source={ticket.body}
+          />
+          {ticket.attachments.map((attachment, index) => (
+            <TicketAttachment key={index} document={attachment} />
+          ))}
           <Modal
             aria-labelledby="delete-confirmation-modal"
             open={this.state.isModalOpen}
@@ -146,10 +152,7 @@ class TicketDetail extends Component<Props, State> {
           >
             <div className="modal-super-container">
               <div className="modal-container">
-                <DeleteConfirmation
-                  closeModal={this.closeModal}
-                  slug={slug}
-                />
+                <DeleteConfirmation closeModal={this.closeModal} slug={slug} />
               </div>
             </div>
           </Modal>

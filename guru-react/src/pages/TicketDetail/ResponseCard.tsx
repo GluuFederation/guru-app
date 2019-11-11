@@ -15,6 +15,7 @@ import IconButton from "@material-ui/core/IconButton";
 import MoreHoriIcon from "@material-ui/icons/MoreHoriz";
 import { Answer } from "../../state/types/tickets";
 import DeleteConfirmation from "../../components/TicketDetail/DeleteConfirmation";
+import TicketAttachment from "./TicketAttachment";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -69,7 +70,7 @@ class TicketDetail extends Component<Props, State> {
     this.props.history.push(path);
   };
   render() {
-    const { classes, answer, slug } = this.props;
+    const { answer, slug } = this.props;
     const { responseMenuElement, isModalOpen } = this.state;
     const createdOn = `${moment(answer.createdOn).format("ll")} at ${moment(
       answer.createdOn
@@ -94,11 +95,16 @@ class TicketDetail extends Component<Props, State> {
           onClose={this.closeResponseMenu}
         >
           <MenuItem onClick={this.copyLink}>Copy Link</MenuItem>
-          <MenuItem onClick={this.navigateTo(paths.getCreateTicketPath(NaN))}>Open new ticket</MenuItem>
+          <MenuItem onClick={this.navigateTo(paths.getCreateTicketPath(NaN))}>
+            Open new ticket
+          </MenuItem>
           <MenuItem onClick={this.openModal}>Delete</MenuItem>
         </Menu>
         <CardContent>
           <ReactMarkdown source={answer.body} />
+          {answer.attachments.map((attachment, index) => (
+            <TicketAttachment key={index} document={attachment} />
+          ))}
           <Modal
             aria-labelledby="delete-confirmation-modal"
             open={isModalOpen}

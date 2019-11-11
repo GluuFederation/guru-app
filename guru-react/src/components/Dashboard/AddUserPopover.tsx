@@ -110,13 +110,9 @@ export default function AddUserPopover() {
   }
   return (
     <div>
-      <a
-        href="#"
-        onClick={handleOpenInviteNewPartn}
-        className={classes.addNewUser}
-      >
+      <button onClick={handleOpenInviteNewPartn} className={classes.addNewUser}>
         Add New User
-      </a>
+      </button>
 
       <Modal open={openInviteNewPartn} onClose={handleCloseInviteNewPartn}>
         <Box style={{ width: "28%" }} className={classes.paperModel}>

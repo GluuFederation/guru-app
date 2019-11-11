@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { withStyles, WithStyles } from "@material-ui/styles";
 import { createStyles, Theme } from "@material-ui/core/styles";

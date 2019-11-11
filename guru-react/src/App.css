@@ -13,7 +13,6 @@ body {
   padding-bottom: 8em;
   padding-left: 1em;
   padding-right: 1em;
-  word-break: break-all;
   overflow-x: hidden;
 }
 
@@ -22,38 +21,38 @@ body {
 }
 
 .chip.light-blue {
-  background-color: rgba(31, 191, 221, 0.15);
-  color: #1fbfdd;
+  background-color: #18c0dd;
+  color: #fff;
 }
 
 .chip.green {
-  background-color: rgba(65, 204, 34, 0.15);
-  color: #41cc22;
+  background-color: #59c608;
+  color: #fff;
 }
 
 .chip.gray {
-  background-color: rgba(0, 0, 0, 0.15);
-  color: #4a4a4a;
+  background-color: #3f3f3f;
+  color: #fff;
 }
 
 .chip.yellow {
-  background-color: rgba(255, 188, 22, 0.15);
-  color: #ffbc16;
+  background-color: #ffbd0f;
+  color: #fff;
 }
 
 .chip.red {
-  background-color: rgba(255, 89, 28, 0.15);
-  color: #ff591c;
+  background-color: #ff384d;
+  color: #fff;
 }
 
 .chip.purple {
-  background-color: rgba(183, 54, 255, 0.15);
-  color: #b736ff;
+  background-color: #b833ff;
+  color: #fff;
 }
 
-.chip.blue {
-  background-color: rgba(120, 110, 255, 0.15);
-  color: #786eff;
+.chip.orange {
+  background-color: #fe5915;
+  color: #fff;
 }
 
 .card.light-blue {
@@ -126,8 +125,8 @@ body {
   body {
     padding-top: 3.5em;
   }
-  .app-body, .container-body {
-    padding-bottom: 35em !important; 
+  .app-body {
+    padding-bottom: 35em;
   }
   div.MuiContainer-root {
     padding: 0;
@@ -142,8 +141,8 @@ body {
 }
 
 @media only screen and (min-width: 601px) and (max-width: 960px) {
-  .app-body, .container-body {
-    padding-bottom: 28em !important;
+  .app-body {
+    padding-bottom: 28em;
   }
   div.MuiContainer-root {
     padding: 0;

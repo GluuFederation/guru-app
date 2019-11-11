@@ -9,6 +9,9 @@ import Avatar from "@material-ui/core/Avatar";
 import Chip from "@material-ui/core/Chip";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
+import Hidden from "@material-ui/core/Hidden";
+import Box from "@material-ui/core/Box";
+
 import ChatBubbleOutline from "@material-ui/icons/ChatBubbleOutline";
 import PersonOutline from "@material-ui/icons/PersonOutline";
 import ThumbUpOutlined from "@material-ui/icons/ThumbUpOutlined";
@@ -16,40 +19,39 @@ import { colors } from "../../theme";
 import { getChipClass } from "../../utils/chipStyles";
 import { paths } from "../../routes";
 import { Ticket } from "../../state/types/tickets";
-import {
-  closedStatus,
-  otherCategory,
-  minorIssueType
-} from "../../state/preloaded/info";
+import { closedStatus, otherCategory } from "../../state/preloaded/info";
 import { withInfo, WithInfoProps } from "../../state/hocs/info";
 import {
   withTicketDetail,
   WithTicketDetailProps
 } from "../../state/hocs/tickets";
-import { TicketIssueType } from "../../state/types/info";
-import axios from "axios";
-import { fontStyle } from "@material-ui/system";
 
 const styles = (theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
       backgroundColor: colors.MAIN_BACKGROUND,
-      padding: "0 1em 0 1em",
-      cursor: "pointer"
+      padding: "0 1em 0 1rem",
+      cursor: "pointer",
+      marginBottom: ".5rem",
+      marginTop: "1rem",
+      "&:hover h5": {
+        color: colors.MAIN_COLOR
+      }
     },
     owner: {
       textAlign: "center",
       borderRight: `1px solid ${colors.VERY_LIGHT_TEXT}`,
-      padding: "1em"
+      padding: "1rem"
     },
     ticket: {
-      padding: "1em"
+      padding: "1rem"
     },
     ticketMeta: {
       color: colors.LIGHTER_TEXT,
       fontSize: ".7em",
-      fontWeight: 300
+      verticalAlign: "text-bottom",
+      lineHeight: "1.2rem"
     },
     ticketId: {
       color: colors.MAIN_COLOR
@@ -59,12 +61,44 @@ const styles = (theme: Theme) =>
       width: 50,
       marginBottom: "1em"
     },
-    ticketActivity: {
-      fontSize: ".9em"
-    },
     selectType: {
-      fontSize: "12px",
-      fontWeight: 600
+      fontSize: "1rem",
+      color: colors.LIGHTER_TEXT,
+      marginTop: "-.2rem",
+      [theme.breakpoints.down("md")]: {
+        marginTop: "-.3rem"
+      },
+      [theme.breakpoints.up("sm")]: {
+        marginLeft: "-.8rem"
+      }
+    },
+    actions: {
+      [theme.breakpoints.down("sm")]: {
+        borderTop: `1px solid ${colors.LIGHT_BORDER}`
+      }
+    },
+    chips: {
+      [theme.breakpoints.down("sm")]: {
+        marginTop: ".8rem"
+      }
+    },
+    heading: {
+      marginBottom: ".5rem"
+    },
+    lightText: {
+      color: colors.LIGHTER_TEXT
+    },
+    userGrid: {
+      marginTop: ".5rem",
+      marginBottom: ".5rem"
+    },
+    actionIcon: {
+      height: "1.5rem",
+      marginRight: "1rem"
+    },
+    actionText: {
+      fontSize: ".8rem",
+      verticalAlign: "super"
     }
   });
 
@@ -110,129 +144,196 @@ class TicketNav extends Component<Props> {
       item => item.id === shortTicket.issueType
     );
 
+    const avatar = owner.avatar ? (
+      <Avatar
+        alt="Image"
+        src={owner.avatar}
+        className={classes.avatar}
+      ></Avatar>
+    ) : (
+      <Avatar alt="Image" className={classes.avatar}>
+        {owner.firstName.charAt(0)}
+      </Avatar>
+    );
+
+    const userName = (
+      <>
+        <Grid item xs={12}>
+          <div>
+            <strong>
+              <small>
+                {owner.firstName} {owner.otherNames} {owner.lastName}
+              </small>
+            </strong>
+          </div>
+        </Grid>
+        <Grid item xs={12}>
+          <div className={classes.lightText}>
+            <small>{owner.company ? owner.company.name : ""}</small>
+          </div>
+        </Grid>
+        <Hidden xsDown>
+          <Grid item xs={12}>
+            <div style={{ textTransform: "capitalize" }}>
+              <small>{owner.company ? owner.company.plan : ""}</small>
+            </div>
+          </Grid>
+        </Hidden>
+      </>
+    );
+
+    const chips = (
+      <div className={classes.chips}>
+        <Chip label={status.name} className={getChipClass(status.slug)} />
+        {issueType ? (
+          <Chip
+            label={issueType.name}
+            className={getChipClass(issueType.slug)}
+          />
+        ) : null}
+
+        <Chip label={category.name} className={getChipClass(category.slug)} />
+      </div>
+    );
+
+    const ticketInfo = (
+      <>
+        <Typography variant="h5" classes={{ root: classes.heading }}>
+          {shortTicket.title}
+        </Typography>
+        <div>
+          <span className={classes.ticketId}># {shortTicket.id}</span>&emsp;
+          <span className={classes.ticketMeta}>
+            Created: <em>{moment(shortTicket.createdOn).format("ll")}</em>
+          </span>
+          &emsp;
+          <Hidden xsDown>
+            <span className={classes.ticketMeta}>
+              Last updated:{" "}
+              <em>
+                {moment(shortTicket.updatedOn).fromNow()}{" "}
+                {shortTicket.updatedBy
+                  ? ` by ${shortTicket.updatedBy.firstName} ${shortTicket.updatedBy.lastName}`
+                  : ""}
+              </em>
+            </span>
+          </Hidden>
+        </div>
+      </>
+    );
+
     return (
       <div className={classes.root}>
-        <Grid container style={{ padding: 10 }} alignItems="center">
-          <Grid item md={3} sm={12} xs={12} lg={2} className={classes.owner}>
+        <Grid container spacing={2} alignItems="center">
+          <Hidden smDown>
             <Grid
-              container
-              justify="center"
-              direction="column"
-              alignItems="center"
+              item
+              md={4}
+              sm={12}
+              xs={12}
+              lg={2}
+              className={classes.owner}
+              onClick={this.goToTicket}
             >
-              <Grid item>
-                {owner.avatar ? (
-                  <Avatar
-                    alt="Image"
-                    src={owner.avatar}
-                    className={classes.avatar}
-                  ></Avatar>
-                ) : (
-                  <Avatar alt="Image" className={classes.avatar}>
-                    {owner.firstName.charAt(0)}
-                  </Avatar>
-                )}
-              </Grid>
-              <Grid item>
-                <div>
-                  <strong>
-                    {owner.firstName} {owner.otherNames} {owner.lastName}
-                  </strong>
-                </div>
-              </Grid>
-              <Grid item>
-                <div>
-                  <small>{owner.company ? owner.company.name : ""}</small>
-                </div>
-              </Grid>
-              <Grid item>
-                <div style={{ textTransform: "capitalize" }}>
-                  {owner.company ? owner.company.plan : ""}
-                </div>
+              <Grid
+                container
+                justify="center"
+                direction="column"
+                alignItems="center"
+                onClick={this.goToTicket}
+                classes={{ root: classes.userGrid }}
+              >
+                <Grid item>{avatar}</Grid>
+                {userName}
               </Grid>
             </Grid>
-          </Grid>
+            <Grid
+              item
+              md={8}
+              lg={7}
+              className={classes.ticket}
+              onClick={this.goToTicket}
+            >
+              {chips}
+              {ticketInfo}
+            </Grid>
+          </Hidden>
+          <Hidden mdUp>
+            <Grid item xs={12} onClick={this.goToTicket}>
+              {chips}
+            </Grid>
+            <Grid item xs={12} onClick={this.goToTicket}>
+              {ticketInfo}
+            </Grid>
+            <Grid item xs={12} onClick={this.goToTicket}>
+              <Grid
+                container
+                alignItems="flex-start"
+                justify="flex-start"
+                alignContent="center"
+              >
+                <Grid item>
+                  <Box mr={2}>{avatar}</Box>
+                </Grid>
+                <Grid item>
+                  <Box marginTop=".3rem">
+                    <Grid container direction="column">
+                      {userName}
+                    </Grid>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Hidden>
           <Grid
             item
-            md={6}
-            lg={7}
-            className={classes.ticket}
-            onClick={this.goToTicket}
+            md={12}
+            xs={12}
+            sm={12}
+            lg={3}
+            container
+            classes={{ root: classes.actions }}
+            className={classes.lightText}
           >
-            <div>
-              <Chip label={status.name} className={getChipClass(status.slug)} />
-              {issueType ? (
-                <Chip
-                  label={issueType.name}
-                  className={getChipClass(issueType.slug)}
-                />
-              ) : null}
-
-              <Chip
-                label={category.name}
-                className={getChipClass(category.slug)}
-              />
-            </div>
-            <Typography variant="h6">{shortTicket.title}</Typography>
-            <div>
-              <span className={classes.ticketId}># {shortTicket.id}</span>&emsp;
-              <span className={classes.ticketMeta}>
-                Created: <em>{moment(shortTicket.createdOn).format("ll")}</em>
-              </span>
-              &emsp;
-              <span className={classes.ticketMeta}>
-                Last updated:{" "}
-                <em>
-                  {moment(shortTicket.updatedOn).fromNow()}{" "}
-                  {shortTicket.updatedBy
-                    ? ` by ${shortTicket.updatedBy.firstName} ${shortTicket.updatedBy.lastName}`
-                    : ""}
-                </em>
-              </span>
-            </div>
-          </Grid>
-          <Grid item md={3} xs={12} sm={12} lg={3} container direction="column">
-            <Grid>
-              <Grid item xs={12}>
-                <Grid container justify="center" spacing={2}>
-                  <Grid item xs={2}>
-                    <ChatBubbleOutline />
-                  </Grid>
-                  <Grid item xs={9} className={classes.ticketActivity}>
-                    {shortTicket.responseNumber} responses
-                  </Grid>
+            <Grid item xs={3} lg={12}>
+              <Grid container justify="flex-start" spacing={2}>
+                <Grid item xs={12}>
+                  <ChatBubbleOutline className={classes.actionIcon} />
+                  <span className={classes.actionText}>
+                    {shortTicket.responseNumber}{" "}
+                    <Hidden smDown>responses</Hidden>
+                  </span>
                 </Grid>
               </Grid>
-              <Grid item xs={12}>
-                <Grid container justify="center" spacing={4}>
-                  <Grid item xs={2} md={2}>
-                    <ThumbUpOutlined />
-                  </Grid>
-                  <Grid item xs={9} md={9} className={classes.ticketActivity}>
-                    {shortTicket.voters.length} votes
-                  </Grid>
+            </Grid>
+            <Grid item xs={3} lg={12}>
+              <Grid container justify="flex-start" spacing={4}>
+                <Grid item xs={12}>
+                  <ThumbUpOutlined className={classes.actionIcon} />
+                  <span className={classes.actionText}>
+                    {shortTicket.voters.length} <Hidden smDown>votes</Hidden>
+                  </span>
                 </Grid>
               </Grid>
-              <Grid item xs={12}>
-                <Grid container justify="center" spacing={2}>
-                  <Grid item xs={2} md={2}>
-                    <PersonOutline />
-                  </Grid>
-                  <Grid item xs={9} md={9} className={classes.ticketActivity}>
-                    <Select
-                      className={classes.selectType}
-                      value={
-                        shortTicket.assignee ? shortTicket.assignee.id : ""
-                      }
-                      onChange={this.handleChange.bind(this)}
-                    >
-                      {staff.map((staff: any) => (
-                        <MenuItem value={staff.id} key={staff.id}>
-                          {staff.firstName + " " + staff.lastName}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </Grid>
+            </Grid>
+            <Grid item xs={6} lg={12}>
+              <Grid container justify="flex-start" spacing={2}>
+                <Grid item xs={2} md={2}>
+                  <PersonOutline className={classes.actionIcon} />
+                </Grid>
+                <Grid item xs={9} md={9}>
+                  <Select
+                    className={classes.selectType}
+                    value={shortTicket.assignee ? shortTicket.assignee.id : ""}
+                    onChange={this.handleChange.bind(this)}
+                    disableUnderline={true}
+                  >
+                    {staff.map((staff: any) => (
+                      <MenuItem value={staff.id} key={staff.id}>
+                        {staff.firstName + " " + staff.lastName}
+                      </MenuItem>
+                    ))}
+                  </Select>
                 </Grid>
               </Grid>
             </Grid>

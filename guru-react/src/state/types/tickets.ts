@@ -1,4 +1,3 @@
-import { GluuProduct } from "./info";
 import { ShortUser, ShortCompany } from "./profiles";
 
 export enum TicketFilterOrder {
@@ -14,6 +13,11 @@ export interface TicketProduct {
   version: string;
   os: string;
   osVersion: string;
+}
+
+export interface TicketDocument {
+  id: number;
+  fileUrl: string;
 }
 
 export interface Ticket {
@@ -39,7 +43,7 @@ export interface Ticket {
   createdOn: string;
   updatedOn: string;
   responseNumber: number;
-  attachments: Array<string>;
+  attachments: Array<TicketDocument>;
 }
 
 export interface TicketSearchResult {
@@ -82,5 +86,5 @@ export interface Answer {
   createdBy: ShortUser;
   createdOn: string;
   updatedOn: string;
-  attachments: Array<string>;
+  attachments: Array<TicketDocument>;
 }

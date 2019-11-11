@@ -1,20 +1,12 @@
 import React, { Component } from "react";
-import { Link as RouterLink } from "react-router-dom";
 
 import { withStyles, WithStyles } from "@material-ui/styles";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import { createStyles, Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import Breadcrumbs from "@material-ui/core/Breadcrumbs";
-import Link from "@material-ui/core/Link";
 import Button from "@material-ui/core/Button";
-import Lock from "@material-ui/icons/Lock";
-import LockOpen from "@material-ui/icons/LockOpen";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import Box from "@material-ui/core/Box";
-import Divider from "@material-ui/core/Divider";
-import Modal from "@material-ui/core/Modal";
 
 import { colors } from "../../theme";
 import Navbar from "../../components/Navbar";
@@ -25,6 +17,10 @@ import {
   WithCreateTicketProps,
   withCreateTicket
 } from "../../state/hocs/ticket";
+import {
+  WithTicketDetailProps,
+  withTicketDetail
+} from "../../state/hocs/tickets";
 import { WithInfoProps, withInfo } from "../../state/hocs/info";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import Step1 from "./Step1";
@@ -59,19 +55,22 @@ const styles = (theme: Theme) =>
 
 type Props = WithUserProps &
   WithCreateTicketProps &
+  WithTicketDetailProps &
   WithInfoProps &
   RouteComponentProps &
   WithStyles<typeof styles>;
 
 interface State {
   isLoading: boolean;
+  files: Array<File>;
 }
 
 class CreateTicket extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      isLoading: true
+      isLoading: true,
+      files: []
     };
   }
 
@@ -97,8 +96,23 @@ class CreateTicket extends Component<Props, State> {
   };
 
   createTicket = () => {
-    const { createTicket, clearTicketEntry, newTicket, history } = this.props;
+    const {
+      createTicket,
+      clearTicketEntry,
+      newTicket,
+      history,
+      uploadTicketFiles
+    } = this.props;
+    const { files } = this.state;
     createTicket(newTicket).then(ticket => {
+      if (files.length) {
+        const formData = new FormData();
+        files.forEach((file, index) => {
+          formData.append(`file-${index}`, file);
+        });
+        console.log(files, formData);
+        uploadTicketFiles(ticket.slug, formData);
+      }
       clearTicketEntry();
       history.push(paths.getTicketDetailPath(ticket.slug));
     });
@@ -108,9 +122,13 @@ class CreateTicket extends Component<Props, State> {
     this.props.clearTicketEntry();
   };
 
+  onFileDrop = (files: Array<File>) => {
+    this.setState({ files: [...this.state.files, ...files] });
+    console.log(files);
+  };
+
   render() {
-    const { classes, newTicket, user } = this.props;
-    const { isLoading } = this.state;
+    const { classes, newTicket } = this.props;
     const {
       step,
       companyAssociation,
@@ -121,12 +139,6 @@ class CreateTicket extends Component<Props, State> {
       gluuServer,
       hasProducts
     } = newTicket;
-
-    const isCommunity = user
-      ? user.role
-        ? user.role.name === "community"
-        : true
-      : true;
 
     return (
       <Page>
@@ -158,7 +170,7 @@ class CreateTicket extends Component<Props, State> {
                 ) : step === 8 ? (
                   <Step8 />
                 ) : step === 9 ? (
-                  <Step9 />
+                  <Step9 onFileDrop={this.onFileDrop} />
                 ) : null}
               </Grid>
               <Grid item md={3}>
@@ -260,5 +272,9 @@ class CreateTicket extends Component<Props, State> {
 }
 
 export default withRouter(
-  withInfo(withCreateTicket(withUser(withStyles(styles)(CreateTicket))))
+  withInfo(
+    withCreateTicket(
+      withTicketDetail(withUser(withStyles(styles)(CreateTicket)))
+    )
+  )
 );

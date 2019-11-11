@@ -13,6 +13,13 @@ class Document(models.Model):
         blank=True
     )
 
+    @property
+    def file_url(self):
+        try:
+            return self.file.url
+        except ValueError:
+            return ''
+
 
 class ActiveTicketManager(models.Manager):
 

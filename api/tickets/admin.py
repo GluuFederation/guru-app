@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.translation import ugettext as _
 from .models import (
-    Ticket, TicketHistory, Answer
+    Ticket, TicketHistory, Answer, Document
 )
 
 
@@ -126,3 +126,6 @@ class AnswerAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request, obj=None):
         return False
+
+
+admin.site.register(Document)

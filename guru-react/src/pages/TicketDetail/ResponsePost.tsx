@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import axios from "axios";
 import SimpleMDE from "react-simplemde-editor";
+import Dropzone from "react-dropzone";
+
 import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -52,6 +54,8 @@ interface State {
   assignee?: number;
   status?: number;
   errorMessage: string;
+  files: Array<File>;
+  isLoading: boolean;
 }
 class ResponsePost extends Component<Props, State> {
   constructor(props: Props) {
@@ -60,7 +64,9 @@ class ResponsePost extends Component<Props, State> {
     this.state = {
       body: "",
       users: [],
-      errorMessage: ""
+      errorMessage: "",
+      files: [],
+      isLoading: false
     };
   }
 
@@ -105,13 +111,23 @@ class ResponsePost extends Component<Props, State> {
     this.setState({ body });
   };
 
+  clearState = () => {
+    this.setState({
+      body: "",
+      users: [],
+      errorMessage: "",
+      isLoading: false
+    });
+  };
+
   saveAnswer = () => {
-    const { body, assignee, status } = this.state;
+    const { body, assignee, status, files } = this.state;
     const {
       updateTicket,
       createTicketAnswer,
       ticket,
-      setTicketAssignee
+      setTicketAssignee,
+      uploadAnswerFiles
     } = this.props;
     if (!ticket) return;
 
@@ -120,18 +136,22 @@ class ResponsePost extends Component<Props, State> {
       return;
     }
 
-    createTicketAnswer(ticket.slug, body).then(() => {
+    this.setState({ isLoading: true });
+    createTicketAnswer(ticket.slug, body).then(answer => {
       if (status) {
         updateTicket({ ...ticket, status });
       }
       if (assignee) {
         setTicketAssignee(ticket.slug, assignee);
       }
-      this.setState({
-        body: "",
-        users: [],
-        errorMessage: ""
-      });
+      if (files.length) {
+        const formData = new FormData();
+        files.forEach((file, index) => {
+          formData.append(`file-${index}`, file);
+        });
+        uploadAnswerFiles(ticket.slug, answer, formData);
+      }
+      this.clearState();
     });
   };
 
@@ -145,9 +165,13 @@ class ResponsePost extends Component<Props, State> {
     }
   };
 
+  onFileDrop = (files: Array<File>) => {
+    this.setState({ files: [...this.state.files, ...files] });
+  };
+
   render() {
     const { classes, info } = this.props;
-    const { body, users, status } = this.state;
+    const { body, users, status, files } = this.state;
 
     const InputProps = {
       classes: { input: classes.autoCompleteInput },
@@ -164,6 +188,22 @@ class ResponsePost extends Component<Props, State> {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <SimpleMDE value={body} onChange={this.changeBody} />
+              <Dropzone onDrop={this.onFileDrop}>
+                {({ getRootProps, getInputProps }) => (
+                  <section>
+                    <div {...getRootProps()}>
+                      <input {...getInputProps()} />
+                      <p>
+                        Drag 'n' drop some files here, or click to select files.{" "}
+                        <br />
+                        {files.map((file, index) => (
+                          <span key={index}>{file.name}</span>
+                        ))}
+                      </p>
+                    </div>
+                  </section>
+                )}
+              </Dropzone>
             </Grid>
             <Grid item md={6} xs={12}>
               <p>Assign To</p>
