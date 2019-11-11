@@ -9,22 +9,20 @@ import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import InvitationSeccess from "../../assets/images/invitation_seccess.png";
 import CrossIcon from "../../assets/images/cross_icon.png";
 import Box from "@material-ui/core/Box";
+import Grid from "@material-ui/core/Grid";
 
 const styles = (theme: Theme) =>
   createStyles({
     paperModel: {
-      position: "absolute",
-      width: "60%",
+      margin: "100px auto",
       backgroundColor: theme.palette.background.paper,
       borderRadius: 4,
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 4),
       outline: "none",
-      left: "35%",
-      top: "20%"
     },
     btnSuccess: {
-      backgroundColor: "#2dce56",
+      backgroundColor: "#00b572",
       textTransform: "capitalize",
       color: "#ffffff",
       "&:hover": { color: "#2dce56", backgroundColor: "transparent" }
@@ -132,7 +130,7 @@ class InvitePartnerPopover extends Component<Props, State> {
           open={this.state.openInviteNewPartn}
           onClose={this.handleCloseInviteNewPartn}
         >
-          <Box style={{ width: "28%" }} className={classes.paperModel}>
+          <Grid xs={8} md={4} className={classes.paperModel}>
             <form>
               <Box>
                 <Typography variant="h6" align="left">
@@ -186,7 +184,7 @@ class InvitePartnerPopover extends Component<Props, State> {
                 </Button>
               </Box>
             </form>
-          </Box>
+          </Grid>
         </Modal>
 
         <Modal
