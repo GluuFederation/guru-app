@@ -32,7 +32,7 @@ class JWTAuthentication(authentication.BaseAuthentication):
     def _authenticate_credentials(self, request, token):
         try:
             payload = jwt.decode(token, settings.SECRET_KEY)
-        except jwt.DecodeError:
+        except (jwt.DecodeError, jwt.ExpiredSignatureError):
             msg = 'Invalid authentication. Could not decode token.'
             raise exceptions.AuthenticationFailed(msg)
 
