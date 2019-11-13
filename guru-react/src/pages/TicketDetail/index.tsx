@@ -48,7 +48,7 @@ const styles = (theme: Theme) =>
       color: colors.MAIN_COLOR
     },
     privacyIcon: {
-      height: ".795em"
+      height: "1.283rem"
     },
     editButton: {
       backgroundColor: colors.LIGHT_BUTTON
@@ -181,7 +181,14 @@ class TicketDetail extends Component<Props, State> {
                           </Typography>
                         </Grid>
                         {canEdit ? (
-                          <Grid item container sm={3}>
+                          <Grid
+                            item
+                            container
+                            justify="flex-end"
+                            alignItems="flex-end"
+                            alignContent="flex-end"
+                            sm={3}
+                          >
                             <Button
                               variant="outlined"
                               classes={{ root: classes.privacyButton }}
