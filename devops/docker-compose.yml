@@ -21,7 +21,7 @@ services:
       - postgres-password
       - postgres-user
   nginx:
-    image: gluufederation/guru-nginx-dev
+    image: gluufederation/guru-nginx
     restart: always
     ports:
       - "80:80"

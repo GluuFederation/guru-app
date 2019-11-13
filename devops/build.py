@@ -16,6 +16,7 @@ from bump import bump
 BASE_DIR = os.path.dirname(
     os.path.dirname(os.path.realpath(__file__))
 )
+USERNAME = 'gluufederation'
 
 
 def validate_image(image):
@@ -179,8 +180,7 @@ def push_image(image, version=None, environment=None):
     if version:
         image_tag = '{}:{}'.format(image_name, version)
 
-    username = 'gluufederation'
-    username_tag = '{}/{}'.format(username, image_tag)
+    username_tag = '{}/{}'.format(USERNAME, image_tag)
     run_command(['docker', 'tag', image_tag, username_tag])
     run_command(['docker', 'push', username_tag])
 
@@ -206,6 +206,13 @@ def deploy_containers(image, environment, version=None):
     service = image.split('-')[1]
     os.chdir(os.path.join(BASE_DIR, 'devops'))
 
+    api_image = '{}/guru-api'.format(USERNAME)
+    nginx_image = '{}/guru-nginx-{}'.format(
+        USERNAME, environment
+    )
+    nginx_version = get_version('guru-nginx')
+    api_version = get_version('guru-api')
+
     if version is not None:
         compose_file = ''
         compose_file_dir = os.path.join(
@@ -215,9 +222,16 @@ def deploy_containers(image, environment, version=None):
             compose_file = file.read()
 
         compose_yml = yaml.safe_load(compose_file)
-        compose_yml['services'][service]['image'] += ':' + version
         if service == 'api':
-            compose_yml['services']['qcluster']['image'] += ':' + version
+            api_image += ':' + version
+            nginx_image += ':' + nginx_version
+        else:
+            api_image += ':' + api_version
+            nginx_image += ':' + version
+
+        compose_yml['services']['qcluster']['image'] = api_image
+        compose_yml['services']['api']['image'] = api_image
+        compose_yml['services']['nginx']['image'] = nginx_image
         compose_file = yaml.safe_dump(compose_yml)
 
         compose_file_write_dir = os.path.join(
