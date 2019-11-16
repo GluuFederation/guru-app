@@ -35,7 +35,6 @@ class LoginCallback extends Component<Props> {
       state: searchParams.get("state"),
       session_state: searchParams.get("session_state")
     };
-    console.log("are", queryParams);
     this.props
       .login(queryParams)
       .then(success => {

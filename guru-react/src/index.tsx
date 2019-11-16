@@ -15,12 +15,14 @@ axios.interceptors.response.use(
     return response;
   },
   function(error: AxiosError) {
-    if (error.response && error.response.status === 401) {
+    const isLogout = (error.request.responseURL as string).includes(
+      "get-logout-url"
+    );
+    if (!isLogout && error.response && error.response.status === 401) {
       logout()(store.dispatch);
       store.dispatch(push(paths.HOMEPAGE));
-    } else {
-      return Promise.reject(error);
     }
+    return Promise.reject(error);
   }
 );
 
