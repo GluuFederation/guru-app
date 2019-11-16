@@ -42,6 +42,9 @@ import { TicketProduct } from "../../state/types/tickets";
 
 const styles = (theme: Theme) =>
   createStyles({
+    divider: {
+      marginTop: ".7rem"
+    },
     autoCompleteInput: {
       marginRight: "1em",
       marginLeft: "1em",
@@ -521,7 +524,7 @@ class TicketDetailSideBarItem extends Component<Props, State> {
                 </div>
               )}
             </Menu>
-            <Divider />
+            <Divider classes={{ root: classes.divider }} />
           </React.Fragment>
         )}
 
