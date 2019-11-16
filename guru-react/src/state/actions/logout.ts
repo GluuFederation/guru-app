@@ -14,6 +14,7 @@ export const logout = () => {
   ): Promise<string> => {
     const URL = `${process.env.REACT_APP_API_BASE}/api/v1/auth/get-logout-url/`;
     const params = { app: "guru" };
+    delete axios.defaults.headers.common["Authorization"];
     return axios.get(URL, { params }).then(response => {
       const results = response.data.results;
       dispatch(resetProfileState());
