@@ -85,7 +85,6 @@ def get_authorization_url(redirect_uri=None):
         'state': state,
         'nonce': nonce
     }
-    # print(params)
 
     return (
         '{op_host}/oxauth/restv1/authorize?response_type={response_type}'
@@ -96,10 +95,9 @@ def get_authorization_url(redirect_uri=None):
     )
 
 
-def get_logout_url(id_token):
+def get_logout_url():
     """
     Generates logout url while saving state.
-    :param id_token: ID token from login
     :returns Logout url string.
     """
     config = Configuration.load()
@@ -109,15 +107,14 @@ def get_logout_url(id_token):
         state=state
     )
     params = {
-        'id_token_hint': id_token,
         'session_state': session_state,
         'post_logout_redirect_uri': config.post_logout_redirect_uri,
         'state': state,
     }
 
     return (
-        '{op_host}/oxauth/restv1/end_session?id_token_hint={id_token_hint}'
-        '&post_logout_redirect_uri={post_logout_redirect_uri}'
+        '{op_host}/oxauth/restv1/end_session?'
+        'post_logout_redirect_uri={post_logout_redirect_uri}'
         '&state={state}&session_state={session_state}'
     ).format(
         op_host=config.op_host, **params

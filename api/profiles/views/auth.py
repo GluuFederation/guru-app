@@ -312,7 +312,7 @@ class GetLogoutUrlAPIView(APIView):
     permission_classes = (IsAuthenticated, )
 
     def get(self, request):
-        url = api.get_logout_url(id_token=request.user.id_token)
+        url = api.get_logout_url()
         return Response(
             {
                 'results': {
