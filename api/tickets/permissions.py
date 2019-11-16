@@ -10,13 +10,14 @@ class TicketCustomPermission(permissions.BasePermission):
             request.user.is_authenticated
 
     def has_object_permission(self, request, view, obj):
+        auth = request.user.is_authenticated
         if request.user.is_superuser:
             return True
 
         action = 'retrieve'\
             if request.method in permissions.SAFE_METHODS else view.action
 
-        if request.user.is_gluu_staff:
+        if auth and request.user.is_gluu_staff:
             staff_role = UserRole.objects.get(name='staff')
             return staff_role.has_permission(
                 app_name='tickets',
