@@ -49,7 +49,7 @@ const styles = (theme: Theme) =>
     },
     btnSuccessS: {
       color: "#ffffff",
-      backgroundColor: "#2dce56",
+      backgroundColor: "#00b572",
       width: "90%",
       textTransform: "capitalize",
       "&:hover": { color: "#2dce56", backgroundColor: "transparent" }
@@ -99,22 +99,23 @@ class PartnersPage extends Component<Props> {
         <Navbar />
         <Container className={classes.ContainerAlign} fixed>
           <Box mt={2}>
-            <Grid className={classes.contentContainer} container>
-              <Grid item md={4} xs={12} sm={12}>
-                <DashboardSideMenu></DashboardSideMenu>
-              </Grid>
+            <div className={`container-body`}>
+              <Grid className={classes.contentContainer} container>
+                <Grid item md={4} xs={12} sm={12}>
+                  <DashboardSideMenu></DashboardSideMenu>
+                </Grid>
 
-              <Grid item md={8} xs={12} sm={12}>
-                <Grid container>
-                  <Grid item md={12} xs={12} sm={12}>
-                    <Typography variant="h5" align="left">
-                      Partner Companies
+                <Grid item md={8} xs={12} sm={12}>
+                  <Grid container>
+                    <Grid item md={12} xs={12} sm={12}>
+                      <Typography variant="h5" align="left">
+                        Partner Companies
                     </Typography>
-                  </Grid>
-                  <Grid item md={9} xs={8} sm={8}>
-                    <Box mt={2} mb={2}>
-                      <Typography variant="body2" align="left">
-                        Give a partner company access to your company access.
+                    </Grid>
+                    <Grid item md={9} xs={8} sm={8}>
+                      <Box mt={2} mb={2}>
+                        <Typography variant="body2" align="left">
+                          Give a partner company access to your company access.
                         View all of the certified Gluu services Partners on your{" "}
                         <a
                           style={{ color: "#00b372" }}
@@ -122,224 +123,225 @@ class PartnersPage extends Component<Props> {
                         >
                           website
                         </a>
-                      </Typography>
-                    </Box>
-                  </Grid>
-                  <Grid item md={3} xs={4} sm={4}>
-                    <InvitePartnerPopover></InvitePartnerPopover>
-                  </Grid>
-                </Grid>
-                <Paper
-                  style={{ marginBottom: 20, marginTop: 20 }}
-                  className={classes.paper}
-                >
-                  <Box style={{ padding: 25 }}>
-                    <Grid style={{ marginBottom: -17 }} container>
-                      <Grid item xs={2}>
-                        <Avatar
-                          alt="Avatar"
-                          src={UserTwo}
-                          className={classes.avatarAverage}
-                        />
-                      </Grid>
-                      <Grid item xs={3}>
-                        <Typography variant="h6" align="left">
-                          Cogito
                         </Typography>
-                        <Typography variant="body2" align="left">
-                          invited Feb 28, 2019
+                      </Box>
+                    </Grid>
+                    <Grid item md={3} xs={4} sm={4}>
+                      <InvitePartnerPopover></InvitePartnerPopover>
+                    </Grid>
+                  </Grid>
+                  <Paper
+                    style={{ marginBottom: 20, marginTop: 20 }}
+                    className={classes.paper}
+                  >
+                    <Box style={{ padding: 25 }}>
+                      <Grid style={{ marginBottom: -17 }} container>
+                        <Grid item xs={12} md={2}>
+                          <Avatar
+                            alt="Avatar"
+                            src={UserTwo}
+                            className={classes.avatarAverage}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={3}>
+                          <Typography variant="h6" align="left">
+                            Cogito
                         </Typography>
-                      </Grid>
-                      <Grid item xs={3}>
-                        <Box mt={2}>
-                          <Typography
-                            variant="body2"
-                            align="left"
-                            color="secondary"
-                          >
-                            Invitation pending
+                          <Typography variant="body2" align="left">
+                            invited Feb 28, 2019
+                        </Typography>
+                        </Grid>
+                        <Grid item xs={12} md={3}>
+                          <Box mt={2}>
+                            <Typography
+                              variant="body2"
+                              align="left"
+                              color="secondary"
+                            >
+                              Invitation pending
                           </Typography>
-                        </Box>
-                      </Grid>
-                      <Grid item xs={2}>
-                        <Box mt={1}>
-                          <Button
-                            variant="contained"
-                            className={classes.btnSuccessS}
-                            size="medium"
-                          >
-                            Approve
+                          </Box>
+                        </Grid>
+                        <Grid item xs={6} md={2}>
+                          <Box mt={1}>
+                            <Button
+                              variant="contained"
+                              className={classes.btnSuccessS}
+                              size="medium"
+                            >
+                              Approve
                           </Button>
-                        </Box>
+                          </Box>
+                        </Grid>
+                        <Grid item xs={6} md={2}>
+                          <Box mt={1}>
+                            <Button
+                              variant="contained"
+                              className={classes.btnDeny}
+                              size="medium"
+                            >
+                              Deny
+                          </Button>
+                          </Box>
+                        </Grid>
                       </Grid>
-                      <Grid item xs={2}>
-                        <Box mt={1}>
+                    </Box>
+                  </Paper>
+                  <Paper
+                    style={{ marginTop: 20, marginBottom: 20 }}
+                    className={classes.paper}
+                  >
+                    <Box style={{ padding: 25 }}>
+                      <Grid container>
+                        <Grid item xs={12} md={2}>
+                          <Avatar
+                            alt="Avatar"
+                            src={UserOne}
+                            className={classes.avatarAverage}
+                          />
+                        </Grid>
+                        <Grid item md={7}>
+                          <Typography variant="h6" align="left">
+                            Falcom Systems Consulting
+                        </Typography>
+                          <Typography variant="body2" align="left">
+                            Added on July 12, 2019
+                        </Typography>
+                        </Grid>
+                        <Grid item md={3}>
                           <Button
                             variant="contained"
                             className={classes.btnDeny}
                             size="medium"
                           >
-                            Deny
-                          </Button>
-                        </Box>
-                      </Grid>
-                    </Grid>
-                  </Box>
-                </Paper>
-                <Paper
-                  style={{ marginTop: 20, marginBottom: 20 }}
-                  className={classes.paper}
-                >
-                  <Box style={{ padding: 25 }}>
-                    <Grid container>
-                      <Grid item xs={2}>
-                        <Avatar
-                          alt="Avatar"
-                          src={UserOne}
-                          className={classes.avatarAverage}
-                        />
-                      </Grid>
-                      <Grid item xs={7}>
-                        <Typography variant="h6" align="left">
-                          Falcom Systems Consulting
-                        </Typography>
-                        <Typography variant="body2" align="left">
-                          Added on July 12, 2019
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={3}>
-                        <Button
-                          variant="contained"
-                          className={classes.btnDeny}
-                          size="medium"
-                        >
-                          Revoke access
+                            Revoke access
                         </Button>
+                        </Grid>
                       </Grid>
-                    </Grid>
-                    <hr />
-                    <Grid container>
-                      <Grid item xs={12}>
-                        <Typography variant="subtitle1" align="left">
-                          Assigned Users
+                      <hr />
+                      <Grid container>
+                        <Grid item xs={12}>
+                          <Typography variant="subtitle1" align="left">
+                            Assigned Users
                         </Typography>
+                        </Grid>
                       </Grid>
-                    </Grid>
-                    <Box style={{ overflowX: "auto" }}>
-                      <Table className={classes.table}>
-                        <TableHead>
-                          <TableRow style={{ width: "100%" }}>
-                            <TableCell style={{ width: "50%" }} align="left">
-                              <Typography variant="body2" align="left">
-                                Name
+                      <Box style={{ overflowX: "auto" }}>
+                        <Table className={classes.table}>
+                          <TableHead>
+                            <TableRow style={{ width: "100%" }}>
+                              <TableCell style={{ width: "50%" }} align="left">
+                                <Typography variant="body2" align="left">
+                                  Name
                               </Typography>
-                            </TableCell>
-                            <TableCell style={{ width: "12%" }} align="left">
-                              <Typography variant="body2" align="left">
-                                View
+                              </TableCell>
+                              <TableCell style={{ width: "12%" }} align="left">
+                                <Typography variant="body2" align="left">
+                                  View
                               </Typography>
-                            </TableCell>
-                            <TableCell style={{ width: "12%" }} align="left">
-                              <Typography variant="body2" align="left">
-                                Create
+                              </TableCell>
+                              <TableCell style={{ width: "12%" }} align="left">
+                                <Typography variant="body2" align="left">
+                                  Create
                               </Typography>
-                            </TableCell>
-                            <TableCell style={{ width: "12%" }} align="left">
-                              <Typography variant="body2" align="left">
-                                Edit
+                              </TableCell>
+                              <TableCell style={{ width: "12%" }} align="left">
+                                <Typography variant="body2" align="left">
+                                  Edit
                               </Typography>
-                            </TableCell>
-                            <TableCell style={{ width: "12%" }} align="left">
-                              <Typography variant="body2" align="left">
-                                Delete
+                              </TableCell>
+                              <TableCell style={{ width: "12%" }} align="left">
+                                <Typography variant="body2" align="left">
+                                  Delete
                               </Typography>
-                            </TableCell>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          <TableRow style={{ width: "100%" }}>
-                            <TableCell style={{ width: "50%" }}>
-                              <Avatar
-                                alt="Avatar"
-                                src={UserTwo}
-                                className={classes.avatarSmall}
-                              />
-                              <Box mt={2}>
-                                <Typography variant="body2" align="right">
-                                  Nasir Uddin
+                              </TableCell>
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
+                            <TableRow style={{ width: "100%" }}>
+                              <TableCell style={{ width: "50%" }}>
+                                <Avatar
+                                  alt="Avatar"
+                                  src={UserTwo}
+                                  className={classes.avatarSmall}
+                                />
+                                <Box mt={2}>
+                                  <Typography variant="body2" align="right">
+                                    Nasir Uddin
                                 </Typography>
-                              </Box>
-                            </TableCell>
-                            <TableCell style={{ width: "12%" }} align="left">
-                              <GreenCheckbox
-                                // onChange={handleChangeCheckBox('A')}
-                                value="A"
-                              />
-                            </TableCell>
-                            <TableCell style={{ width: "12%" }} align="left">
-                              <GreenCheckbox
-                                // onChange={handleChangeCheckBox('B')}
-                                value="B"
-                              />
-                            </TableCell>
-                            <TableCell style={{ width: "12%" }} align="left">
-                              <GreenCheckbox
-                                // onChange={handleChangeCheckBox('C')}
-                                value="C"
-                              />
-                            </TableCell>
-                            <TableCell style={{ width: "12%" }} align="left">
-                              <GreenCheckbox
-                                // onChange={handleChangeCheckBox('E')}
-                                value="E"
-                              />
-                            </TableCell>
-                          </TableRow>
-                          <TableRow style={{ width: "100%" }}>
-                            <TableCell style={{ width: "50%" }}>
-                              <Avatar
-                                alt="Avatar"
-                                src={UserOne}
-                                className={classes.avatarSmall}
-                              />
-                              <Box mt={2}>
-                                <Typography variant="body2" align="right">
-                                  Nasir Uddin
+                                </Box>
+                              </TableCell>
+                              <TableCell style={{ width: "12%" }} align="left">
+                                <GreenCheckbox
+                                  // onChange={handleChangeCheckBox('A')}
+                                  value="A"
+                                />
+                              </TableCell>
+                              <TableCell style={{ width: "12%" }} align="left">
+                                <GreenCheckbox
+                                  // onChange={handleChangeCheckBox('B')}
+                                  value="B"
+                                />
+                              </TableCell>
+                              <TableCell style={{ width: "12%" }} align="left">
+                                <GreenCheckbox
+                                  // onChange={handleChangeCheckBox('C')}
+                                  value="C"
+                                />
+                              </TableCell>
+                              <TableCell style={{ width: "12%" }} align="left">
+                                <GreenCheckbox
+                                  // onChange={handleChangeCheckBox('E')}
+                                  value="E"
+                                />
+                              </TableCell>
+                            </TableRow>
+                            <TableRow style={{ width: "100%" }}>
+                              <TableCell style={{ width: "50%" }}>
+                                <Avatar
+                                  alt="Avatar"
+                                  src={UserOne}
+                                  className={classes.avatarSmall}
+                                />
+                                <Box mt={2}>
+                                  <Typography variant="body2" align="right">
+                                    Nasir Uddin
                                 </Typography>
-                              </Box>
-                            </TableCell>
-                            <TableCell style={{ width: "12%" }} align="left">
-                              <GreenCheckbox
-                                // onChange={handleChangeCheckBox('A')}
-                                value="A"
-                              />
-                            </TableCell>
-                            <TableCell style={{ width: "12%" }} align="left">
-                              <GreenCheckbox
-                                // onChange={handleChangeCheckBox('B')}
-                                value="B"
-                              />
-                            </TableCell>
-                            <TableCell style={{ width: "12%" }} align="left">
-                              <GreenCheckbox
-                                // onChange={handleChangeCheckBox('C')}
-                                value="C"
-                              />
-                            </TableCell>
-                            <TableCell style={{ width: "12%" }} align="left">
-                              <GreenCheckbox
-                                // onChange={handleChangeCheckBox('E')}
-                                value="E"
-                              />
-                            </TableCell>
-                          </TableRow>
-                        </TableBody>
-                      </Table>
+                                </Box>
+                              </TableCell>
+                              <TableCell style={{ width: "12%" }} align="left">
+                                <GreenCheckbox
+                                  // onChange={handleChangeCheckBox('A')}
+                                  value="A"
+                                />
+                              </TableCell>
+                              <TableCell style={{ width: "12%" }} align="left">
+                                <GreenCheckbox
+                                  // onChange={handleChangeCheckBox('B')}
+                                  value="B"
+                                />
+                              </TableCell>
+                              <TableCell style={{ width: "12%" }} align="left">
+                                <GreenCheckbox
+                                  // onChange={handleChangeCheckBox('C')}
+                                  value="C"
+                                />
+                              </TableCell>
+                              <TableCell style={{ width: "12%" }} align="left">
+                                <GreenCheckbox
+                                  // onChange={handleChangeCheckBox('E')}
+                                  value="E"
+                                />
+                              </TableCell>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                      </Box>
                     </Box>
-                  </Box>
-                </Paper>
+                  </Paper>
+                </Grid>
               </Grid>
-            </Grid>
+            </div>
           </Box>
         </Container>
         <Footer></Footer>

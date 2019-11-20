@@ -46,9 +46,13 @@ const styles = (theme: Theme) =>
       margin: 'auto',
       marginBottom: 15,
     },
-    teamMembersTr: {
-      marginTop: 20,
-      marginBottom: 20,
+    teamMembersTb: {
+      overflowX: 'auto',
+      borderCollapse: 'separate',
+      borderSpacing: '0 1em',
+      "& td": {
+        padding: "0px 10px"
+      }
     },
     membersType: {
       fontSize: 14,
@@ -99,190 +103,192 @@ class TeamPage extends Component<Props> {
         <Navbar />
         <Container className={classes.ContainerAlign} fixed>
           <Box mt={2}>
-            <Grid className={classes.contentContainer} container>
-              <Grid item md={4} xs={12} sm={12}>
-                <DashboardSideMenu></DashboardSideMenu>
+            <div className={`container-body`}>
+              <Grid className={classes.contentContainer} container>
+                <Grid item md={4} xs={12} sm={12}>
+                  <DashboardSideMenu></DashboardSideMenu>
+                </Grid>
+                <Grid item md={8} xs={12} sm={12}>
+                  <Paper className={classes.paper}>
+                    <Box style={{ padding: 25 }}>
+                      <Grid container>
+                        <Grid item md={3} xs={12} sm={12}>
+                          <Avatar style={{ float: 'left' }} alt="Avatar" src={UserTwo} className={classes.avatarBig} />
+                        </Grid>
+                        <Grid item md={9} xs={12} sm={12}>
+                          <Typography variant="h5" align="left">Nasir uddin<img alt="Verify Icon" style={{ width: 18, height: 18, marginLeft: 5, marginBottom: -3 }} src={VerifyIcon} /></Typography>
+                          <Typography variant="body2" align="left">A team of digital product thinker</Typography>
+                          <EditTeamPopover></EditTeamPopover>
+                        </Grid>
+                      </Grid>
+                      <Box style={{ paddingBottom: 25, }}></Box>
+                      <Grid container>
+                        <Grid item md={4} xs={12} sm={12}>
+                          <Typography variant="body2" align="left">Gluu Plan</Typography>
+                          <Typography variant="body2" align="left">VIP (Enterprise)<Link href="/" color="textSecondary"> Change Plan</Link></Typography>
+                        </Grid>
+                        <Grid item md={4} xs={12} sm={12}>
+                          <Typography variant="body2" align="left">Payment Cycle</Typography>
+                          <Typography variant="body2" align="left">Yearly<Link href="/" color="textSecondary"> Manage billing</Link></Typography>
+                        </Grid>
+                        <Grid item md={4} xs={12} sm={12}>
+                          <Typography variant="body2" align="left">Subscription term</Typography>
+                          <Typography variant="body2" align="left">Jan 25, 2019 - Jan 24, 2020</Typography>
+                        </Grid>
+                      </Grid>
+                    </Box>
+                  </Paper>
+                  <Paper style={{ marginTop: 20, marginBottom: 20 }} className={classes.paper}>
+                    <Box p={2}>
+                      <Grid container>
+                        <Grid item md={10} xs={8} sm={8}>
+                          <Typography variant="h6" align="left">Team members</Typography>
+                          <Typography variant="body2" align="left">User listed belongs to your team</Typography>
+                        </Grid>
+                        <Grid item md={2} xs={4} sm={4}>
+                          <InviteMemberPopover></InviteMemberPopover>
+                        </Grid>
+                      </Grid>
+                      <Box style={{ marginTop: 25, }}></Box>
+                      <Grid container>
+                        <Grid item md={12} xs={12} sm={12}>
+                          <Box textAlign="left" mb={2}>
+                            <Typography display="inline" variant="h6" align="left">7 Members </Typography><Typography display="inline" variant="h3" align="left">.</Typography>
+                            <Typography display="inline" variant="body1" align="left">You can add 2 more member(s) under your existing plan. </Typography><Typography display="inline" variant="body1" align="left" color="textPrimary">(Manage plan)</Typography>
+                          </Box>
+                        </Grid>
+                      </Grid>
+
+                      <Grid container>
+                        <Grid item md={12} xs={12} sm={12}>
+                          <Box style={{ width: '100%', overflowX: 'auto' }}>
+                            <table className={classes.teamMembersTb} style={{ width: '100%' }}>
+                              <tr>
+                                <th><Typography variant="subtitle1" align="left">Name</Typography></th>
+                                <th><Typography variant="subtitle1" align="left">Email</Typography></th>
+                                <th><Typography variant="subtitle1" align="left">Role</Typography></th>
+                                <th></th>
+                              </tr>
+
+                              <tr>
+                                <td><Avatar style={{ float: 'left' }} alt="Avatar" src={UserTwo} className={classes.avatarMedium} /><Box><Typography variant="subtitle1" align="center">Nasir uddin</Typography></Box></td>
+                                <td><Typography variant="body1" align="left">iamnasir360@gmail.com</Typography></td>
+                                <td>
+                                  <FormControl className={classes.membersType}>
+                                    <Select
+                                      className={classes.selectType}
+                                      value={1}
+                                    // onChange={handleChange}
+                                    >
+                                      <MenuItem value={1}>Admin</MenuItem>
+                                      <MenuItem value={2}>User</MenuItem>
+                                    </Select>
+                                  </FormControl>
+                                </td>
+                                <td>
+                                  <Button className={classes.btnMemberDel}>
+                                    <DeleteIcon />
+                                  </Button>
+                                </td>
+                              </tr>
+
+                              <tr>
+                                <td><Avatar style={{ float: 'left' }} alt="Avatar" src={UserOne} className={classes.avatarMedium} /><Box><Typography variant="subtitle1" align="center">Nasir uddin</Typography></Box></td>
+                                <td><Typography variant="body1" align="left">iamnasir360@gmail.com</Typography></td>
+                                <td>
+                                  <FormControl className={classes.membersType}>
+                                    <Select
+                                      className={classes.selectType}
+                                      value={3}
+                                    // onChange={handleChange}
+                                    >
+                                      <MenuItem value={3}>Admin</MenuItem>
+                                      <MenuItem value={4}>User</MenuItem>
+                                    </Select>
+                                  </FormControl>
+                                </td>
+                                <td>
+                                  <Button className={classes.btnMemberDel}>
+                                    <DeleteIcon />
+                                  </Button>
+                                </td>
+                              </tr>
+
+                              <tr>
+                                <td><Avatar style={{ float: 'left' }} alt="Avatar" src={UserOne} className={classes.avatarMedium} /><Box><Typography variant="subtitle1" align="center">Nasir uddin</Typography></Box></td>
+                                <td><Typography variant="body1" align="left">iamnasir360@gmail.com</Typography></td>
+                                <td>
+                                  <FormControl className={classes.membersType}>
+                                    <Select
+                                      className={classes.selectType}
+                                      value={6}
+                                    // onChange={handleChange}
+                                    >
+                                      <MenuItem value={5}>Admin</MenuItem>
+                                      <MenuItem value={6}>User</MenuItem>
+                                    </Select>
+                                  </FormControl>
+                                </td>
+                                <td>
+                                  <Button className={classes.btnMemberDel}>
+                                    <DeleteIcon />
+                                  </Button>
+                                </td>
+                              </tr>
+
+                              <tr>
+                                <td><Avatar style={{ float: 'left' }} alt="Avatar" src={UserTwo} className={classes.avatarMedium} /><Box><Typography variant="subtitle1" align="center">Nasir uddin</Typography></Box></td>
+                                <td><Typography variant="body1" align="left">iamnasir360@gmail.com</Typography></td>
+                                <td>
+                                  <FormControl className={classes.membersType}>
+                                    <Select
+                                      className={classes.selectType}
+                                      value={7}
+                                    // onChange={handleChange}
+                                    >
+                                      <MenuItem value={7}>Admin</MenuItem>
+                                      <MenuItem value={8}>User</MenuItem>
+                                    </Select>
+                                  </FormControl>
+                                </td>
+                                <td>
+                                  <Button className={classes.btnMemberDel}>
+                                    <DeleteIcon />
+                                  </Button>
+                                </td>
+                              </tr>
+
+                              <tr>
+                                <td><Avatar style={{ float: 'left' }} alt="Avatar" src={UserTwo} className={classes.avatarMedium} /><Box><Typography variant="subtitle1" align="center">Nasir uddin</Typography></Box></td>
+                                <td><Typography variant="body1" align="left">iamnasir360@gmail.com</Typography></td>
+                                <td>
+                                  <FormControl className={classes.membersType}>
+                                    <Select
+                                      className={classes.selectType}
+                                      value={10}
+                                    // onChange={handleChange}
+                                    >
+                                      <MenuItem value={9}>Admin</MenuItem>
+                                      <MenuItem value={10}>User</MenuItem>
+                                    </Select>
+                                  </FormControl>
+                                </td>
+                                <td>
+                                  <Button className={classes.btnMemberDel}>
+                                    <DeleteIcon />
+                                  </Button>
+                                </td>
+                              </tr>
+                            </table>
+                          </Box>
+                        </Grid>
+                      </Grid>
+
+                    </Box>
+                  </Paper>
+                </Grid>
               </Grid>
-              <Grid item md={8} xs={12} sm={12}>
-                <Paper className={classes.paper}>
-                  <Box style={{ padding: 25 }}>
-                    <Grid container>
-                      <Grid item md={3} xs={12} sm={12}>
-                        <Avatar style={{ float: 'left' }} alt="Avatar" src={UserTwo} className={classes.avatarBig} />
-                      </Grid>
-                      <Grid item md={9} xs={12} sm={12}>
-                        <Typography variant="h5" align="left">Nasir uddin<img alt="Verify Icon" style={{ width: 18, height: 18, marginLeft: 5, marginBottom: -3 }} src={VerifyIcon} /></Typography>
-                        <Typography variant="body2" align="left">A team of digital product thinker</Typography>
-                        <EditTeamPopover></EditTeamPopover>
-                      </Grid>
-                    </Grid>
-                    <Box style={{ paddingBottom: 25, }}></Box>
-                    <Grid container>
-                      <Grid item md={4} xs={12} sm={12}>
-                        <Typography variant="body2" align="left">Gluu Plan</Typography>
-                        <Typography variant="body2" align="left">VIP (Enterprise)<Link href="/" color="textSecondary"> Change Plan</Link></Typography>
-                      </Grid>
-                      <Grid item md={4} xs={12} sm={12}>
-                        <Typography variant="body2" align="left">Payment Cycle</Typography>
-                        <Typography variant="body2" align="left">Yearly<Link href="/" color="textSecondary"> Manage billing</Link></Typography>
-                      </Grid>
-                      <Grid item md={4} xs={12} sm={12}>
-                        <Typography variant="body2" align="left">Subscription term</Typography>
-                        <Typography variant="body2" align="left">Jan 25, 2019 - Jan 24, 2020</Typography>
-                      </Grid>
-                    </Grid>
-                  </Box>
-                </Paper>
-                <Paper style={{ marginTop: 20, marginBottom: 20 }} className={classes.paper}>
-                  <Box p={2}>
-                    <Grid container>
-                      <Grid item md={10} xs={8} sm={8}>
-                        <Typography variant="h6" align="left">Team members</Typography>
-                        <Typography variant="body2" align="left">User listed belongs to your team</Typography>
-                      </Grid>
-                      <Grid item md={2} xs={4} sm={4}>
-                        <InviteMemberPopover></InviteMemberPopover>
-                      </Grid>
-                    </Grid>
-                    <Box style={{ marginTop: 25, }}></Box>
-                    <Grid container>
-                      <Grid item md={12} xs={12} sm={12}>
-                        <Box textAlign="left" mb={2}>
-                          <Typography display="inline" variant="h6" align="left">7 Members </Typography><Typography display="inline" variant="h3" align="left">.</Typography>
-                          <Typography display="inline" variant="body1" align="left">You can add 2 more member(s) under your existing plan. </Typography><Typography display="inline" variant="body1" align="left" color="textPrimary">(Manage plan)</Typography>
-                        </Box>
-                      </Grid>
-                    </Grid>
-
-                    <Grid container>
-                      <Grid item md={12} xs={12} sm={12}>
-                        <Box style={{ width: '100%', overflowX: 'auto' }}>
-                          <table style={{ width: '100%' }}>
-                            <tr className={classes.teamMembersTr}>
-                              <th><Typography variant="subtitle1" align="left">Name</Typography></th>
-                              <th><Typography variant="subtitle1" align="left">Email</Typography></th>
-                              <th><Typography variant="subtitle1" align="left">Role</Typography></th>
-                              <th></th>
-                            </tr>
-
-                            <tr className={classes.teamMembersTr}>
-                              <td><Avatar style={{ float: 'left' }} alt="Avatar" src={UserTwo} className={classes.avatarMedium} /><Box mt={2}><Typography variant="subtitle1" align="center">Nasir uddin</Typography></Box></td>
-                              <td><Typography variant="body1" align="left">iamnasir360@gmail.com</Typography></td>
-                              <td>
-                                <FormControl className={classes.membersType}>
-                                  <Select
-                                    className={classes.selectType}
-                                    value={1}
-                                    // onChange={handleChange}
-                                    >
-                                    <MenuItem value={1}>Admin</MenuItem>
-                                    <MenuItem value={2}>User</MenuItem>
-                                  </Select>
-                                </FormControl>
-                              </td>
-                              <td>
-                                <Button className={classes.btnMemberDel}>
-                                  <DeleteIcon />
-                                </Button>
-                              </td>
-                            </tr>
-
-                            <tr className={classes.teamMembersTr}>
-                              <td><Avatar style={{ float: 'left' }} alt="Avatar" src={UserOne} className={classes.avatarMedium} /><Box mt={2}><Typography variant="subtitle1" align="center">Nasir uddin</Typography></Box></td>
-                              <td><Typography variant="body1" align="left">iamnasir360@gmail.com</Typography></td>
-                              <td>
-                                <FormControl className={classes.membersType}>
-                                  <Select
-                                    className={classes.selectType}
-                                    value={3}
-                                    // onChange={handleChange}
-                                    >
-                                    <MenuItem value={3}>Admin</MenuItem>
-                                    <MenuItem value={4}>User</MenuItem>
-                                  </Select>
-                                </FormControl>
-                              </td>
-                              <td>
-                                <Button className={classes.btnMemberDel}>
-                                  <DeleteIcon />
-                                </Button>
-                              </td>
-                            </tr>
-
-                            <tr className={classes.teamMembersTr}>
-                              <td><Avatar style={{ float: 'left' }} alt="Avatar" src={UserOne} className={classes.avatarMedium} /><Box mt={2}><Typography variant="subtitle1" align="center">Nasir uddin</Typography></Box></td>
-                              <td><Typography variant="body1" align="left">iamnasir360@gmail.com</Typography></td>
-                              <td>
-                                <FormControl className={classes.membersType}>
-                                  <Select
-                                    className={classes.selectType}
-                                    value={6}
-                                    // onChange={handleChange}
-                                    >
-                                    <MenuItem value={5}>Admin</MenuItem>
-                                    <MenuItem value={6}>User</MenuItem>
-                                  </Select>
-                                </FormControl>
-                              </td>
-                              <td>
-                                <Button className={classes.btnMemberDel}>
-                                  <DeleteIcon />
-                                </Button>
-                              </td>
-                            </tr>
-
-                            <tr className={classes.teamMembersTr}>
-                              <td><Avatar style={{ float: 'left' }} alt="Avatar" src={UserTwo} className={classes.avatarMedium} /><Box mt={2}><Typography variant="subtitle1" align="center">Nasir uddin</Typography></Box></td>
-                              <td><Typography variant="body1" align="left">iamnasir360@gmail.com</Typography></td>
-                              <td>
-                                <FormControl className={classes.membersType}>
-                                  <Select
-                                    className={classes.selectType}
-                                    value={7}
-                                    // onChange={handleChange}
-                                    >
-                                    <MenuItem value={7}>Admin</MenuItem>
-                                    <MenuItem value={8}>User</MenuItem>
-                                  </Select>
-                                </FormControl>
-                              </td>
-                              <td>
-                                <Button className={classes.btnMemberDel}>
-                                  <DeleteIcon />
-                                </Button>
-                              </td>
-                            </tr>
-
-                            <tr className={classes.teamMembersTr}>
-                              <td><Avatar style={{ float: 'left' }} alt="Avatar" src={UserTwo} className={classes.avatarMedium} /><Box mt={2}><Typography variant="subtitle1" align="center">Nasir uddin</Typography></Box></td>
-                              <td><Typography variant="body1" align="left">iamnasir360@gmail.com</Typography></td>
-                              <td>
-                                <FormControl className={classes.membersType}>
-                                  <Select
-                                    className={classes.selectType}
-                                    value={10}
-                                    // onChange={handleChange}
-                                    >
-                                    <MenuItem value={9}>Admin</MenuItem>
-                                    <MenuItem value={10}>User</MenuItem>
-                                  </Select>
-                                </FormControl>
-                              </td>
-                              <td>
-                                <Button className={classes.btnMemberDel}>
-                                  <DeleteIcon />
-                                </Button>
-                              </td>
-                            </tr>
-                          </table>
-                        </Box>
-                      </Grid>
-                    </Grid>
-
-                  </Box>
-                </Paper>
-              </Grid>
-            </Grid>
+            </div>
           </Box>
         </Container>
         <Footer></Footer>
