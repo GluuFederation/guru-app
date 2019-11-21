@@ -220,7 +220,6 @@ class ResponsePost extends Component<Props, State> {
                 select
                 fullWidth
                 variant="outlined"
-                margin="dense"
                 value={status ? status : ""}
                 onChange={this.changeStatus}
               >

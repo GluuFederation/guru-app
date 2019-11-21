@@ -14,7 +14,8 @@ import Box from "@material-ui/core/Box";
 const styles = (theme: Theme) =>
   createStyles({
     btnSuccess: {
-      backgroundColor: "#2dce56",
+      border: '1px solid rgba(0, 181, 114, 0.5)',
+      backgroundColor: "#00b572",
       textTransform: "capitalize",
       color: "#ffffff",
       "&:hover": { color: "#2dce56", backgroundColor: "transparent" }
