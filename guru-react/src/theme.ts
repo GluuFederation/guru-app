@@ -54,6 +54,9 @@ const muiTheme = createMuiTheme({
         backgroundColor: colors.SECONDARY_BACKGROUND,
         padding: ".5em 1em",
         borderBottom: `1px solid ${colors.LIGHT_BORDER}`
+      },
+      action: {
+        justifyContent: "center"
       }
     },
     MuiPaper: {

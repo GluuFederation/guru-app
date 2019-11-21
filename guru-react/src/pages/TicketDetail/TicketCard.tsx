@@ -8,6 +8,7 @@ import { paths } from "../../routes";
 import ThumbUpAlt from "@material-ui/icons/ThumbUpAlt";
 import MoreHoriz from "@material-ui/icons/MoreHoriz";
 import Card from "@material-ui/core/Card";
+import Grid from "@material-ui/core/Grid";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import IconButton from "@material-ui/core/IconButton";
@@ -22,6 +23,7 @@ import {
 import Modal from "@material-ui/core/Modal";
 import { withUser, WithUserProps } from "../../state/hocs/profiles";
 import TicketAttachment from "./TicketAttachment";
+import { colors } from "../../theme";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -31,6 +33,18 @@ const styles = (theme: Theme) =>
       },
       "& pre": {
         whiteSpace: "pre-wrap"
+      }
+    },
+    upVotesGrid: {
+      borderRight: `1px solid ${colors.LIGHT_BORDER}`,
+      "&> div": {
+        textAlign: "right"
+      }
+    },
+    upVotesIcon: {
+      position: "relative",
+      "&> button": {
+        marginRight: "-1rem"
       }
     }
   });
@@ -109,14 +123,32 @@ class TicketDetail extends Component<Props, State> {
         <CardHeader
           action={
             <div>
-              <IconButton onClick={this.toggleVote}>
-                <ThumbUpAlt />
-              </IconButton>
-              <span>Upvotes | </span>
-              <span>{ticket.voters.length} </span>
-              <IconButton onClick={this.openTicketMenu}>
-                <MoreHoriz />
-              </IconButton>
+              <Grid
+                container
+                spacing={2}
+                justify="center"
+                alignContent="center"
+                alignItems="center"
+              >
+                <Grid item xs={3}>
+                  <div className={classes.upVotesIcon}>
+                    <IconButton onClick={this.toggleVote}>
+                      <ThumbUpAlt />
+                    </IconButton>
+                  </div>
+                </Grid>
+                <Grid item xs={5} classes={{ root: classes.upVotesGrid }}>
+                  <div>Upvotes </div>
+                </Grid>
+                <Grid item xs={1}>
+                  {ticket.voters.length}
+                </Grid>
+                <Grid item xs={3}>
+                  <IconButton onClick={this.openTicketMenu}>
+                    <MoreHoriz />
+                  </IconButton>
+                </Grid>
+              </Grid>
             </div>
           }
           subheader={`${moment(ticket.createdOn).format("ll")} at ${moment(

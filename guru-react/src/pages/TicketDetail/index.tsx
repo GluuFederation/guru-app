@@ -166,7 +166,7 @@ class TicketDetail extends Component<Props, State> {
               </Grid>
               <Grid item>
                 <Grid
-                  spacing={3}
+                  spacing={7}
                   container
                   direction="row"
                   justify="flex-end"
@@ -240,9 +240,9 @@ class TicketDetail extends Component<Props, State> {
                     <Grid container>
                       <Grid item xs={12}>
                         <Box mt={6} mb={4}>
-                          <Typography>
-                            {answers.length} Response
-                            {answers.length === 1 ? "" : "s"}
+                          <Typography variant="h5">
+                            {answers.length}{" "}
+                            {answers.length === 1 ? "Response" : "Responses"}
                           </Typography>
                           <Divider />
                         </Box>

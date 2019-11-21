@@ -30,24 +30,23 @@ class JWTAuthentication(authentication.BaseAuthentication):
         return self._authenticate_credentials(request, token)
 
     def _authenticate_credentials(self, request, token):
-        raise exceptions.AuthenticationFailed('msg')
-        # try:
-        #     payload = jwt.decode(token, settings.SECRET_KEY)
-        # except (jwt.DecodeError, jwt.ExpiredSignatureError):
-        #     msg = 'Invalid authentication. Could not decode token.'
-        #     raise exceptions.AuthenticationFailed(msg)
+        try:
+            payload = jwt.decode(token, settings.SECRET_KEY)
+        except (jwt.DecodeError, jwt.ExpiredSignatureError):
+            msg = 'Invalid authentication. Could not decode token.'
+            raise exceptions.AuthenticationFailed(msg)
 
-        # try:
-        #     user = User.objects.get(pk=payload['id'])
-        # except User.DoesNotExist:
-        #     msg = 'No user matching this token was found.'
-        #     raise exceptions.AuthenticationFailed(msg)
+        try:
+            user = User.objects.get(pk=payload['id'])
+        except User.DoesNotExist:
+            msg = 'No user matching this token was found.'
+            raise exceptions.AuthenticationFailed(msg)
 
-        # if not user.is_active:
-        #     msg = 'This user has been deactivated.'
-        #     raise exceptions.AuthenticationFailed(msg)
+        if not user.is_active:
+            msg = 'This user has been deactivated.'
+            raise exceptions.AuthenticationFailed(msg)
 
-        # return user, token
+        return user, token
 
     def authenticate_header(self, request):
         return 'Token realm="Authorization required"'
