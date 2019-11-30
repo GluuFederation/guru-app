@@ -12,6 +12,7 @@ import {
   TicketHistoryItem,
   HistoryChangedField
 } from "../../state/types/tickets";
+import { colors } from "../../theme";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -43,7 +44,19 @@ const styles = (theme: Theme) =>
     avatarSmall: {
       width: 28,
       height: 28,
-      textAlign: "left"
+      textAlign: "left",
+      color: "black"
+    },
+    root: {
+      position: "relative",
+      "&::before": {
+        content: '"\u00A0"',
+        position: "absolute",
+        borderLeft: `1px solid ${colors.LIGHT_BORDER}`,
+        top: "-8px",
+        left: "15px",
+        height: "8px"
+      }
     }
   });
 
@@ -101,7 +114,7 @@ class TicketDetail extends Component<Props> {
     }
 
     return (
-      <div>
+      <div className={classes.root}>
         <Grid className={classes.gridHistory}>
           <Avatar className={classes.iconBg}>{icon}</Avatar>
           {actor.avatar ? (
