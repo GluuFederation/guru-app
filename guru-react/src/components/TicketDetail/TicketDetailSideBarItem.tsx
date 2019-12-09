@@ -163,8 +163,8 @@ class TicketDetailSideBarItem extends Component<Props, State> {
   };
 
   searchAssignee = (q: string) => {
-    const url = `${process.env.REACT_APP_API_BASE}/api/v1/users/staffs/`;
-    const params = { q };
+    const url = `${process.env.REACT_APP_API_BASE}/api/v1/access-list/users/`;
+    const params = { q, staff: "true" };
 
     axios.get(url, { params }).then(response => {
       this.setState({

@@ -129,7 +129,6 @@ interface State {
   isLoading: boolean;
   isTicketsLoading: boolean;
   autocompleteResults: Array<Suggestion>;
-  staffName: Array<String>;
 }
 
 class TicketList extends Component<Props, State> {
@@ -139,14 +138,12 @@ class TicketList extends Component<Props, State> {
       isModalOpen: false,
       isLoading: false,
       isTicketsLoading: true,
-      autocompleteResults: [],
-      staffName: []
+      autocompleteResults: []
     };
   }
 
   componentDidMount() {
     this.syncStateWithPath();
-    this.staffMembers();
   }
 
   openModal = () => {
@@ -180,15 +177,6 @@ class TicketList extends Component<Props, State> {
             text: result.title
           }))
           .slice(0, 5)
-      });
-    });
-  };
-
-  staffMembers = () => {
-    const url = `${process.env.REACT_APP_API_BASE}/api/v1/users/staffs/`;
-    axios.get(url).then(response => {
-      this.setState({
-        staffName: response.data.results
       });
     });
   };
@@ -439,10 +427,7 @@ class TicketList extends Component<Props, State> {
                     <Grid container spacing={2}>
                       {tickets.map(ticket => (
                         <Grid item xs={12} key={ticket.id}>
-                          <TicketListItem
-                            shortTicket={ticket}
-                            staff={this.state.staffName}
-                          />
+                          <TicketListItem shortTicket={ticket} />
                         </Grid>
                       ))}
                     </Grid>

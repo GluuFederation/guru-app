@@ -38,6 +38,7 @@ interface ExternalProps {
   suggestions: Array<Suggestion>;
   isAlwaysOpen?: boolean;
   value?: string;
+  variant?: "filled" | "standard" | "outlined";
   searchButton?: SearchButtonOptions;
   isAbsolute?: boolean;
 }
@@ -96,10 +97,12 @@ class Autocomplete extends Component<Props, State> {
       isAlwaysOpen,
       classes,
       searchButton,
-      isAbsolute
+      isAbsolute,
+      variant
     } = this.props;
     let { InputProps } = this.props;
     const { searchQuery, selectedItem } = this.state;
+    const tfVariant: any = variant ? variant : "outlined";
     if (searchButton) {
       switch (searchButton) {
         case SearchButtonOptions.Start:
@@ -126,6 +129,7 @@ class Autocomplete extends Component<Props, State> {
           break;
       }
     }
+
     return (
       <Downshift
         itemToString={item => (item ? item.text : "")}
@@ -140,7 +144,7 @@ class Autocomplete extends Component<Props, State> {
           return (
             <div>
               <TextField
-                variant="outlined"
+                variant={tfVariant}
                 margin="none"
                 placeholder="Search or ask a question"
                 fullWidth

@@ -62,15 +62,6 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
         )
 
     @action(detail=False, methods=['GET'])
-    def staffs(self, request, *args, **kwargs):
-        staffs = m.User.objects.filter(is_staff=True)
-        serializer = s.ShortUserSerializer(staffs, many=True)
-        return Response(
-            {'results': serializer.data},
-            status=status.HTTP_200_OK
-        )
-
-    @action(detail=False, methods=['GET'])
     def companies(self, request, *args, **kwargs):
         companies = m.Membership.objects.filter(user=request.user)
         serializer = s.UserMembershipSerializer(companies, many=True)
