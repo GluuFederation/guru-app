@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import moment from "moment";
+import axios from "axios";
+
 import { withStyles, WithStyles, createStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -25,6 +27,8 @@ import {
   withTicketDetail,
   WithTicketDetailProps
 } from "../../state/hocs/tickets";
+import Autocomplete, { Suggestion } from "../../components/Autocomplete";
+import { ShortUser } from "../../state/types/profiles";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -104,7 +108,10 @@ const styles = (theme: Theme) =>
 
 interface ExternalProps {
   shortTicket: Ticket;
-  staff: any;
+}
+
+interface State {
+  staff: Array<ShortUser & Suggestion>;
 }
 
 type Props = WithStyles<typeof styles> &
@@ -113,7 +120,14 @@ type Props = WithStyles<typeof styles> &
   WithTicketDetailProps &
   ExternalProps;
 
-class TicketNav extends Component<Props> {
+class TicketNav extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      staff: []
+    };
+  }
+
   goToTicket = () => {
     this.props.history.push(
       paths.getTicketDetailPath(this.props.shortTicket.slug)
@@ -124,8 +138,35 @@ class TicketNav extends Component<Props> {
     const { shortTicket, setTicketAssignee } = this.props;
     setTicketAssignee(shortTicket.slug, event.target.value as number, true);
   }
+
+  searchStaff = (q: string) => {
+    const url = `${process.env.REACT_APP_API_BASE}/api/v1/access-list/users/`;
+    const params = { q, staff: "true" };
+
+    axios.get(url, { params }).then(response => {
+      this.setState({
+        staff: response.data.results
+          .map((result: ShortUser) => ({
+            ...result,
+            text: `${result.firstName} ${result.lastName}`
+          }))
+          .slice(0, 5)
+      });
+    });
+  };
+
+  setAssignee = (selectedItem: Suggestion) => {
+    const { shortTicket, setTicketAssignee } = this.props;
+    const { staff } = this.state;
+    const staffMember = staff.find(item => item.id === selectedItem.id);
+    if (staffMember) {
+      setTicketAssignee(shortTicket.slug, staffMember.id);
+    }
+  };
+
   render() {
-    const { classes, shortTicket, info, staff } = this.props;
+    const { classes, shortTicket, info } = this.props;
+    const { staff } = this.state;
     const owner = shortTicket.createdFor
       ? shortTicket.createdFor
       : shortTicket.createdBy;
@@ -322,18 +363,22 @@ class TicketNav extends Component<Props> {
                   <PersonOutline className={classes.actionIcon} />
                 </Grid>
                 <Grid item xs={9} md={9}>
-                  <Select
-                    className={classes.selectType}
-                    value={shortTicket.assignee ? shortTicket.assignee.id : ""}
-                    onChange={this.handleChange.bind(this)}
-                    disableUnderline={true}
-                  >
-                    {staff.map((staff: any) => (
-                      <MenuItem value={staff.id} key={staff.id}>
-                        {staff.firstName + " " + staff.lastName}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                  <Autocomplete
+                    suggestions={staff}
+                    updateQueryFunction={this.searchStaff}
+                    selectFunction={this.setAssignee}
+                    InputProps={{
+                      placeholder: "Select Company",
+                      className: classes.selectType
+                    }}
+                    value={
+                      shortTicket.assignee
+                        ? `${shortTicket.assignee.firstName} ${shortTicket.assignee.lastName}`
+                        : undefined
+                    }
+                    variant="standard"
+                    isAbsolute={true}
+                  />
                 </Grid>
               </Grid>
             </Grid>

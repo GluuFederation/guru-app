@@ -31,11 +31,14 @@ class UserAccessList(APIView):
 
     def get(self, request):
         q = request.query_params.get('q', '')
+        is_staff = bool(request.query_params.get('staff'))
         company_id = request.query_params.get('company')
         users = m.User.objects.none()
 
         if q:
             queryset = self.get_queryset()
+            if is_staff:
+                queryset = queryset.filter(is_staff=True)
             if company_id:
                 queryset = queryset.filter(membership__company_id=company_id)
             names = q.split(' ')
