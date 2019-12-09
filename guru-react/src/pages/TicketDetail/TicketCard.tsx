@@ -22,7 +22,7 @@ import {
 } from "../../state/hocs/tickets";
 import Modal from "@material-ui/core/Modal";
 import { withUser, WithUserProps } from "../../state/hocs/profiles";
-import TicketAttachment from "./TicketAttachment";
+// import TicketAttachment from "../../hPages/TicketDetail/Attachment";
 import { colors } from "../../theme";
 
 const styles = (theme: Theme) =>
@@ -174,9 +174,9 @@ class TicketDetail extends Component<Props, State> {
             className={classes.ticketContent}
             source={ticket.body}
           />
-          {ticket.attachments.map((attachment, index) => (
+          {/* {ticket.attachments.map((attachment, index) => (
             <TicketAttachment key={index} document={attachment} />
-          ))}
+          ))} */}
           <Modal
             aria-labelledby="delete-confirmation-modal"
             open={this.state.isModalOpen}
