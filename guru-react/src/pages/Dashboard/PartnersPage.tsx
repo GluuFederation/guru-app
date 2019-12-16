@@ -110,19 +110,20 @@ class PartnersPage extends Component<Props> {
                     <Grid item md={12} xs={12} sm={12}>
                       <Typography variant="h5" align="left">
                         Partner Companies
-                    </Typography>
+                      </Typography>
                     </Grid>
                     <Grid item md={9} xs={8} sm={8}>
                       <Box mt={2} mb={2}>
                         <Typography variant="body2" align="left">
                           Give a partner company access to your company access.
-                        View all of the certified Gluu services Partners on your{" "}
-                        <a
-                          style={{ color: "#00b372" }}
-                          href="https://www.gluu.org"
-                        >
-                          website
-                        </a>
+                          View all of the certified Gluu services Partners on
+                          your{" "}
+                          <a
+                            style={{ color: "#00b372" }}
+                            href="https://www.gluu.org"
+                          >
+                            website
+                          </a>
                         </Typography>
                       </Box>
                     </Grid>
@@ -146,10 +147,10 @@ class PartnersPage extends Component<Props> {
                         <Grid item xs={12} md={3}>
                           <Typography variant="h6" align="left">
                             Cogito
-                        </Typography>
+                          </Typography>
                           <Typography variant="body2" align="left">
                             invited Feb 28, 2019
-                        </Typography>
+                          </Typography>
                         </Grid>
                         <Grid item xs={12} md={3}>
                           <Box mt={2}>
@@ -159,7 +160,7 @@ class PartnersPage extends Component<Props> {
                               color="secondary"
                             >
                               Invitation pending
-                          </Typography>
+                            </Typography>
                           </Box>
                         </Grid>
                         <Grid item xs={6} md={2}>
@@ -170,7 +171,7 @@ class PartnersPage extends Component<Props> {
                               size="medium"
                             >
                               Approve
-                          </Button>
+                            </Button>
                           </Box>
                         </Grid>
                         <Grid item xs={6} md={2}>
@@ -181,7 +182,7 @@ class PartnersPage extends Component<Props> {
                               size="medium"
                             >
                               Deny
-                          </Button>
+                            </Button>
                           </Box>
                         </Grid>
                       </Grid>
@@ -203,10 +204,10 @@ class PartnersPage extends Component<Props> {
                         <Grid item md={7}>
                           <Typography variant="h6" align="left">
                             Falcom Systems Consulting
-                        </Typography>
+                          </Typography>
                           <Typography variant="body2" align="left">
                             Added on July 12, 2019
-                        </Typography>
+                          </Typography>
                         </Grid>
                         <Grid item md={3}>
                           <Button
@@ -215,7 +216,7 @@ class PartnersPage extends Component<Props> {
                             size="medium"
                           >
                             Revoke access
-                        </Button>
+                          </Button>
                         </Grid>
                       </Grid>
                       <hr />
@@ -223,7 +224,7 @@ class PartnersPage extends Component<Props> {
                         <Grid item xs={12}>
                           <Typography variant="subtitle1" align="left">
                             Assigned Users
-                        </Typography>
+                          </Typography>
                         </Grid>
                       </Grid>
                       <Box style={{ overflowX: "auto" }}>
@@ -233,27 +234,27 @@ class PartnersPage extends Component<Props> {
                               <TableCell style={{ width: "50%" }} align="left">
                                 <Typography variant="body2" align="left">
                                   Name
-                              </Typography>
+                                </Typography>
                               </TableCell>
                               <TableCell style={{ width: "12%" }} align="left">
                                 <Typography variant="body2" align="left">
                                   View
-                              </Typography>
+                                </Typography>
                               </TableCell>
                               <TableCell style={{ width: "12%" }} align="left">
                                 <Typography variant="body2" align="left">
                                   Create
-                              </Typography>
+                                </Typography>
                               </TableCell>
                               <TableCell style={{ width: "12%" }} align="left">
                                 <Typography variant="body2" align="left">
                                   Edit
-                              </Typography>
+                                </Typography>
                               </TableCell>
                               <TableCell style={{ width: "12%" }} align="left">
                                 <Typography variant="body2" align="left">
                                   Delete
-                              </Typography>
+                                </Typography>
                               </TableCell>
                             </TableRow>
                           </TableHead>
@@ -268,7 +269,7 @@ class PartnersPage extends Component<Props> {
                                 <Box mt={2}>
                                   <Typography variant="body2" align="right">
                                     Nasir Uddin
-                                </Typography>
+                                  </Typography>
                                 </Box>
                               </TableCell>
                               <TableCell style={{ width: "12%" }} align="left">
@@ -306,7 +307,7 @@ class PartnersPage extends Component<Props> {
                                 <Box mt={2}>
                                   <Typography variant="body2" align="right">
                                     Nasir Uddin
-                                </Typography>
+                                  </Typography>
                                 </Box>
                               </TableCell>
                               <TableCell style={{ width: "12%" }} align="left">

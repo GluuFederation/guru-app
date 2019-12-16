@@ -15,7 +15,7 @@ import MoreHoriIcon from "@material-ui/icons/MoreHoriz";
 
 import { paths } from "../../../../routes";
 import { Answer } from "../../../../state/types/tickets";
-import DeleteConfirmation from "../../../../components/TicketDetail/DeleteConfirmation";
+import DeleteConfirmation from "../../DeleteConfirmation";
 import TicketAttachment from "../../Attachment";
 import ResponsiveUserInfo from "../../UserInfo/Responsive";
 
