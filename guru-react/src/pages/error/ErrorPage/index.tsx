@@ -9,7 +9,7 @@ import Grid from "@material-ui/core/Grid";
 import { paths } from "../../../routes";
 import Page from "../../../components/Page";
 
-import Logo from "../../assets/images/logo.png";
+import Logo from "../../../assets/images/logo.png";
 
 const useStyles = makeStyles({
   root: {

@@ -36,8 +36,8 @@ import {
   TicketStatus,
   TicketIssueType
 } from "../../state/types/info";
-import ChangeOs from "./ChangeOs";
-import ChangeProduct from "./ChangeProduct";
+import ChangeOs from "../../pages/TicketDetail/ChangeOs";
+import ChangeProduct from "../../pages/TicketDetail/ChangeProduct";
 import { TicketProduct } from "../../state/types/tickets";
 
 const styles = (theme: Theme) =>

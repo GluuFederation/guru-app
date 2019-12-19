@@ -15,10 +15,7 @@ import { colors } from "../../../theme";
 import { Ticket } from "../../../state/types/tickets";
 import { User } from "../../../state/types/profiles";
 import { changeTicketSubscription } from "../../../state/actions/tickets";
-import TicketDetailSideBarItem, {
-  MenuType
-} from "../../../components/TicketDetail/TicketDetailSideBarItem";
-import { useTicketPermissions } from "../hooks";
+import DetailSideBar from "./DetailSideBar";
 
 const useStyles = makeStyles({
   root: {
@@ -54,32 +51,10 @@ const TicketSideBar: FunctionComponent<Props> = ({ ticket, user }) => {
     changeTicketSubscription(ticket.slug, !isSubscribed)(dispatch);
   };
 
-  let menuTypes = Object.values(MenuType);
-  const { isCommunity, isStaff, canEdit } = useTicketPermissions(ticket);
-
-  if (isCommunity) {
-    menuTypes = menuTypes.filter(
-      type => !["creator", "assignee", "issueType"].includes(type)
-    );
-  } else if (!isStaff) {
-    menuTypes = menuTypes.filter(
-      type => !["creator", "assignee"].includes(type)
-    );
-  }
-
   return (
     <div className={classes.root}>
       <Grid container spacing={1}>
-        {menuTypes
-          .filter(menuType => menuType !== MenuType.CompanyAssociation)
-          .map(key => (
-            <TicketDetailSideBarItem
-              key={key}
-              menuType={key}
-              ticket={ticket}
-              canEdit={canEdit}
-            />
-          ))}
+        <DetailSideBar ticket={ticket} />
         <Grid item xs={12}>
           <Card classes={{ root: classes.notificationArea }} elevation={0}>
             <CardContent>

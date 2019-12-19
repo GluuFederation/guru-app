@@ -8,7 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 import MoreHoriz from "@material-ui/icons/MoreHoriz";
 
 import { paths } from "../../../../routes";
-import DeleteConfirmation from "../../../../components/TicketDetail/DeleteConfirmation";
+import DeleteConfirmation from "../../DeleteConfirmation";
 
 interface Props {
   slug: string;

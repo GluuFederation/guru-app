@@ -9,12 +9,12 @@ import { colors } from "../../theme";
 
 import { paths } from "../../routes";
 import NavLink from "../NavLink";
-import Logo from "../assets/images/logo.png";
-import { ReactComponent as GithubLogo } from "../assets/images/github-logo.svg";
-import { ReactComponent as YoutubeLogo } from "../assets/images/youtube-logo.svg";
-import { ReactComponent as SlideshareLogo } from "../assets/images/slideshare-logo.svg";
-import { ReactComponent as TwitterLogo } from "../assets/images/twitter-logo.svg";
-import { ReactComponent as LinkedinLogo } from "../assets/images/linkedin-logo.svg";
+import Logo from "../../assets/images/logo.png";
+import { ReactComponent as GithubLogo } from "../../assets/images/github-logo.svg";
+import { ReactComponent as YoutubeLogo } from "../../assets/images/youtube-logo.svg";
+import { ReactComponent as SlideshareLogo } from "../../assets/images/slideshare-logo.svg";
+import { ReactComponent as TwitterLogo } from "../../assets/images/twitter-logo.svg";
+import { ReactComponent as LinkedinLogo } from "../../assets/images/linkedin-logo.svg";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
