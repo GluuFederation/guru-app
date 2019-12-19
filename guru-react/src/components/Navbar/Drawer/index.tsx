@@ -102,7 +102,7 @@ const Navbar: FunctionComponent<Props> = ({ toggleDrawer, isDrawerOpen }) => {
     });
   };
 
-  const isLoggedIn = user !== null;
+  const isLoggedIn = user.id !== -1;
   return (
     <Drawer open={isDrawerOpen} onClose={toggleDrawer}>
       <div className={classes.drawer}>

@@ -22,6 +22,7 @@ export const useTicketPermissions = (ticket: Ticket | null) => {
   const canEdit = (isUserCompany && !isCommunity) || isStaff;
 
   return {
+    user,
     isCommunity,
     isStaff,
     isUserCompany,

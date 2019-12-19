@@ -11,9 +11,9 @@ export const useSearch = (limit: number = 10) => {
     []
   );
 
-  const searchUsers = (q: string) => {
+  const searchUsers = (q: string, company?: number) => {
     const url = `${process.env.REACT_APP_API_BASE}/api/v1/access-list/users/`;
-    const params: any = { q };
+    const params: any = { q, company };
 
     axios.get(url, { params }).then(response => {
       setUsers(

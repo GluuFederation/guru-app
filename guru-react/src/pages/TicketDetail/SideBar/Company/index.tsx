@@ -18,7 +18,7 @@ interface Props {
   ticket: CreateTicketState;
 }
 
-const Assignee: FunctionComponent<Props> = ({ ticket }) => {
+const Company: FunctionComponent<Props> = ({ ticket }) => {
   const { element, setElement, open, close } = useMenuElement();
   const dispatch = useDispatch();
   const { companies, searchCompanies } = useSearch();
@@ -77,4 +77,4 @@ const Assignee: FunctionComponent<Props> = ({ ticket }) => {
   );
 };
 
-export default Assignee;
+export default Company;

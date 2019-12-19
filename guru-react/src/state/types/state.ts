@@ -84,7 +84,7 @@ export interface AppNotificationsState {
 }
 
 export interface ProfilesState {
-  user: User | null;
+  user: User;
   token: string;
   associatedCompanies: Array<Company>;
   teamMembers: Array<TeamMember>;

@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from "react";
 
+import { colors } from "../../theme";
 import { makeStyles } from "@material-ui/styles";
 import Avatar, { AvatarProps } from "@material-ui/core/Avatar";
 import { ShortUser } from "../../state/types/profiles";
@@ -7,8 +8,8 @@ import { ShortUser } from "../../state/types/profiles";
 const useStyles = makeStyles({
   all: {
     float: "left",
-    color: "#E9E9E9",
-    backgroundColor: "#F3F2F2",
+    color: colors.LIGHTER_TEXT,
+    backgroundColor: colors.LIGHT_BORDER,
     alignItems: "center",
     justifyContent: "center"
   },

@@ -36,8 +36,9 @@ const Page: FunctionComponent = ({ children }) => {
       axios.defaults.headers.common["Authorization"] = `Token ${token}`;
   };
 
+  initAuth();
+
   useEffect(() => {
-    initAuth();
     fetchInfo()(dispatch);
   }, []);
 

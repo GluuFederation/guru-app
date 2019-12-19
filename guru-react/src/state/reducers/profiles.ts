@@ -1,9 +1,10 @@
 import actions from "../actions/constants";
 import * as profileActions from "../actions/profiles";
 import { ProfilesState } from "../types/state";
+import { anonymousUser } from "../preloaded/profiles";
 
 const initialState: ProfilesState = {
-  user: null,
+  user: anonymousUser,
   token: "",
   associatedCompanies: [],
   teamMembers: [],

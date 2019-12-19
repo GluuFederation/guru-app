@@ -121,7 +121,7 @@ const Navbar = () => {
     });
   };
 
-  const isLoggedIn = user !== null;
+  const isLoggedIn = user.id !== -1;
   return (
     <div className={classes.root}>
       <AppBar

@@ -54,7 +54,7 @@ const Autocomplete: FunctionComponent<Props> = props => {
     searchButton
   } = props;
   const classes = useStyles();
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState<string>(value || "");
   const [selectedItem, setSelectedItem] = useState<Suggestion | null>(null);
 
   useEffect(() => {
