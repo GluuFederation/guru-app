@@ -49,7 +49,11 @@ const styles = (theme: Theme) =>
     },
     nextButton: {
       color: colors.MAIN_BACKGROUND,
-      backgroundColor: colors.MAIN_COLOR
+      backgroundColor: colors.MAIN_COLOR,
+      '&:hover': {
+        backgroundColor: colors.BUTTON_HOVER_COLOR,
+        color: colors.MAIN_BACKGROUND
+      }
     }
   });
 

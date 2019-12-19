@@ -37,7 +37,7 @@ export const useTicketProperties = (ticket: Ticket) => {
   const tempStatus = statuses.find(item => item.id === ticket.status);
   const status = tempStatus ? tempStatus : closedStatus;
 
-  const tempCategory = categories.find(item => item.id === ticket.category);
+  const tempCategory = categories.find(item => item.id === ticket.category.id);
   const category = tempCategory ? tempCategory : otherCategory;
 
   const issueType = issueTypes.find(item => item.id === ticket.issueType);

@@ -20,6 +20,12 @@ export interface TicketDocument {
   fileUrl: string;
 }
 
+export interface TicketCategory {
+  id: number;
+  name: string;
+  slug: string;
+}
+
 export interface Ticket {
   id: number;
   slug: string;
@@ -30,7 +36,7 @@ export interface Ticket {
   updatedBy: ShortUser | null;
   assignee: ShortUser | null;
   isPrivate: boolean;
-  category: number;
+  category: TicketCategory;
   status: number;
   issueType: number;
   gluuServer: string;

@@ -78,7 +78,11 @@ const styles = (theme: Theme) =>
     button: {
       color: colors.MAIN_BACKGROUND,
       backgroundColor: colors.MAIN_COLOR,
-      textTransform: "capitalize"
+      textTransform: "capitalize",
+      '&:hover': {
+        backgroundColor: colors.BUTTON_HOVER_COLOR,
+        color: colors.MAIN_BACKGROUND
+      }
     }
   });
 

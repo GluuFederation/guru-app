@@ -18,7 +18,7 @@ const styles = (theme: Theme) =>
       backgroundColor: "#00b572",
       textTransform: "capitalize",
       color: "#ffffff",
-      "&:hover": { color: "#2dce56", backgroundColor: "transparent" }
+      "&:hover": { color: "#fff", backgroundColor: "#059862" }
     },
     txtField: {
       margin: 0,

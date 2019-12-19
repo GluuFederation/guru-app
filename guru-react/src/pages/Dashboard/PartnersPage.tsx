@@ -52,7 +52,7 @@ const styles = (theme: Theme) =>
       backgroundColor: "#00b572",
       width: "90%",
       textTransform: "capitalize",
-      "&:hover": { color: "#2dce56", backgroundColor: "transparent" }
+      "&:hover": { color: "#fff", backgroundColor: "#059862" }
     },
     btnDenyS: {
       backgroundColor: "transparent",

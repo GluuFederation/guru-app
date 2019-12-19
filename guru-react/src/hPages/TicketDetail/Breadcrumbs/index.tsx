@@ -12,15 +12,19 @@ interface Props {
   ticket: Ticket;
 }
 
+let getPath = (id: number) => {
+  return `${paths.TICKET_LIST}?categories=${id}`;
+}
+
 const TicketDetailBreadcrumbs: FunctionComponent<Props> = ({ ticket }) => {
   return (
     <>
       <Breadcrumbs>
-        <Link component={RouterLink} to={paths.NOTIFICATIONS}>
-          Dashboard
+        <Link component={RouterLink} to={paths.HOMEPAGE}>
+          Home
         </Link>
-        <Link component={RouterLink} to={paths.TICKET_LIST}>
-          Tickets
+        <Link component={RouterLink} to={getPath(ticket.category.id)}>
+          {ticket.category.name}
         </Link>
         <Typography>#{ticket.id}</Typography>
       </Breadcrumbs>

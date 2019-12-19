@@ -177,7 +177,7 @@ class TicketNav extends Component<Props, State> {
     const status = tempStatus ? tempStatus : closedStatus;
 
     const tempCategory = info.categories.find(
-      item => item.id === shortTicket.category
+      item => item.id === shortTicket.category.id
     );
     const category = tempCategory ? tempCategory : otherCategory;
 
