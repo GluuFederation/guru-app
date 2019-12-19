@@ -68,10 +68,10 @@ const muiTheme = createMuiTheme({
       input: {
         backgroundColor: "#fff",
         borderRadius: ".1em",
-        height: "1.5rem",
-        fontSize: "0.9rem"
+        fontSize: "1rem"
       },
       root: {
+        fontSize: "1rem",
         backgroundColor: "#fff",
         "&$focused": {
           outlineWidth: "1px",

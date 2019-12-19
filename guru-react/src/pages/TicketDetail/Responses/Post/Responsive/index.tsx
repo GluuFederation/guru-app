@@ -102,7 +102,6 @@ const ResponsiveResponsePost: FunctionComponent<Props> = ({
             select
             fullWidth
             variant="outlined"
-            margin="dense"
             value={status ? status : ""}
             onChange={changeStatus}
           >

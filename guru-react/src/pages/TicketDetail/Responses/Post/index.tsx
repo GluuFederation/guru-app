@@ -109,7 +109,6 @@ const ResponsePost: FunctionComponent<Props> = ({ ticket }) => {
               select
               fullWidth
               variant="outlined"
-              margin="dense"
               value={status ? status : ""}
               onChange={changeStatus}
             >
