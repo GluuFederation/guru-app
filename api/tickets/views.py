@@ -51,11 +51,13 @@ class TicketViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer_data = request.data.get('ticket', {})
         ticket_status = im.TicketStatus.objects.get(slug='new').id
+        category = im.TicketCategory.objects.get(id=serializer_data.pop('category', ''))
         serializer_data['status'] = ticket_status
 
         context = {
             'created_by': request.user,
             'created_for': serializer_data.pop('created_for', ''),
+            'category_id': category,
             'company_association': serializer_data.pop(
                 'company_association', ''
             )

@@ -133,6 +133,7 @@ class TicketSerializer(serializers.ModelSerializer):
         created_by = self.context.get('created_by', None)
         created_for_id = self.context.get('created_for', {}).get('id', '')
         company_id = self.context.get('company_association', {}).get('id', '')
+        category_id = self.context.get('category_id', {})
         validated_data.pop('status')
         products = validated_data.pop('ticketproduct_set', [])
 
@@ -183,6 +184,7 @@ class TicketSerializer(serializers.ModelSerializer):
             created_by=created_by,
             company_association=company_association,
             created_for=created_for,
+            category=category_id,
             status=status_new,
             **validated_data
         )
