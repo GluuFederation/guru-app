@@ -23,6 +23,7 @@ import Step8 from "./Step8";
 import Step9 from "./Step9";
 import SideBar from "./SideBar";
 import { paths } from "../../routes";
+import FullPageLoader from "../../components/loaders/FullPageLoader";
 import { AppState } from "../../state/types/state";
 import {
   setTicketStep,
@@ -30,10 +31,7 @@ import {
   clearTicketEntry
 } from "../../state/actions/ticket";
 import { uploadTicketFiles } from "../../state/actions/tickets";
-import {
-  setConfirmationExceptions,
-  setConfirmationText
-} from "../../state/actions/info";
+import { setConfirmationText } from "../../state/actions/info";
 
 const useStyles = makeStyles({
   root: {
@@ -105,6 +103,8 @@ const CreateTicket = () => {
   const onFileDrop = (droppedFiles: Array<File>) => {
     setFiles([...files, ...droppedFiles]);
   };
+
+  if (isLoading) return <FullPageLoader />;
 
   return (
     <Page removeRootStyle confirmNavigation>
