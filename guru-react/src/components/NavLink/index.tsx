@@ -1,10 +1,13 @@
 import React, { FunctionComponent } from "react";
 import { Link as RouterLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
+
 import { colors } from "../../theme";
+import { setConfirmationPath } from "../../state/actions/info";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -35,25 +38,34 @@ interface Props {
   onClick?: (event: React.MouseEvent<HTMLElement>) => void;
   state?: any;
   extraClasses?: string;
+  confirmNavigation?: boolean;
 }
 
 const NavLink: FunctionComponent<Props> = ({
   to,
   search,
-  hash,
   isFooter,
   replace,
   onClick,
   state,
   extraClasses,
-  children
+  children,
+  confirmNavigation
 }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
   const linkTo = {
     pathname: to,
     search,
     state
   };
+  const onConfirmClick = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    dispatch(setConfirmationPath(to));
+  };
+  const superOnClick = confirmNavigation ? onConfirmClick : onClick;
+
   return (
     <Link
       component={RouterLink}
@@ -63,7 +75,7 @@ const NavLink: FunctionComponent<Props> = ({
         }`
       }}
       to={linkTo}
-      onClick={onClick}
+      onClick={superOnClick}
       replace={replace}
     >
       {children}

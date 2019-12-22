@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 
 import { makeStyles } from "@material-ui/styles";
 import { Theme } from "@material-ui/core/styles";
@@ -38,7 +38,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-const Footer = () => {
+interface Props {
+  confirmNavigation?: boolean;
+}
+
+const Footer: FunctionComponent<Props> = ({ confirmNavigation }) => {
   const classes = useStyles();
   return (
     <div className={`${classes.root} app-container`}>
@@ -48,19 +52,39 @@ const Footer = () => {
             <Typography variant="h6" gutterBottom>
               About Gluu
             </Typography>
-            <NavLink to={paths.HOMEPAGE} isFooter>
+            <NavLink
+              confirmNavigation={confirmNavigation}
+              to={paths.HOMEPAGE}
+              isFooter
+            >
               Our story
             </NavLink>
-            <NavLink to={paths.HOMEPAGE} isFooter>
+            <NavLink
+              confirmNavigation={confirmNavigation}
+              to={paths.HOMEPAGE}
+              isFooter
+            >
               Team
             </NavLink>
-            <NavLink to={paths.HOMEPAGE} isFooter>
+            <NavLink
+              confirmNavigation={confirmNavigation}
+              to={paths.HOMEPAGE}
+              isFooter
+            >
               Events
             </NavLink>
-            <NavLink to={paths.HOMEPAGE} isFooter>
+            <NavLink
+              confirmNavigation={confirmNavigation}
+              to={paths.HOMEPAGE}
+              isFooter
+            >
               Press releases
             </NavLink>
-            <NavLink to={paths.HOMEPAGE} isFooter>
+            <NavLink
+              confirmNavigation={confirmNavigation}
+              to={paths.HOMEPAGE}
+              isFooter
+            >
               Contact us
             </NavLink>
           </Grid>
@@ -68,16 +92,32 @@ const Footer = () => {
             <Typography variant="h6" gutterBottom>
               Support
             </Typography>
-            <NavLink to={paths.HOMEPAGE} isFooter>
+            <NavLink
+              confirmNavigation={confirmNavigation}
+              to={paths.HOMEPAGE}
+              isFooter
+            >
               Open a ticket
             </NavLink>
-            <NavLink to={paths.HOMEPAGE} isFooter>
+            <NavLink
+              confirmNavigation={confirmNavigation}
+              to={paths.HOMEPAGE}
+              isFooter
+            >
               Knowledge base
             </NavLink>
-            <NavLink to={paths.HOMEPAGE} isFooter>
+            <NavLink
+              confirmNavigation={confirmNavigation}
+              to={paths.HOMEPAGE}
+              isFooter
+            >
               Read the docs
             </NavLink>
-            <NavLink to={paths.HOMEPAGE} isFooter>
+            <NavLink
+              confirmNavigation={confirmNavigation}
+              to={paths.HOMEPAGE}
+              isFooter
+            >
               Schedule a call
             </NavLink>
           </Grid>
@@ -85,16 +125,32 @@ const Footer = () => {
             <Typography variant="h6" gutterBottom>
               Our Products
             </Typography>
-            <NavLink to={paths.HOMEPAGE} isFooter>
+            <NavLink
+              confirmNavigation={confirmNavigation}
+              to={paths.HOMEPAGE}
+              isFooter
+            >
               Gluu Server
             </NavLink>
-            <NavLink to={paths.HOMEPAGE} isFooter>
+            <NavLink
+              confirmNavigation={confirmNavigation}
+              to={paths.HOMEPAGE}
+              isFooter
+            >
               Super Gluu
             </NavLink>
-            <NavLink to={paths.HOMEPAGE} isFooter>
+            <NavLink
+              confirmNavigation={confirmNavigation}
+              to={paths.HOMEPAGE}
+              isFooter
+            >
               oxd
             </NavLink>
-            <NavLink to={paths.HOMEPAGE} isFooter>
+            <NavLink
+              confirmNavigation={confirmNavigation}
+              to={paths.HOMEPAGE}
+              isFooter
+            >
               Cluster Manager
             </NavLink>
           </Grid>
@@ -102,22 +158,46 @@ const Footer = () => {
             <Typography variant="h6" gutterBottom>
               Quick Links
             </Typography>
-            <NavLink to={paths.HOMEPAGE} isFooter>
+            <NavLink
+              confirmNavigation={confirmNavigation}
+              to={paths.HOMEPAGE}
+              isFooter
+            >
               Features
             </NavLink>
-            <NavLink to={paths.HOMEPAGE} isFooter>
+            <NavLink
+              confirmNavigation={confirmNavigation}
+              to={paths.HOMEPAGE}
+              isFooter
+            >
               Marketplace
             </NavLink>
-            <NavLink to={paths.HOMEPAGE} isFooter>
+            <NavLink
+              confirmNavigation={confirmNavigation}
+              to={paths.HOMEPAGE}
+              isFooter
+            >
               Pricing
             </NavLink>
-            <NavLink to={paths.HOMEPAGE} isFooter>
+            <NavLink
+              confirmNavigation={confirmNavigation}
+              to={paths.HOMEPAGE}
+              isFooter
+            >
               EDU
             </NavLink>
-            <NavLink to={paths.HOMEPAGE} isFooter>
+            <NavLink
+              confirmNavigation={confirmNavigation}
+              to={paths.HOMEPAGE}
+              isFooter
+            >
               Blog
             </NavLink>
-            <NavLink to={paths.HOMEPAGE} isFooter>
+            <NavLink
+              confirmNavigation={confirmNavigation}
+              to={paths.HOMEPAGE}
+              isFooter
+            >
               Roadmap
             </NavLink>
           </Grid>
@@ -129,8 +209,19 @@ const Footer = () => {
           <Grid item md={5}>
             <p>
               &copy; 2009-2018 Gluu, Inc.
-              <NavLink to={paths.HOMEPAGE}>Terms</NavLink>|
-              <NavLink to={paths.HOMEPAGE}>Privacy Policy</NavLink>
+              <NavLink
+                confirmNavigation={confirmNavigation}
+                to={paths.HOMEPAGE}
+              >
+                Terms
+              </NavLink>
+              |
+              <NavLink
+                confirmNavigation={confirmNavigation}
+                to={paths.HOMEPAGE}
+              >
+                Privacy Policy
+              </NavLink>
             </p>
           </Grid>
           <Grid item md={3}>
@@ -148,19 +239,34 @@ const Footer = () => {
           <Grid item md={4}>
             <p style={{ textAlign: "right" }}>
               Follow Us
-              <NavLink to={paths.HOMEPAGE}>
+              <NavLink
+                confirmNavigation={confirmNavigation}
+                to={paths.HOMEPAGE}
+              >
                 <GithubLogo className={classes.socialIcons} />
               </NavLink>
-              <NavLink to={paths.HOMEPAGE}>
+              <NavLink
+                confirmNavigation={confirmNavigation}
+                to={paths.HOMEPAGE}
+              >
                 <TwitterLogo className={classes.socialIcons} />
               </NavLink>
-              <NavLink to={paths.HOMEPAGE}>
+              <NavLink
+                confirmNavigation={confirmNavigation}
+                to={paths.HOMEPAGE}
+              >
                 <YoutubeLogo className={classes.socialIcons} />
               </NavLink>
-              <NavLink to={paths.HOMEPAGE}>
+              <NavLink
+                confirmNavigation={confirmNavigation}
+                to={paths.HOMEPAGE}
+              >
                 <LinkedinLogo className={classes.socialIcons} />
               </NavLink>
-              <NavLink to={paths.HOMEPAGE}>
+              <NavLink
+                confirmNavigation={confirmNavigation}
+                to={paths.HOMEPAGE}
+              >
                 <SlideshareLogo className={classes.socialIcons} />
               </NavLink>
             </p>

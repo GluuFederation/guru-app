@@ -24,6 +24,7 @@ import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 
 import { colors } from "../../../theme";
 import { getLoginUrl } from "../../../state/actions/profiles";
+import { setConfirmationPath } from "../../../state/actions/info";
 import { logout } from "../../../state/actions/logout";
 import { paths } from "../../../routes";
 
@@ -71,17 +72,23 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 interface Props {
   isDrawerOpen: boolean;
+  confirmNavigation?: boolean;
   toggleDrawer: () => void;
 }
 
-const Navbar: FunctionComponent<Props> = ({ toggleDrawer, isDrawerOpen }) => {
+const Navbar: FunctionComponent<Props> = ({
+  toggleDrawer,
+  isDrawerOpen,
+  confirmNavigation
+}) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
   const { user } = useSelector((state: AppState) => state.profiles);
 
   const navigateTo = (path: string) => () => {
-    history.push(path);
+    if (confirmNavigation) dispatch(setConfirmationPath(path));
+    else history.push(path);
   };
 
   const login = () => {

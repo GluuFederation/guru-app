@@ -30,6 +30,10 @@ import {
   clearTicketEntry
 } from "../../state/actions/ticket";
 import { uploadTicketFiles } from "../../state/actions/tickets";
+import {
+  setConfirmationExceptions,
+  setConfirmationText
+} from "../../state/actions/info";
 
 const useStyles = makeStyles({
   root: {
@@ -59,6 +63,11 @@ const CreateTicket = () => {
       if (isNaN(step)) history.push(paths.getCreateTicketPath(1));
       else history.push(paths.getCreateTicketPath(ticket.step));
     }
+    dispatch(
+      setConfirmationText(
+        "Are you sure you want to navigate away from this creating a ticket?"
+      )
+    );
   }, []);
 
   const next = () => {
@@ -77,6 +86,7 @@ const CreateTicket = () => {
 
   const create = () => {
     createTicket(ticket)().then(createdTicket => {
+      dispatch(clearTicketEntry());
       if (files.length) {
         const formData = new FormData();
         files.forEach((file, index) => {
@@ -84,7 +94,6 @@ const CreateTicket = () => {
         });
         uploadTicketFiles(createdTicket.slug, formData)(dispatch);
       }
-      dispatch(clearTicketEntry());
       history.push(paths.getTicketDetailPath(createdTicket.slug));
     });
   };
@@ -98,7 +107,7 @@ const CreateTicket = () => {
   };
 
   return (
-    <Page removeRootStyle>
+    <Page removeRootStyle confirmNavigation>
       <div className={classes.root}>
         <Container fixed>
           <Grid container>

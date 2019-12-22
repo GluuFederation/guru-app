@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FunctionComponent, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -29,14 +29,15 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { colors } from "../../theme";
 import { getLoginUrl } from "../../state/actions/profiles";
 import { logout } from "../../state/actions/logout";
+import { setConfirmationPath } from "../../state/actions/info";
 import useMenuElement from "../../utils/hooks/menu";
 import { paths } from "../../routes";
 import NavLink from "../NavLink";
+import { AppState } from "../../state/types/state";
+import Drawer from "./Drawer";
 
 import Logo from "../../assets/images/logo.png";
 import InfoIcon from "../../assets/images/info.svg";
-import { AppState } from "../../state/types/state";
-import Drawer from "./Drawer";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -77,7 +78,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-const Navbar = () => {
+interface Props {
+  confirmNavigation?: boolean;
+}
+
+const Navbar: FunctionComponent<Props> = ({ confirmNavigation }) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
@@ -100,7 +105,8 @@ const Navbar = () => {
   } = useMenuElement();
 
   const navigateTo = (path: string) => () => {
-    history.push(path);
+    if (confirmNavigation) dispatch(setConfirmationPath(path));
+    else history.push(path);
   };
 
   const login = () => {
@@ -157,8 +163,12 @@ const Navbar = () => {
               />
               {isLoggedIn ? (
                 <Hidden xsDown>
-                  <NavLink to={paths.TICKET_LIST}>Dashboard</NavLink>
-                  {/* <NavLink to={paths.TICKET_LIST}>Tickets</NavLink> */}
+                  <NavLink
+                    confirmNavigation={confirmNavigation}
+                    to={paths.TICKET_LIST}
+                  >
+                    Dashboard
+                  </NavLink>
                 </Hidden>
               ) : null}
             </div>
@@ -169,7 +179,7 @@ const Navbar = () => {
                     color="primary"
                     classes={{ root: classes.button }}
                     variant="outlined"
-                    onClick={navigateTo(paths.getCreateTicketPath(NaN))}
+                    onClick={navigateTo(paths.getCreateTicketPath(1))}
                   >
                     + Add Ticket
                   </Button>
@@ -292,7 +302,11 @@ const Navbar = () => {
           </Toolbar>
         </Container>
       </AppBar>
-      <Drawer isDrawerOpen={isDrawerOpen} toggleDrawer={toggleDrawer} />
+      <Drawer
+        isDrawerOpen={isDrawerOpen}
+        toggleDrawer={toggleDrawer}
+        confirmNavigation={confirmNavigation}
+      />
     </div>
   );
 };

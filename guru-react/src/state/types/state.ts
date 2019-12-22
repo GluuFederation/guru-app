@@ -26,6 +26,9 @@ export interface InfoState {
   statuses: Array<TicketStatus>;
   permissions: Array<Permission>;
   userRoles: Array<UserRole>;
+  confirmationPath: string;
+  confirmationText: string;
+  confirmationExceptions: Array<string>;
 }
 
 export interface TicketsFilterState {
