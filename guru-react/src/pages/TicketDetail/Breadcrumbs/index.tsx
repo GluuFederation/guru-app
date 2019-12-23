@@ -7,20 +7,27 @@ import Link from "@material-ui/core/Link";
 
 import { paths } from "../../../routes";
 import { Ticket } from "../../../state/types/tickets";
+import { useInfoState } from "../../../state/hooks";
 
 interface Props {
   ticket: Ticket;
 }
 
 const TicketDetailBreadcrumbs: FunctionComponent<Props> = ({ ticket }) => {
+  const getPath = (id: number) => {
+    return `${paths.TICKET_LIST}?categories=${id}`;
+  };
+  const { categories } = useInfoState();
+  const category = categories.find(item => ticket.category);
+
   return (
     <>
       <Breadcrumbs>
-        <Link component={RouterLink} to={paths.NOTIFICATIONS}>
-          Dashboard
+        <Link component={RouterLink} to={paths.HOMEPAGE}>
+          Home
         </Link>
-        <Link component={RouterLink} to={paths.TICKET_LIST}>
-          Tickets
+        <Link component={RouterLink} to={getPath(ticket.category)}>
+          {category ? category.name : ""}
         </Link>
         <Typography>#{ticket.id}</Typography>
       </Breadcrumbs>
