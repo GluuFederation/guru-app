@@ -58,7 +58,8 @@ const Autocomplete: FunctionComponent<Props> = props => {
   const [selectedItem, setSelectedItem] = useState<Suggestion | null>(null);
 
   useEffect(() => {
-    if (updateQueryFunction) updateQueryFunction(searchQuery);
+    if (updateQueryFunction && searchQuery && searchQuery !== value)
+      updateQueryFunction(searchQuery);
   }, [searchQuery]);
 
   useEffect(() => {
