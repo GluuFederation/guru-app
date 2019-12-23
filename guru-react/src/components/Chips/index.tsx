@@ -6,7 +6,7 @@ import Chip from "@material-ui/core/Chip";
 
 import { getChipClass } from "../../utils/chipStyles";
 import { Ticket } from "../../state/types/tickets";
-import { useTicketProperties } from "../../hPages/TicketDetail/hooks";
+import { useTicketProperties } from "../../pages/TicketDetail/hooks";
 
 const useStyles = makeStyles((theme: Theme) => ({
   chips: {

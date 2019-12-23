@@ -8,7 +8,10 @@ const initialState: InfoState = {
   issueTypes: [],
   permissions: [],
   products: [],
-  userRoles: []
+  userRoles: [],
+  confirmationPath: "",
+  confirmationText: "",
+  confirmationExceptions: []
 };
 
 const infoReducer = (
@@ -35,6 +38,17 @@ const infoReducer = (
     case actions.SET_USER_ROLES:
       const userRoles = (action as infoActions.SetUserRolesAction).userRoles;
       return { ...state, userRoles: [...userRoles] };
+    case actions.SET_CONFIRMATION_PATH:
+      const { path } = action as infoActions.SetConfirmationPathAction;
+      return { ...state, confirmationPath: path };
+    case actions.SET_CONFIRMATION_TEXT:
+      const { text } = action as infoActions.SetConfirmationTextAction;
+      return { ...state, confirmationText: text };
+    case actions.SET_CONFIRMATION_EXCEPTIONS:
+      const {
+        exceptions
+      } = action as infoActions.SetConfirmationExceptionsAction;
+      return { ...state, confirmationExceptions: exceptions };
     case actions.RESET_INFO_STATE:
       return { ...initialState };
     default:

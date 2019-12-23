@@ -46,6 +46,21 @@ export interface ResetInfoState {
   type: string;
 }
 
+export interface SetConfirmationPathAction {
+  type: string;
+  path: string;
+}
+
+export interface SetConfirmationTextAction {
+  type: string;
+  text: string;
+}
+
+export interface SetConfirmationExceptionsAction {
+  type: string;
+  exceptions: Array<string>;
+}
+
 export type InfoAction =
   | SetCategoriesAction
   | SetIssueTypesAction
@@ -53,7 +68,10 @@ export type InfoAction =
   | SetStatusesAction
   | SetPermissionsAction
   | SetUserRolesAction
-  | ResetInfoState;
+  | ResetInfoState
+  | SetConfirmationPathAction
+  | SetConfirmationTextAction
+  | SetConfirmationExceptionsAction;
 
 export const setCategories = (
   categories: Array<TicketCategory>
@@ -95,6 +113,27 @@ export const setUserRoles = (
 ): SetUserRolesAction => ({
   type: actions.SET_USER_ROLES,
   userRoles
+});
+
+export const setConfirmationPath = (
+  path: string
+): SetConfirmationPathAction => ({
+  type: actions.SET_CONFIRMATION_PATH,
+  path
+});
+
+export const setConfirmationText = (
+  text: string
+): SetConfirmationTextAction => ({
+  type: actions.SET_CONFIRMATION_TEXT,
+  text
+});
+
+export const setConfirmationExceptions = (
+  exceptions: Array<string>
+): SetConfirmationExceptionsAction => ({
+  type: actions.SET_CONFIRMATION_EXCEPTIONS,
+  exceptions
 });
 
 export const resetInfoState = (): ResetInfoState => ({

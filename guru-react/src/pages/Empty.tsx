@@ -12,7 +12,7 @@ class Home extends Component<Props> {
   render() {
     return (
       <Page>
-        <Navbar/>
+        <Navbar />
         <div>Welcome to the homepage</div>
       </Page>
     );
