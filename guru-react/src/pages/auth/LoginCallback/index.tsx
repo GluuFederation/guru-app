@@ -36,7 +36,7 @@ const LoginCallback = () => {
     };
     login(queryParams)(dispatch)
       .then(success => {
-        history.push(paths.HOMEPAGE);
+        history.push(paths.TICKET_LIST);
       })
       .catch(error => {
         if (
