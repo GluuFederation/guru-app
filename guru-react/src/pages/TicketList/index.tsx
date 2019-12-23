@@ -424,7 +424,7 @@ class TicketList extends Component<Props, State> {
                     <Grid container spacing={2}>
                       {tickets.map(ticket => (
                         <Grid item xs={12} key={ticket.id}>
-                          <TicketListItem shortTicket={ticket} />
+                          <TicketListItem ticket={ticket} />
                         </Grid>
                       ))}
                     </Grid>
