@@ -83,13 +83,16 @@ const CreateTicket = () => {
   useEffect(() => {
     if (isNaN(paramsStep)) {
       if (isNaN(step)) history.push(paths.getCreateTicketPath(1));
-      else history.push(paths.getCreateTicketPath(ticket.step));
+      else dispatch(setTicketStep(paramsStep));
     }
     dispatch(
       setConfirmationText(
         "Are you sure you want to navigate away from this creating a ticket?"
       )
     );
+  }, []);
+
+  useEffect(() => {
     const currentStep = isCommunity ? (step < 4 ? 4 : step) : step;
     if (isCommunity) setCommunityDefaults();
     dispatch(setTicketStep(currentStep));

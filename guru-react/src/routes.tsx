@@ -134,7 +134,7 @@ const routes: Array<RouteType> = [
   },
   {
     path: paths.CREATE_TICKET,
-    component: CreateTicket
+    render: props => <CreateTicket key={props.match.params.step} />
   },
 
   // errors

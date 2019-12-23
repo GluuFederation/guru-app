@@ -33,8 +33,6 @@ const useValidators = () => {
           return Promise.reject(Error("Please select a company"));
         break;
       case 2:
-        if (!createdBy)
-          return Promise.reject(Error("Please select a valid ticket creator"));
         try {
           await isUserInCompany(createdBy, companyAssociation);
           await isUserInCompany(createdFor, companyAssociation);
