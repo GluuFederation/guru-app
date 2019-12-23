@@ -17,9 +17,7 @@ import Button from "@material-ui/core/Button";
 
 import { colors } from "../../theme";
 
-import Page from "../../components/Page";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
+import Page from "../../components/EmptyPage";
 import Autocomplete, {
   Suggestion,
   SearchButtonOptions
@@ -360,7 +358,6 @@ class TicketList extends Component<Props, State> {
 
     return (
       <Page>
-        <Navbar />
         <TicketNav setTicketsLoading={this.setTicketsLoading} />
         <div className={`app-body ${classes.root}`}>
           <Grid container spacing={4}>
@@ -500,7 +497,6 @@ class TicketList extends Component<Props, State> {
             </div>
           </Modal>
         </div>
-        <Footer />
       </Page>
     );
   }

@@ -48,7 +48,7 @@ const useStyles = makeStyles({
     backgroundColor: colors.MAIN_COLOR
   },
   errorMessage: {
-    colors: colors.RED,
+    color: colors.RED,
     marginBottom: ".5rem",
     marginTop: 0
   }
@@ -95,15 +95,24 @@ const CreateTicket = () => {
     dispatch(setTicketStep(currentStep));
     history.push(paths.getCreateTicketPath(currentStep));
     setIsLoading(false);
-  }, []);
+  }, [step]);
+
+  useEffect(() => {
+    const html = document.getElementsByTagName("html")[0];
+    if (html) html.scrollTop = 0;
+  }, [errorMessage]);
 
   const next = async () => {
+    setErrorMessage("");
+    setIsLoading(true);
     try {
       await validateStep(step);
+      setIsLoading(false);
       const newStep = step + 1;
       dispatch(setTicketStep(newStep));
       history.push(paths.getCreateTicketPath(newStep));
     } catch (error) {
+      setIsLoading(false);
       setErrorMessage(error.message);
     }
   };

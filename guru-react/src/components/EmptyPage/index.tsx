@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 import Page from "../Page";
 import Navbar from "../Navbar";
@@ -15,6 +16,13 @@ const EmptyPage: FunctionComponent<Props> = ({
   confirmNavigation,
   children
 }) => {
+  const location = useLocation();
+  const { pathname, search } = location;
+  useEffect(() => {
+    const html = document.getElementsByTagName("html")[0];
+    if (html) html.scrollTop = 0;
+  }, [pathname, search]);
+
   return (
     <Page>
       <Navbar confirmNavigation={confirmNavigation} />

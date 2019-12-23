@@ -40,15 +40,15 @@ const SideBar: FunctionComponent<Props> = ({ ticket, step }) => {
         />
       ) : null}
 
-      {step > 5 ? (
+      {step > 4 ? (
         <Info
           canEdit={true}
           ticket={ticket}
           sideBarType={SidebarType.Category}
         />
       ) : null}
-      {step > 6 ? <GluuServer canEdit={true} ticket={ticket} /> : null}
-      {step > 7 ? <Os canEdit={true} ticket={ticket} /> : null}
+      {step > 5 ? <GluuServer canEdit={true} ticket={ticket} /> : null}
+      {step > 6 ? <Os canEdit={true} ticket={ticket} /> : null}
       {step > 8 ? <Products canEdit={true} ticket={ticket} /> : null}
     </>
   );
