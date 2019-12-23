@@ -8,6 +8,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { setTicketOsVersion, setTicketOs } from "../../../state/actions/ticket";
 import { CreateTicketState } from "../../../state/types/state";
 import { useDefaultStyles } from "../styles";
+import { TicketOs } from "../../../state/types/info";
 
 interface Props {
   ticket: CreateTicketState;
@@ -31,6 +32,9 @@ const Step6: FunctionComponent<Props> = ({ ticket }) => {
     }
   };
 
+  const osValues = Object.values(TicketOs);
+  const osKeys = Object.keys(TicketOs);
+
   return (
     <div className={classes.root}>
       <Grid container>
@@ -50,13 +54,11 @@ const Step6: FunctionComponent<Props> = ({ ticket }) => {
                 margin="dense"
                 variant="outlined"
               >
-                <MenuItem value="Ubuntu">Ubuntu</MenuItem>
-                <MenuItem value="CentOS">CentOS</MenuItem>
-                <MenuItem value="RHEL">RHEL</MenuItem>
-                <MenuItem value="Debian">Debian</MenuItem>
-                <MenuItem value="Docker">Docker</MenuItem>
-                <MenuItem value="RH Container">RH Container</MenuItem>
-                <MenuItem value="Other">Other</MenuItem>
+                {osKeys.map((key, index) => (
+                  <MenuItem value={osValues[index] as string} key={key}>
+                    {key}
+                  </MenuItem>
+                ))}
               </TextField>
             </Grid>
             <Grid item md={6}>

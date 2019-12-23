@@ -45,8 +45,8 @@ const Step4: FunctionComponent<Props> = ({ ticket }) => {
   const { categories } = useInfoState();
 
   const setCategory = (categoryId: number) => () => {
-    const issueType = categories.find(item => item.id === categoryId);
-    if (issueType) {
+    const category = categories.find(item => item.id === categoryId);
+    if (category) {
       dispatch(setTicketCategory(categoryId));
     }
   };

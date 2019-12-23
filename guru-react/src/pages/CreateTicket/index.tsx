@@ -28,10 +28,14 @@ import { AppState } from "../../state/types/state";
 import {
   setTicketStep,
   createTicket,
-  clearTicketEntry
+  clearTicketEntry,
+  setTicketCompany,
+  setTicketCreator
 } from "../../state/actions/ticket";
 import { uploadTicketFiles } from "../../state/actions/tickets";
 import { setConfirmationText } from "../../state/actions/info";
+import { useTicketPermissions } from "../TicketDetail/hooks";
+import useValidators from "./validators";
 
 const useStyles = makeStyles({
   root: {
@@ -42,11 +46,24 @@ const useStyles = makeStyles({
   nextButton: {
     color: colors.MAIN_BACKGROUND,
     backgroundColor: colors.MAIN_COLOR
+  },
+  errorMessage: {
+    colors: colors.RED,
+    marginBottom: ".5rem",
+    marginTop: 0
   }
 });
 
+export const getDisplayStep = (step: number, isCommunity?: boolean): number => {
+  if (isCommunity) {
+    return step > 3 ? step - 3 : step;
+  }
+  return step;
+};
+
 const CreateTicket = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
   const [files, setFiles] = useState<Array<File>>([]);
   const ticket = useSelector((state: AppState) => state.ticket);
   const params: any = useParams();
@@ -55,6 +72,13 @@ const CreateTicket = () => {
   const paramsStep = parseInt(params.step, 10);
   const { step } = ticket;
   const classes = useStyles();
+  const { isCommunity, user } = useTicketPermissions(null);
+  const validateStep = useValidators();
+
+  const setCommunityDefaults = () => {
+    dispatch(setTicketCompany(user.company));
+    dispatch(setTicketCreator(user));
+  };
 
   useEffect(() => {
     if (isNaN(paramsStep)) {
@@ -66,12 +90,22 @@ const CreateTicket = () => {
         "Are you sure you want to navigate away from this creating a ticket?"
       )
     );
+    const currentStep = isCommunity ? (step < 4 ? 4 : step) : step;
+    if (isCommunity) setCommunityDefaults();
+    dispatch(setTicketStep(currentStep));
+    history.push(paths.getCreateTicketPath(currentStep));
+    setIsLoading(false);
   }, []);
 
-  const next = () => {
-    const newStep = step + 1;
-    dispatch(setTicketStep(newStep));
-    history.push(paths.getCreateTicketPath(newStep));
+  const next = async () => {
+    try {
+      await validateStep(step);
+      const newStep = step + 1;
+      dispatch(setTicketStep(newStep));
+      history.push(paths.getCreateTicketPath(newStep));
+    } catch (error) {
+      setErrorMessage(error.message);
+    }
   };
 
   const back = () => {
@@ -83,17 +117,22 @@ const CreateTicket = () => {
   };
 
   const create = () => {
-    createTicket(ticket)().then(createdTicket => {
-      dispatch(clearTicketEntry());
-      if (files.length) {
-        const formData = new FormData();
-        files.forEach((file, index) => {
-          formData.append(`file-${index}`, file);
-        });
-        uploadTicketFiles(createdTicket.slug, formData)(dispatch);
-      }
-      history.push(paths.getTicketDetailPath(createdTicket.slug));
-    });
+    setIsLoading(true);
+    createTicket(ticket)()
+      .then(createdTicket => {
+        dispatch(clearTicketEntry());
+        if (files.length) {
+          const formData = new FormData();
+          files.forEach((file, index) => {
+            formData.append(`file-${index}`, file);
+          });
+          uploadTicketFiles(createdTicket.slug, formData)(dispatch);
+        }
+        history.push(paths.getTicketDetailPath(createdTicket.slug));
+      })
+      .catch(error => {
+        setIsLoading(false);
+      });
   };
 
   const cancel = () => {
@@ -113,7 +152,15 @@ const CreateTicket = () => {
           <Grid container>
             <Grid item xs={12}>
               <Typography variant="h4">Create Ticket</Typography>
-              <p>Step {step} of 9</p>
+              <p>
+                Step {getDisplayStep(step, isCommunity)} of{" "}
+                {getDisplayStep(9, isCommunity)}
+              </p>
+            </Grid>
+            <Grid item xs={12}>
+              {errorMessage ? (
+                <div className={classes.errorMessage}>{errorMessage}</div>
+              ) : null}
             </Grid>
           </Grid>
           <Grid container spacing={4}>
