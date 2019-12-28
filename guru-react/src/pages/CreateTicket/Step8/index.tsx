@@ -5,7 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 
-import { useInfoState } from "../../../state/hooks";
+import { useInfoState } from "../../../state/hooks/state";
 import { updateNewTicket } from "../../../state/actions/ticket";
 import { CreateTicketState } from "../../../state/types/state";
 import { useDefaultStyles } from "../styles";

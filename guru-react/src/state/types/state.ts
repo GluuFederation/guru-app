@@ -32,7 +32,7 @@ export interface InfoState {
 }
 
 export interface TicketsFilterState {
-  companies: Array<Company>;
+  companies: Array<ShortCompany>;
   creators: Array<ShortUser>;
   assignees: Array<ShortUser>;
   categories: Array<TicketCategory>;

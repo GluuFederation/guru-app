@@ -20,7 +20,7 @@ import {
   setFilterQuery,
   fetchTickets
 } from "../../state/actions/tickets";
-import { useTicketsState } from "../../state/hooks";
+import { useTicketsState } from "../../state/hooks/state";
 import { Company, ShortUser } from "../../state/types/profiles";
 import { TicketFilterOrder } from "../../state/types/tickets";
 import {

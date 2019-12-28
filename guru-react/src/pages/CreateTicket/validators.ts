@@ -1,4 +1,4 @@
-import { useTicketState, useInfoState } from "../../state/hooks";
+import { useTicketState, useInfoState } from "../../state/hooks/state";
 import { ShortUser, ShortCompany } from "../../state/types/profiles";
 import { TicketOs } from "../../state/types/info";
 

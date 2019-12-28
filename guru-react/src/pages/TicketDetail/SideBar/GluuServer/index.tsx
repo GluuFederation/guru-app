@@ -11,7 +11,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import useMenuElement from "../../../../utils/hooks/menu";
 import { updateTicket } from "../../../../state/actions/tickets";
 import { updateNewTicket } from "../../../../state/actions/ticket";
-import { useInfoState } from "../../../../state/hooks";
+import { useInfoState } from "../../../../state/hooks/state";
 import { useStyles } from "../hooks";
 import { CreateTicketState } from "../../../../state/types/state";
 import { Ticket } from "../../../../state/types/tickets";

@@ -18,7 +18,7 @@ import Autocomplete, {
 } from "../../components/Autocomplete";
 import { TicketFilterOrder } from "../../state/types/tickets";
 import TicketNav from "./TicketNav";
-import TicketListSidebar from "./TicketListSidebar";
+import TicketListSidebar from "./SideBar";
 import TicketListItem from "./TicketListItem";
 import AllFilters from "./AllFilters";
 import { useStatePathSync } from "./hooks";
@@ -26,7 +26,7 @@ import useStyles from "./styles";
 import { useTicketPermissions } from "../TicketDetail/hooks";
 import useModal from "../../utils/hooks/modal";
 import { useSearch } from "../../utils/hooks/tickets";
-import { AppState } from "../../state/types/state";
+import { useTicketsState } from "../../state/hooks/state";
 
 const TicketList = () => {
   const { isUserAuthenticated } = useTicketPermissions(null);
@@ -44,7 +44,7 @@ const TicketList = () => {
   const dispatch = useDispatch();
   const { tickets: searchedTickets, searchTickets } = useSearch();
   const classes = useStyles();
-  const { filters, tickets } = useSelector((state: AppState) => state.tickets);
+  const { filters, tickets } = useTicketsState();
 
   useEffect(() => {
     setIsLoading(true);

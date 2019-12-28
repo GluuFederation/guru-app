@@ -5,7 +5,7 @@ import { push } from "connected-react-router";
 
 import { paths } from "../../routes";
 import { getSearchString } from "../../utils/filterQueries";
-import { Company, ShortUser } from "../types/profiles";
+import { Company, ShortUser, ShortCompany } from "../types/profiles";
 import {
   TicketCategory,
   GluuProduct,
@@ -24,7 +24,7 @@ import { AppState } from "../types/state";
 
 export interface AddFilterCompanyAction {
   type: string;
-  company: Company;
+  company: ShortCompany;
 }
 
 export interface AddFilterCreatorAction {
@@ -220,7 +220,9 @@ export type TicketsAction =
   | ResetTicketsStateAction
   | SetTicketListItemAssigneeAction;
 
-export const addFilterCompany = (company: Company): AddFilterCompanyAction => ({
+export const addFilterCompany = (
+  company: ShortCompany
+): AddFilterCompanyAction => ({
   type: actions.ADD_FILTER_COMPANY,
   company
 });
@@ -586,13 +588,13 @@ export const uploadTicketFiles = (ticketSlug: string, data: FormData) => {
 };
 
 export const changeTicketSubscription = (
-  tickerSlug: string,
+  ticketSlug: string,
   subscribe: boolean
 ) => {
   return async (
     dispatch: ThunkDispatch<{}, {}, AnyAction>
   ): Promise<Ticket> => {
-    const URL = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/${tickerSlug}/subscribe/`;
+    const URL = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/${ticketSlug}/subscribe/`;
     return axios.post(URL, { subscribe }).then(response => {
       const results = response.data.results;
       dispatch(setTicket(results));

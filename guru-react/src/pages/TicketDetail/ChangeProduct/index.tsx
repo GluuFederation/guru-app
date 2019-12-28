@@ -27,7 +27,7 @@ import {
   useInfoState,
   useTicketsState,
   useTicketState
-} from "../../../state/hooks";
+} from "../../../state/hooks/state";
 
 const useStyles = makeStyles({
   root: {

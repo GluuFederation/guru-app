@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
-import { AppState } from "../types/state";
+
+import { AppState } from "../../types/state";
 
 export const useInfoState = () => useSelector((state: AppState) => state.info);
 export const useTicketState = () =>

@@ -7,7 +7,7 @@ import Link from "@material-ui/core/Link";
 
 import { paths } from "../../../routes";
 import { Ticket } from "../../../state/types/tickets";
-import { useInfoState } from "../../../state/hooks";
+import { useInfoState } from "../../../state/hooks/state";
 
 interface Props {
   ticket: Ticket;

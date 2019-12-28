@@ -1,4 +1,4 @@
-import { Company, ShortUser } from "../state/types/profiles";
+import { ShortCompany, ShortUser } from "../state/types/profiles";
 import {
   TicketIssueType,
   GluuProduct,
@@ -8,7 +8,7 @@ import {
 import { TicketFilterOrder } from "../state/types/tickets";
 
 export const getSearchString = (params: {
-  companies?: Array<Company>;
+  companies?: Array<ShortCompany>;
   creators?: Array<ShortUser>;
   assignees?: Array<ShortUser>;
   issueTypes?: Array<TicketIssueType>;

@@ -8,7 +8,7 @@ import CardContent from "@material-ui/core/CardContent";
 
 import { colors } from "../../../theme";
 import { setTicketIssueType } from "../../../state/actions/ticket";
-import { useInfoState } from "../../../state/hooks";
+import { useInfoState } from "../../../state/hooks/state";
 import { CreateTicketState } from "../../../state/types/state";
 import { getCardClass } from "../../../utils/chipStyles";
 import { useDefaultStyles } from "../styles";

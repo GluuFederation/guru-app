@@ -16,7 +16,7 @@ import { useStyles } from "../hooks";
 import { CreateTicketState } from "../../../../state/types/state";
 import { Ticket, SidebarType } from "../../../../state/types/tickets";
 import { getChipClass } from "../../../../utils/chipStyles";
-import { useInfoState } from "../../../../state/hooks";
+import { useInfoState } from "../../../../state/hooks/state";
 
 interface InfoItem {
   id: number;

@@ -9,7 +9,7 @@ import Modal from "@material-ui/core/Modal";
 
 import { colors } from "../../theme";
 import { paths } from "../../routes";
-import { useInfoState } from "../../state/hooks";
+import { useInfoState } from "../../state/hooks/state";
 import useModal from "../../utils/hooks/modal";
 import { setConfirmationPath } from "../../state/actions/info";
 import { clearTicketEntry } from "../../state/actions/ticket";

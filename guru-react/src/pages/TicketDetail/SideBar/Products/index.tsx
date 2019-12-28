@@ -8,7 +8,7 @@ import Button from "@material-ui/core/Button";
 import EditIcon from "@material-ui/icons/Edit";
 import AddCircleOutline from "@material-ui/icons/AddCircleOutline";
 
-import { useInfoState } from "../../../../state/hooks";
+import { useInfoState } from "../../../../state/hooks/state";
 import useModal from "../../../../utils/hooks/modal";
 import { useStyles } from "../hooks";
 import { CreateTicketState } from "../../../../state/types/state";

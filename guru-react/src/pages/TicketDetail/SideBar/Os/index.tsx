@@ -7,7 +7,7 @@ import Divider from "@material-ui/core/Divider";
 import EditIcon from "@material-ui/icons/Edit";
 
 import useModal from "../../../../utils/hooks/modal";
-import { useInfoState } from "../../../../state/hooks";
+import { useInfoState } from "../../../../state/hooks/state";
 import { useStyles } from "../hooks";
 import { CreateTicketState } from "../../../../state/types/state";
 import { Ticket } from "../../../../state/types/tickets";
