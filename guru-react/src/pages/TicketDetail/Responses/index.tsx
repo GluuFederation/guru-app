@@ -42,7 +42,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   replyButton: {
     backgroundColor: colors.MAIN_COLOR,
-    color: colors.MAIN_BACKGROUND
+    color: colors.MAIN_BACKGROUND,
+    '&:hover': {
+      backgroundColor: colors.BUTTON_HOVER_COLOR,
+      color: colors.MAIN_BACKGROUND
+    }
   },
   replyButtonDiv: {
     textAlign: "right"

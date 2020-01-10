@@ -6,6 +6,7 @@ export const colors = {
   TERTIARY_BACKGROUND: "#f8f9fb",
   LIGHT_BUTTON: "#e7eded",
   MAIN_COLOR: "#00b572",
+  BUTTON_HOVER_COLOR: "#059862",
   DARK_TEXT: "#181F1C",
   LIGHTER_TEXT: "#6f757b",
   VERY_LIGHT_TEXT: "#EFF1F4",

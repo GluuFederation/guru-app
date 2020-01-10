@@ -51,6 +51,7 @@ const Home = () => {
 
   const searchTickets = (q: string) => {
     const url = `${process.env.REACT_APP_API_BASE}/api/v1/tickets/search/`;
+    q = q.toLowerCase();
     const params = { q };
 
     axios.get(url, { params }).then(response => {

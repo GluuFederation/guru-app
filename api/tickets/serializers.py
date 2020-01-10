@@ -10,6 +10,7 @@ from tickets import models as m
 from info.models import (
     GluuProduct, TicketStatus, TicketCategory, TicketIssueType
 )
+from info.serializers import TicketCategorySerializer
 from profiles.models import UserRole, User
 from profiles.serializers import ShortUserSerializer, ShortCompanySerializer
 
@@ -88,6 +89,7 @@ class TicketSerializer(serializers.ModelSerializer):
     created_by = ShortUserSerializer(read_only=True)
     created_for = ShortUserSerializer(read_only=True)
     assignee = ShortUserSerializer(read_only=True)
+    category = TicketCategorySerializer(read_only=True)
     slug = serializers.ReadOnlyField()
     updated_by = ShortUserSerializer(read_only=True)
     voters = ShortUserSerializer(many=True, read_only=True)
@@ -131,6 +133,7 @@ class TicketSerializer(serializers.ModelSerializer):
         created_by = self.context.get('created_by', None)
         created_for_id = self.context.get('created_for', {}).get('id', '')
         company_id = self.context.get('company_association', {}).get('id', '')
+        category_id = self.context.get('category_id', {})
         validated_data.pop('status')
         products = validated_data.pop('ticketproduct_set', [])
 
@@ -181,6 +184,7 @@ class TicketSerializer(serializers.ModelSerializer):
             created_by=created_by,
             company_association=company_association,
             created_for=created_for,
+            category=category_id,
             status=status_new,
             **validated_data
         )

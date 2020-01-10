@@ -13,7 +13,8 @@ import { ReactComponent as SearchImg } from "../../assets/images/search.svg";
 
 const useStyles = makeStyles({
   dropdown: {
-    position: "absolute"
+    position: "absolute",
+    zIndex: 10
   }
 });
 

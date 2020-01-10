@@ -48,8 +48,8 @@ const styles = (theme: Theme) =>
       textTransform: "capitalize",
       color: colors.VERY_LIGHT_TEXT,
       "&:hover": {
-        color: "#2dce56",
-        backgroundColor: colors.SECONDARY_BACKGROUND
+        color: "#fff",
+        backgroundColor: colors.BUTTON_HOVER_COLOR
       }
     },
     btnDeny: {
