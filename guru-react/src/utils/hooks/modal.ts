@@ -11,7 +11,8 @@ const useModal = () => {
   return {
     isOpen,
     open,
-    close
+    close,
+    setIsOpen
   };
 };
 

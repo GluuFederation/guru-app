@@ -7,6 +7,19 @@ export enum TicketFilterOrder {
   UserZA = "userza"
 }
 
+export enum SidebarType {
+  CompanyAssociation = "companyAssociation",
+  Creator = "creator",
+  Assignee = "assignee",
+  IssueType = "issueType",
+  Status = "status",
+  Category = "category",
+  GluuServer = "gluuServer",
+  Os = "os",
+  Products = "products",
+  NewProduct = "newProduct"
+}
+
 export interface TicketProduct {
   id: number;
   product: number;

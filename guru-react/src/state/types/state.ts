@@ -26,6 +26,9 @@ export interface InfoState {
   statuses: Array<TicketStatus>;
   permissions: Array<Permission>;
   userRoles: Array<UserRole>;
+  confirmationPath: string;
+  confirmationText: string;
+  confirmationExceptions: Array<string>;
 }
 
 export interface TicketsFilterState {
@@ -84,7 +87,7 @@ export interface AppNotificationsState {
 }
 
 export interface ProfilesState {
-  user: User | null;
+  user: User;
   token: string;
   associatedCompanies: Array<Company>;
   teamMembers: Array<TeamMember>;

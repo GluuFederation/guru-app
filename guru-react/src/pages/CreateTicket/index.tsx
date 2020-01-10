@@ -1,28 +1,17 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
 
-import { withStyles, WithStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/styles";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import { createStyles, Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
+import Hidden from "@material-ui/core/Hidden";
 
 import { colors } from "../../theme";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import Page from "../../components/Page";
-import { WithUserProps, withUser } from "../../state/hocs/profiles";
-import {
-  WithCreateTicketProps,
-  withCreateTicket
-} from "../../state/hocs/ticket";
-import {
-  WithTicketDetailProps,
-  withTicketDetail
-} from "../../state/hocs/tickets";
-import { WithInfoProps, withInfo } from "../../state/hocs/info";
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import Page from "../../components/EmptyPage";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
@@ -32,253 +21,220 @@ import Step6 from "./Step6";
 import Step7 from "./Step7";
 import Step8 from "./Step8";
 import Step9 from "./Step9";
+import SideBar from "./SideBar";
 import { paths } from "../../routes";
-import TicketDetailSideBarItem, {
-  MenuType
-} from "../../components/TicketDetail/TicketDetailSideBarItem";
+import FullPageLoader from "../../components/loaders/FullPageLoader";
+import { AppState } from "../../state/types/state";
+import {
+  setTicketStep,
+  createTicket,
+  clearTicketEntry,
+  setTicketCompany,
+  setTicketCreator
+} from "../../state/actions/ticket";
+import { uploadTicketFiles } from "../../state/actions/tickets";
+import { setConfirmationText } from "../../state/actions/info";
+import { useTicketPermissions } from "../TicketDetail/hooks";
+import useValidators from "./validators";
 
-import "easymde/dist/easymde.min.css";
-import { history } from "../../state/store";
-
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {
-      flexGrow: 1,
-      backgroundColor: colors.SECONDARY_BACKGROUND,
-      marginTop: "4em"
-    },
-    nextButton: {
-      color: colors.MAIN_BACKGROUND,
-      backgroundColor: colors.MAIN_COLOR,
-      '&:hover': {
-        backgroundColor: colors.BUTTON_HOVER_COLOR,
-        color: colors.MAIN_BACKGROUND
-      }
-    }
-  });
-
-type Props = WithUserProps &
-  WithCreateTicketProps &
-  WithTicketDetailProps &
-  WithInfoProps &
-  RouteComponentProps &
-  WithStyles<typeof styles>;
-
-interface State {
-  isLoading: boolean;
-  files: Array<File>;
-}
-
-class CreateTicket extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      isLoading: true,
-      files: []
-    };
+const useStyles = makeStyles({
+  root: {
+    backgroundColor: colors.SECONDARY_BACKGROUND,
+    paddingBottom: "5rem",
+    paddingTop: "2rem"
+  },
+  nextButton: {
+    color: colors.MAIN_BACKGROUND,
+    backgroundColor: colors.MAIN_COLOR
+  },
+  errorMessage: {
+    color: colors.RED,
+    marginBottom: ".5rem",
+    marginTop: 0
   }
+});
 
-  componentDidMount() {
-    const { newTicket, history } = this.props;
-    const paramsStep = parseInt((this.props.match.params as any).step, 10);
+export const getDisplayStep = (step: number, isCommunity?: boolean): number => {
+  if (isCommunity) {
+    return step > 3 ? step - 3 : step;
+  }
+  return step;
+};
+
+const CreateTicket = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [files, setFiles] = useState<Array<File>>([]);
+  const ticket = useSelector((state: AppState) => state.ticket);
+  const params: any = useParams();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const paramsStep = parseInt(params.step, 10);
+  const { step } = ticket;
+  const classes = useStyles();
+  const { isCommunity, user } = useTicketPermissions(null);
+  const validateStep = useValidators();
+
+  const setCommunityDefaults = () => {
+    dispatch(setTicketCompany(user.company));
+    dispatch(setTicketCreator(user));
+  };
+
+  useEffect(() => {
     if (isNaN(paramsStep)) {
-      history.push(paths.getCreateTicketPath(newTicket.step));
+      if (isNaN(step)) history.push(paths.getCreateTicketPath(1));
+      else dispatch(setTicketStep(paramsStep));
     }
-  }
-
-  next = () => {
-    const newStep = this.props.newTicket.step + 1;
-    this.props.setCreateTicketStep(newStep);
-    history.push(paths.getCreateTicketPath(newStep));
-  };
-
-  back = () => {
-    const { setCreateTicketStep, newTicket } = this.props;
-    const newStep = newTicket.step - 1;
-    if (newTicket.step > 1) setCreateTicketStep(newStep);
-    history.push(paths.getCreateTicketPath(newStep));
-  };
-
-  createTicket = () => {
-    const {
-      createTicket,
-      clearTicketEntry,
-      newTicket,
-      history,
-      uploadTicketFiles
-    } = this.props;
-    const { files } = this.state;
-    createTicket(newTicket).then(ticket => {
-      if (files.length) {
-        const formData = new FormData();
-        files.forEach((file, index) => {
-          formData.append(`file-${index}`, file);
-        });
-        console.log(files, formData);
-        uploadTicketFiles(ticket.slug, formData);
-      }
-      clearTicketEntry();
-      history.push(paths.getTicketDetailPath(ticket.slug));
-    });
-  };
-
-  cancel = () => {
-    this.props.clearTicketEntry();
-  };
-
-  onFileDrop = (files: Array<File>) => {
-    this.setState({ files: [...this.state.files, ...files] });
-    console.log(files);
-  };
-
-  render() {
-    const { classes, newTicket } = this.props;
-    const {
-      step,
-      companyAssociation,
-      createdFor,
-      issueType,
-      category,
-      os,
-      gluuServer,
-      hasProducts
-    } = newTicket;
-
-    return (
-      <Page>
-        <Navbar />
-        <div className={`app-body ${classes.root}`}>
-          <Container fixed>
-            <Grid container>
-              <Grid item xs={12}>
-                <Typography variant="h6">Create Ticket</Typography>
-                <p>Step {step} of 9</p>
-              </Grid>
-            </Grid>
-            <Grid container spacing={4}>
-              <Grid item md={8}>
-                {step === 1 ? (
-                  <Step1 />
-                ) : step === 2 ? (
-                  <Step2 />
-                ) : step === 3 ? (
-                  <Step3 />
-                ) : step === 4 ? (
-                  <Step4 />
-                ) : step === 5 ? (
-                  <Step5 />
-                ) : step === 6 ? (
-                  <Step6 />
-                ) : step === 7 ? (
-                  <Step7 />
-                ) : step === 8 ? (
-                  <Step8 />
-                ) : step === 9 ? (
-                  <Step9 onFileDrop={this.onFileDrop} />
-                ) : null}
-              </Grid>
-              <Grid item md={3}>
-                {companyAssociation ? (
-                  <TicketDetailSideBarItem
-                    menuType={MenuType.CompanyAssociation}
-                    canEdit={true}
-                    isNew={true}
-                  />
-                ) : null}
-                {createdFor ? (
-                  <TicketDetailSideBarItem
-                    menuType={MenuType.Creator}
-                    canEdit={true}
-                    isNew={true}
-                  />
-                ) : null}
-                {issueType ? (
-                  <TicketDetailSideBarItem
-                    menuType={MenuType.IssueType}
-                    canEdit={true}
-                    isNew={true}
-                  />
-                ) : null}
-                {category ? (
-                  <TicketDetailSideBarItem
-                    menuType={MenuType.Category}
-                    canEdit={true}
-                    isNew={true}
-                  />
-                ) : null}
-                {gluuServer ? (
-                  <TicketDetailSideBarItem
-                    menuType={MenuType.GluuServer}
-                    canEdit={true}
-                    isNew={true}
-                  />
-                ) : null}
-                {os ? (
-                  <TicketDetailSideBarItem
-                    menuType={MenuType.Os}
-                    canEdit={true}
-                    isNew={true}
-                  />
-                ) : null}
-                {hasProducts ? (
-                  <TicketDetailSideBarItem
-                    menuType={MenuType.Products}
-                    canEdit={true}
-                    isNew={true}
-                  />
-                ) : null}
-                {step === 9 ? (
-                  <TicketDetailSideBarItem
-                    menuType={MenuType.NewProduct}
-                    canEdit={true}
-                    isNew={true}
-                  />
-                ) : null}
-              </Grid>
-            </Grid>
-            <Box mt={2}>
-              {step === 9 ? (
-                <Grid container>
-                  <Grid item>
-                    <Button
-                      classes={{ root: classes.nextButton }}
-                      onClick={this.createTicket}
-                    >
-                      Save and Submit
-                    </Button>
-                  </Grid>
-                  <Grid item>
-                    <Button onClick={this.cancel}>Cancel</Button>
-                  </Grid>
-                </Grid>
-              ) : step !== 7 ? (
-                <Grid container>
-                  <Grid item>
-                    <Button onClick={this.back}>Back</Button>
-                  </Grid>
-                  <Grid item>
-                    <Button
-                      classes={{ root: classes.nextButton }}
-                      onClick={this.next}
-                    >
-                      Next
-                    </Button>
-                  </Grid>
-                </Grid>
-              ) : null}
-            </Box>
-          </Container>
-          <Footer />
-        </div>
-      </Page>
+    dispatch(
+      setConfirmationText(
+        "Are you sure you want to navigate away from this creating a ticket?"
+      )
     );
-  }
-}
+  }, []);
 
-export default withRouter(
-  withInfo(
-    withCreateTicket(
-      withTicketDetail(withUser(withStyles(styles)(CreateTicket)))
-    )
-  )
-);
+  useEffect(() => {
+    const currentStep = isCommunity ? (step < 4 ? 4 : step) : step;
+    if (isCommunity) setCommunityDefaults();
+    dispatch(setTicketStep(currentStep));
+    history.push(paths.getCreateTicketPath(currentStep));
+    setIsLoading(false);
+  }, [step]);
+
+  useEffect(() => {
+    const html = document.getElementsByTagName("html")[0];
+    if (html) html.scrollTop = 0;
+  }, [errorMessage]);
+
+  const next = async () => {
+    setErrorMessage("");
+    setIsLoading(true);
+    try {
+      await validateStep(step);
+      setIsLoading(false);
+      const newStep = step + 1;
+      dispatch(setTicketStep(newStep));
+      history.push(paths.getCreateTicketPath(newStep));
+    } catch (error) {
+      setIsLoading(false);
+      setErrorMessage(error.message);
+    }
+  };
+
+  const back = () => {
+    const newStep = step - 1;
+    if (step > 1) {
+      dispatch(setTicketStep(newStep));
+      history.push(paths.getCreateTicketPath(newStep));
+    }
+  };
+
+  const create = () => {
+    setIsLoading(true);
+    createTicket(ticket)()
+      .then(createdTicket => {
+        dispatch(clearTicketEntry());
+        if (files.length) {
+          const formData = new FormData();
+          files.forEach((file, index) => {
+            formData.append(`file-${index}`, file);
+          });
+          uploadTicketFiles(createdTicket.slug, formData)(dispatch);
+        }
+        history.push(paths.getTicketDetailPath(createdTicket.slug));
+      })
+      .catch(error => {
+        setIsLoading(false);
+      });
+  };
+
+  const cancel = () => {
+    dispatch(clearTicketEntry());
+  };
+
+  const onFileDrop = (droppedFiles: Array<File>) => {
+    setFiles([...files, ...droppedFiles]);
+  };
+
+  if (isLoading) return <FullPageLoader />;
+
+  return (
+    <Page removeRootStyle confirmNavigation>
+      <div className={classes.root}>
+        <Container fixed>
+          <Grid container>
+            <Grid item xs={12}>
+              <Typography variant="h4">Create Ticket</Typography>
+              <p>
+                Step {getDisplayStep(step, isCommunity)} of{" "}
+                {getDisplayStep(9, isCommunity)}
+              </p>
+            </Grid>
+            <Grid item xs={12}>
+              {errorMessage ? (
+                <div className={classes.errorMessage}>{errorMessage}</div>
+              ) : null}
+            </Grid>
+          </Grid>
+          <Grid container spacing={4}>
+            <Grid item md={8}>
+              {step === 1 ? (
+                <Step1 ticket={ticket} />
+              ) : step === 2 ? (
+                <Step2 ticket={ticket} />
+              ) : step === 3 ? (
+                <Step3 ticket={ticket} />
+              ) : step === 4 ? (
+                <Step4 ticket={ticket} />
+              ) : step === 5 ? (
+                <Step5 ticket={ticket} />
+              ) : step === 6 ? (
+                <Step6 ticket={ticket} />
+              ) : step === 7 ? (
+                <Step7 />
+              ) : step === 8 ? (
+                <Step8 ticket={ticket} />
+              ) : step === 9 ? (
+                <Step9 ticket={ticket} files={files} onFileDrop={onFileDrop} />
+              ) : null}
+            </Grid>
+            <Grid item md={3}>
+              <Hidden smDown>
+                <SideBar ticket={ticket} step={step} />
+              </Hidden>
+            </Grid>
+          </Grid>
+          <Box mt={2}>
+            {step === 9 ? (
+              <Grid container>
+                <Grid item>
+                  <Button
+                    classes={{ root: classes.nextButton }}
+                    onClick={create}
+                  >
+                    Save and Submit
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button onClick={cancel}>Cancel</Button>
+                </Grid>
+              </Grid>
+            ) : step !== 7 ? (
+              <Grid container>
+                <Grid item>
+                  <Button onClick={back}>Back</Button>
+                </Grid>
+                <Grid item>
+                  <Button classes={{ root: classes.nextButton }} onClick={next}>
+                    Next
+                  </Button>
+                </Grid>
+              </Grid>
+            ) : null}
+          </Box>
+        </Container>
+      </div>
+    </Page>
+  );
+};
+
+export default CreateTicket;

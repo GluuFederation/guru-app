@@ -20,7 +20,7 @@ import LoginCallback from "./pages/auth/LoginCallback";
 import SignupRedirect from "./pages/auth/SignupRedirect";
 
 import TicketList from "./pages/TicketList";
-import TicketDetail from "./hPages/TicketDetail";
+import TicketDetail from "./pages/TicketDetail";
 import Notification from "./pages/Dashboard/NotificationPage";
 import Team from "./pages/Dashboard/TeamPage";
 import Partner from "./pages/Dashboard/PartnersPage";
@@ -134,7 +134,7 @@ const routes: Array<RouteType> = [
   },
   {
     path: paths.CREATE_TICKET,
-    component: CreateTicket
+    render: props => <CreateTicket key={props.match.params.step} />
   },
 
   // errors

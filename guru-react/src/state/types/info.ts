@@ -3,6 +3,16 @@ export enum TicketPriority {
   Low = "low"
 }
 
+export enum TicketOs {
+  Ubuntu = "Ubuntu",
+  CentOS = "CentOS",
+  RHEL = "RHEL",
+  Debian = "Debian",
+  Docker = "Docker",
+  RHContainer = "RH Container",
+  Other = "Other"
+}
+
 export interface GluuProduct {
   id: number;
   name: string;

@@ -1,15 +1,34 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 import Page from "../Page";
 import Navbar from "../Navbar";
 import Footer from "../Footer";
+import ConfirmationModal from "../ConfirmationModal";
 
-const EmptyPage: FunctionComponent = ({ children }) => {
+interface Props {
+  removeRootStyle?: boolean;
+  confirmNavigation?: boolean;
+}
+
+const EmptyPage: FunctionComponent<Props> = ({
+  removeRootStyle,
+  confirmNavigation,
+  children
+}) => {
+  const location = useLocation();
+  const { pathname, search } = location;
+  useEffect(() => {
+    const html = document.getElementsByTagName("html")[0];
+    if (html) html.scrollTop = 0;
+  }, [pathname, search]);
+
   return (
     <Page>
-      <Navbar />
-      <div className="app-body">{children}</div>
-      <Footer />
+      <Navbar confirmNavigation={confirmNavigation} />
+      <div className={removeRootStyle ? "" : "app-body"}>{children}</div>
+      <Footer confirmNavigation={confirmNavigation} />
+      <ConfirmationModal />
     </Page>
   );
 };
