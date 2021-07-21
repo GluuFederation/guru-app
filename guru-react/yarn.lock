@@ -2832,9 +2832,9 @@ codemirror-spell-checker@1.1.2:
     typo-js "*"
 
 codemirror@^5.48.4:
-  version "5.48.4"
-  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.48.4.tgz#4210fbe92be79a88f0eea348fab3ae78da85ce47"
-  integrity sha512-pUhZXDQ6qXSpWdwlgAwHEkd4imA0kf83hINmUEzJpmG80T/XLtDDEzZo8f6PQLuRCcUQhmzqqIo3ZPTRaWByRA==
+  version "5.62.1"
+  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.62.1.tgz#917c7406c7b7f05b974c7fe4c4f2088ae64cc874"
+  integrity sha512-39ce8tHh/M9J+Epa90R5zMGg06pxVXc1+Y0SRR6eKaUjjzuj5iYkk7rHc2uU+FzvfsWYGEYKPFf0pBVBLmYXNQ==
 
 collapse-white-space@^1.0.2:
   version "1.0.5"
